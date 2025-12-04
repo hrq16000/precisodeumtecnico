@@ -81,10 +81,36 @@ export function ContactForm() {
     },
   });
 
+  const sendEmailNotification = async (data: ContactFormValues) => {
+    try {
+      const response = await supabase.functions.invoke("send-lead-notification", {
+        body: {
+          name: data.name,
+          email: data.email,
+          phone: data.phone,
+          service: data.service || undefined,
+          city: data.city || undefined,
+          message: data.message,
+        },
+      });
+
+      if (response.error) {
+        console.error("Error sending email notification:", response.error);
+        // Don't throw - email is secondary, lead was already saved
+      } else {
+        console.log("Email notification sent successfully:", response.data);
+      }
+    } catch (err) {
+      console.error("Failed to send email notification:", err);
+      // Don't throw - email is secondary, lead was already saved
+    }
+  };
+
   const onSubmit = async (data: ContactFormValues) => {
     setIsSubmitting(true);
     
     try {
+      // Save lead to database
       const { error } = await supabase.from("leads").insert({
         name: data.name,
         email: data.email,
@@ -105,10 +131,13 @@ export function ContactForm() {
         return;
       }
 
+      // Send email notifications (async, don't block)
+      sendEmailNotification(data);
+
       setIsSuccess(true);
       toast({
         title: "Mensagem enviada!",
-        description: "Entraremos em contato em breve. Obrigado!",
+        description: "Entraremos em contato em breve. Verifique seu e-mail!",
       });
       form.reset();
       
@@ -137,7 +166,7 @@ export function ContactForm() {
           Mensagem Enviada!
         </h3>
         <p className="text-muted-foreground mb-6">
-          Recebemos sua solicitação e entraremos em contato em breve.
+          Recebemos sua solicitação e enviamos uma confirmação para seu e-mail. Entraremos em contato em breve!
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button variant="whatsapp" asChild>

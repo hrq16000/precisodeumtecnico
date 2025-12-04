@@ -11,7 +11,7 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
-import logoImg from "@/assets/logo.png";
+import { Logo } from "@/components/Logo";
 
 const services = [
   { name: "Informática", href: "/servicos/informatica", description: "Manutenção e suporte em computadores" },
@@ -72,13 +72,7 @@ export function Header() {
         <div className="container-custom">
           <div className="flex h-16 md:h-20 items-center justify-between">
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-3">
-              <img src={logoImg} alt="Preciso de Um Técnico" className="h-12 md:h-14 w-auto" />
-              <div className="hidden sm:block">
-                <span className="font-display font-bold text-lg text-foreground">Preciso de Um</span>
-                <span className="font-display font-bold text-lg text-primary"> Técnico</span>
-              </div>
-            </Link>
+            <Logo variant="dark" size="md" />
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-1">

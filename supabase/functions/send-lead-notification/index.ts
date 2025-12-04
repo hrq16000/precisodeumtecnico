@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 
@@ -7,13 +8,31 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-interface LeadNotificationRequest {
-  name: string;
-  email: string;
-  phone: string;
-  service?: string;
-  city?: string;
-  message: string;
+// Input validation schema
+const leadSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters").max(100, "Name must be less than 100 characters"),
+  email: z.string().email("Invalid email address").max(255, "Email must be less than 255 characters"),
+  phone: z.string().min(8, "Phone must be at least 8 characters").max(20, "Phone must be less than 20 characters"),
+  service: z.string().max(100, "Service must be less than 100 characters").optional(),
+  city: z.string().max(100, "City must be less than 100 characters").optional(),
+  message: z.string().min(10, "Message must be at least 10 characters").max(2000, "Message must be less than 2000 characters"),
+});
+
+// HTML escape function to prevent HTML injection in emails
+function escapeHtml(text: string): string {
+  const htmlEscapes: Record<string, string> = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  };
+  return text.replace(/[&<>"']/g, (char) => htmlEscapes[char] || char);
+}
+
+// Convert newlines to <br> tags safely (after escaping)
+function formatMessage(text: string): string {
+  return escapeHtml(text).replace(/\n/g, '<br>');
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -25,8 +44,37 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const leadData: LeadNotificationRequest = await req.json();
-    console.log("Lead data received:", { name: leadData.name, email: leadData.email, service: leadData.service });
+    const rawData = await req.json();
+    
+    // Validate input data
+    const parseResult = leadSchema.safeParse(rawData);
+    if (!parseResult.success) {
+      console.error("Validation error:", parseResult.error.flatten());
+      return new Response(
+        JSON.stringify({ 
+          error: "Invalid input data", 
+          details: parseResult.error.flatten().fieldErrors 
+        }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
+    }
+
+    const leadData = parseResult.data;
+    console.log("Lead data validated:", { name: leadData.name, email: leadData.email, service: leadData.service });
+
+    // Escape all user-provided data for safe HTML insertion
+    const safeName = escapeHtml(leadData.name);
+    const safeEmail = escapeHtml(leadData.email);
+    const safePhone = escapeHtml(leadData.phone);
+    const safeService = leadData.service ? escapeHtml(leadData.service) : null;
+    const safeCity = leadData.city ? escapeHtml(leadData.city) : null;
+    const safeMessage = formatMessage(leadData.message);
+
+    // Clean phone number for WhatsApp link (only digits)
+    const cleanPhone = leadData.phone.replace(/\D/g, '');
 
     // Email to the business owner
     const businessEmailHtml = `
@@ -56,33 +104,33 @@ const handler = async (req: Request): Promise<Response> => {
           <div class="content">
             <div class="field">
               <div class="label">👤 Nome</div>
-              <div class="value">${leadData.name}</div>
+              <div class="value">${safeName}</div>
             </div>
             <div class="field">
               <div class="label">📧 E-mail</div>
-              <div class="value"><a href="mailto:${leadData.email}">${leadData.email}</a></div>
+              <div class="value"><a href="mailto:${safeEmail}">${safeEmail}</a></div>
             </div>
             <div class="field">
               <div class="label">📱 Telefone/WhatsApp</div>
-              <div class="value">${leadData.phone}</div>
+              <div class="value">${safePhone}</div>
             </div>
-            ${leadData.service ? `
+            ${safeService ? `
             <div class="field">
               <div class="label">🔧 Serviço Solicitado</div>
-              <div class="value">${leadData.service}</div>
+              <div class="value">${safeService}</div>
             </div>
             ` : ''}
-            ${leadData.city ? `
+            ${safeCity ? `
             <div class="field">
               <div class="label">📍 Cidade</div>
-              <div class="value">${leadData.city}</div>
+              <div class="value">${safeCity}</div>
             </div>
             ` : ''}
             <div class="field">
               <div class="label">💬 Mensagem</div>
-              <div class="message-box">${leadData.message.replace(/\n/g, '<br>')}</div>
+              <div class="message-box">${safeMessage}</div>
             </div>
-            <a href="https://wa.me/55${leadData.phone.replace(/\D/g, '')}?text=Olá ${encodeURIComponent(leadData.name)}! Recebemos sua solicitação no Preciso de Um Técnico. Como posso ajudá-lo?" class="cta">
+            <a href="https://wa.me/55${cleanPhone}?text=Olá ${encodeURIComponent(leadData.name)}! Recebemos sua solicitação no Preciso de Um Técnico. Como posso ajudá-lo?" class="cta">
               💬 Responder via WhatsApp
             </a>
           </div>
@@ -104,7 +152,7 @@ const handler = async (req: Request): Promise<Response> => {
       body: JSON.stringify({
         from: "Preciso de Um Técnico <onboarding@resend.dev>",
         to: ["contato@precisodeumtecnico.com"], // Change to actual business email
-        subject: `🎯 Novo Lead: ${leadData.name} - ${leadData.service || 'Serviço Geral'}`,
+        subject: `🎯 Novo Lead: ${safeName} - ${safeService || 'Serviço Geral'}`,
         html: businessEmailHtml,
       }),
     });
@@ -139,13 +187,13 @@ const handler = async (req: Request): Promise<Response> => {
             <p style="margin: 10px 0 0 0; opacity: 0.9;">Preciso de Um Técnico</p>
           </div>
           <div class="content">
-            <p>Olá <strong>${leadData.name}</strong>,</p>
+            <p>Olá <strong>${safeName}</strong>,</p>
             <p>Recebemos sua solicitação de serviço técnico e nossa equipe já está analisando!</p>
             
             <div class="highlight">
               <p style="margin: 0;"><strong>📋 Resumo da sua solicitação:</strong></p>
-              ${leadData.service ? `<p style="margin: 10px 0 0 0;">🔧 Serviço: <strong>${leadData.service}</strong></p>` : ''}
-              ${leadData.city ? `<p style="margin: 5px 0 0 0;">📍 Cidade: <strong>${leadData.city}</strong></p>` : ''}
+              ${safeService ? `<p style="margin: 10px 0 0 0;">🔧 Serviço: <strong>${safeService}</strong></p>` : ''}
+              ${safeCity ? `<p style="margin: 5px 0 0 0;">📍 Cidade: <strong>${safeCity}</strong></p>` : ''}
             </div>
             
             <p><strong>O que acontece agora?</strong></p>
@@ -203,7 +251,7 @@ const handler = async (req: Request): Promise<Response> => {
   } catch (error: any) {
     console.error("Error in send-lead-notification function:", error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: "An error occurred processing your request" }),
       {
         status: 500,
         headers: { "Content-Type": "application/json", ...corsHeaders },

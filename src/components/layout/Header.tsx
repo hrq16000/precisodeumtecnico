@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Phone, MessageCircle, ChevronDown } from "lucide-react";
+import { Menu, X, Phone, MessageCircle, Mail, MapPin, Clock } from "lucide-react";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -11,6 +11,7 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
+import logoImg from "@/assets/logo.png";
 
 const services = [
   { name: "Informática", href: "/servicos/informatica", description: "Manutenção e suporte em computadores" },
@@ -19,12 +20,15 @@ const services = [
   { name: "Elétrica", href: "/servicos/eletrica", description: "Serviços elétricos residenciais e comerciais" },
   { name: "Redes", href: "/servicos/redes", description: "Configuração de redes e Wi-Fi" },
   { name: "Ar-Condicionado", href: "/servicos/ar-condicionado", description: "Instalação e manutenção" },
+  { name: "Celulares", href: "/servicos/celulares", description: "Reparo de smartphones e tablets" },
+  { name: "Games", href: "/servicos/games", description: "Conserto de videogames e consoles" },
 ];
 
 const regions = [
   { name: "Curitiba", href: "/regioes/curitiba" },
   { name: "São José dos Pinhais", href: "/regioes/sao-jose-dos-pinhais" },
-  { name: "Região Metropolitana", href: "/regioes" },
+  { name: "Pinhais", href: "/regioes/pinhais" },
+  { name: "Todas as Regiões", href: "/regioes" },
 ];
 
 export function Header() {
@@ -34,21 +38,47 @@ export function Header() {
   const whatsappLink = `https://wa.me/${whatsappNumber}?text=Olá! Preciso de um técnico.`;
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
-      <div className="container-custom">
-        <div className="flex h-16 md:h-20 items-center justify-between">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2">
-            <div className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-lg hero-gradient flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-lg">PT</span>
-              </div>
+    <header className="sticky top-0 z-50 w-full bg-background shadow-sm">
+      {/* Top Bar */}
+      <div className="hidden lg:block bg-primary text-primary-foreground py-2">
+        <div className="container-custom">
+          <div className="flex items-center justify-between text-sm">
+            <div className="flex items-center gap-6">
+              <span className="flex items-center gap-2">
+                <Clock className="w-4 h-4" />
+                Atendimento 24h via WhatsApp
+              </span>
+              <span className="flex items-center gap-2">
+                <MapPin className="w-4 h-4" />
+                Curitiba e Região Metropolitana
+              </span>
+            </div>
+            <div className="flex items-center gap-6">
+              <a href="tel:+5541997452053" className="flex items-center gap-2 hover:text-accent transition-colors">
+                <Phone className="w-4 h-4" />
+                (41) 9 9745-2053
+              </a>
+              <a href="mailto:contato@precisodeumtecnico.com" className="flex items-center gap-2 hover:text-accent transition-colors">
+                <Mail className="w-4 h-4" />
+                contato@precisodeumtecnico.com
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Header */}
+      <div className="border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+        <div className="container-custom">
+          <div className="flex h-16 md:h-20 items-center justify-between">
+            {/* Logo */}
+            <Link to="/" className="flex items-center gap-3">
+              <img src={logoImg} alt="Preciso de Um Técnico" className="h-12 md:h-14 w-auto" />
               <div className="hidden sm:block">
                 <span className="font-display font-bold text-lg text-foreground">Preciso de Um</span>
                 <span className="font-display font-bold text-lg text-primary"> Técnico</span>
               </div>
-            </div>
-          </Link>
+            </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-1">
@@ -167,40 +197,41 @@ export function Header() {
           </button>
         </div>
 
-        {/* Mobile Navigation */}
-        {mobileMenuOpen && (
-          <div className="lg:hidden py-4 border-t border-border/50 animate-fade-in">
-            <nav className="flex flex-col gap-2">
-              <Link to="/" className="px-4 py-2 rounded-md hover:bg-secondary transition-colors font-medium" onClick={() => setMobileMenuOpen(false)}>
-                Início
-              </Link>
-              <Link to="/servicos" className="px-4 py-2 rounded-md hover:bg-secondary transition-colors font-medium" onClick={() => setMobileMenuOpen(false)}>
-                Serviços
-              </Link>
-              <Link to="/regioes" className="px-4 py-2 rounded-md hover:bg-secondary transition-colors font-medium" onClick={() => setMobileMenuOpen(false)}>
-                Regiões Atendidas
-              </Link>
-              <Link to="/sobre" className="px-4 py-2 rounded-md hover:bg-secondary transition-colors font-medium" onClick={() => setMobileMenuOpen(false)}>
-                Sobre
-              </Link>
-              <Link to="/contato" className="px-4 py-2 rounded-md hover:bg-secondary transition-colors font-medium" onClick={() => setMobileMenuOpen(false)}>
-                Contato
-              </Link>
-              <div className="pt-4 mt-2 border-t border-border/50 flex flex-col gap-2">
-                <a href="tel:+5541997452053" className="flex items-center gap-2 px-4 py-2 text-muted-foreground">
-                  <Phone className="w-4 h-4" />
-                  (41) 99745-2053
-                </a>
-                <Button variant="whatsapp" className="mx-4" asChild>
-                  <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
-                    <MessageCircle className="w-4 h-4" />
-                    Chamar no WhatsApp
+          {/* Mobile Navigation */}
+          {mobileMenuOpen && (
+            <div className="lg:hidden py-4 border-t border-border/50 animate-fade-in">
+              <nav className="flex flex-col gap-2">
+                <Link to="/" className="px-4 py-2 rounded-md hover:bg-secondary transition-colors font-medium" onClick={() => setMobileMenuOpen(false)}>
+                  Início
+                </Link>
+                <Link to="/servicos" className="px-4 py-2 rounded-md hover:bg-secondary transition-colors font-medium" onClick={() => setMobileMenuOpen(false)}>
+                  Serviços
+                </Link>
+                <Link to="/regioes" className="px-4 py-2 rounded-md hover:bg-secondary transition-colors font-medium" onClick={() => setMobileMenuOpen(false)}>
+                  Regiões Atendidas
+                </Link>
+                <Link to="/sobre" className="px-4 py-2 rounded-md hover:bg-secondary transition-colors font-medium" onClick={() => setMobileMenuOpen(false)}>
+                  Sobre
+                </Link>
+                <Link to="/contato" className="px-4 py-2 rounded-md hover:bg-secondary transition-colors font-medium" onClick={() => setMobileMenuOpen(false)}>
+                  Contato
+                </Link>
+                <div className="pt-4 mt-2 border-t border-border/50 flex flex-col gap-2">
+                  <a href="tel:+5541997452053" className="flex items-center gap-2 px-4 py-2 text-muted-foreground">
+                    <Phone className="w-4 h-4" />
+                    (41) 9 9745-2053
                   </a>
-                </Button>
-              </div>
-            </nav>
-          </div>
-        )}
+                  <Button variant="whatsapp" className="mx-4" asChild>
+                    <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+                      <MessageCircle className="w-4 h-4" />
+                      Chamar no WhatsApp
+                    </a>
+                  </Button>
+                </div>
+              </nav>
+            </div>
+          )}
+        </div>
       </div>
     </header>
   );

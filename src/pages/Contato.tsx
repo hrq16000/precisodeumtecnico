@@ -1,8 +1,9 @@
 import { Layout } from "@/components/layout/Layout";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { Button } from "@/components/ui/button";
+import { ContactForm } from "@/components/forms/ContactForm";
 import { 
-  MessageCircle, Phone, Mail, MapPin, Clock, CheckCircle,
+  MessageCircle, Phone, MapPin, Clock, CheckCircle,
   Building, Users, Headphones
 } from "lucide-react";
 
@@ -94,9 +95,9 @@ const Contato = () => {
       </section>
 
       {/* Contact Cards */}
-      <section className="section-padding bg-background">
+      <section className="py-12 bg-background">
         <div className="container-custom">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {contactInfo.map((info) => (
               <div
                 key={info.title}
@@ -134,16 +135,25 @@ const Contato = () => {
               </div>
             ))}
           </div>
+        </div>
+      </section>
 
-          {/* Main Content */}
+      {/* Main Content with Form */}
+      <section className="section-padding bg-secondary/30">
+        <div className="container-custom">
           <div className="grid lg:grid-cols-2 gap-12">
-            {/* How to contact */}
+            {/* Contact Form */}
+            <div>
+              <ContactForm />
+            </div>
+
+            {/* Side Content */}
             <div>
               <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-6">
                 Como Funciona o Atendimento
               </h2>
               
-              <div className="space-y-6">
+              <div className="space-y-6 mb-8">
                 <div className="flex gap-4">
                   <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                     <span className="font-bold text-primary">1</span>
@@ -151,7 +161,7 @@ const Contato = () => {
                   <div>
                     <h3 className="font-bold text-foreground mb-1">Entre em Contato</h3>
                     <p className="text-muted-foreground">
-                      Envie uma mensagem via WhatsApp ou ligue para nós descrevendo o problema.
+                      Preencha o formulário ou envie uma mensagem via WhatsApp descrevendo o problema.
                     </p>
                   </div>
                 </div>
@@ -193,8 +203,9 @@ const Contato = () => {
                 </div>
               </div>
 
-              <div className="mt-8 p-6 rounded-xl bg-secondary/50 border border-border/50">
-                <h3 className="font-bold text-foreground mb-3">Informações Importantes</h3>
+              {/* Info Card */}
+              <div className="bg-card rounded-xl p-6 border border-border/50 card-shadow mb-8">
+                <h3 className="font-bold text-card-foreground mb-3">Informações Importantes</h3>
                 <ul className="space-y-2 text-sm text-muted-foreground">
                   <li className="flex items-start gap-2">
                     <CheckCircle className="w-4 h-4 text-success mt-0.5 flex-shrink-0" />
@@ -214,48 +225,29 @@ const Contato = () => {
                   </li>
                 </ul>
               </div>
-            </div>
 
-            {/* Service Types */}
-            <div>
-              <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-6">
+              {/* Service Types */}
+              <h3 className="font-display font-bold text-xl text-foreground mb-4">
                 Tipos de Atendimento
-              </h2>
-              
-              <div className="space-y-6">
+              </h3>
+              <div className="space-y-4">
                 {serviceTypes.map((type) => (
-                  <div key={type.title} className="bg-card rounded-2xl p-6 card-shadow border border-border/50">
+                  <div key={type.title} className="bg-card rounded-xl p-5 card-shadow border border-border/50">
                     <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                        <type.icon className="w-6 h-6 text-primary" />
+                      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <type.icon className="w-5 h-5 text-primary" />
                       </div>
                       <div>
-                        <h3 className="font-bold text-lg text-card-foreground mb-2">
+                        <h4 className="font-bold text-card-foreground mb-1">
                           {type.title}
-                        </h3>
-                        <p className="text-muted-foreground">
+                        </h4>
+                        <p className="text-muted-foreground text-sm">
                           {type.description}
                         </p>
                       </div>
                     </div>
                   </div>
                 ))}
-              </div>
-
-              {/* CTA Card */}
-              <div className="mt-8 bg-primary rounded-2xl p-8 text-center">
-                <h3 className="font-display font-bold text-2xl text-primary-foreground mb-3">
-                  Precisa de Ajuda Agora?
-                </h3>
-                <p className="text-primary-foreground/80 mb-6">
-                  Nosso time está pronto para atender você
-                </p>
-                <Button variant="heroSolid" size="xl" asChild>
-                  <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
-                    <MessageCircle className="w-5 h-5" />
-                    Chamar no WhatsApp
-                  </a>
-                </Button>
               </div>
             </div>
           </div>

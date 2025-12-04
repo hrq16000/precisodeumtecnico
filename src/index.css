@@ -6,59 +6,65 @@
 
 @layer base {
   :root {
-    /* Primary - Professional Blue */
-    --primary: 210 90% 40%;
+    /* Primary - Deep Blue */
+    --primary: 217 91% 35%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 210 90% 50%;
+    --primary-glow: 217 91% 45%;
     
     /* Background */
-    --background: 210 20% 98%;
-    --foreground: 215 25% 15%;
+    --background: 220 14% 96%;
+    --foreground: 222 47% 11%;
 
     /* Card */
     --card: 0 0% 100%;
-    --card-foreground: 215 25% 15%;
+    --card-foreground: 222 47% 11%;
 
     /* Popover */
     --popover: 0 0% 100%;
-    --popover-foreground: 215 25% 15%;
+    --popover-foreground: 222 47% 11%;
 
-    /* Secondary - Light Blue Gray */
-    --secondary: 210 15% 93%;
-    --secondary-foreground: 215 25% 25%;
+    /* Secondary */
+    --secondary: 220 14% 90%;
+    --secondary-foreground: 222 47% 20%;
 
     /* Muted */
-    --muted: 210 15% 93%;
-    --muted-foreground: 215 15% 45%;
+    --muted: 220 14% 90%;
+    --muted-foreground: 220 9% 46%;
 
-    /* Accent - Vibrant Orange for CTAs */
-    --accent: 25 95% 53%;
+    /* Accent - Vibrant Green for WhatsApp/CTAs */
+    --accent: 142 76% 36%;
     --accent-foreground: 0 0% 100%;
 
-    /* Success Green */
+    /* Success Green - WhatsApp */
     --success: 142 70% 45%;
     --success-foreground: 0 0% 100%;
+
+    /* Warning Orange */
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
 
     /* Destructive */
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
     /* Border & Input */
-    --border: 210 20% 88%;
-    --input: 210 20% 88%;
-    --ring: 210 90% 40%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 217 91% 35%;
 
     --radius: 0.75rem;
 
     /* Custom tokens */
-    --hero-gradient: linear-gradient(135deg, hsl(210 90% 35%) 0%, hsl(200 85% 45%) 50%, hsl(185 80% 40%) 100%);
-    --hero-overlay: linear-gradient(180deg, hsla(210, 90%, 20%, 0.9) 0%, hsla(200, 85%, 25%, 0.85) 100%);
-    --cta-gradient: linear-gradient(135deg, hsl(25 95% 53%) 0%, hsl(15 90% 50%) 100%);
-    --cta-glow: 0 10px 40px -10px hsla(25, 95%, 53%, 0.5);
-    --card-shadow: 0 4px 20px -5px hsla(210, 30%, 30%, 0.1);
-    --card-shadow-hover: 0 10px 40px -10px hsla(210, 30%, 30%, 0.2);
+    --hero-gradient: linear-gradient(135deg, hsl(217 91% 20%) 0%, hsl(217 91% 30%) 50%, hsl(200 85% 35%) 100%);
+    --hero-overlay: linear-gradient(180deg, hsla(217, 91%, 15%, 0.95) 0%, hsla(217, 91%, 20%, 0.9) 100%);
+    --cta-gradient: linear-gradient(135deg, hsl(142 76% 36%) 0%, hsl(142 76% 42%) 100%);
+    --cta-glow: 0 10px 40px -10px hsla(142, 76%, 36%, 0.5);
+    --card-shadow: 0 4px 20px -5px hsla(217, 30%, 30%, 0.08);
+    --card-shadow-hover: 0 20px 50px -10px hsla(217, 30%, 30%, 0.15);
     --whatsapp: 142 70% 45%;
     --whatsapp-hover: 142 70% 40%;
+    --tech-blue: 217 91% 35%;
+    --tech-blue-light: 217 91% 50%;
 
     /* Sidebar */
     --sidebar-background: 0 0% 98%;
@@ -72,42 +78,45 @@
   }
 
   .dark {
-    --primary: 200 85% 55%;
-    --primary-foreground: 215 25% 10%;
-    --primary-glow: 200 85% 65%;
+    --primary: 217 91% 55%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 217 91% 65%;
 
-    --background: 215 25% 9%;
-    --foreground: 210 20% 95%;
+    --background: 222 47% 8%;
+    --foreground: 220 14% 96%;
 
-    --card: 215 25% 12%;
-    --card-foreground: 210 20% 95%;
+    --card: 222 47% 11%;
+    --card-foreground: 220 14% 96%;
 
-    --popover: 215 25% 12%;
-    --popover-foreground: 210 20% 95%;
+    --popover: 222 47% 11%;
+    --popover-foreground: 220 14% 96%;
 
-    --secondary: 215 20% 18%;
-    --secondary-foreground: 210 20% 90%;
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 220 14% 90%;
 
-    --muted: 215 20% 18%;
-    --muted-foreground: 215 15% 60%;
+    --muted: 217 33% 17%;
+    --muted-foreground: 220 9% 60%;
 
-    --accent: 25 95% 55%;
+    --accent: 142 76% 42%;
     --accent-foreground: 0 0% 100%;
 
     --success: 142 70% 50%;
     --success-foreground: 0 0% 100%;
 
+    --warning: 38 92% 55%;
+    --warning-foreground: 0 0% 100%;
+
     --destructive: 0 70% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 215 20% 20%;
-    --input: 215 20% 20%;
-    --ring: 200 85% 55%;
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 217 91% 55%;
 
-    --hero-gradient: linear-gradient(135deg, hsl(215 25% 8%) 0%, hsl(210 30% 12%) 100%);
-    --hero-overlay: linear-gradient(180deg, hsla(215, 25%, 5%, 0.95) 0%, hsla(210, 30%, 8%, 0.9) 100%);
-    --card-shadow: 0 4px 20px -5px hsla(0, 0%, 0%, 0.3);
-    --card-shadow-hover: 0 10px 40px -10px hsla(0, 0%, 0%, 0.4);
+    --hero-gradient: linear-gradient(135deg, hsl(222 47% 6%) 0%, hsl(222 47% 10%) 100%);
+    --hero-overlay: linear-gradient(180deg, hsla(222, 47%, 4%, 0.98) 0%, hsla(222, 47%, 8%, 0.95) 100%);
+    --card-shadow: 0 4px 20px -5px hsla(0, 0%, 0%, 0.4);
+    --card-shadow-hover: 0 20px 50px -10px hsla(0, 0%, 0%, 0.5);
 
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
@@ -165,7 +174,7 @@
 
   .text-gradient {
     @apply bg-clip-text text-transparent;
-    background: var(--hero-gradient);
+    background: linear-gradient(135deg, hsl(217 91% 45%) 0%, hsl(200 85% 50%) 100%);
   }
 
   .whatsapp-btn {
@@ -193,6 +202,111 @@
   .container-custom {
     @apply container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl;
   }
+
+  .service-card {
+    @apply relative overflow-hidden rounded-2xl bg-card border border-border transition-all duration-500;
+    box-shadow: var(--card-shadow);
+  }
+
+  .service-card:hover {
+    @apply -translate-y-2 border-primary/20;
+    box-shadow: var(--card-shadow-hover);
+  }
+
+  .service-card-image {
+    @apply h-48 w-full object-cover transition-transform duration-700;
+  }
+
+  .service-card:hover .service-card-image {
+    @apply scale-110;
+  }
+
+  .region-card {
+    @apply relative p-6 rounded-xl bg-card border border-border transition-all duration-300;
+    box-shadow: var(--card-shadow);
+  }
+
+  .region-card:hover {
+    @apply -translate-y-1 border-primary/30;
+    box-shadow: var(--card-shadow-hover);
+  }
+
+  .stat-card {
+    @apply relative p-6 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50;
+  }
+
+  .badge-primary {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary;
+  }
+
+  .badge-success {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-success/10 text-success;
+  }
+
+  .badge-warning {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-warning/10 text-warning;
+  }
+
+  .phone-link {
+    @apply flex items-center gap-2 text-lg font-bold text-primary hover:text-primary-glow transition-colors;
+  }
+
+  .nav-link {
+    @apply relative text-foreground/80 hover:text-foreground transition-colors font-medium;
+  }
+
+  .nav-link::after {
+    @apply absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300;
+    content: '';
+  }
+
+  .nav-link:hover::after {
+    @apply w-full;
+  }
+
+  /* Trust Badge */
+  .trust-badge {
+    @apply flex items-center gap-3 p-4 rounded-xl bg-card border border-border;
+    box-shadow: var(--card-shadow);
+  }
+
+  /* Price Tag */
+  .price-tag {
+    @apply inline-flex items-center px-4 py-2 rounded-lg bg-success/10 text-success font-bold text-lg;
+  }
+
+  /* Floating Animation */
+  .float-animation {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+  }
+
+  /* Gradient Border */
+  .gradient-border {
+    @apply relative;
+  }
+
+  .gradient-border::before {
+    content: '';
+    @apply absolute inset-0 rounded-2xl p-[2px];
+    background: linear-gradient(135deg, hsl(217 91% 45%), hsl(142 76% 42%));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+
+  /* Tech Grid Background */
+  .tech-grid {
+    background-image: 
+      linear-gradient(to right, hsla(217, 91%, 35%, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, hsla(217, 91%, 35%, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
 }
 
 @layer utilities {
@@ -210,6 +324,10 @@
 
   .animate-slide-in-right {
     animation: slideInRight 0.6s ease-out forwards;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.5s ease-out forwards;
   }
 
   @keyframes fadeUp {
@@ -254,9 +372,21 @@
     }
   }
 
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
   .stagger-1 { animation-delay: 0.1s; }
   .stagger-2 { animation-delay: 0.2s; }
   .stagger-3 { animation-delay: 0.3s; }
   .stagger-4 { animation-delay: 0.4s; }
   .stagger-5 { animation-delay: 0.5s; }
+  .stagger-6 { animation-delay: 0.6s; }
 }

@@ -1,301 +1,445 @@
 import { useParams, Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { SEOHead } from "@/components/seo/SEOHead";
-import { Button } from "@/components/ui/button";
 import { CTASection } from "@/components/home/CTASection";
+import { Button } from "@/components/ui/button";
 import { 
-  MessageCircle, Phone, MapPin, CheckCircle, Clock, Shield, 
-  Award, ArrowRight, Monitor, Laptop, Camera, Zap, Wifi, Wind
+  MapPin, Phone, MessageCircle, ArrowRight, CheckCircle, Clock, Shield, 
+  Award, Monitor, Camera, Wind, Zap, Wifi, Laptop, Building2, Home,
+  Star, Users, FileText, Smartphone, Gamepad2
 } from "lucide-react";
+import { citiesData, formatNeighborhoodSlug, formatNameFromSlug, getCityBySlug } from "@/data/regions";
 
-const curitibaBairros = [
-  "Água Verde", "Alto da Glória", "Alto da XV", "Bacacheri", "Bairro Alto",
-  "Barreirinha", "Batel", "Bigorrilho", "Boa Vista", "Bom Retiro", "Boqueirão",
-  "Cabral", "Cajuru", "Campina do Siqueira", "Campo Comprido", "Capão da Imbuia",
-  "Capão Raso", "Centro", "Centro Cívico", "Cidade Industrial", "Cristo Rei",
-  "Fanny", "Fazendinha", "Guabirotuba", "Guairá", "Hauer", "Hugo Lange",
-  "Jardim Botânico", "Jardim das Américas", "Jardim Social", "Juvevê",
-  "Lindóia", "Mercês", "Mossunguê", "Novo Mundo", "Parolin", "Pinheirinho",
-  "Portão", "Prado Velho", "Rebouças", "Santa Cândida", "Santa Felicidade",
-  "Santa Quitéria", "Santo Inácio", "São Braz", "São Francisco", "São Lourenço",
-  "Seminário", "Sítio Cercado", "Tarumã", "Tatuquara", "Tingui", "Uberaba",
-  "Vila Izabel", "Vista Alegre", "Xaxim"
-];
-
-const sjpBairros = [
-  "Afonso Pena", "Águas Belas", "Aristocrata", "Boneca do Iguaçu", "Borda do Campo",
-  "Centro", "Cidade Jardim", "Colônia Rio Grande", "Costeira", "Cruzeiro",
-  "Del Rey", "Guatupê", "Independência", "Ipê", "Itália", "Jardim Dona Letícia",
-  "Jardim Ibaiti", "Ouro Fino", "Pedro Moro", "Quissisana", "Rio Pequeno",
-  "Roseira de São Sebastião", "São Cristóvão", "São Domingos", "São Marcos"
-];
-
-const cityData: Record<string, {
-  name: string;
-  state: string;
-  description: string;
-  neighborhoods: string[];
-  isMainCity: boolean;
-}> = {
-  curitiba: {
-    name: "Curitiba",
-    state: "PR",
-    description: "Atendimento completo em todos os bairros de Curitiba. Técnicos especializados em informática, elétrica, CFTV, ar-condicionado e muito mais.",
-    neighborhoods: curitibaBairros,
-    isMainCity: true,
-  },
-  "sao-jose-dos-pinhais": {
-    name: "São José dos Pinhais",
-    state: "PR",
-    description: "Cobertura total em São José dos Pinhais. Assistência técnica residencial e empresarial com atendimento 24h via WhatsApp.",
-    neighborhoods: sjpBairros,
-    isMainCity: true,
-  },
-  pinhais: {
-    name: "Pinhais",
-    state: "PR",
-    description: "Técnicos especializados prontos para atender em Pinhais. Serviços de informática, elétrica, CFTV e muito mais.",
-    neighborhoods: [],
-    isMainCity: false,
-  },
-  colombo: {
-    name: "Colombo",
-    state: "PR",
-    description: "Atendimento técnico especializado em toda Colombo. Garantia em todos os serviços realizados.",
-    neighborhoods: [],
-    isMainCity: false,
-  },
-  araucaria: {
-    name: "Araucária",
-    state: "PR",
-    description: "Assistência técnica em Araucária para residências e empresas. Atendimento rápido e com garantia.",
-    neighborhoods: [],
-    isMainCity: false,
-  },
-};
-
-const mainServices = [
-  { icon: Monitor, name: "Informática", href: "/servicos/informatica" },
-  { icon: Laptop, name: "Notebooks", href: "/servicos/notebooks" },
-  { icon: Camera, name: "CFTV", href: "/servicos/cftv" },
-  { icon: Zap, name: "Elétrica", href: "/servicos/eletrica" },
-  { icon: Wifi, name: "Redes", href: "/servicos/redes" },
-  { icon: Wind, name: "Ar-Condicionado", href: "/servicos/ar-condicionado" },
+const services = [
+  { icon: Monitor, name: "Informática", href: "/servicos/informatica", desc: "Formatação, manutenção, upgrade" },
+  { icon: Camera, name: "CFTV", href: "/servicos/cftv", desc: "Câmeras de segurança" },
+  { icon: Wind, name: "Ar-Condicionado", href: "/servicos/ar-condicionado", desc: "Instalação e manutenção" },
+  { icon: Laptop, name: "Notebooks", href: "/servicos/notebooks", desc: "Reparo especializado" },
+  { icon: Zap, name: "Elétrica", href: "/servicos/eletrica", desc: "Instalações elétricas" },
+  { icon: Wifi, name: "Redes", href: "/servicos/redes", desc: "Wi-Fi e cabeamento" },
+  { icon: Smartphone, name: "Celulares", href: "/servicos/celulares", desc: "Troca de tela e bateria" },
+  { icon: Gamepad2, name: "Games", href: "/servicos/games", desc: "PS4, PS5, Xbox, Switch" },
 ];
 
 const whatsappNumber = "5541997452053";
-const whatsappLink = `https://wa.me/${whatsappNumber}?text=Olá! Preciso de um técnico.`;
 
 const RegiaoDetalhe = () => {
   const { city, neighborhood } = useParams<{ city: string; neighborhood?: string }>();
-  const cityInfo = city && cityData[city] ? cityData[city] : null;
+  const cityData = city ? getCityBySlug(city) : null;
   
-  // Generate display name from slug
-  const formatName = (slug: string) => {
-    return slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+  const cityName = cityData?.name || (city ? formatNameFromSlug(city) : "");
+  const neighborhoodName = neighborhood ? formatNameFromSlug(neighborhood) : "";
+  const whatsappLink = `https://wa.me/${whatsappNumber}?text=Olá! Preciso de um técnico em ${neighborhoodName || cityName}.`;
+  
+  const pageTitle = neighborhood 
+    ? `Técnico em ${neighborhoodName}, ${cityName}`
+    : `Técnico em ${cityName}`;
+    
+  const pageDescription = neighborhood
+    ? `Assistência técnica especializada no bairro ${neighborhoodName} em ${cityName} - PR. Informática, elétrica, CFTV, ar-condicionado, notebooks. Atendimento 24h via WhatsApp. Visita técnica a partir de R$ 99,90.`
+    : cityData?.seoDescription || `Assistência técnica em ${cityName} - PR. Técnicos especializados em informática, elétrica, CFTV, ar-condicionado. Atendimento 24h via WhatsApp. A partir de R$ 99,90.`;
+
+  const localSchema = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": `Preciso de Um Técnico - ${pageTitle}`,
+    "description": pageDescription,
+    "url": `https://precisodeumtecnico.com/regioes/${city}${neighborhood ? `/${neighborhood}` : ''}`,
+    "telephone": "+55-41-99745-2053",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": cityName,
+      "addressRegion": "PR",
+      "addressCountry": "BR"
+    },
+    "areaServed": {
+      "@type": neighborhood ? "Neighborhood" : "City",
+      "name": neighborhood ? neighborhoodName : cityName
+    },
+    "priceRange": "$$",
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+      "opens": "08:00",
+      "closes": "22:00"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "reviewCount": "15000"
+    }
   };
-
-  const displayCityName = cityInfo ? cityInfo.name : (city ? formatName(city) : "Região");
-  const displayNeighborhoodName = neighborhood ? formatName(neighborhood) : null;
-
-  const pageTitle = displayNeighborhoodName 
-    ? `${displayNeighborhoodName}, ${displayCityName}`
-    : displayCityName;
 
   return (
     <Layout>
       <SEOHead
-        title={`Técnico em ${pageTitle} | Assistência Técnica 24h`}
-        description={`Assistência técnica em ${pageTitle}. Informática, elétrica, CFTV, ar-condicionado. Atendimento 24h via WhatsApp. Técnico vai até você!`}
+        title={`${pageTitle} | Assistência Técnica 24h | Preciso de Um Técnico`}
+        description={pageDescription}
         canonical={`https://precisodeumtecnico.com/regioes/${city}${neighborhood ? `/${neighborhood}` : ''}`}
+        schema={localSchema}
       />
-
-      {/* Hero */}
-      <section className="relative py-16 md:py-24 hero-gradient overflow-hidden">
+      
+      {/* Hero Section */}
+      <section className="relative py-20 lg:py-28 overflow-hidden">
+        <div className="absolute inset-0 hero-gradient" />
         <div className="absolute inset-0 hero-overlay" />
-        <div className="container-custom relative z-10">
-          <div className="max-w-3xl">
-            <div className="flex items-center gap-2 mb-4">
-              <Link to="/regioes" className="text-primary-foreground/60 hover:text-primary-foreground transition-colors">
-                Regiões
+        <div className="absolute inset-0 tech-grid opacity-10" />
+        
+        <div className="relative container-custom">
+          {/* Breadcrumb */}
+          <nav className="flex items-center gap-2 text-white/60 text-sm mb-8" aria-label="Breadcrumb">
+            <Link to="/" className="hover:text-white transition-colors">Início</Link>
+            <span>/</span>
+            <Link to="/regioes" className="hover:text-white transition-colors">Regiões</Link>
+            <span>/</span>
+            {neighborhood ? (
+              <>
+                <Link to={`/regioes/${city}`} className="hover:text-white transition-colors">{cityName}</Link>
+                <span>/</span>
+                <span className="text-white">{neighborhoodName}</span>
+              </>
+            ) : (
+              <span className="text-white">{cityName}</span>
+            )}
+          </nav>
+
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-6 animate-fade-up">
+              {/* Badge */}
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-success/20 text-success border border-success/30">
+                <MapPin className="w-4 h-4" />
+                <span className="font-semibold">
+                  {neighborhood ? `${neighborhoodName}, ${cityName}` : cityName} - PR
+                </span>
+              </div>
+
+              {/* Title */}
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+                {neighborhood ? (
+                  <>
+                    Assistência Técnica no
+                    <span className="text-success block">{neighborhoodName}</span>
+                    <span className="text-2xl md:text-3xl mt-2 text-white/80 block">{cityName} - Paraná</span>
+                  </>
+                ) : (
+                  <>
+                    Assistência Técnica em
+                    <span className="text-success block">{cityName}</span>
+                  </>
+                )}
+              </h1>
+
+              {/* Description */}
+              <p className="text-lg text-white/80 max-w-xl leading-relaxed">
+                {neighborhood ? (
+                  `Técnicos especializados prontos para atender no bairro ${neighborhoodName}. Informática, elétrica, CFTV, ar-condicionado, notebooks, celulares e games. Agendamento 24h via WhatsApp!`
+                ) : (
+                  cityData?.description || `Assistência técnica completa em ${cityName}. Técnicos certificados para atender residências e empresas com garantia em todos os serviços.`
+                )}
+              </p>
+
+              {/* Price Badge */}
+              <div className="flex flex-wrap items-center gap-4">
+                <div className="price-tag">
+                  A partir de R$ 99,90
+                </div>
+                <span className="text-white/70 text-sm">até 30 min de serviço</span>
+              </div>
+
+              {/* Trust Indicators */}
+              <div className="flex flex-wrap gap-4 text-white/80 text-sm">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-success" />
+                  <span>Nota Fiscal</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-success" />
+                  <span>Garantia 90 dias a 1 ano</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-success" />
+                  <span>Técnicos Certificados</span>
+                </div>
+              </div>
+
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4">
+                <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+                  <Button size="lg" className="w-full sm:w-auto text-lg px-8 py-6 bg-success hover:bg-success/90 cta-glow gap-3">
+                    <MessageCircle className="w-6 h-6" />
+                    Chamar Técnico Agora
+                  </Button>
+                </a>
+                <a href="tel:+5541997452053">
+                  <Button 
+                    size="lg" 
+                    variant="outline" 
+                    className="w-full sm:w-auto text-lg px-8 py-6 bg-white/10 border-white/30 text-white hover:bg-white/20 gap-3"
+                  >
+                    <Phone className="w-6 h-6" />
+                    (41) 99745-2053
+                  </Button>
+                </a>
+              </div>
+            </div>
+
+            {/* Stats Cards */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="stat-card bg-white/10 backdrop-blur-md border-white/20 text-center">
+                <Clock className="w-10 h-10 text-success mx-auto mb-3" />
+                <div className="text-3xl font-bold text-white mb-1">24h</div>
+                <div className="text-white/70 text-sm">Agendamento</div>
+              </div>
+              <div className="stat-card bg-white/10 backdrop-blur-md border-white/20 text-center">
+                <Shield className="w-10 h-10 text-success mx-auto mb-3" />
+                <div className="text-3xl font-bold text-white mb-1">1 Ano</div>
+                <div className="text-white/70 text-sm">Garantia</div>
+              </div>
+              <div className="stat-card bg-white/10 backdrop-blur-md border-white/20 text-center">
+                <Star className="w-10 h-10 text-success mx-auto mb-3" />
+                <div className="text-3xl font-bold text-white mb-1">4.9</div>
+                <div className="text-white/70 text-sm">Avaliação</div>
+              </div>
+              <div className="stat-card bg-white/10 backdrop-blur-md border-white/20 text-center">
+                <FileText className="w-10 h-10 text-success mx-auto mb-3" />
+                <div className="text-3xl font-bold text-white mb-1">NF</div>
+                <div className="text-white/70 text-sm">Nota Fiscal</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Services Section */}
+      <section className="section-padding bg-background">
+        <div className="container-custom">
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <span className="badge-primary mb-4">Serviços Disponíveis</span>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Serviços Técnicos em {neighborhood ? neighborhoodName : cityName}
+            </h2>
+            <p className="text-muted-foreground">
+              Técnicos especializados prontos para atender você. Diagnóstico gratuito e orçamento sem compromisso via WhatsApp.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {services.map((service) => (
+              <Link
+                key={service.href}
+                to={service.href}
+                className="region-card group hover:border-primary/50"
+              >
+                <div className="w-14 h-14 rounded-2xl bg-primary/10 group-hover:bg-primary flex items-center justify-center mb-4 transition-colors">
+                  <service.icon className="w-7 h-7 text-primary group-hover:text-primary-foreground transition-colors" />
+                </div>
+                <h3 className="font-bold text-foreground group-hover:text-primary transition-colors mb-1">
+                  {service.name}
+                </h3>
+                <p className="text-sm text-muted-foreground mb-3">
+                  {service.desc}
+                </p>
+                <span className="text-xs text-primary font-medium flex items-center gap-1">
+                  Saiba mais <ArrowRight className="w-3 h-3" />
+                </span>
               </Link>
-              {displayNeighborhoodName && (
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Neighborhoods Section (only for city pages) */}
+      {!neighborhood && cityData && cityData.neighborhoods.length > 0 && (
+        <section className="section-padding bg-secondary/30">
+          <div className="container-custom">
+            <div className="text-center max-w-3xl mx-auto mb-12">
+              <span className="badge-primary mb-4">
+                <Home className="w-4 h-4 mr-1" />
+                Bairros Atendidos
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                Todos os Bairros de {cityName}
+              </h2>
+              <p className="text-muted-foreground">
+                Atendemos <strong>{cityData.neighborhoods.length} bairros</strong> em {cityName} com técnicos especializados.
+                Clique no seu bairro para ver mais informações.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+              {cityData.neighborhoods.map((bairro) => (
+                <Link
+                  key={bairro}
+                  to={`/regioes/${city}/${formatNeighborhoodSlug(bairro)}`}
+                  className="p-4 rounded-xl bg-card border border-border hover:border-primary/50 hover:bg-primary/5 transition-all text-center group"
+                >
+                  <span className="font-medium text-foreground group-hover:text-primary transition-colors text-sm">
+                    {bairro}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* SEO Content Section */}
+      <section className="section-padding bg-background">
+        <div className="container-custom">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl font-bold text-foreground mb-6">
+              {neighborhood 
+                ? `Assistência Técnica no ${neighborhoodName}, ${cityName}`
+                : `Assistência Técnica em ${cityName} - Paraná`
+              }
+            </h2>
+            
+            <div className="prose prose-lg max-w-none text-muted-foreground space-y-4">
+              {neighborhood ? (
                 <>
-                  <span className="text-primary-foreground/40">/</span>
-                  <Link to={`/regioes/${city}`} className="text-primary-foreground/60 hover:text-primary-foreground transition-colors">
-                    {displayCityName}
-                  </Link>
+                  <p>
+                    Procurando um <strong>técnico de informática no {neighborhoodName}</strong>? A <strong>Preciso de Um Técnico</strong> 
+                    oferece atendimento especializado para moradores e empresas do bairro {neighborhoodName} em {cityName}, Paraná.
+                  </p>
+                  
+                  <p>
+                    Nossa equipe de técnicos certificados está pronta para resolver problemas com 
+                    <strong> computadores, notebooks, instalação de câmeras de segurança (CFTV), ar-condicionado, 
+                    serviços elétricos, configuração de redes Wi-Fi, reparo de celulares e consoles de games</strong> diretamente no seu endereço.
+                  </p>
+
+                  <h3 className="text-xl font-bold text-foreground mt-8 mb-4">
+                    Por que escolher a Preciso de Um Técnico no {neighborhoodName}?
+                  </h3>
+                  
+                  <ul className="space-y-3">
+                    <li className="flex items-start gap-3">
+                      <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-1" />
+                      <span><strong>Atendimento rápido:</strong> Técnicos próximos ao {neighborhoodName} para atendimento ágil</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-1" />
+                      <span><strong>Agendamento 24h:</strong> Via WhatsApp, a qualquer hora do dia ou da noite</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-1" />
+                      <span><strong>Visita técnica:</strong> Atendimento das 8h às 22h no seu endereço</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-1" />
+                      <span><strong>Preço justo:</strong> Visitas a partir de R$ 99,90 até 30 minutos</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-1" />
+                      <span><strong>Garantia:</strong> Todos os serviços com garantia de 90 dias a 1 ano</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-1" />
+                      <span><strong>Nota Fiscal:</strong> Emissão de NF para todos os serviços</span>
+                    </li>
+                  </ul>
+                </>
+              ) : (
+                <>
+                  <p>
+                    A <strong>Preciso de Um Técnico</strong> é a sua melhor opção para <strong>assistência técnica em {cityName}</strong>. 
+                    Com uma equipe de técnicos qualificados e certificados, oferecemos serviços completos para residências e empresas em toda a cidade.
+                  </p>
+                  
+                  <p>
+                    {cityData?.description || `Atendemos todos os bairros de ${cityName} com serviços de informática, 
+                    notebooks, instalação de câmeras de segurança, ar-condicionado, serviços elétricos, configuração de redes e muito mais.`}
+                  </p>
+
+                  <h3 className="text-xl font-bold text-foreground mt-8 mb-4">
+                    Serviços Técnicos em {cityName}
+                  </h3>
+
+                  <ul className="grid md:grid-cols-2 gap-2">
+                    <li>• Formatação e manutenção de computadores</li>
+                    <li>• Reparo de notebooks e ultrabooks</li>
+                    <li>• Instalação de câmeras de segurança (CFTV)</li>
+                    <li>• Instalação e manutenção de ar-condicionado</li>
+                    <li>• Serviços elétricos residenciais e comerciais</li>
+                    <li>• Configuração de redes e Wi-Fi Mesh</li>
+                    <li>• Reparo de celulares e tablets</li>
+                    <li>• Conserto de games e consoles</li>
+                  </ul>
+
+                  {cityData?.features && (
+                    <>
+                      <h3 className="text-xl font-bold text-foreground mt-8 mb-4">
+                        Diferenciais em {cityName}
+                      </h3>
+                      <ul className="space-y-2">
+                        {cityData.features.map((feature, index) => (
+                          <li key={index} className="flex items-start gap-3">
+                            <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-1" />
+                            <span>{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </>
+                  )}
                 </>
               )}
             </div>
 
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 rounded-xl bg-primary-foreground/10 flex items-center justify-center">
-                <MapPin className="w-6 h-6 text-accent" />
+            {/* Back navigation */}
+            {neighborhood && (
+              <div className="mt-12">
+                <Link to={`/regioes/${city}`}>
+                  <Button variant="outline" className="gap-2">
+                    <Building2 className="w-4 h-4" />
+                    Ver todos os bairros de {cityName}
+                  </Button>
+                </Link>
               </div>
-              <div>
-                <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground">
-                  Técnico em <span className="text-accent">{pageTitle}</span>
-                </h1>
-              </div>
-            </div>
-            
-            <p className="text-primary-foreground/80 text-lg md:text-xl mb-8">
-              {cityInfo?.description || `Assistência técnica especializada em ${pageTitle}. Atendimento 24 horas via WhatsApp com garantia em todos os serviços.`}
-            </p>
-
-            <div className="flex flex-wrap gap-4 mb-8">
-              <div className="flex items-center gap-2 text-primary-foreground/80">
-                <Clock className="w-5 h-5 text-accent" />
-                <span>Atendimento 24h</span>
-              </div>
-              <div className="flex items-center gap-2 text-primary-foreground/80">
-                <Shield className="w-5 h-5 text-success" />
-                <span>Garantia inclusa</span>
-              </div>
-              <div className="flex items-center gap-2 text-primary-foreground/80">
-                <Award className="w-5 h-5 text-accent" />
-                <span>Técnicos avaliados</span>
-              </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button variant="whatsapp" size="xl" asChild>
-                <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
-                  <MessageCircle className="w-5 h-5" />
-                  Chamar Técnico Agora
-                </a>
-              </Button>
-              <Button variant="hero" size="xl" asChild>
-                <a href="tel:+5541997452053">
-                  <Phone className="w-5 h-5" />
-                  (41) 9 9745-2053
-                </a>
-              </Button>
-            </div>
+            )}
           </div>
         </div>
       </section>
 
-      {/* Services Available */}
-      <section className="section-padding bg-background">
+      {/* FAQ Section */}
+      <section className="section-padding bg-secondary/30">
         <div className="container-custom">
-          <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-8 text-center">
-            Serviços Disponíveis em {pageTitle}
-          </h2>
-          
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            {mainServices.map((service) => (
-              <Link
-                key={service.name}
-                to={service.href}
-                className="group flex items-center gap-4 p-6 rounded-2xl bg-card border border-border/50 hover:border-primary/30 transition-all duration-300 card-shadow hover:card-shadow-hover"
-              >
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                  <service.icon className="w-6 h-6 text-primary" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-bold text-card-foreground group-hover:text-primary transition-colors">
-                    {service.name}
-                  </h3>
-                  <p className="text-muted-foreground text-sm">em {displayCityName}</p>
-                </div>
-                <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
-              </Link>
-            ))}
-          </div>
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl font-bold text-foreground mb-8 text-center">
+              Perguntas Frequentes - {neighborhood ? neighborhoodName : cityName}
+            </h2>
 
-          <div className="text-center">
-            <Button size="lg" asChild>
-              <Link to="/servicos">
-                Ver todos os serviços
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </Button>
+            <div className="space-y-4">
+              {[
+                {
+                  q: `Quanto custa uma visita técnica em ${neighborhood ? neighborhoodName : cityName}?`,
+                  a: `Nossas visitas técnicas em ${neighborhood ? neighborhoodName : cityName} custam a partir de R$ 99,90 para até 30 minutos de serviço. Para serviços mais complexos, fazemos orçamento personalizado sem compromisso via WhatsApp.`
+                },
+                {
+                  q: `Qual o horário de atendimento em ${neighborhood ? neighborhoodName : cityName}?`,
+                  a: `O agendamento via WhatsApp funciona 24 horas por dia, 7 dias por semana. As visitas técnicas presenciais são realizadas das 8h às 22h, incluindo sábados, domingos e feriados.`
+                },
+                {
+                  q: `Vocês emitem nota fiscal em ${neighborhood ? neighborhoodName : cityName}?`,
+                  a: `Sim! Emitimos nota fiscal para todos os serviços realizados em ${neighborhood ? neighborhoodName : cityName}, garantindo total transparência e profissionalismo.`
+                },
+                {
+                  q: `Qual a garantia dos serviços em ${neighborhood ? neighborhoodName : cityName}?`,
+                  a: `Oferecemos garantia de 90 dias a 1 ano, dependendo do tipo de serviço realizado. Todos os detalhes são informados no orçamento antes do início do trabalho.`
+                },
+                {
+                  q: `Vocês fazem atendimento remoto em ${neighborhood ? neighborhoodName : cityName}?`,
+                  a: `Sim! Além do atendimento presencial, oferecemos suporte remoto 24 horas para problemas que podem ser resolvidos à distância, como configuração de software, remoção de vírus e suporte técnico geral.`
+                }
+              ].map((faq, index) => (
+                <div key={index} className="region-card">
+                  <h3 className="font-bold text-foreground mb-2">{faq.q}</h3>
+                  <p className="text-muted-foreground">{faq.a}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
-
-      {/* Neighborhoods (if main city) */}
-      {cityInfo?.isMainCity && cityInfo.neighborhoods.length > 0 && !displayNeighborhoodName && (
-        <section className="section-padding bg-secondary/30">
-          <div className="container-custom">
-            <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-4 text-center">
-              Bairros Atendidos em {displayCityName}
-            </h2>
-            <p className="text-muted-foreground text-center mb-8 max-w-2xl mx-auto">
-              Técnicos especializados prontos para atender em todos os bairros de {displayCityName}
-            </p>
-            
-            <div className="bg-card rounded-2xl p-6 md:p-8 card-shadow border border-border/50">
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-                {cityInfo.neighborhoods.map((bairro) => (
-                  <Link
-                    key={bairro}
-                    to={`/regioes/${city}/${bairro.toLowerCase().replace(/\s+/g, '-')}`}
-                    className="flex items-center gap-2 p-3 rounded-lg bg-secondary/50 hover:bg-primary/10 hover:text-primary transition-colors text-sm"
-                  >
-                    <CheckCircle className="w-4 h-4 text-success flex-shrink-0" />
-                    {bairro}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Content for neighborhood page */}
-      {displayNeighborhoodName && (
-        <section className="section-padding bg-secondary/30">
-          <div className="container-custom">
-            <div className="max-w-4xl mx-auto">
-              <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-6">
-                Assistência Técnica no {displayNeighborhoodName}
-              </h2>
-              
-              <div className="prose prose-lg max-w-none text-muted-foreground mb-8">
-                <p>
-                  O <strong>Preciso de Um Técnico</strong> oferece serviços de assistência técnica especializada 
-                  no bairro <strong>{displayNeighborhoodName}</strong>, em <strong>{displayCityName}</strong>. 
-                  Nossa equipe de técnicos qualificados está pronta para atender residências e empresas 
-                  com agilidade e qualidade.
-                </p>
-                <p>
-                  Trabalhamos com os mais diversos serviços: <strong>informática</strong>, <strong>notebooks</strong>, 
-                  <strong>elétrica</strong>, <strong>instalação de câmeras (CFTV)</strong>, <strong>ar-condicionado</strong>, 
-                  <strong>redes e Wi-Fi</strong>, e muito mais. Todos os nossos serviços incluem garantia e 
-                  são realizados por profissionais certificados.
-                </p>
-                <p>
-                  Para solicitar um técnico no {displayNeighborhoodName}, basta entrar em contato via 
-                  <strong> WhatsApp</strong> a qualquer hora do dia ou da noite. Nosso atendimento é 24 horas 
-                  e agendamos o horário mais conveniente para você.
-                </p>
-              </div>
-
-              <div className="bg-card rounded-2xl p-6 card-shadow border border-border/50">
-                <h3 className="font-bold text-card-foreground mb-4">Por que escolher nossos serviços?</h3>
-                <div className="grid sm:grid-cols-2 gap-3">
-                  {[
-                    "Técnicos especializados no bairro",
-                    "Atendimento 24h via WhatsApp",
-                    "Garantia em todos os serviços",
-                    "Orçamento sem compromisso",
-                    "Atendimento no local",
-                    "Preços justos e competitivos",
-                  ].map((item) => (
-                    <div key={item} className="flex items-center gap-2">
-                      <CheckCircle className="w-5 h-5 text-success flex-shrink-0" />
-                      <span className="text-muted-foreground">{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
 
       <CTASection />
     </Layout>

@@ -1,258 +1,342 @@
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { SEOHead } from "@/components/seo/SEOHead";
-import { Button } from "@/components/ui/button";
 import { CTASection } from "@/components/home/CTASection";
-import { MapPin, ArrowRight, CheckCircle, MessageCircle, Building, Users } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { MapPin, ArrowRight, Building2, Home, Phone, MessageCircle, CheckCircle, Users, Star, Clock, Shield } from "lucide-react";
+import { getMainCities, getOtherCities, formatNeighborhoodSlug } from "@/data/regions";
 
-const curitibaBairros = [
-  "Água Verde", "Alto da Glória", "Alto da XV", "Bacacheri", "Bairro Alto",
-  "Barreirinha", "Batel", "Bigorrilho", "Boa Vista", "Bom Retiro", "Boqueirão",
-  "Cabral", "Cajuru", "Campina do Siqueira", "Campo Comprido", "Capão da Imbuia",
-  "Capão Raso", "Centro", "Centro Cívico", "Cidade Industrial", "Cristo Rei",
-  "Fanny", "Fazendinha", "Guabirotuba", "Guairá", "Hauer", "Hugo Lange",
-  "Jardim Botânico", "Jardim das Américas", "Jardim Social", "Juvevê",
-  "Lindóia", "Mercês", "Mossunguê", "Novo Mundo", "Parolin", "Pinheirinho",
-  "Portão", "Prado Velho", "Rebouças", "Santa Cândida", "Santa Felicidade",
-  "Santa Quitéria", "Santo Inácio", "São Braz", "São Francisco", "São Lourenço",
-  "Seminário", "Sítio Cercado", "Tarumã", "Tatuquara", "Tingui", "Uberaba",
-  "Vila Izabel", "Vista Alegre", "Xaxim"
-];
-
-const sjpBairros = [
-  "Afonso Pena", "Águas Belas", "Aristocrata", "Boneca do Iguaçu", "Borda do Campo",
-  "Centro", "Cidade Jardim", "Colônia Rio Grande", "Costeira", "Cruzeiro",
-  "Del Rey", "Guatupê", "Independência", "Ipê", "Itália", "Jardim Dona Letícia",
-  "Jardim Ibaiti", "Ouro Fino", "Pedro Moro", "Quissisana", "Rio Pequeno",
-  "Roseira de São Sebastião", "São Cristóvão", "São Domingos", "São Marcos"
-];
-
-const otherCities = [
-  { 
-    name: "Pinhais", 
-    href: "/regioes/pinhais",
-    description: "Técnicos disponíveis em todos os bairros de Pinhais."
-  },
-  { 
-    name: "Colombo", 
-    href: "/regioes/colombo",
-    description: "Atendimento completo na cidade de Colombo e região."
-  },
-  { 
-    name: "Araucária", 
-    href: "/regioes/araucaria",
-    description: "Serviços técnicos especializados em Araucária."
-  },
-  { 
-    name: "Campo Largo", 
-    href: "/regioes/campo-largo",
-    description: "Assistência técnica em Campo Largo e distritos."
-  },
-  { 
-    name: "Fazenda Rio Grande", 
-    href: "/regioes/fazenda-rio-grande",
-    description: "Técnicos prontos para atender em Fazenda Rio Grande."
-  },
-  { 
-    name: "Almirante Tamandaré", 
-    href: "/regioes/almirante-tamandare",
-    description: "Atendimento em toda Almirante Tamandaré."
-  },
-  { 
-    name: "Piraquara", 
-    href: "/regioes/piraquara",
-    description: "Serviços técnicos em Piraquara e região."
-  },
-  { 
-    name: "Campina Grande do Sul", 
-    href: "/regioes/campina-grande-do-sul",
-    description: "Assistência técnica em Campina Grande do Sul."
-  },
-  { 
-    name: "Quatro Barras", 
-    href: "/regioes/quatro-barras",
-    description: "Técnicos especializados em Quatro Barras."
-  },
-  { 
-    name: "Campo Magro", 
-    href: "/regioes/campo-magro",
-    description: "Atendimento técnico em Campo Magro."
-  },
-  { 
-    name: "Itaperuçu", 
-    href: "/regioes/itaperucu",
-    description: "Serviços de assistência técnica em Itaperuçu."
-  },
-  { 
-    name: "Rio Branco do Sul", 
-    href: "/regioes/rio-branco-do-sul",
-    description: "Técnicos disponíveis em Rio Branco do Sul."
-  },
-];
-
-const whatsappNumber = "5541997452053";
-const whatsappLink = `https://wa.me/${whatsappNumber}?text=Olá! Preciso de um técnico.`;
+const whatsappLink = "https://wa.me/5541997452053?text=Olá! Preciso de um técnico.";
 
 const Regioes = () => {
+  const mainCities = getMainCities();
+  const otherCities = getOtherCities();
+
+  const regionSchema = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Preciso de Um Técnico",
+    "description": "Assistência técnica em Curitiba e Região Metropolitana",
+    "url": "https://precisodeumtecnico.com/regioes",
+    "telephone": "+55-41-99745-2053",
+    "areaServed": [
+      ...mainCities.map(city => ({ "@type": "City", "name": city.name })),
+      ...otherCities.map(city => ({ "@type": "City", "name": city.name }))
+    ],
+    "priceRange": "$$"
+  };
+
   return (
     <Layout>
       <SEOHead
-        title="Regiões Atendidas | Assistência Técnica Curitiba e Região"
-        description="Atendemos toda Curitiba, São José dos Pinhais e Região Metropolitana. Técnicos especializados em todos os bairros. Atendimento 24h via WhatsApp."
+        title="Regiões Atendidas | Técnico em Curitiba e Região Metropolitana | Preciso de Um Técnico"
+        description="Assistência técnica em Curitiba, São José dos Pinhais, Pinhais, Colombo, Araucária e toda região metropolitana. 18+ cidades, 200+ bairros. Técnicos especializados. WhatsApp 24h. A partir de R$ 99,90."
         canonical="https://precisodeumtecnico.com/regioes"
+        schema={regionSchema}
       />
-
-      {/* Hero */}
-      <section className="relative py-16 md:py-24 hero-gradient overflow-hidden">
+      
+      {/* Hero Section */}
+      <section className="relative py-20 lg:py-28 overflow-hidden">
+        <div className="absolute inset-0 hero-gradient" />
         <div className="absolute inset-0 hero-overlay" />
-        <div className="container-custom relative z-10">
-          <div className="max-w-3xl">
-            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground mb-6">
-              Regiões <span className="text-accent">Atendidas</span>
+        <div className="absolute inset-0 tech-grid opacity-10" />
+        
+        <div className="relative container-custom text-center">
+          <div className="max-w-4xl mx-auto animate-fade-up">
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-success/20 text-success border border-success/30 mb-6">
+              <MapPin className="w-4 h-4" />
+              <span className="font-semibold">Curitiba e Região Metropolitana</span>
+            </div>
+
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
+              Técnicos Especializados em <span className="text-success">Toda a Região</span>
             </h1>
-            <p className="text-primary-foreground/80 text-lg md:text-xl mb-8">
-              Cobertura completa em Curitiba e toda a Região Metropolitana. 
-              Técnicos especializados prontos para atender você em qualquer bairro.
+            
+            <p className="text-xl text-white/80 mb-8 max-w-2xl mx-auto">
+              Mais de 100 técnicos parceiros prontos para atender você. 
+              Informática, elétrica, CFTV, ar-condicionado, notebooks e muito mais.
             </p>
-            <div className="flex flex-wrap gap-6 mb-8">
-              <div className="flex items-center gap-2 text-primary-foreground/80">
-                <Building className="w-5 h-5 text-accent" />
-                <span>14+ cidades</span>
+
+            {/* Stats */}
+            <div className="flex flex-wrap justify-center gap-8 mb-10">
+              <div className="text-center">
+                <div className="text-4xl font-bold text-white">18+</div>
+                <div className="text-white/70">Cidades</div>
               </div>
-              <div className="flex items-center gap-2 text-primary-foreground/80">
-                <MapPin className="w-5 h-5 text-accent" />
-                <span>100+ bairros</span>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-white">200+</div>
+                <div className="text-white/70">Bairros</div>
               </div>
-              <div className="flex items-center gap-2 text-primary-foreground/80">
-                <Users className="w-5 h-5 text-accent" />
-                <span>500+ técnicos</span>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-white">100+</div>
+                <div className="text-white/70">Técnicos</div>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-white">15k+</div>
+                <div className="text-white/70">Clientes</div>
               </div>
             </div>
-            <Button variant="whatsapp" size="lg" asChild>
+
+            {/* Trust Indicators */}
+            <div className="flex flex-wrap justify-center gap-6 mb-10 text-white/80">
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 text-success" />
+                <span>A partir de R$ 99,90</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Shield className="w-5 h-5 text-success" />
+                <span>Garantia de 90 dias a 1 ano</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Clock className="w-5 h-5 text-success" />
+                <span>Agendamento 24h</span>
+              </div>
+            </div>
+
+            {/* CTA */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
-                <MessageCircle className="w-5 h-5" />
-                Chamar Técnico Agora
+                <Button size="lg" className="w-full sm:w-auto text-lg px-8 py-6 bg-success hover:bg-success/90 cta-glow gap-3">
+                  <MessageCircle className="w-6 h-6" />
+                  Chamar Técnico Agora
+                </Button>
               </a>
-            </Button>
+              <a href="tel:+5541997452053">
+                <Button 
+                  size="lg" 
+                  variant="outline" 
+                  className="w-full sm:w-auto text-lg px-8 py-6 bg-white/10 border-white/30 text-white hover:bg-white/20 gap-3"
+                >
+                  <Phone className="w-6 h-6" />
+                  (41) 99745-2053
+                </Button>
+              </a>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Curitiba */}
+      {/* Main Cities */}
       <section className="section-padding bg-background">
         <div className="container-custom">
-          <div className="flex items-center gap-4 mb-8">
-            <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center">
-              <MapPin className="w-7 h-7 text-primary" />
-            </div>
-            <div>
-              <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground">
-                Curitiba
-              </h2>
-              <p className="text-muted-foreground">Todos os bairros da capital</p>
-            </div>
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <span className="badge-primary mb-4">
+              <Building2 className="w-4 h-4 mr-1" />
+              Principais Cidades
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Cobertura Completa nas Maiores Cidades
+            </h2>
+            <p className="text-muted-foreground">
+              Atendemos as principais cidades da região metropolitana com técnicos especializados e tempo de resposta rápido.
+            </p>
           </div>
 
-          <div className="bg-card rounded-2xl p-6 md:p-8 card-shadow border border-border/50 mb-8">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-              {curitibaBairros.map((bairro) => (
-                <Link
-                  key={bairro}
-                  to={`/regioes/curitiba/${bairro.toLowerCase().replace(/\s+/g, '-')}`}
-                  className="flex items-center gap-2 p-3 rounded-lg bg-secondary/50 hover:bg-primary/10 hover:text-primary transition-colors text-sm"
-                >
-                  <CheckCircle className="w-4 h-4 text-success flex-shrink-0" />
-                  {bairro}
+          <div className="grid lg:grid-cols-2 gap-8">
+            {mainCities.map((city) => (
+              <article key={city.slug} className="region-card">
+                <div className="flex items-start gap-4 mb-6">
+                  <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center flex-shrink-0">
+                    <Building2 className="w-8 h-8 text-primary-foreground" />
+                  </div>
+                  <div className="flex-1">
+                    <Link 
+                      to={`/regioes/${city.slug}`}
+                      className="text-2xl font-bold text-foreground hover:text-primary transition-colors"
+                    >
+                      {city.name}
+                    </Link>
+                    <p className="text-muted-foreground text-sm mt-1 line-clamp-2">
+                      {city.description}
+                    </p>
+                    {city.population && (
+                      <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
+                        <span className="flex items-center gap-1">
+                          <Users className="w-4 h-4" />
+                          Pop. {city.population}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <MapPin className="w-4 h-4" />
+                          {city.neighborhoods.length} bairros
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Features */}
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {city.features.slice(0, 3).map((feature) => (
+                    <span key={feature} className="badge-success text-xs">
+                      <CheckCircle className="w-3 h-3 mr-1" />
+                      {feature}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Neighborhoods Preview */}
+                <div className="mb-6">
+                  <h3 className="text-sm font-semibold text-foreground mb-3">
+                    Principais Bairros Atendidos
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {city.neighborhoods.slice(0, 10).map((neighborhood) => (
+                      <Link
+                        key={neighborhood}
+                        to={`/regioes/${city.slug}/${formatNeighborhoodSlug(neighborhood)}`}
+                        className="text-xs px-3 py-1.5 rounded-full bg-secondary hover:bg-primary hover:text-primary-foreground transition-colors"
+                      >
+                        {neighborhood}
+                      </Link>
+                    ))}
+                    {city.neighborhoods.length > 10 && (
+                      <Link
+                        to={`/regioes/${city.slug}`}
+                        className="text-xs px-3 py-1.5 rounded-full bg-primary/10 text-primary font-semibold hover:bg-primary hover:text-primary-foreground transition-colors"
+                      >
+                        +{city.neighborhoods.length - 10} bairros
+                      </Link>
+                    )}
+                  </div>
+                </div>
+
+                <Link to={`/regioes/${city.slug}`}>
+                  <Button className="w-full gap-2">
+                    Ver todos os bairros de {city.name}
+                    <ArrowRight className="w-4 h-4" />
+                  </Button>
                 </Link>
-              ))}
-            </div>
-          </div>
-
-          <div className="text-center">
-            <Button size="lg" asChild>
-              <Link to="/regioes/curitiba">
-                Ver todos os bairros de Curitiba
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* São José dos Pinhais */}
-      <section className="section-padding bg-secondary/30">
-        <div className="container-custom">
-          <div className="flex items-center gap-4 mb-8">
-            <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center">
-              <MapPin className="w-7 h-7 text-primary" />
-            </div>
-            <div>
-              <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground">
-                São José dos Pinhais
-              </h2>
-              <p className="text-muted-foreground">Cobertura completa na cidade</p>
-            </div>
-          </div>
-
-          <div className="bg-card rounded-2xl p-6 md:p-8 card-shadow border border-border/50 mb-8">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-              {sjpBairros.map((bairro) => (
-                <Link
-                  key={bairro}
-                  to={`/regioes/sao-jose-dos-pinhais/${bairro.toLowerCase().replace(/\s+/g, '-')}`}
-                  className="flex items-center gap-2 p-3 rounded-lg bg-secondary/50 hover:bg-primary/10 hover:text-primary transition-colors text-sm"
-                >
-                  <CheckCircle className="w-4 h-4 text-success flex-shrink-0" />
-                  {bairro}
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          <div className="text-center">
-            <Button size="lg" asChild>
-              <Link to="/regioes/sao-jose-dos-pinhais">
-                Ver todos os bairros de SJP
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </Button>
+              </article>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Other Cities */}
-      <section className="section-padding bg-background">
+      <section className="section-padding bg-secondary/30">
         <div className="container-custom">
           <div className="text-center max-w-3xl mx-auto mb-12">
-            <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-4">
-              Outras Cidades da Região Metropolitana
+            <span className="badge-primary mb-4">
+              <Home className="w-4 h-4 mr-1" />
+              Outras Cidades
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Região Metropolitana Completa
             </h2>
             <p className="text-muted-foreground">
-              Atendimento completo em todas as cidades da RMC
+              Também atendemos outras cidades da região metropolitana de Curitiba com a mesma qualidade e profissionalismo.
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {otherCities.map((city) => (
               <Link
-                key={city.name}
-                to={city.href}
-                className="group bg-card rounded-2xl p-6 card-shadow border border-border/50 hover:border-primary/30 hover:-translate-y-1 transition-all duration-300"
+                key={city.slug}
+                to={`/regioes/${city.slug}`}
+                className="region-card group text-center hover:border-primary/50"
               >
-                <div className="flex items-start justify-between mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                    <MapPin className="w-6 h-6 text-primary" />
-                  </div>
-                  <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
+                <div className="w-12 h-12 rounded-xl bg-primary/10 group-hover:bg-primary flex items-center justify-center mx-auto mb-3 transition-colors">
+                  <MapPin className="w-6 h-6 text-primary group-hover:text-primary-foreground transition-colors" />
                 </div>
-                <h3 className="font-display font-bold text-xl text-card-foreground mb-2 group-hover:text-primary transition-colors">
+                <h3 className="font-bold text-foreground group-hover:text-primary transition-colors">
                   {city.name}
                 </h3>
-                <p className="text-muted-foreground text-sm">
-                  {city.description}
+                <p className="text-sm text-muted-foreground mt-1">
+                  {city.neighborhoods.length} bairros
                 </p>
               </Link>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SEO Content Section */}
+      <section className="section-padding bg-background">
+        <div className="container-custom">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl font-bold text-foreground mb-6 text-center">
+              Assistência Técnica em Curitiba e Região
+            </h2>
+            
+            <div className="prose prose-lg max-w-none text-muted-foreground space-y-4">
+              <p>
+                A <strong>Preciso de Um Técnico</strong> é a maior rede de assistência técnica de Curitiba e região metropolitana. 
+                Com mais de <strong>100 técnicos parceiros</strong> espalhados por toda a região, oferecemos atendimento rápido 
+                e profissional para resolver seus problemas técnicos.
+              </p>
+              
+              <p>
+                Atendemos <strong>mais de 18 cidades</strong> e <strong>200 bairros</strong>, incluindo Curitiba, São José dos Pinhais, 
+                Pinhais, Colombo, Araucária, Campo Largo, Almirante Tamandaré, Fazenda Rio Grande, Piraquara e muito mais.
+              </p>
+
+              <h3 className="text-xl font-bold text-foreground mt-8 mb-4">
+                Serviços Disponíveis em Toda a Região
+              </h3>
+              
+              <ul className="grid md:grid-cols-2 gap-2">
+                <li>• Formatação e manutenção de computadores</li>
+                <li>• Reparo de notebooks e ultrabooks</li>
+                <li>• Instalação de câmeras de segurança (CFTV)</li>
+                <li>• Instalação e manutenção de ar-condicionado</li>
+                <li>• Serviços elétricos residenciais e comerciais</li>
+                <li>• Configuração de redes e Wi-Fi</li>
+                <li>• Reparo de celulares e tablets</li>
+                <li>• Conserto de games e consoles</li>
+              </ul>
+
+              <h3 className="text-xl font-bold text-foreground mt-8 mb-4">
+                Por Que Escolher a Preciso de Um Técnico?
+              </h3>
+
+              <ul className="space-y-2">
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-0.5" />
+                  <span><strong>Agendamento 24h:</strong> Entre em contato via WhatsApp a qualquer hora</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-0.5" />
+                  <span><strong>Atendimento das 8h às 22h:</strong> Visitas técnicas em horários convenientes</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-0.5" />
+                  <span><strong>Preço justo:</strong> A partir de R$ 99,90 até 30 minutos de serviço</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-0.5" />
+                  <span><strong>Garantia:</strong> Todos os serviços com garantia de 90 dias a 1 ano</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-0.5" />
+                  <span><strong>Nota Fiscal:</strong> Emitimos NF para todos os serviços realizados</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Brasil Coverage */}
+      <section className="py-16 bg-primary text-primary-foreground">
+        <div className="container-custom">
+          <div className="max-w-4xl mx-auto text-center">
+            <Star className="w-12 h-12 mx-auto mb-4 text-success" />
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              Técnicos em Todo o Brasil
+            </h2>
+            <p className="text-lg text-primary-foreground/80 mb-8">
+              Além da região metropolitana de Curitiba, temos técnicos parceiros em diversas 
+              cidades do Brasil. Entre em contato via WhatsApp e verificamos a disponibilidade 
+              na sua região!
+            </p>
+            
+            <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+              <Button size="lg" className="gap-2 bg-success hover:bg-success/90 text-success-foreground">
+                <MessageCircle className="w-5 h-5" />
+                Verificar Disponibilidade
+              </Button>
+            </a>
           </div>
         </div>
       </section>

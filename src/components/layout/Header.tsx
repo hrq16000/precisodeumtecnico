@@ -1,0 +1,207 @@
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Menu, X, Phone, MessageCircle, ChevronDown } from "lucide-react";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
+import { cn } from "@/lib/utils";
+
+const services = [
+  { name: "Informática", href: "/servicos/informatica", description: "Manutenção e suporte em computadores" },
+  { name: "Notebooks", href: "/servicos/notebooks", description: "Conserto e upgrade de notebooks" },
+  { name: "CFTV / Câmeras", href: "/servicos/cftv", description: "Instalação e manutenção de câmeras" },
+  { name: "Elétrica", href: "/servicos/eletrica", description: "Serviços elétricos residenciais e comerciais" },
+  { name: "Redes", href: "/servicos/redes", description: "Configuração de redes e Wi-Fi" },
+  { name: "Ar-Condicionado", href: "/servicos/ar-condicionado", description: "Instalação e manutenção" },
+];
+
+const regions = [
+  { name: "Curitiba", href: "/regioes/curitiba" },
+  { name: "São José dos Pinhais", href: "/regioes/sao-jose-dos-pinhais" },
+  { name: "Região Metropolitana", href: "/regioes" },
+];
+
+export function Header() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const whatsappNumber = "5541997452053";
+  const whatsappLink = `https://wa.me/${whatsappNumber}?text=Olá! Preciso de um técnico.`;
+
+  return (
+    <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+      <div className="container-custom">
+        <div className="flex h-16 md:h-20 items-center justify-between">
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-2">
+            <div className="flex items-center gap-2">
+              <div className="w-10 h-10 rounded-lg hero-gradient flex items-center justify-center">
+                <span className="text-primary-foreground font-bold text-lg">PT</span>
+              </div>
+              <div className="hidden sm:block">
+                <span className="font-display font-bold text-lg text-foreground">Preciso de Um</span>
+                <span className="font-display font-bold text-lg text-primary"> Técnico</span>
+              </div>
+            </div>
+          </Link>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex items-center gap-1">
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <Link to="/">
+                    <NavigationMenuLink className={cn(
+                      "group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary hover:text-foreground focus:bg-secondary focus:text-foreground focus:outline-none",
+                      location.pathname === "/" && "bg-secondary text-foreground"
+                    )}>
+                      Início
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+                
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger>Serviços</NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <ul className="grid w-[400px] gap-2 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                      {services.map((service) => (
+                        <li key={service.name}>
+                          <NavigationMenuLink asChild>
+                            <Link
+                              to={service.href}
+                              className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-secondary hover:text-foreground focus:bg-secondary focus:text-foreground"
+                            >
+                              <div className="text-sm font-medium leading-none">{service.name}</div>
+                              <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                                {service.description}
+                              </p>
+                            </Link>
+                          </NavigationMenuLink>
+                        </li>
+                      ))}
+                      <li className="col-span-2">
+                        <NavigationMenuLink asChild>
+                          <Link
+                            to="/servicos"
+                            className="block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors bg-primary/5 hover:bg-primary/10 text-primary font-medium text-center"
+                          >
+                            Ver todos os serviços →
+                          </Link>
+                        </NavigationMenuLink>
+                      </li>
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger>Regiões</NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <ul className="grid w-[300px] gap-2 p-4">
+                      {regions.map((region) => (
+                        <li key={region.name}>
+                          <NavigationMenuLink asChild>
+                            <Link
+                              to={region.href}
+                              className="block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-secondary hover:text-foreground focus:bg-secondary focus:text-foreground font-medium"
+                            >
+                              {region.name}
+                            </Link>
+                          </NavigationMenuLink>
+                        </li>
+                      ))}
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem>
+                  <Link to="/sobre">
+                    <NavigationMenuLink className={cn(
+                      "group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary hover:text-foreground focus:bg-secondary focus:text-foreground focus:outline-none",
+                      location.pathname === "/sobre" && "bg-secondary text-foreground"
+                    )}>
+                      Sobre
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem>
+                  <Link to="/contato">
+                    <NavigationMenuLink className={cn(
+                      "group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary hover:text-foreground focus:bg-secondary focus:text-foreground focus:outline-none",
+                      location.pathname === "/contato" && "bg-secondary text-foreground"
+                    )}>
+                      Contato
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
+          </nav>
+
+          {/* CTA Buttons */}
+          <div className="hidden md:flex items-center gap-3">
+            <a href="tel:+5541997452053" className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+              <Phone className="w-4 h-4" />
+              <span className="hidden xl:inline">(41) 99745-2053</span>
+            </a>
+            <Button variant="whatsapp" size="sm" asChild>
+              <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+                <MessageCircle className="w-4 h-4" />
+                <span className="hidden sm:inline">WhatsApp</span>
+              </a>
+            </Button>
+          </div>
+
+          {/* Mobile menu button */}
+          <button
+            className="lg:hidden p-2 rounded-md hover:bg-secondary transition-colors"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Menu"
+          >
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
+
+        {/* Mobile Navigation */}
+        {mobileMenuOpen && (
+          <div className="lg:hidden py-4 border-t border-border/50 animate-fade-in">
+            <nav className="flex flex-col gap-2">
+              <Link to="/" className="px-4 py-2 rounded-md hover:bg-secondary transition-colors font-medium" onClick={() => setMobileMenuOpen(false)}>
+                Início
+              </Link>
+              <Link to="/servicos" className="px-4 py-2 rounded-md hover:bg-secondary transition-colors font-medium" onClick={() => setMobileMenuOpen(false)}>
+                Serviços
+              </Link>
+              <Link to="/regioes" className="px-4 py-2 rounded-md hover:bg-secondary transition-colors font-medium" onClick={() => setMobileMenuOpen(false)}>
+                Regiões Atendidas
+              </Link>
+              <Link to="/sobre" className="px-4 py-2 rounded-md hover:bg-secondary transition-colors font-medium" onClick={() => setMobileMenuOpen(false)}>
+                Sobre
+              </Link>
+              <Link to="/contato" className="px-4 py-2 rounded-md hover:bg-secondary transition-colors font-medium" onClick={() => setMobileMenuOpen(false)}>
+                Contato
+              </Link>
+              <div className="pt-4 mt-2 border-t border-border/50 flex flex-col gap-2">
+                <a href="tel:+5541997452053" className="flex items-center gap-2 px-4 py-2 text-muted-foreground">
+                  <Phone className="w-4 h-4" />
+                  (41) 99745-2053
+                </a>
+                <Button variant="whatsapp" className="mx-4" asChild>
+                  <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+                    <MessageCircle className="w-4 h-4" />
+                    Chamar no WhatsApp
+                  </a>
+                </Button>
+              </div>
+            </nav>
+          </div>
+        )}
+      </div>
+    </header>
+  );
+}

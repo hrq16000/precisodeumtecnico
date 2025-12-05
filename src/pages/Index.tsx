@@ -8,6 +8,7 @@ import { TestimonialsSection } from "@/components/home/TestimonialsSection";
 import { BrandsSection } from "@/components/home/BrandsSection";
 import { FAQSection } from "@/components/home/FAQSection";
 import { CTASection } from "@/components/home/CTASection";
+import { QuickQuoteForm } from "@/components/home/QuickQuoteForm";
 
 const Index = () => {
   return (
@@ -20,6 +21,7 @@ const Index = () => {
       
       <HeroSection />
       <ServicesSection />
+      <QuickQuoteForm />
       <BenefitsSection />
       <BrandsSection />
       <RegionsSection />

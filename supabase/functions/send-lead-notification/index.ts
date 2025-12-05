@@ -8,7 +8,51 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-// Input validation schema
+// Rate limiting configuration
+const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minute
+const RATE_LIMIT_MAX_REQUESTS = 3; // Max 3 requests per minute per IP
+
+// In-memory rate limit store (resets on function cold start)
+const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
+
+function getRateLimitKey(req: Request): string {
+  // Try to get real IP from various headers
+  const forwardedFor = req.headers.get("x-forwarded-for");
+  const realIp = req.headers.get("x-real-ip");
+  const cfConnectingIp = req.headers.get("cf-connecting-ip");
+  
+  return cfConnectingIp || realIp || forwardedFor?.split(",")[0]?.trim() || "unknown";
+}
+
+function checkRateLimit(ip: string): { allowed: boolean; retryAfter?: number } {
+  const now = Date.now();
+  const record = rateLimitStore.get(ip);
+  
+  // Clean up expired entries periodically
+  if (rateLimitStore.size > 1000) {
+    for (const [key, value] of rateLimitStore.entries()) {
+      if (now > value.resetTime) {
+        rateLimitStore.delete(key);
+      }
+    }
+  }
+  
+  if (!record || now > record.resetTime) {
+    // New window
+    rateLimitStore.set(ip, { count: 1, resetTime: now + RATE_LIMIT_WINDOW_MS });
+    return { allowed: true };
+  }
+  
+  if (record.count >= RATE_LIMIT_MAX_REQUESTS) {
+    const retryAfter = Math.ceil((record.resetTime - now) / 1000);
+    return { allowed: false, retryAfter };
+  }
+  
+  record.count++;
+  return { allowed: true };
+}
+
+// Input validation schema with honeypot field
 const leadSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters").max(100, "Name must be less than 100 characters"),
   email: z.string().email("Invalid email address").max(255, "Email must be less than 255 characters"),
@@ -16,6 +60,7 @@ const leadSchema = z.object({
   service: z.string().max(100, "Service must be less than 100 characters").optional(),
   city: z.string().max(100, "City must be less than 100 characters").optional(),
   message: z.string().min(10, "Message must be at least 10 characters").max(2000, "Message must be less than 2000 characters"),
+  website: z.string().max(0, "Invalid submission").optional(), // Honeypot field - should always be empty
 });
 
 // HTML escape function to prevent HTML injection in emails
@@ -43,8 +88,40 @@ const handler = async (req: Request): Promise<Response> => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  // Rate limiting check
+  const clientIp = getRateLimitKey(req);
+  const rateLimitResult = checkRateLimit(clientIp);
+  
+  if (!rateLimitResult.allowed) {
+    console.warn(`Rate limit exceeded for IP: ${clientIp}`);
+    return new Response(
+      JSON.stringify({ error: "Too many requests. Please try again later." }),
+      {
+        status: 429,
+        headers: { 
+          "Content-Type": "application/json", 
+          "Retry-After": String(rateLimitResult.retryAfter),
+          ...corsHeaders 
+        },
+      }
+    );
+  }
+
   try {
     const rawData = await req.json();
+    
+    // Check honeypot field - if filled, it's likely a bot
+    if (rawData.website && rawData.website.length > 0) {
+      console.warn(`Honeypot triggered from IP: ${clientIp}`);
+      // Return success to not alert the bot, but don't process
+      return new Response(
+        JSON.stringify({ success: true }),
+        {
+          status: 200,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
+    }
     
     // Validate input data
     const parseResult = leadSchema.safeParse(rawData);

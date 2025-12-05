@@ -10,6 +10,7 @@ import Servicos from "./pages/Servicos";
 import ServicoDetalhe from "./pages/ServicoDetalhe";
 import Regioes from "./pages/Regioes";
 import RegiaoDetalhe from "./pages/RegiaoDetalhe";
+import BairroDetalhe from "./pages/BairroDetalhe";
 import Sobre from "./pages/Sobre";
 import Contato from "./pages/Contato";
 import Auth from "./pages/Auth";
@@ -32,7 +33,7 @@ const App = () => (
               <Route path="/servicos/:slug" element={<ServicoDetalhe />} />
               <Route path="/regioes" element={<Regioes />} />
               <Route path="/regioes/:city" element={<RegiaoDetalhe />} />
-              <Route path="/regioes/:city/:neighborhood" element={<RegiaoDetalhe />} />
+              <Route path="/regioes/:city/:neighborhood" element={<BairroDetalhe />} />
               <Route path="/sobre" element={<Sobre />} />
               <Route path="/contato" element={<Contato />} />
               <Route path="/auth" element={<Auth />} />

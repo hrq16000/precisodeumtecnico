@@ -81,6 +81,9 @@ export function ContactForm() {
     },
   });
 
+  // Honeypot field state (anti-spam)
+  const [honeypot, setHoneypot] = useState("");
+
   const sendEmailNotification = async (data: ContactFormValues) => {
     try {
       const response = await supabase.functions.invoke("send-lead-notification", {
@@ -91,6 +94,7 @@ export function ContactForm() {
           service: data.service || undefined,
           city: data.city || undefined,
           message: data.message,
+          website: honeypot, // Honeypot field
         },
       });
 
@@ -107,6 +111,12 @@ export function ContactForm() {
   };
 
   const onSubmit = async (data: ContactFormValues) => {
+    // If honeypot is filled, silently reject (bot detected)
+    if (honeypot) {
+      setIsSuccess(true);
+      return;
+    }
+
     setIsSubmitting(true);
     
     try {
@@ -303,10 +313,24 @@ export function ContactForm() {
                     {...field} 
                   />
                 </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+          {/* Honeypot field - hidden from users, visible to bots */}
+          <div className="absolute -left-[9999px] opacity-0 h-0 w-0 overflow-hidden" aria-hidden="true">
+            <label htmlFor="website">Website</label>
+            <input
+              type="text"
+              id="website"
+              name="website"
+              tabIndex={-1}
+              autoComplete="off"
+              value={honeypot}
+              onChange={(e) => setHoneypot(e.target.value)}
+            />
+          </div>
 
           <div className="flex flex-col gap-4 pt-2">
             <Button 

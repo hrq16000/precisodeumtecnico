@@ -12,9 +12,19 @@ import {
   Smartphone,
   Printer,
   Building,
-  ArrowRight
+  ArrowRight,
+  Gamepad2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
+import serviceComputer from "@/assets/service-computer.jpg";
+import serviceNotebook from "@/assets/service-notebook.jpg";
+import serviceCftv from "@/assets/service-cftv.jpg";
+import serviceEletrica from "@/assets/service-eletrica.jpg";
+import serviceRedes from "@/assets/service-redes.jpg";
+import serviceAr from "@/assets/service-arcondicionado.jpg";
+import serviceCelular from "@/assets/service-celular.jpg";
+import serviceGames from "@/assets/service-games.jpg";
 
 const services = [
   {
@@ -23,6 +33,8 @@ const services = [
     description: "Manutenção, formatação, limpeza e upgrade de computadores desktop.",
     href: "/servicos/informatica",
     color: "bg-blue-500/10 text-blue-600",
+    image: serviceComputer,
+    price: "A partir de R$ 99,99",
   },
   {
     icon: Laptop,
@@ -30,6 +42,8 @@ const services = [
     description: "Conserto de tela, teclado, bateria, limpeza interna e upgrade.",
     href: "/servicos/notebooks",
     color: "bg-indigo-500/10 text-indigo-600",
+    image: serviceNotebook,
+    price: "A partir de R$ 149,99",
   },
   {
     icon: Camera,
@@ -37,6 +51,8 @@ const services = [
     description: "Instalação e manutenção de sistemas de câmeras de segurança.",
     href: "/servicos/cftv",
     color: "bg-purple-500/10 text-purple-600",
+    image: serviceCftv,
+    price: "A partir de R$ 199,99",
   },
   {
     icon: Zap,
@@ -44,6 +60,8 @@ const services = [
     description: "Instalações elétricas residenciais e comerciais conforme normas.",
     href: "/servicos/eletrica",
     color: "bg-yellow-500/10 text-yellow-600",
+    image: serviceEletrica,
+    price: "A partir de R$ 99,99",
   },
   {
     icon: Wifi,
@@ -51,6 +69,8 @@ const services = [
     description: "Configuração de redes, roteadores e sistemas mesh.",
     href: "/servicos/redes",
     color: "bg-cyan-500/10 text-cyan-600",
+    image: serviceRedes,
+    price: "A partir de R$ 99,99",
   },
   {
     icon: Wind,
@@ -58,20 +78,8 @@ const services = [
     description: "Instalação, limpeza e manutenção de aparelhos de ar.",
     href: "/servicos/ar-condicionado",
     color: "bg-teal-500/10 text-teal-600",
-  },
-  {
-    icon: Tv,
-    title: "TV e Eletrônicos",
-    description: "Conserto de TVs, videogames e eletrônicos em geral.",
-    href: "/servicos/eletronicos",
-    color: "bg-rose-500/10 text-rose-600",
-  },
-  {
-    icon: Server,
-    title: "Servidores",
-    description: "Configuração e manutenção de servidores e data centers.",
-    href: "/servicos/servidores",
-    color: "bg-slate-500/10 text-slate-600",
+    image: serviceAr,
+    price: "A partir de R$ 149,99",
   },
   {
     icon: Smartphone,
@@ -79,42 +87,31 @@ const services = [
     description: "Reparo de telas, baterias e componentes de dispositivos móveis.",
     href: "/servicos/celulares",
     color: "bg-emerald-500/10 text-emerald-600",
+    image: serviceCelular,
+    price: "A partir de R$ 99,99",
   },
   {
-    icon: Printer,
-    title: "Impressoras",
-    description: "Manutenção e configuração de impressoras e multifuncionais.",
-    href: "/servicos/impressoras",
-    color: "bg-orange-500/10 text-orange-600",
-  },
-  {
-    icon: Building,
-    title: "Manutenção Predial",
-    description: "Serviços de manutenção predial e comercial completos.",
-    href: "/servicos/manutencao-predial",
-    color: "bg-amber-500/10 text-amber-600",
-  },
-  {
-    icon: Wrench,
-    title: "Serviços Gerais",
-    description: "Hidráulica básica, montagem de móveis e reparos diversos.",
-    href: "/servicos/servicos-gerais",
-    color: "bg-stone-500/10 text-stone-600",
+    icon: Gamepad2,
+    title: "Games e Consoles",
+    description: "Conserto de PlayStation, Xbox, Nintendo e controles.",
+    href: "/servicos/games",
+    color: "bg-rose-500/10 text-rose-600",
+    image: serviceGames,
+    price: "A partir de R$ 99,99",
   },
 ];
 
 export function ServicesSection() {
   return (
-    <section className="section-padding bg-background" id="servicos">
-      <div className="container-custom">
+    <section className="py-16 md:py-24 bg-background" id="servicos">
+      <div className="container mx-auto px-4">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-primary font-semibold text-sm uppercase tracking-wider mb-3 block">
+        <div className="text-center max-w-3xl mx-auto mb-12">
+          <span className="inline-block px-4 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4">
             Nossos Serviços
           </span>
-          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6">
-            Soluções Completas em{" "}
-            <span className="text-gradient">Assistência Técnica</span>
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            Soluções Completas em Assistência Técnica
           </h2>
           <p className="text-muted-foreground text-lg">
             Oferecemos uma ampla gama de serviços técnicos para residências e empresas. 
@@ -122,27 +119,44 @@ export function ServicesSection() {
           </p>
         </div>
 
-        {/* Services Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {/* Services Grid with Images */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {services.map((service, index) => (
             <Link
               key={service.title}
               to={service.href}
-              className="group bg-card rounded-2xl p-6 card-shadow hover:card-shadow-hover transition-all duration-300 hover:-translate-y-1 border border-border/50"
-              style={{ animationDelay: `${index * 0.05}s` }}
+              className="group bg-card rounded-2xl overflow-hidden border border-border hover:shadow-xl hover:border-primary/30 transition-all duration-300 hover:-translate-y-1"
             >
-              <div className={`w-14 h-14 rounded-xl ${service.color} flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300`}>
-                <service.icon className="w-7 h-7" />
+              {/* Image */}
+              <div className="relative h-40 overflow-hidden">
+                <img
+                  src={service.image}
+                  alt={service.title}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                <div className={`absolute top-3 left-3 w-10 h-10 rounded-lg ${service.color} flex items-center justify-center backdrop-blur-sm`}>
+                  <service.icon className="w-5 h-5" />
+                </div>
+                <div className="absolute bottom-3 left-3 right-3">
+                  <span className="inline-block px-3 py-1 bg-success text-success-foreground text-xs font-bold rounded-full">
+                    {service.price}
+                  </span>
+                </div>
               </div>
-              <h3 className="font-display font-bold text-lg text-card-foreground mb-2 group-hover:text-primary transition-colors">
-                {service.title}
-              </h3>
-              <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                {service.description}
-              </p>
-              <span className="inline-flex items-center gap-1 text-primary text-sm font-medium group-hover:gap-2 transition-all">
-                Saiba mais <ArrowRight className="w-4 h-4" />
-              </span>
+
+              {/* Content */}
+              <div className="p-5">
+                <h3 className="font-bold text-lg text-foreground mb-2 group-hover:text-primary transition-colors">
+                  {service.title}
+                </h3>
+                <p className="text-muted-foreground text-sm leading-relaxed mb-3 line-clamp-2">
+                  {service.description}
+                </p>
+                <span className="inline-flex items-center gap-1 text-primary text-sm font-semibold group-hover:gap-2 transition-all">
+                  Ver detalhes <ArrowRight className="w-4 h-4" />
+                </span>
+              </div>
             </Link>
           ))}
         </div>
@@ -152,7 +166,7 @@ export function ServicesSection() {
           <Button size="lg" asChild>
             <Link to="/servicos">
               Ver todos os serviços
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-4 h-4 ml-2" />
             </Link>
           </Button>
         </div>

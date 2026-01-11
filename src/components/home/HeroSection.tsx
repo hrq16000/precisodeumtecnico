@@ -1,21 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { MessageCircle, Phone, Zap, CheckCircle, FileText, Award, Clock, Shield, MapPin, Users } from "lucide-react";
-
 export function HeroSection() {
   const whatsappNumber = "5541997452053";
   const whatsappLink = `https://wa.me/${whatsappNumber}?text=Olá! Preciso de um técnico.`;
-
-  return (
-    <section className="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-[#1e3a5f] via-[#2d4a6f] to-[#1a3050]">
+  return <section className="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-[#1e3a5f] via-[#2d4a6f] to-[#1a3050]">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-30">
-        <div 
-          className="absolute inset-0" 
-          style={{
-            backgroundImage: `radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+        <div className="absolute inset-0" style={{
+        backgroundImage: `radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
                               radial-gradient(circle at 80% 20%, rgba(34, 197, 94, 0.1) 0%, transparent 40%)`
-          }} 
-        />
+      }} />
       </div>
 
       <div className="container-custom relative z-10 py-8 md:py-16">
@@ -32,7 +26,7 @@ export function HeroSection() {
           </h1>
           <h2 className="font-display text-3xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fade-up tracking-tight leading-tight">
             <span className="text-[#22C55E]">Especializada</span>
-            <span className="text-white"> em Curitiba</span>
+            <span className="text-white"> ​  </span>
           </h2>
 
           <p className="text-base md:text-lg text-white/80 mb-8 max-w-2xl mx-auto animate-fade-up px-4">
@@ -67,23 +61,14 @@ export function HeroSection() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col gap-3 px-4 mb-6 animate-fade-up">
-            <Button 
-              size="lg" 
-              className="w-full bg-[#22C55E] hover:bg-[#16A34A] text-white font-bold text-lg py-6 rounded-xl shadow-lg shadow-green-500/30 transition-all hover:scale-[1.02]"
-              asChild
-            >
+            <Button size="lg" className="w-full bg-[#22C55E] hover:bg-[#16A34A] text-white font-bold text-lg py-6 rounded-xl shadow-lg shadow-green-500/30 transition-all hover:scale-[1.02]" asChild>
               <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
                 <MessageCircle className="w-5 h-5 mr-2" />
                 Chamar Técnico Agora
               </a>
             </Button>
             
-            <Button 
-              size="lg" 
-              variant="outline"
-              className="w-full border-2 border-white/30 bg-white/5 text-white font-bold text-lg py-6 rounded-xl hover:bg-white/10 transition-all"
-              asChild
-            >
+            <Button size="lg" variant="outline" className="w-full border-2 border-white/30 bg-white/5 text-white font-bold text-lg py-6 rounded-xl hover:bg-white/10 transition-all" asChild>
               <a href="tel:+5541997452053">
                 <Phone className="w-5 h-5 mr-2" />
                 (41) 9 9745-2053
@@ -118,7 +103,7 @@ export function HeroSection() {
             </div>
             <div className="bg-white/5 backdrop-blur-md rounded-2xl p-5 border border-white/10">
               <MapPin className="w-10 h-10 text-[#F59E0B] mb-3" />
-              <h3 className="font-bold text-white text-2xl mb-1">Curitiba</h3>
+              <h3 className="font-bold text-white text-2xl mb-1">Curitiba   </h3>
               <p className="text-white/60 text-sm">E região metropolitana</p>
             </div>
             <div className="bg-white/5 backdrop-blur-md rounded-2xl p-5 border border-white/10">
@@ -129,6 +114,5 @@ export function HeroSection() {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 }

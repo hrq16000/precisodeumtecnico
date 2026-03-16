@@ -42,6 +42,11 @@ export function QuickQuoteForm() {
       return;
     }
 
+    if (!acceptedTerms) {
+      toast.error("Você precisa aceitar os Termos de Orçamento Pré-Aprovado.");
+      return;
+    }
+
     setIsLoading(true);
     
     // Format message for WhatsApp

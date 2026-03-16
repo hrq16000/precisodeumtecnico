@@ -118,6 +118,14 @@ export function ContactForm() {
       setIsSuccess(true);
       return;
     }
+    if (!acceptedTerms) {
+      toast({
+        title: "Termos obrigatórios",
+        description: "Você precisa aceitar os Termos de Orçamento Pré-Aprovado.",
+        variant: "destructive",
+      });
+      return;
+    }
 
     setIsSubmitting(true);
     

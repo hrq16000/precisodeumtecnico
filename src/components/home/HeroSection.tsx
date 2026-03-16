@@ -42,6 +42,9 @@ export function HeroSection() {
               <p className="text-white text-2xl font-bold">R$ 99,99 <span className="text-sm font-normal text-white/60">(até 30 min)</span></p>
             </div>
           </div>
+          <a href="/termos-orcamento-pre-aprovado" className="text-white/50 text-xs hover:text-white/70 transition-colors underline underline-offset-2 -mt-3 mb-3">
+            *Consulte os termos de orçamento pré-aprovado
+          </a>
 
           {/* Trust Badges */}
           <div className="flex flex-wrap justify-center gap-4 md:gap-6 mb-8 animate-fade-up px-4">

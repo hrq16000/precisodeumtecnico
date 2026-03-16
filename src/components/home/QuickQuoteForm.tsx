@@ -26,6 +26,7 @@ const services = [
 
 export function QuickQuoteForm() {
   const [isLoading, setIsLoading] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     phone: "",

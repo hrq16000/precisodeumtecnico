@@ -154,7 +154,20 @@ export function ContactForm() {
       // Send email notifications (async, don't block)
       sendEmailNotification(data);
 
+      // Register terms acceptance
+      try {
+        await supabase.from("terms_acceptances").insert({
+          name: data.name,
+          phone: data.phone,
+          email: data.email,
+          service: data.service || null,
+        });
+      } catch (e) {
+        // non-blocking
+      }
+
       setIsSuccess(true);
+      setAcceptedTerms(false);
       toast({
         title: "Mensagem enviada!",
         description: "Entraremos em contato em breve. Verifique seu e-mail!",

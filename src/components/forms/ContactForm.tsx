@@ -355,12 +355,33 @@ export function ContactForm() {
             />
           </div>
 
+          {/* Terms Checkbox */}
+          <div className="flex items-start gap-3">
+            <Checkbox
+              id="terms-contact"
+              checked={acceptedTerms}
+              onCheckedChange={(checked) => setAcceptedTerms(checked === true)}
+              className="mt-0.5"
+            />
+            <label htmlFor="terms-contact" className="text-sm text-muted-foreground leading-tight cursor-pointer">
+              Li e concordo com os{" "}
+              <a
+                href="/termos-orcamento-pre-aprovado"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary font-semibold hover:underline"
+              >
+                Termos de Orçamento Pré-Aprovado
+              </a>
+            </label>
+          </div>
+
           <div className="flex flex-col gap-4 pt-2">
             <Button 
               type="submit" 
               size="lg" 
               className="w-full"
-              disabled={isSubmitting}
+              disabled={isSubmitting || !acceptedTerms}
             >
               {isSubmitting ? (
                 <>

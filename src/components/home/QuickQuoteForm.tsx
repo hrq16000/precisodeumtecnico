@@ -55,10 +55,20 @@ export function QuickQuoteForm() {
     // Open WhatsApp with the message
     window.open(`https://wa.me/5541997452053?text=${message}`, "_blank");
     
+    // Register terms acceptance
+    try {
+      await supabase.from("terms_acceptances").insert({
+        name: formData.name,
+        phone: formData.phone,
+        service: formData.service,
+      });
+    } catch (e) {
+      // non-blocking
+    }
+
     toast.success("Redirecionando para o WhatsApp...");
     setIsLoading(false);
-    
-    // Reset form
+    setAcceptedTerms(false);
     setFormData({ name: "", phone: "", service: "", description: "" });
   };
 

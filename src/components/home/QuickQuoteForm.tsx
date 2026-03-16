@@ -3,8 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import { MessageCircle, Send, Phone, User, Wrench, FileText } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const services = [
   "Informática",
@@ -23,6 +25,7 @@ const services = [
 
 export function QuickQuoteForm() {
   const [isLoading, setIsLoading] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -38,6 +41,11 @@ export function QuickQuoteForm() {
       return;
     }
 
+    if (!acceptedTerms) {
+      toast.error("Você precisa aceitar os Termos de Orçamento Pré-Aprovado.");
+      return;
+    }
+
     setIsLoading(true);
     
     // Format message for WhatsApp
@@ -46,10 +54,20 @@ export function QuickQuoteForm() {
     // Open WhatsApp with the message
     window.open(`https://wa.me/5541997452053?text=${message}`, "_blank");
     
+    // Register terms acceptance
+    try {
+      await supabase.from("terms_acceptances").insert({
+        name: formData.name,
+        phone: formData.phone,
+        service: formData.service,
+      });
+    } catch (e) {
+      // non-blocking
+    }
+
     toast.success("Redirecionando para o WhatsApp...");
     setIsLoading(false);
-    
-    // Reset form
+    setAcceptedTerms(false);
     setFormData({ name: "", phone: "", service: "", description: "" });
   };
 
@@ -130,11 +148,32 @@ export function QuickQuoteForm() {
                 />
               </div>
 
+              {/* Terms Checkbox */}
+              <div className="flex items-start gap-3">
+                <Checkbox
+                  id="terms-quick"
+                  checked={acceptedTerms}
+                  onCheckedChange={(checked) => setAcceptedTerms(checked === true)}
+                  className="mt-0.5"
+                />
+                <label htmlFor="terms-quick" className="text-sm text-muted-foreground leading-tight cursor-pointer">
+                  Li e concordo com os{" "}
+                  <a
+                    href="/termos-orcamento-pre-aprovado"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary font-semibold hover:underline"
+                  >
+                    Termos de Orçamento Pré-Aprovado
+                  </a>
+                </label>
+              </div>
+
               {/* Submit Button */}
               <Button
                 type="submit"
                 size="lg"
-                disabled={isLoading}
+                disabled={isLoading || !acceptedTerms}
                 className="w-full h-14 text-lg font-semibold bg-[#25D366] hover:bg-[#20BD5A] text-white gap-2"
               >
                 <Send className="h-5 w-5" />

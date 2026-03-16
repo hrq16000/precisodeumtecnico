@@ -5,6 +5,7 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
   SelectContent,
@@ -68,6 +69,7 @@ const cities = [
 export function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
@@ -116,6 +118,14 @@ export function ContactForm() {
       setIsSuccess(true);
       return;
     }
+    if (!acceptedTerms) {
+      toast({
+        title: "Termos obrigatórios",
+        description: "Você precisa aceitar os Termos de Orçamento Pré-Aprovado.",
+        variant: "destructive",
+      });
+      return;
+    }
 
     setIsSubmitting(true);
     
@@ -144,7 +154,20 @@ export function ContactForm() {
       // Send email notifications (async, don't block)
       sendEmailNotification(data);
 
+      // Register terms acceptance
+      try {
+        await supabase.from("terms_acceptances").insert({
+          name: data.name,
+          phone: data.phone,
+          email: data.email,
+          service: data.service || null,
+        });
+      } catch (e) {
+        // non-blocking
+      }
+
       setIsSuccess(true);
+      setAcceptedTerms(false);
       toast({
         title: "Mensagem enviada!",
         description: "Entraremos em contato em breve. Verifique seu e-mail!",
@@ -332,12 +355,33 @@ export function ContactForm() {
             />
           </div>
 
+          {/* Terms Checkbox */}
+          <div className="flex items-start gap-3">
+            <Checkbox
+              id="terms-contact"
+              checked={acceptedTerms}
+              onCheckedChange={(checked) => setAcceptedTerms(checked === true)}
+              className="mt-0.5"
+            />
+            <label htmlFor="terms-contact" className="text-sm text-muted-foreground leading-tight cursor-pointer">
+              Li e concordo com os{" "}
+              <a
+                href="/termos-orcamento-pre-aprovado"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary font-semibold hover:underline"
+              >
+                Termos de Orçamento Pré-Aprovado
+              </a>
+            </label>
+          </div>
+
           <div className="flex flex-col gap-4 pt-2">
             <Button 
               type="submit" 
               size="lg" 
               className="w-full"
-              disabled={isSubmitting}
+              disabled={isSubmitting || !acceptedTerms}
             >
               {isSubmitting ? (
                 <>

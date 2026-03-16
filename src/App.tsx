@@ -15,6 +15,7 @@ import Sobre from "./pages/Sobre";
 import Contato from "./pages/Contato";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
+import TermosOrcamento from "./pages/TermosOrcamento";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();

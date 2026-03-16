@@ -149,11 +149,32 @@ export function QuickQuoteForm() {
                 />
               </div>
 
+              {/* Terms Checkbox */}
+              <div className="flex items-start gap-3">
+                <Checkbox
+                  id="terms-quick"
+                  checked={acceptedTerms}
+                  onCheckedChange={(checked) => setAcceptedTerms(checked === true)}
+                  className="mt-0.5"
+                />
+                <label htmlFor="terms-quick" className="text-sm text-muted-foreground leading-tight cursor-pointer">
+                  Li e concordo com os{" "}
+                  <a
+                    href="/termos-orcamento-pre-aprovado"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary font-semibold hover:underline"
+                  >
+                    Termos de Orçamento Pré-Aprovado
+                  </a>
+                </label>
+              </div>
+
               {/* Submit Button */}
               <Button
                 type="submit"
                 size="lg"
-                disabled={isLoading}
+                disabled={isLoading || !acceptedTerms}
                 className="w-full h-14 text-lg font-semibold bg-[#25D366] hover:bg-[#20BD5A] text-white gap-2"
               >
                 <Send className="h-5 w-5" />

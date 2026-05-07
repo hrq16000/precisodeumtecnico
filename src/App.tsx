@@ -17,6 +17,7 @@ import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
 import TermosOrcamento from "./pages/TermosOrcamento";
 import ServicoCidade from "./pages/ServicoCidade";
+import Precos from "./pages/Precos";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import BlogCategory from "./pages/BlogCategory";

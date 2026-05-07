@@ -158,14 +158,10 @@ export function QuickQuoteForm() {
                 />
                 <label htmlFor="terms-quick" className="text-sm text-muted-foreground leading-tight cursor-pointer">
                   Li e concordo com os{" "}
-                  <a
-                    href="/termos-orcamento-pre-aprovado"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-primary font-semibold hover:underline"
-                  >
-                    Termos de Orçamento Pré-Aprovado
-                  </a>
+                  <TermsDialog
+                    triggerLabel="Termos de Orçamento Pré-Aprovado"
+                    triggerClassName="text-primary font-semibold hover:underline cursor-pointer"
+                  />
                 </label>
               </div>
 

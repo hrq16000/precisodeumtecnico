@@ -18,16 +18,82 @@ const REQUIRED_BY_TYPE: Record<string, string[]> = {
   BreadcrumbList: ["itemListElement"],
   Article: ["headline", "datePublished", "author", "image"],
   BlogPosting: ["headline", "datePublished", "author", "image"],
+  NewsArticle: ["headline", "datePublished", "author", "image"],
   Service: ["name", "provider", "areaServed"],
   LocalBusiness: ["name", "address", "telephone", "url"],
   Organization: ["name", "url"],
-  Review: ["author", "reviewRating"],
+  Review: ["author", "reviewRating", "itemReviewed"],
   AggregateRating: ["ratingValue", "reviewCount"],
   WebSite: ["name", "url"],
+  WebPage: ["name", "url"],
   Blog: ["name"],
+  Product: ["name", "image", "description"],
+  Offer: ["price", "priceCurrency"],
+  Question: ["name", "acceptedAnswer"],
+  Answer: ["text"],
+  PostalAddress: ["addressLocality", "addressCountry"],
+  ImageObject: ["url"],
+  Person: ["name"],
+  VideoObject: ["name", "thumbnailUrl", "uploadDate"],
+  Event: ["name", "startDate", "location"],
+  HowTo: ["name", "step"],
+  Recipe: ["name", "recipeIngredient", "recipeInstructions"],
+};
+
+const RECOMMENDED_BY_TYPE: Record<string, string[]> = {
+  LocalBusiness: ["openingHoursSpecification", "aggregateRating", "geo", "priceRange", "image"],
+  Service: ["areaServed", "offers", "description"],
+  Article: ["publisher", "mainEntityOfPage", "dateModified"],
+  BlogPosting: ["publisher", "mainEntityOfPage", "dateModified"],
+  Product: ["offers", "brand", "aggregateRating"],
+  Organization: ["logo", "sameAs", "contactPoint"],
+  WebSite: ["potentialAction"],
 };
 
 const KNOWN_TYPES = new Set(Object.keys(REQUIRED_BY_TYPE));
+
+function getType(obj: Record<string, unknown>): string {
+  const raw = obj["@type"];
+  return Array.isArray(raw) ? String(raw[0]) : String(raw ?? "unknown");
+}
+
+function validateNode(
+  obj: Record<string, unknown>,
+  path: string,
+  errors: string[],
+  warnings: string[],
+) {
+  const type = getType(obj);
+  const required = REQUIRED_BY_TYPE[type];
+  if (required) {
+    for (const k of required) {
+      const v = obj[k];
+      if (v === undefined || v === null || v === "" || (Array.isArray(v) && v.length === 0))
+        errors.push(`${path || type}: campo obrigatório ausente para @type=${type} → "${k}"`);
+    }
+  }
+  const recommended = RECOMMENDED_BY_TYPE[type];
+  if (recommended) {
+    for (const k of recommended) {
+      if (obj[k] === undefined || obj[k] === null || obj[k] === "")
+        warnings.push(`${path || type}: recomendado para @type=${type} → "${k}"`);
+    }
+  }
+  // Walk nested typed objects
+  for (const [k, v] of Object.entries(obj)) {
+    if (k.startsWith("@")) continue;
+    const items = Array.isArray(v) ? v : [v];
+    items.forEach((item, idx) => {
+      if (item && typeof item === "object" && !Array.isArray(item)) {
+        const child = item as Record<string, unknown>;
+        if (child["@type"]) {
+          const sub = Array.isArray(v) ? `${path || type}.${k}[${idx}]` : `${path || type}.${k}`;
+          validateNode(child, sub, errors, warnings);
+        }
+      }
+    });
+  }
+}
 
 function validate(parsed: unknown): { type: string; errors: string[]; warnings: string[] } {
   const errors: string[] = [];
@@ -36,25 +102,22 @@ function validate(parsed: unknown): { type: string; errors: string[]; warnings: 
     return { type: "unknown", errors: ["Não é um objeto JSON válido."], warnings };
   }
   const obj = parsed as Record<string, unknown>;
-  const rawType = obj["@type"];
-  const type = Array.isArray(rawType) ? String(rawType[0]) : String(rawType ?? "unknown");
+  const type = getType(obj);
   if (!obj["@context"]) errors.push("Faltando @context");
   if (!obj["@type"]) errors.push("Faltando @type");
   if (obj["@type"] && !KNOWN_TYPES.has(type)) {
     warnings.push(`@type "${type}" não está na lista de tipos validados`);
   }
-  const required = REQUIRED_BY_TYPE[type];
-  if (required) {
-    for (const k of required) {
-      if (obj[k] === undefined || obj[k] === null || obj[k] === "")
-        errors.push(`Campo obrigatório ausente para @type=${type}: "${k}"`);
-    }
-  }
+  validateNode(obj, "", errors, warnings);
+
+  // Type-specific deep checks
   if (type === "FAQPage" && Array.isArray(obj.mainEntity)) {
     obj.mainEntity.forEach((q, i) => {
       const qq = q as Record<string, unknown>;
       if (!qq.name) errors.push(`mainEntity[${i}].name ausente`);
-      if (!qq.acceptedAnswer) errors.push(`mainEntity[${i}].acceptedAnswer ausente`);
+      const aa = qq.acceptedAnswer as Record<string, unknown> | undefined;
+      if (!aa) errors.push(`mainEntity[${i}].acceptedAnswer ausente`);
+      else if (!aa.text) errors.push(`mainEntity[${i}].acceptedAnswer.text ausente`);
     });
   }
   if (type === "BreadcrumbList" && Array.isArray(obj.itemListElement)) {
@@ -62,14 +125,9 @@ function validate(parsed: unknown): { type: string; errors: string[]; warnings: 
       const e = it as Record<string, unknown>;
       if (!e.position) warnings.push(`itemListElement[${i}].position ausente`);
       if (!e.name) warnings.push(`itemListElement[${i}].name ausente`);
+      if (!e.item) warnings.push(`itemListElement[${i}].item (URL) ausente`);
     });
   }
-  if (type === "LocalBusiness") {
-    if (!obj.openingHoursSpecification && !obj.openingHours)
-      warnings.push("LocalBusiness sem openingHoursSpecification (recomendado)");
-    if (!obj.aggregateRating) warnings.push("LocalBusiness sem aggregateRating (recomendado)");
-  }
-  if (type === "Service" && !obj.areaServed) warnings.push("Service sem areaServed (recomendado)");
   return { type, errors, warnings };
 }
 
@@ -86,7 +144,6 @@ function readSchemasFromDoc(doc: Document): SchemaEntry[] {
     }
   });
 }
-
 function readMetaFromDoc(doc: Document, name: string) {
   const el =
     doc.querySelector(`meta[property="${name}"]`) ||
@@ -768,6 +825,33 @@ export default function Diagnostics() {
           </Card>
 
           <h2 className="font-display text-xl font-bold mb-3">Schemas JSON-LD</h2>
+          {schemas.length > 0 && (
+            <Card className="p-4 mb-4">
+              <p className="text-xs text-muted-foreground mb-2">Tipos detectados nesta página:</p>
+              <div className="flex flex-wrap gap-2">
+                {Object.entries(
+                  schemas.reduce<Record<string, { count: number; errors: number; warnings: number }>>((acc, s) => {
+                    const t = s.type || "unknown";
+                    acc[t] = acc[t] || { count: 0, errors: 0, warnings: 0 };
+                    acc[t].count += 1;
+                    acc[t].errors += s.errors.length;
+                    acc[t].warnings += s.warnings.length;
+                    return acc;
+                  }, {}),
+                ).map(([t, v]) => (
+                  <Badge
+                    key={t}
+                    variant={v.errors ? "destructive" : v.warnings ? "outline" : "secondary"}
+                    title={`${v.count} bloco(s), ${v.errors} erro(s), ${v.warnings} aviso(s)`}
+                  >
+                    {t} ×{v.count}
+                    {v.errors > 0 && ` · ${v.errors}❌`}
+                    {v.warnings > 0 && ` · ${v.warnings}⚠`}
+                  </Badge>
+                ))}
+              </div>
+            </Card>
+          )}
           <div className="space-y-4">
             {schemas.map((s, i) => (
               <Card key={i} className="p-4">

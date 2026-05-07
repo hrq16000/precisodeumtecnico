@@ -80,16 +80,17 @@ export function Header() {
         <div className="container-custom">
           <div
             className={cn(
-              "flex items-center justify-between gap-2 transition-all duration-300",
-              scrolled ? "h-16 sm:h-18 md:h-20 lg:h-20" : "h-20 sm:h-24 md:h-28 lg:h-32",
+              "flex items-center justify-between gap-2 transition-[height] duration-500 ease-out",
+              scrolled ? "h-16 sm:h-20 md:h-24 lg:h-24" : "h-20 sm:h-24 md:h-28 lg:h-32",
             )}
           >
             {/* Logo */}
             <Logo
               variant="dark"
-              size={scrolled ? "md" : "lg"}
+              size="lg"
+              compact={scrolled}
               priority
-              className="shrink-0 max-w-[60%] sm:max-w-none transition-all duration-300"
+              className="shrink-0 max-w-[60%] sm:max-w-none"
             />
 
           {/* Desktop Navigation */}

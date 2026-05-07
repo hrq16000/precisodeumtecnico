@@ -34,7 +34,7 @@ export function Footer() {
           {/* Company Info */}
           <div className="lg:col-span-1">
             <div className="mb-6">
-              <Logo variant="light" size="lg" />
+              <Logo variant="light" size="md" className="max-w-full" />
             </div>
             <p className="text-background/70 mb-6 text-sm leading-relaxed">
               A maior rede de técnicos especializados do Brasil. Atendimento 24 horas via WhatsApp para Curitiba e Região Metropolitana.

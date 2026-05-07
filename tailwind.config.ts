@@ -93,12 +93,27 @@ export default {
           "0%": { backgroundPosition: "-200% 0" },
           "100%": { backgroundPosition: "200% 0" },
         },
+        "fade-in": {
+          "0%": { opacity: "0", transform: "translateY(10px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "fade-in-up": {
+          "0%": { opacity: "0", transform: "translateY(24px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "scale-in": {
+          "0%": { opacity: "0", transform: "scale(0.96)" },
+          "100%": { opacity: "1", transform: "scale(1)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "float": "float 3s ease-in-out infinite",
         "shimmer": "shimmer 2s linear infinite",
+        "fade-in": "fade-in 0.5s ease-out both",
+        "fade-in-up": "fade-in-up 0.7s ease-out both",
+        "scale-in": "scale-in 0.4s ease-out both",
       },
       backgroundImage: {
         "hero-pattern": "radial-gradient(circle at 20% 50%, hsla(210, 90%, 50%, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 20%, hsla(200, 85%, 50%, 0.1) 0%, transparent 50%)",

@@ -130,27 +130,60 @@ await consume("service×city matrix", matrixUrls());
 await consume("neighborhoods", neighborhoodUrls());
 await consume("blog", blogUrls());
 
-// Stream-write XML in chunks instead of one giant template literal.
-const head = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-`;
-const tail = `</urlset>\n`;
+// Sitemaps protocol limits each file to 50 000 URLs / 50 MB. We stay well
+// under that. When the project grows beyond MAX_PER_FILE we automatically
+// emit a sitemap index + N child files; otherwise we keep a single file.
+const MAX_PER_FILE = 45_000;
 
-const parts: string[] = [head];
-for (let i = 0; i < urls.length; i += BATCH_SIZE) {
-  const slice = urls.slice(i, i + BATCH_SIZE);
-  parts.push(
-    slice
-      .map(
-        (u) => `  <url>
+function buildUrlsetXml(slice: Url[]): string {
+  const head = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+  const tail = `</urlset>\n`;
+  const parts: string[] = [head];
+  for (let i = 0; i < slice.length; i += BATCH_SIZE) {
+    const chunk = slice.slice(i, i + BATCH_SIZE);
+    parts.push(
+      chunk
+        .map(
+          (u) => `  <url>
     <loc>${u.loc}</loc>${u.lastmod ? `\n    <lastmod>${u.lastmod}</lastmod>` : ""}${u.changefreq ? `\n    <changefreq>${u.changefreq}</changefreq>` : ""}${u.priority ? `\n    <priority>${u.priority.toFixed(2)}</priority>` : ""}
   </url>`,
-      )
-      .join("\n") + "\n",
-  );
-  await yieldToLoop();
+        )
+        .join("\n") + "\n",
+    );
+  }
+  parts.push(tail);
+  return parts.join("");
 }
-parts.push(tail);
 
-writeFileSync("public/sitemap.xml", parts.join(""));
-console.log(`✓ sitemap.xml written with ${urls.length} URLs`);
+if (urls.length <= MAX_PER_FILE) {
+  writeFileSync("public/sitemap.xml", buildUrlsetXml(urls));
+  console.log(`✓ sitemap.xml written with ${urls.length} URLs`);
+} else {
+  // Split into shards + index file.
+  const shards: { name: string; lastmod: string }[] = [];
+  for (let i = 0, n = 0; i < urls.length; i += MAX_PER_FILE, n++) {
+    const slice = urls.slice(i, i + MAX_PER_FILE);
+    const name = `sitemap-${String(n + 1).padStart(2, "0")}.xml`;
+    writeFileSync(`public/${name}`, buildUrlsetXml(slice));
+    const lastmod = slice
+      .map((u) => u.lastmod ?? today)
+      .sort()
+      .at(-1)!;
+    shards.push({ name, lastmod });
+    await yieldToLoop();
+  }
+  const indexXml = `<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${shards
+  .map(
+    (s) => `  <sitemap>
+    <loc>${BASE}/${s.name}</loc>
+    <lastmod>${s.lastmod}</lastmod>
+  </sitemap>`,
+  )
+  .join("\n")}
+</sitemapindex>
+`;
+  writeFileSync("public/sitemap.xml", indexXml);
+  console.log(`✓ sitemap index written with ${shards.length} shards (${urls.length} URLs)`);
+}

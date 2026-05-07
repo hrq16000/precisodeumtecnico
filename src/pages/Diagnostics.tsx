@@ -16,13 +16,18 @@ interface SchemaEntry {
 const REQUIRED_BY_TYPE: Record<string, string[]> = {
   FAQPage: ["mainEntity"],
   BreadcrumbList: ["itemListElement"],
-  Article: ["headline", "datePublished"],
-  BlogPosting: ["headline", "datePublished"],
-  Service: ["name", "provider"],
-  LocalBusiness: ["name", "address"],
+  Article: ["headline", "datePublished", "author", "image"],
+  BlogPosting: ["headline", "datePublished", "author", "image"],
+  Service: ["name", "provider", "areaServed"],
+  LocalBusiness: ["name", "address", "telephone", "url"],
+  Organization: ["name", "url"],
   Review: ["author", "reviewRating"],
   AggregateRating: ["ratingValue", "reviewCount"],
+  WebSite: ["name", "url"],
+  Blog: ["name"],
 };
+
+const KNOWN_TYPES = new Set(Object.keys(REQUIRED_BY_TYPE));
 
 function validate(parsed: unknown): { type: string; errors: string[]; warnings: string[] } {
   const errors: string[] = [];
@@ -31,13 +36,18 @@ function validate(parsed: unknown): { type: string; errors: string[]; warnings: 
     return { type: "unknown", errors: ["Não é um objeto JSON válido."], warnings };
   }
   const obj = parsed as Record<string, unknown>;
-  const type = String(obj["@type"] ?? "unknown");
+  const rawType = obj["@type"];
+  const type = Array.isArray(rawType) ? String(rawType[0]) : String(rawType ?? "unknown");
   if (!obj["@context"]) errors.push("Faltando @context");
   if (!obj["@type"]) errors.push("Faltando @type");
+  if (obj["@type"] && !KNOWN_TYPES.has(type)) {
+    warnings.push(`@type "${type}" não está na lista de tipos validados`);
+  }
   const required = REQUIRED_BY_TYPE[type];
   if (required) {
     for (const k of required) {
-      if (obj[k] === undefined) errors.push(`Faltando "${k}" para @type=${type}`);
+      if (obj[k] === undefined || obj[k] === null || obj[k] === "")
+        errors.push(`Campo obrigatório ausente para @type=${type}: "${k}"`);
     }
   }
   if (type === "FAQPage" && Array.isArray(obj.mainEntity)) {
@@ -54,6 +64,12 @@ function validate(parsed: unknown): { type: string; errors: string[]; warnings: 
       if (!e.name) warnings.push(`itemListElement[${i}].name ausente`);
     });
   }
+  if (type === "LocalBusiness") {
+    if (!obj.openingHoursSpecification && !obj.openingHours)
+      warnings.push("LocalBusiness sem openingHoursSpecification (recomendado)");
+    if (!obj.aggregateRating) warnings.push("LocalBusiness sem aggregateRating (recomendado)");
+  }
+  if (type === "Service" && !obj.areaServed) warnings.push("Service sem areaServed (recomendado)");
   return { type, errors, warnings };
 }
 
@@ -133,6 +149,117 @@ function runPageAudit(doc: Document, currentPath: string): AuditCheck[] {
 
   return checks;
 }
+
+// ---------------- SEO checklist (final) ----------------
+
+function runSeoChecklist(doc: Document): AuditCheck[] {
+  const checks: AuditCheck[] = [];
+  const html = doc.documentElement;
+  checks.push({ ok: !!html.getAttribute("lang"), label: "<html lang> definido", detail: html.getAttribute("lang") ?? "ausente" });
+
+  const viewport = doc.querySelector('meta[name="viewport"]')?.getAttribute("content") ?? "";
+  checks.push({ ok: /width=device-width/i.test(viewport), label: "Viewport responsivo", detail: viewport || "ausente" });
+
+  const title = doc.title || "";
+  checks.push({ ok: title.length >= 20 && title.length <= 70, label: "Title 20–70 chars", detail: `${title.length}: ${title}` });
+
+  const desc = doc.querySelector('meta[name="description"]')?.getAttribute("content") ?? "";
+  checks.push({ ok: desc.length >= 80 && desc.length <= 170, label: "Meta description 80–170 chars", detail: `${desc.length}` });
+
+  const h1 = doc.querySelectorAll("h1").length;
+  const h2 = doc.querySelectorAll("h2").length;
+  checks.push({ ok: h1 === 1, label: "Headings: exatamente 1 H1", detail: `H1=${h1}, H2=${h2}` });
+  checks.push({ ok: h2 >= 2, label: "Headings: ≥2 H2 (estrutura)", detail: `H2=${h2}` });
+
+  const imgs = Array.from(doc.querySelectorAll("img"));
+  const noAlt = imgs.filter((i) => !i.getAttribute("alt"));
+  checks.push({
+    ok: noAlt.length === 0,
+    label: "Imagens com alt",
+    detail: `${imgs.length - noAlt.length}/${imgs.length} com alt`,
+  });
+
+  const links = Array.from(doc.querySelectorAll("a[href]"));
+  const internal = links.filter((a) => {
+    const href = a.getAttribute("href") || "";
+    return href.startsWith("/") || href.includes("precisodeumtecnico");
+  });
+  checks.push({
+    ok: internal.length >= 10,
+    label: "Links internos (≥10 recomendado)",
+    detail: `${internal.length} internos / ${links.length} totais`,
+  });
+
+  const robotsMeta = doc.querySelector('meta[name="robots"]')?.getAttribute("content") ?? "";
+  checks.push({
+    ok: !/noindex/i.test(robotsMeta),
+    label: "Indexável (sem noindex)",
+    detail: robotsMeta || "(sem meta robots)",
+  });
+
+  const canonical = doc.querySelector('link[rel="canonical"]')?.getAttribute("href") ?? "";
+  checks.push({ ok: /^https?:\/\//i.test(canonical), label: "Canonical absoluto", detail: canonical || "ausente" });
+
+  const ogTitle = doc.querySelector('meta[property="og:title"]')?.getAttribute("content");
+  const ogDesc = doc.querySelector('meta[property="og:description"]')?.getAttribute("content");
+  const ogImage = doc.querySelector('meta[property="og:image"]')?.getAttribute("content");
+  checks.push({ ok: !!(ogTitle && ogDesc && ogImage), label: "OG completo (title+desc+image)" });
+
+  // Core Web Vitals (apenas quando rodando na própria aba)
+  if (typeof performance !== "undefined" && (performance as { getEntriesByType?: (t: string) => PerformanceEntry[] }).getEntriesByType) {
+    const nav = (performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined);
+    if (nav) {
+      const ttfb = Math.round(nav.responseStart);
+      checks.push({ ok: ttfb < 800, label: `TTFB ${ttfb}ms (<800ms ideal)`, detail: `${ttfb}ms` });
+      const domReady = Math.round(nav.domContentLoadedEventEnd);
+      checks.push({ ok: domReady < 2500, label: `DOMContentLoaded ${domReady}ms`, detail: `${domReady}ms` });
+    }
+  }
+
+  return checks;
+}
+
+// ---------------- Sitemap audit ----------------
+
+interface SitemapAudit {
+  url: string;
+  ok: boolean;
+  status?: number;
+  urlCount?: number;
+  hasExpected?: boolean;
+  error?: string;
+}
+
+const EXPECTED_SITEMAP_PATHS = ["/", "/servicos", "/precos", "/blog", "/contato"];
+
+async function auditSitemaps(robotsRaw: string): Promise<SitemapAudit[]> {
+  const lines = robotsRaw.match(/^\s*Sitemap:\s*(\S+)/gim) ?? [];
+  const urls = lines.map((l) => l.replace(/^\s*Sitemap:\s*/i, "").trim()).filter(Boolean);
+  if (urls.length === 0) return [];
+  const results: SitemapAudit[] = [];
+  for (const url of urls) {
+    try {
+      // Tentar via mesma origem para evitar CORS quando possível.
+      const sameOrigin = url.replace(/^https?:\/\/[^/]+/, "");
+      const fetchUrl = sameOrigin.startsWith("/") ? sameOrigin : url;
+      const res = await fetch(fetchUrl, { cache: "no-store" });
+      if (!res.ok) {
+        results.push({ url, ok: false, status: res.status, error: `HTTP ${res.status}` });
+        continue;
+      }
+      const text = await res.text();
+      const locs = Array.from(text.matchAll(/<loc>([^<]+)<\/loc>/g)).map((m) => m[1]);
+      const hasExpected = EXPECTED_SITEMAP_PATHS.every((p) =>
+        locs.some((l) => l.endsWith(p) || l.endsWith(`${p}/`)),
+      );
+      results.push({ url, ok: true, status: res.status, urlCount: locs.length, hasExpected });
+    } catch (e) {
+      results.push({ url, ok: false, error: (e as Error).message });
+    }
+  }
+  return results;
+}
+
 
 // ---------------- Bulk audit ----------------
 
@@ -248,6 +375,11 @@ export default function Diagnostics() {
   const [robotsAudit, setRobotsAudit] = useState<RobotsAudit | null>(null);
   const [robotsLoading, setRobotsLoading] = useState(false);
 
+  // SEO checklist + sitemap audit
+  const [seoChecklist, setSeoChecklist] = useState<AuditCheck[]>([]);
+  const [sitemapAudits, setSitemapAudits] = useState<SitemapAudit[]>([]);
+  const [sitemapLoading, setSitemapLoading] = useState(false);
+
   const collect = (doc: Document, path: string) => {
     setSchemas(readSchemasFromDoc(doc));
     setMeta({
@@ -262,6 +394,7 @@ export default function Diagnostics() {
       "twitter:image": readMetaFromDoc(doc, "twitter:image"),
     });
     setAudit(runPageAudit(doc, path));
+    setSeoChecklist(runSeoChecklist(doc));
     setLoadedFor(path);
   };
 
@@ -344,6 +477,12 @@ export default function Diagnostics() {
     const r = await auditRobots();
     setRobotsAudit(r);
     setRobotsLoading(false);
+    if (r.loaded && r.raw) {
+      setSitemapLoading(true);
+      const s = await auditSitemaps(r.raw);
+      setSitemapAudits(s);
+      setSitemapLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -521,6 +660,36 @@ export default function Diagnostics() {
             )}
           </Card>
 
+          {/* Sitemaps referenced by robots.txt */}
+          <h2 className="font-display text-xl font-bold mb-3">Sitemaps (referenciados em robots.txt)</h2>
+          <Card className="p-4 mb-8">
+            {sitemapLoading && <p className="text-sm text-muted-foreground">Verificando sitemaps…</p>}
+            {!sitemapLoading && sitemapAudits.length === 0 && (
+              <p className="text-sm text-muted-foreground">Nenhum sitemap referenciado ou robots.txt indisponível.</p>
+            )}
+            {sitemapAudits.length > 0 && (
+              <ul className="space-y-3 text-sm">
+                {sitemapAudits.map((s, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <Badge variant={s.ok && s.hasExpected ? "secondary" : "destructive"} className="mt-0.5">
+                      {s.ok && s.hasExpected ? "OK" : s.ok ? "PARCIAL" : "FALHA"}
+                    </Badge>
+                    <div className="flex-1">
+                      <p className="font-medium break-all">
+                        <a className="underline" href={s.url} target="_blank" rel="noopener noreferrer">{s.url}</a>
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {s.ok
+                          ? `HTTP ${s.status} · ${s.urlCount} URL(s) · rotas essenciais ${s.hasExpected ? "presentes" : "AUSENTES"}`
+                          : s.error}
+                      </p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </Card>
+
           {/* Single page details */}
           <div className="grid sm:grid-cols-3 gap-3 mb-6">
             <Card className="p-4">
@@ -571,6 +740,29 @@ export default function Diagnostics() {
               ))}
               {audit.length === 0 && (
                 <li className="text-muted-foreground">Sem auditorias ainda.</li>
+              )}
+            </ul>
+          </Card>
+
+          <h2 className="font-display text-xl font-bold mb-3">Checklist final de SEO</h2>
+          <Card className="p-4 mb-8">
+            <p className="text-xs text-muted-foreground mb-3">
+              Cobre Core Web Vitals (TTFB), headings (H1/H2), links internos, indexabilidade, canonical, OG e metadados.
+            </p>
+            <ul className="space-y-2 text-sm">
+              {seoChecklist.map((c, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <Badge variant={c.ok ? "secondary" : "destructive"} className="mt-0.5">
+                    {c.ok ? "OK" : "REVER"}
+                  </Badge>
+                  <div className="flex-1">
+                    <p className="font-medium">{c.label}</p>
+                    {c.detail && <p className="text-xs text-muted-foreground break-all">{c.detail}</p>}
+                  </div>
+                </li>
+              ))}
+              {seoChecklist.length === 0 && (
+                <li className="text-muted-foreground">Sem checklist gerada ainda.</li>
               )}
             </ul>
           </Card>

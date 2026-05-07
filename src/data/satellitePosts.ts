@@ -201,6 +201,14 @@ for (const svc of services) {
       faqs: svc.faqs,
       relatedServices: [svc.slug],
       relatedCities: [b.city],
+      internalLinks: [
+        { label: "Tabela completa de preços", to: "/precos" },
+        { label: `Página do serviço: ${capitalize(svc.short)}`, to: `/servicos/${svc.slug}` },
+        { label: `Atendimento em ${b.cityLabel}`, to: `/regioes/${b.city}` },
+        { label: `Técnico no bairro ${b.bairro}`, to: `/regioes/${b.city}/${slugify(b.bairro)}` },
+        { label: `${capitalize(svc.short)} em ${b.cityLabel}`, to: `/servico-em/${b.city}/${svc.slug}` },
+        { label: "Ver todos os artigos do blog", to: "/blog" },
+      ],
     });
   }
 }

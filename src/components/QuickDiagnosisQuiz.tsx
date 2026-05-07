@@ -121,25 +121,50 @@ const URGENCIA = [
   { id: "orcamento", label: "Só quero orçamento" },
 ];
 
-function buildWhatsApp(p: Problema, detalhes: string[], urgencia: string) {
+function buildWhatsApp(
+  p: Problema,
+  detalhes: string[],
+  urgencia: string,
+  ctx: { city?: string; bairro?: string },
+) {
   const det = p.detalhes.filter((d) => detalhes.includes(d.id)).map((d) => `• ${d.label}`).join("\n");
   const urg = URGENCIA.find((u) => u.id === urgencia)?.label ?? "";
+  const local = [ctx.bairro && `bairro ${ctx.bairro}`, ctx.city && ctx.city.replace(/-/g, " ")]
+    .filter(Boolean)
+    .join(", ");
   const msg =
     `Olá! Fiz o quiz no site e gostaria de orçamento.\n\n` +
     `*Problema:* ${p.label}\n` +
-    `*Detalhes:*\n${det}\n` +
-    `*Urgência:* ${urg}\n\n` +
-    `*Faixa estimada:* ${p.faixaPreco}`;
+    `*Serviço indicado:* ${p.servico}\n` +
+    `*Categoria:* ${p.categoria}\n\n` +
+    `*Checklist do que está acontecendo:*\n${det}\n\n` +
+    `*Urgência:* ${urg}\n` +
+    `*Faixa estimada:* ${p.faixaPreco}` +
+    (local ? `\n*Localização:* ${local}` : "");
   return `https://wa.me/5541997452053?text=${encodeURIComponent(msg)}`;
 }
 
-export function QuickDiagnosisQuiz() {
+export function QuickDiagnosisQuiz({ city, bairro }: QuickDiagnosisQuizProps = {}) {
   const [step, setStep] = useState<Step>("problema");
   const [problema, setProblema] = useState<Problema | null>(null);
   const [detalhes, setDetalhes] = useState<string[]>([]);
   const [urgencia, setUrgencia] = useState<string>("");
 
+  // Fire quiz_complete once per resultado view
+  useEffect(() => {
+    if (step === "resultado" && problema) {
+      trackQuizComplete({
+        problema: problema.id,
+        service: problema.servicoSlug,
+        urgencia,
+        city,
+        bairro,
+      });
+    }
+  }, [step, problema, urgencia, city, bairro]);
+
   const reset = () => {
+    trackEvent("quiz_reset", { city, bairro });
     setStep("problema");
     setProblema(null);
     setDetalhes([]);

@@ -298,7 +298,26 @@ export default function BairroDetalhe() {
         </div>
       </section>
 
-      {/* Nearby Neighborhoods */}
+      {/* Quiz diagnóstico */}
+      <QuickDiagnosisQuiz />
+
+      {/* FAQ */}
+      <section className="py-16 bg-muted/30">
+        <div className="container mx-auto px-4 max-w-3xl">
+          <h2 className="text-3xl font-bold text-foreground mb-6 text-center">
+            Perguntas frequentes — {neighborhoodName}
+          </h2>
+          <Accordion type="single" collapsible>
+            {bairroContent.faqs.map((f, i) => (
+              <AccordionItem key={i} value={`faq-${i}`}>
+                <AccordionTrigger className="text-left">{f.question}</AccordionTrigger>
+                <AccordionContent>{f.answer}</AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+      </section>
+
       <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl font-bold text-foreground mb-8 text-center">

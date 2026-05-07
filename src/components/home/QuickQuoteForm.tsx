@@ -8,6 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { MessageCircle, Send, Phone, User, Wrench, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { getStoredTermsAcceptance } from "@/lib/analytics";
 
 const services = [
   "Informática",
@@ -26,7 +27,7 @@ const services = [
 
 export function QuickQuoteForm() {
   const [isLoading, setIsLoading] = useState(false);
-  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(() => getStoredTermsAcceptance());
   const [formData, setFormData] = useState({
     name: "",
     phone: "",

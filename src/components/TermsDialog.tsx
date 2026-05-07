@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useRef, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -23,7 +23,13 @@ import {
   Phone,
   Shield,
 } from "lucide-react";
-import { trackEvent } from "@/lib/analytics";
+import {
+  trackEvent,
+  trackTermsOpen,
+  trackTermsAccept,
+  trackTermsFullPageClick,
+  setStoredTermsAcceptance,
+} from "@/lib/analytics";
 
 interface TermsDialogProps {
   /** Element used as trigger. If omitted, a default underlined link is rendered. */
@@ -39,7 +45,7 @@ interface TermsDialogProps {
 /**
  * Standardized "Termos de Orçamento Pré-Aprovado" popup.
  * - Same title, description and CTAs across every entrypoint.
- * - Tracks open + "Abrir página completa" click via analytics.
+ * - Tracks open / accept / full-page-click via dataLayer + GA4.
  * - Radix Dialog provides focus trap, ESC-to-close and a11y by default.
  */
 export function TermsDialog({
@@ -50,10 +56,30 @@ export function TermsDialog({
   source = "unknown",
 }: TermsDialogProps) {
   const [open, setOpen] = useState(false);
+  // Guard so terms_open fires once per open and terms_accept once per confirmation.
+  const openFiredRef = useRef(false);
+  const acceptFiredRef = useRef(false);
 
   const handleOpenChange = (next: boolean) => {
     setOpen(next);
-    if (next) trackEvent("terms_open", { source });
+    if (next) {
+      if (!openFiredRef.current) {
+        trackTermsOpen(source);
+        openFiredRef.current = true;
+      }
+      acceptFiredRef.current = false;
+    } else {
+      // Reset open guard so the next open re-fires once.
+      openFiredRef.current = false;
+    }
+  };
+
+  const handleAccept = () => {
+    if (acceptFiredRef.current) return;
+    acceptFiredRef.current = true;
+    trackTermsAccept(source);
+    setStoredTermsAcceptance(true);
+    onAccept?.();
   };
 
   return (
@@ -276,10 +302,8 @@ export function TermsDialog({
                 <DialogClose asChild>
                   <button
                     type="button"
-                    onClick={() => {
-                      trackEvent("terms_accept", { source });
-                      onAccept();
-                    }}
+                    data-testid="terms-accept"
+                    onClick={handleAccept}
                     className="w-full inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground text-sm font-semibold px-4 py-3 rounded-lg transition-colors"
                   >
                     <CheckCircle className="h-4 w-4" />
@@ -291,7 +315,7 @@ export function TermsDialog({
               <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
                 <a
                   href="/termos-orcamento-pre-aprovado"
-                  onClick={() => trackEvent("terms_full_page_click", { source })}
+                  onClick={() => trackTermsFullPageClick(source)}
                   className="text-xs text-muted-foreground hover:text-primary underline underline-offset-2"
                 >
                   Abrir página completa

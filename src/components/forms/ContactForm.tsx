@@ -25,6 +25,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { Loader2, CheckCircle, MessageCircle } from "lucide-react";
+import { getStoredTermsAcceptance } from "@/lib/analytics";
 
 const phoneRegex = /^\(?[1-9]{2}\)?\s?[9]?\d{4}[-\s]?\d{4}$/;
 
@@ -70,7 +71,7 @@ const cities = [
 export function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(() => getStoredTermsAcceptance());
 
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),

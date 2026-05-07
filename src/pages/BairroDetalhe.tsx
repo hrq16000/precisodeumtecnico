@@ -9,6 +9,14 @@ import {
   Smartphone, Gamepad2, ArrowRight, MessageCircle
 } from "lucide-react";
 import { citiesData, getCityBySlug, formatNeighborhoodSlug, formatNameFromSlug, curitibaBairros } from "@/data/regions";
+import { getBairroContent } from "@/data/sjpBairroContent";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { QuickDiagnosisQuiz } from "@/components/QuickDiagnosisQuiz";
 import NotFound from "./NotFound";
 
 const serviceIcons: Record<string, any> = {
@@ -62,6 +70,8 @@ export default function BairroDetalhe() {
     .filter((_, i) => i !== currentIndex)
     .slice(0, 6);
 
+  const bairroContent = getBairroContent(city!, neighborhood, neighborhoodName);
+
   const localBusinessSchema = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
@@ -89,13 +99,23 @@ export default function BairroDetalhe() {
     }
   };
 
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: bairroContent.faqs.map((f) => ({
+      "@type": "Question",
+      name: f.question,
+      acceptedAnswer: { "@type": "Answer", text: f.answer },
+    })),
+  };
+
   return (
     <Layout>
       <SEOHead
         title={`${pageTitle} | Assistência Técnica 24h`}
         description={pageDescription}
         canonical={`https://precisodeumtecnico.com/regioes/${city}/${neighborhood}`}
-        schema={localBusinessSchema}
+        structuredData={[localBusinessSchema, faqSchema]}
       />
 
       {/* Hero Section */}

@@ -255,8 +255,8 @@ export function Header() {
                 <Link to="/regioes" className="px-4 py-2 rounded-md hover:bg-secondary transition-colors font-medium" onClick={() => setMobileMenuOpen(false)}>
                   Regiões Atendidas
                 </Link>
-                <Link to="/blog" className="px-4 py-2 rounded-md hover:bg-secondary transition-colors font-medium" onClick={() => setMobileMenuOpen(false)}>
-                  Blog
+                <Link to="/precos" className="px-4 py-2 rounded-md hover:bg-secondary transition-colors font-medium" onClick={() => setMobileMenuOpen(false)}>
+                  Preços
                 </Link>
                 <Link to="/sobre" className="px-4 py-2 rounded-md hover:bg-secondary transition-colors font-medium" onClick={() => setMobileMenuOpen(false)}>
                   Sobre

@@ -15,16 +15,57 @@ export function trackEvent(eventName: string, params: Params = {}): void {
     if (typeof window === "undefined") return;
     const clean: Params = {};
     for (const [k, v] of Object.entries(params)) if (v !== undefined) clean[k] = v;
+    // Ensure dataLayer exists so GTM picks events even if loaded later.
+    if (!Array.isArray(window.dataLayer)) window.dataLayer = [];
+    window.dataLayer.push({ event: eventName, ...clean });
     if (typeof window.gtag === "function") {
       window.gtag("event", eventName, clean);
-    }
-    if (Array.isArray(window.dataLayer)) {
-      window.dataLayer.push({ event: eventName, ...clean });
     }
   } catch {
     // swallow — analytics must never break UX
   }
 }
+
+// --- Terms popup events (GA4 / GTM) ---
+export function trackTermsOpen(source: string) {
+  trackEvent("terms_open", { source });
+}
+export function trackTermsAccept(source: string) {
+  trackEvent("terms_accept", { source });
+}
+export function trackTermsFullPageClick(source: string) {
+  trackEvent("terms_full_page_click", { source });
+}
+
+// --- Terms acceptance persistence (sessionStorage by default) ---
+const TERMS_KEY = "pdt_terms_accepted_v1";
+
+export function getStoredTermsAcceptance(): boolean {
+  try {
+    if (typeof window === "undefined") return false;
+    return (
+      window.sessionStorage?.getItem(TERMS_KEY) === "1" ||
+      window.localStorage?.getItem(TERMS_KEY) === "1"
+    );
+  } catch {
+    return false;
+  }
+}
+
+export function setStoredTermsAcceptance(accepted: boolean): void {
+  try {
+    if (typeof window === "undefined") return;
+    if (accepted) {
+      window.sessionStorage?.setItem(TERMS_KEY, "1");
+    } else {
+      window.sessionStorage?.removeItem(TERMS_KEY);
+      window.localStorage?.removeItem(TERMS_KEY);
+    }
+  } catch {
+    // ignore storage errors
+  }
+}
+
 
 export function trackWhatsAppClick(opts: {
   source: string; // e.g. "hero", "quiz_result", "bairro_cta", "footer"

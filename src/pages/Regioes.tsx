@@ -102,16 +102,6 @@ const Regioes = () => {
                   Chamar Técnico Agora
                 </Button>
               </a>
-              <a href="tel:+5541997452053">
-                <Button 
-                  size="lg" 
-                  variant="outline" 
-                  className="w-full sm:w-auto text-lg px-8 py-6 bg-white/10 border-white/30 text-white hover:bg-white/20 gap-3"
-                >
-                  <Phone className="w-6 h-6" />
-                  (41) 99745-2053
-                </Button>
-              </a>
             </div>
           </div>
         </div>

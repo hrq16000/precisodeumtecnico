@@ -138,11 +138,6 @@ export default function ServicoCidade() {
                   <MessageCircle className="w-5 h-5" /> Chamar Técnico Agora
                 </a>
               </Button>
-              <Button size="lg" variant="outline" className="bg-background/10 border-background/30 text-background hover:bg-background/20" asChild>
-                <a href="tel:+5541997452053">
-                  <Phone className="w-5 h-5" /> (41) 9 9745-2053
-                </a>
-              </Button>
             </div>
             <div className="flex flex-wrap gap-4 mt-8 text-sm">
               <span className="flex items-center gap-2"><Clock className="w-4 h-4 text-primary" /> Atendimento 24h</span>

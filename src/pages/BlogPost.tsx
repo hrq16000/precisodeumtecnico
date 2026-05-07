@@ -82,6 +82,7 @@ export default function BlogPost() {
         title={post.metaTitle}
         description={post.metaDescription}
         canonical={url}
+        ogImage={ogImage}
         type="article"
         keywords={post.tags.join(", ")}
         article={{

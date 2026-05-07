@@ -289,6 +289,28 @@ export default function Diagnostics() {
             </table>
           </Card>
 
+          <h2 className="font-display text-xl font-bold mb-3">Auditoria da página</h2>
+          <Card className="p-4 mb-8">
+            <ul className="space-y-2 text-sm">
+              {audit.map((c, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <Badge variant={c.ok ? "secondary" : "destructive"} className="mt-0.5">
+                    {c.ok ? "OK" : "FALHA"}
+                  </Badge>
+                  <div className="flex-1">
+                    <p className="font-medium">{c.label}</p>
+                    {c.detail && (
+                      <p className="text-xs text-muted-foreground break-all">{c.detail}</p>
+                    )}
+                  </div>
+                </li>
+              ))}
+              {audit.length === 0 && (
+                <li className="text-muted-foreground">Sem auditorias ainda.</li>
+              )}
+            </ul>
+          </Card>
+
           <h2 className="font-display text-xl font-bold mb-3">Schemas JSON-LD</h2>
           <div className="space-y-4">
             {schemas.map((s, i) => (

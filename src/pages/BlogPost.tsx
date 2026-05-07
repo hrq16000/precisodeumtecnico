@@ -210,6 +210,23 @@ export default function BlogPost() {
             </Reveal>
           )}
 
+          {post.internalLinks && post.internalLinks.length > 0 && (
+            <Reveal>
+              <div className="mt-12 p-6 rounded-lg bg-secondary/40 border border-border">
+                <h3 className="font-display text-lg font-bold mb-3">Continue navegando</h3>
+                <ul className="grid sm:grid-cols-2 gap-2">
+                  {post.internalLinks.map((l) => (
+                    <li key={l.to}>
+                      <Link to={l.to} className="text-sm hover:text-primary inline-flex items-center gap-1">
+                        <ArrowRight className="w-3 h-3" /> {l.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
+          )}
+
           {related.length > 0 && (
             <Reveal>
               <h3 className="font-display text-2xl font-bold mt-16 mb-4">Continue lendo</h3>

@@ -43,6 +43,7 @@ add({ loc: `${BASE}/sobre`, changefreq: "monthly", priority: 0.6, lastmod: today
 add({ loc: `${BASE}/contato`, changefreq: "monthly", priority: 0.7, lastmod: today });
 add({ loc: `${BASE}/termos-orcamento-pre-aprovado`, changefreq: "yearly", priority: 0.5, lastmod: today });
 add({ loc: `${BASE}/blog`, changefreq: "weekly", priority: 0.9, lastmod: today });
+add({ loc: `${BASE}/precos`, changefreq: "weekly", priority: 0.85, lastmod: today });
 
 // Services
 for (const slug of Object.keys(servicesData)) {

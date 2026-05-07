@@ -328,7 +328,8 @@ export function QuickDiagnosisQuiz({ city, bairro }: QuickDiagnosisQuizProps = {
         <p className="text-xs text-muted-foreground text-center mt-4">
           *Diagnóstico orientativo. O valor final é definido após visita técnica (R$ 99,99, abatida na execução).{" "}
           <TermsDialog
-            triggerLabel="Termos do orçamento pré-aprovado"
+            source="quiz"
+            triggerLabel="Termos de Orçamento Pré-Aprovado"
             triggerClassName="underline hover:text-primary cursor-pointer"
           />
           .

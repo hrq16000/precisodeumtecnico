@@ -160,6 +160,8 @@ export function QuickQuoteForm() {
                 <label htmlFor="terms-quick" className="text-sm text-muted-foreground leading-tight cursor-pointer">
                   Li e concordo com os{" "}
                   <TermsDialog
+                    source="quick_form"
+                    onAccept={() => setAcceptedTerms(true)}
                     triggerLabel="Termos de Orçamento Pré-Aprovado"
                     triggerClassName="text-primary font-semibold hover:underline cursor-pointer"
                   />

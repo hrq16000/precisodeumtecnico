@@ -367,6 +367,8 @@ export function ContactForm() {
             <label htmlFor="terms-contact" className="text-sm text-muted-foreground leading-tight cursor-pointer">
               Li e concordo com os{" "}
               <TermsDialog
+                source="contact_form"
+                onAccept={() => setAcceptedTerms(true)}
                 triggerLabel="Termos de Orçamento Pré-Aprovado"
                 triggerClassName="text-primary font-semibold hover:underline cursor-pointer"
               />

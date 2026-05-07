@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { MessageCircle, Phone, Zap, CheckCircle, FileText, Award, Clock, Shield, MapPin, Users } from "lucide-react";
 import { TermsDialog } from "@/components/TermsDialog";
+import { TERMS_SOURCE } from "@/lib/termsSource";
 export function HeroSection() {
   const whatsappNumber = "5541997452053";
   const whatsappLink = `https://wa.me/${whatsappNumber}?text=Olá! Preciso de um técnico.`;
@@ -45,7 +46,7 @@ export function HeroSection() {
               </div>
             </div>
             <TermsDialog
-              source="hero"
+              source={TERMS_SOURCE.hero}
               triggerLabel="*Consulte os termos de orçamento pré-aprovado"
               triggerClassName="text-white/50 text-xs hover:text-white/70 transition-colors underline underline-offset-2 mt-2 cursor-pointer"
             />

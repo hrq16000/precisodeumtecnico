@@ -17,7 +17,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { QuickDiagnosisQuiz } from "@/components/QuickDiagnosisQuiz";
-import { trackWhatsAppClick } from "@/lib/analytics";
+import { trackWhatsAppClick, trackCtaClick } from "@/lib/analytics";
 import NotFound from "./NotFound";
 
 const serviceIcons: Record<string, any> = {
@@ -206,6 +206,7 @@ export default function BairroDetalhe() {
                     <p className="text-muted-foreground text-sm mb-4">{service.description}</p>
                     <Link 
                       to={`/servicos/${service.slug}`}
+                      onClick={() => trackCtaClick({ surface: "bairro_page", cta_id: "bairro_service_card", label: service.name, destination: `/servicos/${service.slug}`, service: service.name, city: city!, bairro: neighborhood })}
                       className="inline-flex items-center text-primary font-medium text-sm hover:underline"
                     >
                       Saiba mais <ArrowRight className="ml-1 h-4 w-4" />
@@ -329,6 +330,7 @@ export default function BairroDetalhe() {
               <Link
                 key={bairro}
                 to={`/regioes/${city}/${formatNeighborhoodSlug(bairro)}`}
+                onClick={() => trackCtaClick({ surface: "bairro_page", cta_id: "nearby_bairro_chip", label: bairro, destination: `/regioes/${city}/${formatNeighborhoodSlug(bairro)}`, city: city!, bairro: formatNeighborhoodSlug(bairro) })}
                 className="px-4 py-2 bg-muted hover:bg-primary/10 rounded-full text-foreground hover:text-primary transition-colors text-sm"
               >
                 {bairro}

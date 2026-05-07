@@ -18,9 +18,15 @@ jobs:
         run: bun install --frozen-lockfile
       - name: Build sitemap
         run: bun run sitemap
+      - name: Validate sitemap & robots
+        run: bun run validate:sitemap
       - name: Validate OG images
         run: bun run check:og
       - name: Run tests
         run: bun run test
       - name: Build
         run: bun run build
+      - name: Install Playwright (chromium)
+        run: bun run e2e:install
+      - name: Run E2E (a11y + flows)
+        run: bun run e2e

@@ -68,6 +68,8 @@ const PROBLEMAS: Problema[] = [
       return "Diagnóstico provável: malware/adware ativo. Solução: protocolo de remoção em modo de segurança + scanners + limpeza de persistência. Custo: R$ 200 a R$ 350 com garantia de 30 dias.";
     },
     servico: "Remoção de vírus profissional",
+    servicoSlug: "informatica",
+    categoria: "seguranca",
     faixaPreco: "R$ 200 a R$ 350",
   },
   {

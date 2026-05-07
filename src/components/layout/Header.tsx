@@ -72,10 +72,6 @@ export function Header() {
               </span>
             </div>
             <div className="flex items-center gap-6">
-              <a href="tel:+5541997452053" className="flex items-center gap-2 hover:text-accent transition-colors">
-                <Phone className="w-4 h-4" />
-                (41) 9 9745-2053
-              </a>
               <a href="mailto:contato@precisodeumtecnico.com" className="flex items-center gap-2 hover:text-accent transition-colors">
                 <Mail className="w-4 h-4" />
                 contato@precisodeumtecnico.com
@@ -220,14 +216,10 @@ export function Header() {
 
           {/* CTA Buttons */}
           <div className="hidden md:flex items-center gap-3">
-            <a href="tel:+5541997452053" className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-              <Phone className="w-4 h-4" />
-              <span className="hidden xl:inline">(41) 99745-2053</span>
-            </a>
             <Button variant="whatsapp" size="sm" asChild>
               <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
                 <MessageCircle className="w-4 h-4" />
-                <span className="hidden sm:inline">WhatsApp</span>
+                <span className="hidden sm:inline">WhatsApp (41) 9 9745-2053</span>
               </a>
             </Button>
           </div>
@@ -268,14 +260,10 @@ export function Header() {
                   Contato
                 </Link>
                 <div className="pt-4 mt-2 border-t border-border/50 flex flex-col gap-2">
-                  <a href="tel:+5541997452053" className="flex items-center gap-2 px-4 py-2 text-muted-foreground">
-                    <Phone className="w-4 h-4" />
-                    (41) 9 9745-2053
-                  </a>
                   <Button variant="whatsapp" className="mx-4" asChild>
                     <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
                       <MessageCircle className="w-4 h-4" />
-                      Chamar no WhatsApp
+                      WhatsApp (41) 9 9745-2053
                     </a>
                   </Button>
                 </div>

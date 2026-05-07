@@ -45,18 +45,12 @@ export function CTASection() {
           </div>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex justify-center">
             <Button variant="whatsapp" size="xl" className="text-lg" asChild>
               <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
                 <MessageCircle className="w-6 h-6" />
-                Chamar no WhatsApp
+                WhatsApp (41) 9 9745-2053
                 <ArrowRight className="w-5 h-5" />
-              </a>
-            </Button>
-            <Button variant="hero" size="xl" className="text-lg" asChild>
-              <a href="tel:+5541997452053">
-                <Phone className="w-6 h-6" />
-                (41) 9 9745-2053
               </a>
             </Button>
           </div>

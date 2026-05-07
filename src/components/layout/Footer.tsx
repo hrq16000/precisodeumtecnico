@@ -123,9 +123,10 @@ export function Footer() {
       <div className="border-t border-background/10">
         <div className="container-custom py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-background/60 text-sm text-center md:text-left">
-              © {currentYear} Preciso de Um Técnico. Todos os direitos reservados.
-            </p>
+            <div className="text-background/60 text-sm text-center md:text-left space-y-1">
+              <p>© {currentYear} Preciso de Um Técnico. Todos os direitos reservados.</p>
+              <p>CNPJ: 41.723.708/0001-58 · Atendimento desde 2006</p>
+            </div>
             <div className="flex flex-wrap gap-6">
               <Link to="/precos" className="text-background/60 hover:text-background text-sm transition-colors">
                 Preços

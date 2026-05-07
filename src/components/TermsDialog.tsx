@@ -1,0 +1,271 @@
+import { ReactNode } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  FileText,
+  Truck,
+  Clock,
+  Wrench,
+  XCircle,
+  CheckCircle,
+  AlertTriangle,
+  Calendar,
+  Package,
+  MapPin,
+  Phone,
+  Shield,
+} from "lucide-react";
+
+interface TermsDialogProps {
+  /** Element used as trigger. If omitted, a default underlined link is rendered. */
+  trigger?: ReactNode;
+  triggerClassName?: string;
+  triggerLabel?: string;
+}
+
+/**
+ * Popup with the full "Termos de Orçamento Pré-Aprovado" content.
+ * Use anywhere by passing a custom trigger element.
+ */
+export function TermsDialog({
+  trigger,
+  triggerClassName,
+  triggerLabel = "Termos de Orçamento Pré-Aprovado",
+}: TermsDialogProps) {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        {trigger ?? (
+          <button
+            type="button"
+            className={
+              triggerClassName ??
+              "text-primary font-semibold hover:underline underline-offset-2"
+            }
+          >
+            {triggerLabel}
+          </button>
+        )}
+      </DialogTrigger>
+
+      <DialogContent className="max-w-3xl p-0 gap-0 overflow-hidden">
+        <DialogHeader className="px-6 pt-6 pb-4 border-b border-border bg-gradient-to-br from-primary/10 via-background to-accent/5">
+          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-semibold w-fit mb-2">
+            <Shield className="h-3.5 w-3.5" />
+            Transparência e Segurança
+          </div>
+          <DialogTitle className="text-2xl md:text-3xl font-bold text-foreground">
+            Termos de Orçamento Pré-Aprovado
+          </DialogTitle>
+          <DialogDescription className="text-muted-foreground">
+            Política de diagnóstico, reparo, prazos e logística de serviços técnicos.
+          </DialogDescription>
+        </DialogHeader>
+
+        <ScrollArea className="max-h-[70vh]">
+          <div className="px-6 py-6 space-y-8">
+            {/* 1 */}
+            <section>
+              <div className="flex items-center gap-2 mb-3">
+                <FileText className="h-5 w-5 text-primary" />
+                <h3 className="text-lg font-bold text-foreground">
+                  1 – Política de Orçamento Pré-Aprovado
+                </h3>
+              </div>
+              <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
+                <p>
+                  Para agilizar o atendimento e evitar atrasos no processo de diagnóstico
+                  técnico, os equipamentos enviados para análise são cadastrados com
+                  orçamento pré-aprovado mínimo no valor de:
+                </p>
+                <div className="bg-primary/5 border-2 border-primary/20 rounded-xl p-4 text-center">
+                  <p className="text-xs text-muted-foreground mb-1">
+                    Orçamento pré-aprovado mínimo
+                  </p>
+                  <p className="text-3xl font-bold text-primary">R$ 300,00</p>
+                </div>
+                <p>
+                  Esse valor representa uma{" "}
+                  <strong className="text-foreground">autorização inicial</strong> para
+                  diagnóstico técnico e possível reparo do equipamento.
+                </p>
+                <p>
+                  Caso o valor final do reparo seja superior ao orçamento pré-aprovado
+                  mínimo, o cliente será{" "}
+                  <strong className="text-foreground">informado previamente</strong> para
+                  aprovação antes da execução do serviço.
+                </p>
+                <div className="flex items-start gap-2 bg-accent/40 rounded-lg p-3">
+                  <AlertTriangle className="h-4 w-4 text-primary mt-0.5 shrink-0" />
+                  <p className="text-foreground">
+                    <strong>
+                      Nenhum reparo adicional será realizado sem confirmação do cliente.
+                    </strong>
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            {/* 2 */}
+            <section>
+              <div className="flex items-center gap-2 mb-3">
+                <Truck className="h-5 w-5 text-primary" />
+                <h3 className="text-lg font-bold text-foreground">
+                  2 – Logística de Coleta e Entrega
+                </h3>
+              </div>
+              <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
+                <p>
+                  Para garantir organização e eficiência operacional, os atendimentos
+                  seguem um sistema de{" "}
+                  <strong className="text-foreground">logística programada</strong>.
+                </p>
+                <div className="grid sm:grid-cols-2 gap-3">
+                  <div className="bg-accent/40 rounded-lg p-3 border border-border">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Package className="h-4 w-4 text-primary" />
+                      <h4 className="font-semibold text-foreground text-sm">
+                        Coleta
+                      </h4>
+                    </div>
+                    <p className="text-xs">
+                      Mediante <strong className="text-foreground">agendamento prévio</strong>
+                    </p>
+                  </div>
+                  <div className="bg-accent/40 rounded-lg p-3 border border-border">
+                    <div className="flex items-center gap-2 mb-1">
+                      <MapPin className="h-4 w-4 text-primary" />
+                      <h4 className="font-semibold text-foreground text-sm">
+                        Entrega
+                      </h4>
+                    </div>
+                    <p className="text-xs">
+                      Mediante{" "}
+                      <strong className="text-foreground">agendamento após conclusão</strong>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* 3 */}
+            <section>
+              <div className="flex items-center gap-2 mb-3">
+                <Clock className="h-5 w-5 text-primary" />
+                <h3 className="text-lg font-bold text-foreground">3 – Prazos de Serviço</h3>
+              </div>
+              <div className="space-y-2 text-sm text-muted-foreground">
+                <div className="flex items-center justify-between bg-accent/40 rounded-lg p-3 border border-border">
+                  <div className="flex items-center gap-2">
+                    <Calendar className="h-4 w-4 text-primary" />
+                    <span className="font-medium text-foreground">Diagnóstico</span>
+                  </div>
+                  <span className="font-bold text-primary">7 a 15 dias</span>
+                </div>
+                <div className="flex items-center justify-between bg-accent/40 rounded-lg p-3 border border-border">
+                  <div className="flex items-center gap-2">
+                    <Wrench className="h-4 w-4 text-primary" />
+                    <span className="font-medium text-foreground">Reparo</span>
+                  </div>
+                  <span className="font-bold text-primary">20 a 60 dias úteis</span>
+                </div>
+                <div className="flex items-center justify-between bg-accent/40 rounded-lg p-3 border border-border">
+                  <div className="flex items-center gap-2">
+                    <Truck className="h-4 w-4 text-primary" />
+                    <span className="font-medium text-foreground">Entrega</span>
+                  </div>
+                  <span className="font-bold text-primary">5 a 7 dias úteis</span>
+                </div>
+                <p className="text-xs italic pt-1">
+                  Estimativas médias, podem variar conforme equipamento e complexidade.
+                </p>
+              </div>
+            </section>
+
+            {/* 4 */}
+            <section>
+              <div className="flex items-center gap-2 mb-3">
+                <Wrench className="h-5 w-5 text-primary" />
+                <h3 className="text-lg font-bold text-foreground">
+                  4 – Compromisso com o Serviço
+                </h3>
+              </div>
+              <div className="space-y-2 text-sm text-muted-foreground leading-relaxed">
+                <p>
+                  Os equipamentos enviados para análise devem ser encaminhados com{" "}
+                  <strong className="text-foreground">real intenção de reparo</strong>.
+                  Durante o diagnóstico podem ser realizados testes técnicos, desmontagem
+                  parcial, análise de componentes e procedimentos de verificação elétrica
+                  ou eletrônica.
+                </p>
+              </div>
+            </section>
+
+            {/* 5 */}
+            <section>
+              <div className="flex items-center gap-2 mb-3">
+                <XCircle className="h-5 w-5 text-destructive" />
+                <h3 className="text-lg font-bold text-foreground">
+                  5 – Cancelamento ou Desistência
+                </h3>
+              </div>
+              <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
+                <p>
+                  Caso o cliente opte por cancelar o serviço ou desistir do reparo após o
+                  diagnóstico, será cobrada uma taxa de:
+                </p>
+                <div className="bg-destructive/5 border-2 border-destructive/20 rounded-xl p-4 text-center">
+                  <p className="text-xs text-muted-foreground mb-1">Taxa de diagnóstico</p>
+                  <p className="text-3xl font-bold text-destructive">R$ 90,00</p>
+                </div>
+                <p>
+                  Cobre análise técnica, testes, tempo de diagnóstico e manipulação do
+                  equipamento.
+                </p>
+              </div>
+            </section>
+
+            {/* 6 */}
+            <section>
+              <div className="flex items-center gap-2 mb-3">
+                <CheckCircle className="h-5 w-5 text-primary" />
+                <h3 className="text-lg font-bold text-foreground">6 – Aceitação dos Termos</h3>
+              </div>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Ao solicitar coleta, diagnóstico, envio para análise, orçamento ou reparo,
+                o cliente declara estar{" "}
+                <strong className="text-foreground">ciente e de acordo</strong> com estes
+                Termos e Condições de Serviço.
+              </p>
+            </section>
+
+            <div className="pt-2 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-3">
+              <a
+                href="/termos-orcamento-pre-aprovado"
+                className="text-xs text-muted-foreground hover:text-primary underline underline-offset-2"
+              >
+                Abrir página completa
+              </a>
+              <a
+                href="https://wa.me/5541997452053?text=Olá! Tenho dúvidas sobre os termos de orçamento pré-aprovado."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#20BD5A] text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+              >
+                <Phone className="h-4 w-4" />
+                Tirar dúvidas no WhatsApp
+              </a>
+            </div>
+          </div>
+        </ScrollArea>
+      </DialogContent>
+    </Dialog>
+  );
+}

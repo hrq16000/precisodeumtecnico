@@ -57,27 +57,6 @@ function validate(parsed: unknown): { type: string; errors: string[]; warnings: 
   return { type, errors, warnings };
 }
 
-function readSchemas(): SchemaEntry[] {
-  const nodes = Array.from(document.querySelectorAll<HTMLScriptElement>('script[type="application/ld+json"]'));
-  return nodes.map((n) => {
-    const raw = n.textContent ?? "";
-    try {
-      const parsed = JSON.parse(raw);
-      const v = validate(parsed);
-      return { raw, parsed, ...v };
-    } catch (e) {
-      return { raw, parsed: null, type: "invalid", errors: [`JSON inválido: ${(e as Error).message}`], warnings: [] };
-    }
-  });
-}
-
-function readMeta(name: string) {
-  const el =
-    document.querySelector(`meta[property="${name}"]`) ||
-    document.querySelector(`meta[name="${name}"]`);
-  return el?.getAttribute("content") ?? null;
-}
-
 function readSchemasFromDoc(doc: Document): SchemaEntry[] {
   const nodes = Array.from(doc.querySelectorAll<HTMLScriptElement>('script[type="application/ld+json"]'));
   return nodes.map((n) => {

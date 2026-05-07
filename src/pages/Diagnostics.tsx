@@ -150,6 +150,117 @@ function runPageAudit(doc: Document, currentPath: string): AuditCheck[] {
   return checks;
 }
 
+// ---------------- SEO checklist (final) ----------------
+
+function runSeoChecklist(doc: Document): AuditCheck[] {
+  const checks: AuditCheck[] = [];
+  const html = doc.documentElement;
+  checks.push({ ok: !!html.getAttribute("lang"), label: "<html lang> definido", detail: html.getAttribute("lang") ?? "ausente" });
+
+  const viewport = doc.querySelector('meta[name="viewport"]')?.getAttribute("content") ?? "";
+  checks.push({ ok: /width=device-width/i.test(viewport), label: "Viewport responsivo", detail: viewport || "ausente" });
+
+  const title = doc.title || "";
+  checks.push({ ok: title.length >= 20 && title.length <= 70, label: "Title 20–70 chars", detail: `${title.length}: ${title}` });
+
+  const desc = doc.querySelector('meta[name="description"]')?.getAttribute("content") ?? "";
+  checks.push({ ok: desc.length >= 80 && desc.length <= 170, label: "Meta description 80–170 chars", detail: `${desc.length}` });
+
+  const h1 = doc.querySelectorAll("h1").length;
+  const h2 = doc.querySelectorAll("h2").length;
+  checks.push({ ok: h1 === 1, label: "Headings: exatamente 1 H1", detail: `H1=${h1}, H2=${h2}` });
+  checks.push({ ok: h2 >= 2, label: "Headings: ≥2 H2 (estrutura)", detail: `H2=${h2}` });
+
+  const imgs = Array.from(doc.querySelectorAll("img"));
+  const noAlt = imgs.filter((i) => !i.getAttribute("alt"));
+  checks.push({
+    ok: noAlt.length === 0,
+    label: "Imagens com alt",
+    detail: `${imgs.length - noAlt.length}/${imgs.length} com alt`,
+  });
+
+  const links = Array.from(doc.querySelectorAll("a[href]"));
+  const internal = links.filter((a) => {
+    const href = a.getAttribute("href") || "";
+    return href.startsWith("/") || href.includes("precisodeumtecnico");
+  });
+  checks.push({
+    ok: internal.length >= 10,
+    label: "Links internos (≥10 recomendado)",
+    detail: `${internal.length} internos / ${links.length} totais`,
+  });
+
+  const robotsMeta = doc.querySelector('meta[name="robots"]')?.getAttribute("content") ?? "";
+  checks.push({
+    ok: !/noindex/i.test(robotsMeta),
+    label: "Indexável (sem noindex)",
+    detail: robotsMeta || "(sem meta robots)",
+  });
+
+  const canonical = doc.querySelector('link[rel="canonical"]')?.getAttribute("href") ?? "";
+  checks.push({ ok: /^https?:\/\//i.test(canonical), label: "Canonical absoluto", detail: canonical || "ausente" });
+
+  const ogTitle = doc.querySelector('meta[property="og:title"]')?.getAttribute("content");
+  const ogDesc = doc.querySelector('meta[property="og:description"]')?.getAttribute("content");
+  const ogImage = doc.querySelector('meta[property="og:image"]')?.getAttribute("content");
+  checks.push({ ok: !!(ogTitle && ogDesc && ogImage), label: "OG completo (title+desc+image)" });
+
+  // Core Web Vitals (apenas quando rodando na própria aba)
+  if (typeof performance !== "undefined" && (performance as { getEntriesByType?: (t: string) => PerformanceEntry[] }).getEntriesByType) {
+    const nav = (performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined);
+    if (nav) {
+      const ttfb = Math.round(nav.responseStart);
+      checks.push({ ok: ttfb < 800, label: `TTFB ${ttfb}ms (<800ms ideal)`, detail: `${ttfb}ms` });
+      const domReady = Math.round(nav.domContentLoadedEventEnd);
+      checks.push({ ok: domReady < 2500, label: `DOMContentLoaded ${domReady}ms`, detail: `${domReady}ms` });
+    }
+  }
+
+  return checks;
+}
+
+// ---------------- Sitemap audit ----------------
+
+interface SitemapAudit {
+  url: string;
+  ok: boolean;
+  status?: number;
+  urlCount?: number;
+  hasExpected?: boolean;
+  error?: string;
+}
+
+const EXPECTED_SITEMAP_PATHS = ["/", "/servicos", "/precos", "/blog", "/contato"];
+
+async function auditSitemaps(robotsRaw: string): Promise<SitemapAudit[]> {
+  const lines = robotsRaw.match(/^\s*Sitemap:\s*(\S+)/gim) ?? [];
+  const urls = lines.map((l) => l.replace(/^\s*Sitemap:\s*/i, "").trim()).filter(Boolean);
+  if (urls.length === 0) return [];
+  const results: SitemapAudit[] = [];
+  for (const url of urls) {
+    try {
+      // Tentar via mesma origem para evitar CORS quando possível.
+      const sameOrigin = url.replace(/^https?:\/\/[^/]+/, "");
+      const fetchUrl = sameOrigin.startsWith("/") ? sameOrigin : url;
+      const res = await fetch(fetchUrl, { cache: "no-store" });
+      if (!res.ok) {
+        results.push({ url, ok: false, status: res.status, error: `HTTP ${res.status}` });
+        continue;
+      }
+      const text = await res.text();
+      const locs = Array.from(text.matchAll(/<loc>([^<]+)<\/loc>/g)).map((m) => m[1]);
+      const hasExpected = EXPECTED_SITEMAP_PATHS.every((p) =>
+        locs.some((l) => l.endsWith(p) || l.endsWith(`${p}/`)),
+      );
+      results.push({ url, ok: true, status: res.status, urlCount: locs.length, hasExpected });
+    } catch (e) {
+      results.push({ url, ok: false, error: (e as Error).message });
+    }
+  }
+  return results;
+}
+
+
 // ---------------- Bulk audit ----------------
 
 const BULK_DEFAULT_ROUTES = [

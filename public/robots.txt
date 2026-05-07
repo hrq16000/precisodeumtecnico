@@ -12,3 +12,8 @@ Allow: /
 
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /auth
+
+Sitemap: https://precisodeumtecnico.com/sitemap.xml
+Host: https://precisodeumtecnico.com

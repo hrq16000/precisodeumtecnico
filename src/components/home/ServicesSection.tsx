@@ -16,6 +16,7 @@ import {
   Gamepad2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { trackCtaClick } from "@/lib/analytics";
 
 import serviceComputer from "@/assets/service-computer.jpg";
 import serviceNotebook from "@/assets/service-notebook.jpg";
@@ -125,6 +126,7 @@ export function ServicesSection() {
             <Link
               key={service.title}
               to={service.href}
+              onClick={() => trackCtaClick({ surface: "services_section", cta_id: "service_card", label: service.title, destination: service.href, service: service.title })}
               className="group bg-card rounded-2xl overflow-hidden border border-border hover:shadow-xl hover:border-primary/30 transition-all duration-300 hover:-translate-y-1"
             >
               {/* Image */}
@@ -164,7 +166,7 @@ export function ServicesSection() {
         {/* CTA */}
         <div className="text-center mt-12">
           <Button size="lg" asChild>
-            <Link to="/servicos">
+            <Link to="/servicos" onClick={() => trackCtaClick({ surface: "services_section", cta_id: "view_all_services", label: "Ver todos os serviços", destination: "/servicos" })}>
               Ver todos os serviços
               <ArrowRight className="w-4 h-4 ml-2" />
             </Link>

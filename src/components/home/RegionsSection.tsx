@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { MapPin, ArrowRight, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { trackCtaClick } from "@/lib/analytics";
 const mainCities = [{
   name: "Curitiba",
   href: "/regioes/curitiba",
@@ -69,7 +70,7 @@ export function RegionsSection() {
 
         {/* Main Cities */}
         <div className="grid md:grid-cols-2 gap-6 mb-12">
-          {mainCities.map(city => <Link key={city.name} to={city.href} className="group bg-card rounded-2xl p-8 card-shadow hover:card-shadow-hover transition-all duration-300 border border-border/50 hover:-translate-y-1">
+          {mainCities.map(city => <Link key={city.name} to={city.href} onClick={() => trackCtaClick({ surface: "regions_section", cta_id: "main_city_card", label: city.name, destination: city.href, city: city.name })} className="group bg-card rounded-2xl p-8 card-shadow hover:card-shadow-hover transition-all duration-300 border border-border/50 hover:-translate-y-1">
               <div className="flex items-start justify-between mb-6">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
@@ -103,7 +104,7 @@ export function RegionsSection() {
             Outras Cidades da Região Metropolitana
           </h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-            {otherCities.map(city => <Link key={city.name} to={city.href} className="flex items-center gap-2 px-4 py-3 rounded-lg bg-secondary/50 hover:bg-primary/10 hover:text-primary transition-colors text-sm font-medium">
+            {otherCities.map(city => <Link key={city.name} to={city.href} onClick={() => trackCtaClick({ surface: "regions_section", cta_id: "other_city_chip", label: city.name, destination: city.href, city: city.name })} className="flex items-center gap-2 px-4 py-3 rounded-lg bg-secondary/50 hover:bg-primary/10 hover:text-primary transition-colors text-sm font-medium">
                 <MapPin className="w-4 h-4 flex-shrink-0" />
                 {city.name}
               </Link>)}
@@ -113,7 +114,7 @@ export function RegionsSection() {
         {/* CTA */}
         <div className="text-center mt-12">
           <Button size="lg" asChild>
-            <Link to="/regioes">
+            <Link to="/regioes" onClick={() => trackCtaClick({ surface: "regions_section", cta_id: "view_all_regions", label: "Ver todas as regiões", destination: "/regioes" })}>
               Ver todas as regiões
               <ArrowRight className="w-4 h-4" />
             </Link>

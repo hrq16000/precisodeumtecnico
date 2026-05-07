@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Phone, Mail, MapPin, Clock, MessageCircle, Facebook, Instagram } from "lucide-react";
 import { Logo } from "@/components/Logo";
+import { trackCtaClick, trackWhatsAppClick } from "@/lib/analytics";
 
 const services = [
   { name: "Informática", href: "/servicos/informatica" },
@@ -55,7 +56,7 @@ export function Footer() {
             <ul className="space-y-3">
               {services.map((service) => (
                 <li key={service.name}>
-                  <Link to={service.href} className="text-background/70 hover:text-primary transition-colors text-sm">
+                  <Link to={service.href} onClick={() => trackCtaClick({ surface: "footer", cta_id: "footer_service", label: service.name, destination: service.href, service: service.name })} className="text-background/70 hover:text-primary transition-colors text-sm">
                     {service.name}
                   </Link>
                 </li>
@@ -74,7 +75,7 @@ export function Footer() {
             <ul className="space-y-3">
               {regions.map((region) => (
                 <li key={region.name}>
-                  <Link to={region.href} className="text-background/70 hover:text-primary transition-colors text-sm">
+                  <Link to={region.href} onClick={() => trackCtaClick({ surface: "footer", cta_id: "footer_region", label: region.name, destination: region.href, city: region.name })} className="text-background/70 hover:text-primary transition-colors text-sm">
                     {region.name}
                   </Link>
                 </li>
@@ -95,7 +96,7 @@ export function Footer() {
                 <MessageCircle className="w-5 h-5 text-success mt-0.5 flex-shrink-0" />
                 <div>
                   <span className="block text-sm text-background/70">WhatsApp 24h</span>
-                  <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="font-semibold hover:text-primary transition-colors">
+                  <a href={whatsappLink} target="_blank" rel="noopener noreferrer" onClick={() => trackWhatsAppClick({ source: "footer" })} className="font-semibold hover:text-primary transition-colors">
                     (41) 9 9745-2053
                   </a>
                 </div>

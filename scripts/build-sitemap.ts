@@ -12,7 +12,7 @@ import {
   colomboBairros,
   araucariaBairros,
 } from "../src/data/regions";
-import { blogPosts, blogCategories } from "../src/data/blog";
+import { allBlogPosts as blogPosts, blogCategories } from "../src/data/blog";
 
 const BASE = "https://precisodeumtecnico.com";
 const today = new Date().toISOString().split("T")[0];

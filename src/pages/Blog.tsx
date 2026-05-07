@@ -4,7 +4,7 @@ import { SEOHead } from "@/components/seo/SEOHead";
 import { Reveal } from "@/components/Reveal";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { blogPosts, blogCategories } from "@/data/blog";
+import { allBlogPosts as blogPosts, blogCategories } from "@/data/blog";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
 
 export default function Blog() {

@@ -11,7 +11,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { blogPostsMap, blogCategories, blogPosts } from "@/data/blog";
+import { blogPostsMap, blogCategories, allBlogPosts as blogPosts } from "@/data/blog";
 import { servicesData } from "@/data/services";
 import { citiesData } from "@/data/regions";
 import { Calendar, Clock, MessageCircle, ArrowRight } from "lucide-react";

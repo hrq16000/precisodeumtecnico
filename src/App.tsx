@@ -16,6 +16,10 @@ import Contato from "./pages/Contato";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
 import TermosOrcamento from "./pages/TermosOrcamento";
+import ServicoCidade from "./pages/ServicoCidade";
+import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
+import BlogCategory from "./pages/BlogCategory";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -40,6 +44,10 @@ const App = () => (
               <Route path="/auth" element={<Auth />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/termos-orcamento-pre-aprovado" element={<TermosOrcamento />} />
+              <Route path="/servico-em/:city/:service" element={<ServicoCidade />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/categoria/:slug" element={<BlogCategory />} />
+              <Route path="/blog/:slug" element={<BlogPost />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

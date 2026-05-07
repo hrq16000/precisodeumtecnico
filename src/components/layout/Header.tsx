@@ -70,9 +70,9 @@ export function Header() {
       {/* Main Header */}
       <div className="border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
         <div className="container-custom">
-          <div className="flex h-20 md:h-24 lg:h-28 items-center justify-between">
+          <div className="flex h-16 sm:h-20 md:h-24 lg:h-28 items-center justify-between gap-2">
             {/* Logo */}
-            <Logo variant="dark" size="md" />
+            <Logo variant="dark" size="md" priority className="shrink-0 max-w-[60%] sm:max-w-none" />
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-1">

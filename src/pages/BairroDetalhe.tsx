@@ -17,6 +17,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { QuickDiagnosisQuiz } from "@/components/QuickDiagnosisQuiz";
+import { trackWhatsAppClick } from "@/lib/analytics";
 import NotFound from "./NotFound";
 
 const serviceIcons: Record<string, any> = {

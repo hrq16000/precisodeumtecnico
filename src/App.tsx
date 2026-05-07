@@ -21,6 +21,7 @@ import Precos from "./pages/Precos";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import BlogCategory from "./pages/BlogCategory";
+import Diagnostics from "./pages/Diagnostics";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -50,6 +51,8 @@ const App = () => (
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/categoria/:slug" element={<BlogCategory />} />
               <Route path="/blog/:slug" element={<BlogPost />} />
+              <Route path="/diagnostics" element={<Diagnostics />} />
+              <Route path="/diagnostico" element={<Diagnostics />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

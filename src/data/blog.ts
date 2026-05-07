@@ -21,6 +21,8 @@ export interface BlogPost {
   faqs?: { question: string; answer: string }[];
   relatedServices?: string[];
   relatedCities?: string[];
+  /** Extra hub-and-spoke internal links rendered at the end of the post. */
+  internalLinks?: { label: string; to: string }[];
 }
 
 export const blogCategories: BlogCategory[] = [

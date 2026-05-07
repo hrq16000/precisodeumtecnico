@@ -46,6 +46,8 @@ const PROBLEMAS: Problema[] = [
     diagnostico: () =>
       "Diagnóstico provável: HD lento, RAM insuficiente ou acúmulo de programas em segundo plano. Solução: upgrade SSD + RAM ou manutenção completa. Custo médio: R$ 380 a R$ 720 com peças.",
     servico: "Upgrade SSD + RAM / Manutenção completa",
+    servicoSlug: "informatica",
+    categoria: "informatica",
     faixaPreco: "R$ 380 a R$ 720",
   },
   {

@@ -90,6 +90,8 @@ const PROBLEMAS: Problema[] = [
       return "Diagnóstico provável: configuração ruim ou roteador antigo. Solução: troca de canal, atualização de firmware ou substituição por Wi-Fi 6. Custo: R$ 150 a R$ 280 (mão de obra).";
     },
     servico: "Configuração de redes / Mesh",
+    servicoSlug: "redes",
+    categoria: "redes",
     faixaPreco: "R$ 150 a R$ 1.800",
   },
   {

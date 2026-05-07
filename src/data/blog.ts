@@ -377,8 +377,9 @@ export const blogPosts: BlogPost[] = [
 // blog listing, category pages, sitemap and BlogPost route all see them.
 // Keep this import at the bottom to avoid circular references.
 import { satellitePosts } from "./satellitePosts";
+import { viralSjpPosts } from "./viralPostsSJP";
 
-export const allBlogPosts: BlogPost[] = [...blogPosts, ...satellitePosts];
+export const allBlogPosts: BlogPost[] = [...viralSjpPosts, ...blogPosts, ...satellitePosts];
 
 export const blogPostsMap: Record<string, BlogPost> = Object.fromEntries(
   allBlogPosts.map((p) => [p.slug, p]),

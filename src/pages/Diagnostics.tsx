@@ -394,6 +394,7 @@ export default function Diagnostics() {
       "twitter:image": readMetaFromDoc(doc, "twitter:image"),
     });
     setAudit(runPageAudit(doc, path));
+    setSeoChecklist(runSeoChecklist(doc));
     setLoadedFor(path);
   };
 

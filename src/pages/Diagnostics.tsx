@@ -825,6 +825,33 @@ export default function Diagnostics() {
           </Card>
 
           <h2 className="font-display text-xl font-bold mb-3">Schemas JSON-LD</h2>
+          {schemas.length > 0 && (
+            <Card className="p-4 mb-4">
+              <p className="text-xs text-muted-foreground mb-2">Tipos detectados nesta página:</p>
+              <div className="flex flex-wrap gap-2">
+                {Object.entries(
+                  schemas.reduce<Record<string, { count: number; errors: number; warnings: number }>>((acc, s) => {
+                    const t = s.type || "unknown";
+                    acc[t] = acc[t] || { count: 0, errors: 0, warnings: 0 };
+                    acc[t].count += 1;
+                    acc[t].errors += s.errors.length;
+                    acc[t].warnings += s.warnings.length;
+                    return acc;
+                  }, {}),
+                ).map(([t, v]) => (
+                  <Badge
+                    key={t}
+                    variant={v.errors ? "destructive" : v.warnings ? "outline" : "secondary"}
+                    title={`${v.count} bloco(s), ${v.errors} erro(s), ${v.warnings} aviso(s)`}
+                  >
+                    {t} ×{v.count}
+                    {v.errors > 0 && ` · ${v.errors}❌`}
+                    {v.warnings > 0 && ` · ${v.warnings}⚠`}
+                  </Badge>
+                ))}
+              </div>
+            </Card>
+          )}
           <div className="space-y-4">
             {schemas.map((s, i) => (
               <Card key={i} className="p-4">

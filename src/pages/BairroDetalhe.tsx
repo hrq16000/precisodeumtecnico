@@ -171,7 +171,7 @@ export default function BairroDetalhe() {
                 size="lg"
                 className="bg-[#25D366] hover:bg-[#20BD5A] text-white text-lg h-14 px-8"
               >
-                <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" onClick={() => trackWhatsAppClick({ source: "bairro_cta", city: city!, bairro: neighborhood })}>
                   <MessageCircle className="mr-2 h-6 w-6" />
                   Chamar Técnico Agora
                 </a>
@@ -288,7 +288,7 @@ export default function BairroDetalhe() {
                   rapidamente até você. Não perca tempo procurando – chame agora via WhatsApp!
                 </p>
                 <Button asChild className="bg-[#25D366] hover:bg-[#20BD5A] text-white">
-                  <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+                  <a href={whatsappLink} target="_blank" rel="noopener noreferrer" onClick={() => trackWhatsAppClick({ source: "bairro_cta", city: city!, bairro: neighborhood })}>
                     <MessageCircle className="mr-2 h-5 w-5" />
                     Chamar Técnico no {neighborhoodName}
                   </a>
@@ -358,7 +358,7 @@ export default function BairroDetalhe() {
             size="lg"
             className="bg-[#25D366] hover:bg-[#20BD5A] text-white text-lg h-14 px-10"
           >
-            <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+            <a href={whatsappLink} target="_blank" rel="noopener noreferrer" onClick={() => trackWhatsAppClick({ source: "bairro_cta", city: city!, bairro: neighborhood })}>
               <MessageCircle className="mr-2 h-6 w-6" />
               Chamar Técnico Agora
             </a>

@@ -36,14 +36,14 @@ const Index = () => {
       />
       
       <HeroSection />
-      <ServicesSection />
-      <QuickQuoteForm />
-      <BenefitsSection />
-      <BrandsSection />
-      <RegionsSection />
-      <TestimonialsSection />
-      <FAQSection />
-      <CTASection />
+      <Reveal><ServicesSection /></Reveal>
+      <Reveal><QuickQuoteForm /></Reveal>
+      <Reveal><BenefitsSection /></Reveal>
+      <Reveal><BrandsSection /></Reveal>
+      <Reveal><RegionsSection /></Reveal>
+      <Reveal><TestimonialsSection /></Reveal>
+      <Reveal><FAQSection /></Reveal>
+      <Reveal><CTASection /></Reveal>
     </Layout>
   );
 };

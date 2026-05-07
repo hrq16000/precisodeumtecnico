@@ -106,11 +106,15 @@ export function SEOHead({
       <meta name="geo.region" content="BR-PR" />
       <meta name="geo.placename" content="Curitiba" />
 
-      {schemas.map((s, i) => (
-        <script key={i} type="application/ld+json">
-          {JSON.stringify(s)}
-        </script>
-      ))}
+      {schemas.map((s, i) => {
+        const json = safeStringify(s, i);
+        if (!json) return null;
+        return (
+          <script key={i} type="application/ld+json">
+            {json}
+          </script>
+        );
+      })}
     </Helmet>
   );
 }

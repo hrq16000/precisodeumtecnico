@@ -375,6 +375,11 @@ export default function Diagnostics() {
   const [robotsAudit, setRobotsAudit] = useState<RobotsAudit | null>(null);
   const [robotsLoading, setRobotsLoading] = useState(false);
 
+  // SEO checklist + sitemap audit
+  const [seoChecklist, setSeoChecklist] = useState<AuditCheck[]>([]);
+  const [sitemapAudits, setSitemapAudits] = useState<SitemapAudit[]>([]);
+  const [sitemapLoading, setSitemapLoading] = useState(false);
+
   const collect = (doc: Document, path: string) => {
     setSchemas(readSchemasFromDoc(doc));
     setMeta({

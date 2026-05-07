@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { TermsDialog } from "@/components/TermsDialog";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -326,9 +327,10 @@ export function QuickDiagnosisQuiz({ city, bairro }: QuickDiagnosisQuizProps = {
 
         <p className="text-xs text-muted-foreground text-center mt-4">
           *Diagnóstico orientativo. O valor final é definido após visita técnica (R$ 99,99, abatida na execução).{" "}
-          <a href="/termos-orcamento-pre-aprovado" className="underline hover:text-primary">
-            Termos do orçamento pré-aprovado
-          </a>
+          <TermsDialog
+            triggerLabel="Termos do orçamento pré-aprovado"
+            triggerClassName="underline hover:text-primary cursor-pointer"
+          />
           .
         </p>
       </div>

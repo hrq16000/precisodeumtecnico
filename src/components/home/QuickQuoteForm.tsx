@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { TermsDialog } from "@/components/TermsDialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -158,14 +159,10 @@ export function QuickQuoteForm() {
                 />
                 <label htmlFor="terms-quick" className="text-sm text-muted-foreground leading-tight cursor-pointer">
                   Li e concordo com os{" "}
-                  <a
-                    href="/termos-orcamento-pre-aprovado"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-primary font-semibold hover:underline"
-                  >
-                    Termos de Orçamento Pré-Aprovado
-                  </a>
+                  <TermsDialog
+                    triggerLabel="Termos de Orçamento Pré-Aprovado"
+                    triggerClassName="text-primary font-semibold hover:underline cursor-pointer"
+                  />
                 </label>
               </div>
 

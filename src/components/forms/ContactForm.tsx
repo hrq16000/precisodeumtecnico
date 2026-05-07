@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { TermsDialog } from "@/components/TermsDialog";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -365,14 +366,10 @@ export function ContactForm() {
             />
             <label htmlFor="terms-contact" className="text-sm text-muted-foreground leading-tight cursor-pointer">
               Li e concordo com os{" "}
-              <a
-                href="/termos-orcamento-pre-aprovado"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary font-semibold hover:underline"
-              >
-                Termos de Orçamento Pré-Aprovado
-              </a>
+              <TermsDialog
+                triggerLabel="Termos de Orçamento Pré-Aprovado"
+                triggerClassName="text-primary font-semibold hover:underline cursor-pointer"
+              />
             </label>
           </div>
 

@@ -300,7 +300,7 @@ export default function BairroDetalhe() {
       </section>
 
       {/* Quiz diagnóstico */}
-      <QuickDiagnosisQuiz />
+      <QuickDiagnosisQuiz city={city!} bairro={neighborhoodName} />
 
       {/* FAQ */}
       <section className="py-16 bg-muted/30">

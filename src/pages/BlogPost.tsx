@@ -26,6 +26,7 @@ export default function BlogPost() {
 
   const category = blogCategories.find((c) => c.slug === post.category);
   const url = `https://precisodeumtecnico.com/blog/${post.slug}`;
+  const ogImage = `https://precisodeumtecnico.com/og/${post.category}.jpg`;
 
   const articleSchema = {
     "@context": "https://schema.org",

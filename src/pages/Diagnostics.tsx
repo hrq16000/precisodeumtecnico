@@ -36,13 +36,18 @@ function validate(parsed: unknown): { type: string; errors: string[]; warnings: 
     return { type: "unknown", errors: ["Não é um objeto JSON válido."], warnings };
   }
   const obj = parsed as Record<string, unknown>;
-  const type = String(obj["@type"] ?? "unknown");
+  const rawType = obj["@type"];
+  const type = Array.isArray(rawType) ? String(rawType[0]) : String(rawType ?? "unknown");
   if (!obj["@context"]) errors.push("Faltando @context");
   if (!obj["@type"]) errors.push("Faltando @type");
+  if (obj["@type"] && !KNOWN_TYPES.has(type)) {
+    warnings.push(`@type "${type}" não está na lista de tipos validados`);
+  }
   const required = REQUIRED_BY_TYPE[type];
   if (required) {
     for (const k of required) {
-      if (obj[k] === undefined) errors.push(`Faltando "${k}" para @type=${type}`);
+      if (obj[k] === undefined || obj[k] === null || obj[k] === "")
+        errors.push(`Campo obrigatório ausente para @type=${type}: "${k}"`);
     }
   }
   if (type === "FAQPage" && Array.isArray(obj.mainEntity)) {
@@ -59,6 +64,12 @@ function validate(parsed: unknown): { type: string; errors: string[]; warnings: 
       if (!e.name) warnings.push(`itemListElement[${i}].name ausente`);
     });
   }
+  if (type === "LocalBusiness") {
+    if (!obj.openingHoursSpecification && !obj.openingHours)
+      warnings.push("LocalBusiness sem openingHoursSpecification (recomendado)");
+    if (!obj.aggregateRating) warnings.push("LocalBusiness sem aggregateRating (recomendado)");
+  }
+  if (type === "Service" && !obj.areaServed) warnings.push("Service sem areaServed (recomendado)");
   return { type, errors, warnings };
 }
 

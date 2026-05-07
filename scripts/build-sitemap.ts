@@ -1,6 +1,8 @@
 // Build-time sitemap generator. Run with: bun scripts/build-sitemap.ts
 // Produces public/sitemap.xml with all routes plus accurate lastmod dates
-// derived from source-file mtimes (so any content edit shifts lastmod).
+// derived from source-file mtimes. Processes URLs in async batches so the
+// event loop stays responsive even with thousands of pages, and yields back
+// to the runtime between batches.
 
 import { writeFileSync, statSync, existsSync } from "node:fs";
 import { servicesData } from "../src/data/services";
@@ -16,6 +18,7 @@ import { allBlogPosts as blogPosts, blogCategories } from "../src/data/blog";
 
 const BASE = "https://precisodeumtecnico.com";
 const today = new Date().toISOString().split("T")[0];
+const BATCH_SIZE = 250; // URLs processed per microtask yield
 
 const fileDate = (path: string): string => {
   try {
@@ -51,80 +54,103 @@ interface Url {
 const urls: Url[] = [];
 const add = (u: Url) => urls.push(u);
 
-// Static pages — use mtime of corresponding page file when relevant.
-add({ loc: `${BASE}/`, changefreq: "daily", priority: 1.0, lastmod: indexMtime });
-add({ loc: `${BASE}/servicos`, changefreq: "weekly", priority: 0.9, lastmod: servicesMtime });
-add({ loc: `${BASE}/regioes`, changefreq: "weekly", priority: 0.9, lastmod: regionsMtime });
-add({ loc: `${BASE}/sobre`, changefreq: "monthly", priority: 0.6, lastmod: fileDate("src/pages/Sobre.tsx") });
-add({ loc: `${BASE}/contato`, changefreq: "monthly", priority: 0.7, lastmod: fileDate("src/pages/Contato.tsx") });
-add({ loc: `${BASE}/termos-orcamento-pre-aprovado`, changefreq: "yearly", priority: 0.5, lastmod: fileDate("src/pages/TermosOrcamento.tsx") });
-add({ loc: `${BASE}/blog`, changefreq: "weekly", priority: 0.9, lastmod: blogMtime });
-add({ loc: `${BASE}/precos`, changefreq: "weekly", priority: 0.85, lastmod: precosMtime });
-
-// Services
-for (const slug of Object.keys(servicesData)) {
-  add({ loc: `${BASE}/servicos/${slug}`, changefreq: "weekly", priority: 0.85, lastmod: servicesMtime });
+// ---- Generators (lazy) ----
+function* staticUrls(): Generator<Url> {
+  yield { loc: `${BASE}/`, changefreq: "daily", priority: 1.0, lastmod: indexMtime };
+  yield { loc: `${BASE}/servicos`, changefreq: "weekly", priority: 0.9, lastmod: servicesMtime };
+  yield { loc: `${BASE}/regioes`, changefreq: "weekly", priority: 0.9, lastmod: regionsMtime };
+  yield { loc: `${BASE}/sobre`, changefreq: "monthly", priority: 0.6, lastmod: fileDate("src/pages/Sobre.tsx") };
+  yield { loc: `${BASE}/contato`, changefreq: "monthly", priority: 0.7, lastmod: fileDate("src/pages/Contato.tsx") };
+  yield { loc: `${BASE}/termos-orcamento-pre-aprovado`, changefreq: "yearly", priority: 0.5, lastmod: fileDate("src/pages/TermosOrcamento.tsx") };
+  yield { loc: `${BASE}/blog`, changefreq: "weekly", priority: 0.9, lastmod: blogMtime };
+  yield { loc: `${BASE}/precos`, changefreq: "weekly", priority: 0.85, lastmod: precosMtime };
 }
 
-// Cities
-for (const slug of Object.keys(citiesData)) {
-  add({ loc: `${BASE}/regioes/${slug}`, changefreq: "weekly", priority: 0.85, lastmod: regionsMtime });
+function* serviceUrls(): Generator<Url> {
+  for (const slug of Object.keys(servicesData))
+    yield { loc: `${BASE}/servicos/${slug}`, changefreq: "weekly", priority: 0.85, lastmod: servicesMtime };
 }
 
-// Service × City matrix
-for (const cityKey of Object.keys(citiesData)) {
-  for (const serviceKey of Object.keys(servicesData)) {
-    add({
-      loc: `${BASE}/servico-em/${cityKey}/${serviceKey}`,
-      changefreq: "weekly",
-      priority: 0.7,
-      lastmod: servicesMtime > regionsMtime ? servicesMtime : regionsMtime,
-    });
+function* cityUrls(): Generator<Url> {
+  for (const slug of Object.keys(citiesData))
+    yield { loc: `${BASE}/regioes/${slug}`, changefreq: "weekly", priority: 0.85, lastmod: regionsMtime };
+}
+
+function* matrixUrls(): Generator<Url> {
+  const lm = servicesMtime > regionsMtime ? servicesMtime : regionsMtime;
+  for (const cityKey of Object.keys(citiesData))
+    for (const serviceKey of Object.keys(servicesData))
+      yield { loc: `${BASE}/servico-em/${cityKey}/${serviceKey}`, changefreq: "weekly", priority: 0.7, lastmod: lm };
+}
+
+function* neighborhoodUrls(): Generator<Url> {
+  const cityBairros: Record<string, string[]> = {
+    curitiba: curitibaBairros,
+    "sao-jose-dos-pinhais": sjpBairros,
+    pinhais: pinhaiBairros,
+    colombo: colomboBairros,
+    araucaria: araucariaBairros,
+  };
+  for (const [city, bairros] of Object.entries(cityBairros))
+    for (const b of bairros)
+      yield { loc: `${BASE}/regioes/${city}/${slugify(b)}`, changefreq: "monthly", priority: 0.6, lastmod: regionsMtime };
+}
+
+function* blogUrls(): Generator<Url> {
+  for (const cat of blogCategories)
+    yield { loc: `${BASE}/blog/categoria/${cat.slug}`, changefreq: "weekly", priority: 0.7, lastmod: blogMtime };
+  for (const post of blogPosts) {
+    const postDate = post.updatedAt ?? post.publishedAt;
+    const fileBased = post.slug.includes("-em-") ? satMtime : blogMtime;
+    const lastmod = postDate > fileBased ? postDate : fileBased;
+    yield { loc: `${BASE}/blog/${post.slug}`, changefreq: "monthly", priority: 0.75, lastmod };
   }
 }
 
-// Neighborhood pages (Curitiba + main metro)
-const cityBairros: Record<string, string[]> = {
-  curitiba: curitibaBairros,
-  "sao-jose-dos-pinhais": sjpBairros,
-  pinhais: pinhaiBairros,
-  colombo: colomboBairros,
-  araucaria: araucariaBairros,
-};
-for (const [city, bairros] of Object.entries(cityBairros)) {
-  for (const b of bairros) {
-    add({ loc: `${BASE}/regioes/${city}/${slugify(b)}`, changefreq: "monthly", priority: 0.6, lastmod: regionsMtime });
+const yieldToLoop = () => new Promise<void>((r) => setImmediate(r));
+
+async function consume(label: string, gen: Generator<Url>) {
+  let count = 0;
+  let batch = 0;
+  for (const u of gen) {
+    add(u);
+    count++;
+    if (++batch >= BATCH_SIZE) {
+      batch = 0;
+      await yieldToLoop();
+    }
   }
+  console.log(`  • ${label}: ${count}`);
 }
 
-// Blog
-for (const cat of blogCategories) {
-  add({ loc: `${BASE}/blog/categoria/${cat.slug}`, changefreq: "weekly", priority: 0.7, lastmod: blogMtime });
-}
-for (const post of blogPosts) {
-  // For satellite posts, fall back to satellite file mtime when newer.
-  const postDate = post.updatedAt ?? post.publishedAt;
-  const fileBased = post.slug.includes("-em-") ? satMtime : blogMtime;
-  const lastmod = postDate > fileBased ? postDate : fileBased;
-  add({
-    loc: `${BASE}/blog/${post.slug}`,
-    changefreq: "monthly",
-    priority: 0.75,
-    lastmod,
-  });
-}
+await consume("static", staticUrls());
+await consume("services", serviceUrls());
+await consume("cities", cityUrls());
+await consume("service×city matrix", matrixUrls());
+await consume("neighborhoods", neighborhoodUrls());
+await consume("blog", blogUrls());
 
-const xml = `<?xml version="1.0" encoding="UTF-8"?>
+// Stream-write XML in chunks instead of one giant template literal.
+const head = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls
-  .map(
-    (u) => `  <url>
+`;
+const tail = `</urlset>\n`;
+
+const parts: string[] = [head];
+for (let i = 0; i < urls.length; i += BATCH_SIZE) {
+  const slice = urls.slice(i, i + BATCH_SIZE);
+  parts.push(
+    slice
+      .map(
+        (u) => `  <url>
     <loc>${u.loc}</loc>${u.lastmod ? `\n    <lastmod>${u.lastmod}</lastmod>` : ""}${u.changefreq ? `\n    <changefreq>${u.changefreq}</changefreq>` : ""}${u.priority ? `\n    <priority>${u.priority.toFixed(2)}</priority>` : ""}
   </url>`,
-  )
-  .join("\n")}
-</urlset>
-`;
+      )
+      .join("\n") + "\n",
+  );
+  await yieldToLoop();
+}
+parts.push(tail);
 
-writeFileSync("public/sitemap.xml", xml);
+writeFileSync("public/sitemap.xml", parts.join(""));
 console.log(`✓ sitemap.xml written with ${urls.length} URLs`);

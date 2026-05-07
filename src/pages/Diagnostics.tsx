@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -57,8 +57,8 @@ function validate(parsed: unknown): { type: string; errors: string[]; warnings: 
   return { type, errors, warnings };
 }
 
-function readSchemas(): SchemaEntry[] {
-  const nodes = Array.from(document.querySelectorAll<HTMLScriptElement>('script[type="application/ld+json"]'));
+function readSchemasFromDoc(doc: Document): SchemaEntry[] {
+  const nodes = Array.from(doc.querySelectorAll<HTMLScriptElement>('script[type="application/ld+json"]'));
   return nodes.map((n) => {
     const raw = n.textContent ?? "";
     try {
@@ -71,10 +71,10 @@ function readSchemas(): SchemaEntry[] {
   });
 }
 
-function readMeta(name: string) {
+function readMetaFromDoc(doc: Document, name: string) {
   const el =
-    document.querySelector(`meta[property="${name}"]`) ||
-    document.querySelector(`meta[name="${name}"]`);
+    doc.querySelector(`meta[property="${name}"]`) ||
+    doc.querySelector(`meta[name="${name}"]`);
   return el?.getAttribute("content") ?? null;
 }
 
@@ -86,34 +86,64 @@ export default function Diagnostics() {
   });
   const [loadedFor, setLoadedFor] = useState<string>("/diagnostics");
   const [meta, setMeta] = useState<Record<string, string | null>>({});
+  const [iframeUrl, setIframeUrl] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
-  const refresh = () => {
-    setSchemas(readSchemas());
+  const collect = (doc: Document, path: string) => {
+    setSchemas(readSchemasFromDoc(doc));
     setMeta({
-      title: document.title,
-      description: readMeta("description"),
-      canonical: document.querySelector('link[rel="canonical"]')?.getAttribute("href") ?? null,
-      "og:title": readMeta("og:title"),
-      "og:description": readMeta("og:description"),
-      "og:image": readMeta("og:image"),
-      "og:type": readMeta("og:type"),
-      "twitter:card": readMeta("twitter:card"),
-      "twitter:image": readMeta("twitter:image"),
+      title: doc.title,
+      description: readMetaFromDoc(doc, "description"),
+      canonical: doc.querySelector('link[rel="canonical"]')?.getAttribute("href") ?? null,
+      "og:title": readMetaFromDoc(doc, "og:title"),
+      "og:description": readMetaFromDoc(doc, "og:description"),
+      "og:image": readMetaFromDoc(doc, "og:image"),
+      "og:type": readMetaFromDoc(doc, "og:type"),
+      "twitter:card": readMetaFromDoc(doc, "twitter:card"),
+      "twitter:image": readMetaFromDoc(doc, "twitter:image"),
     });
-    setLoadedFor(window.location.pathname + window.location.search);
+    setLoadedFor(path);
+  };
+
+  const refresh = () => collect(document, window.location.pathname + window.location.search);
+
+  const auditPath = (path: string) => {
+    if (!path || path === "/diagnostics" || path.startsWith("/diagnostico")) {
+      refresh();
+      setIframeUrl(null);
+      return;
+    }
+    setLoading(true);
+    setIframeUrl(path);
+  };
+
+  const onIframeLoad = () => {
+    const doc = iframeRef.current?.contentDocument;
+    if (!doc) {
+      setLoading(false);
+      return;
+    }
+    // Helmet populates head async — wait one tick.
+    setTimeout(() => {
+      collect(doc, iframeUrl ?? "");
+      setLoading(false);
+    }, 250);
   };
 
   useEffect(() => {
-    // Defer so any Helmet on /diagnostics has flushed first
-    const t = setTimeout(refresh, 50);
+    const initial = new URLSearchParams(window.location.search).get("path");
+    const t = setTimeout(() => {
+      if (initial && initial !== "/" && !initial.startsWith("/diagnostic")) {
+        setTarget(initial);
+        auditPath(initial);
+      } else {
+        refresh();
+      }
+    }, 50);
     return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const inspectInIframe = () => {
-    // Navigate this tab to target so SEOHead populates head, then user reloads
-    // diagnostics or uses browser devtools. We open in new tab and instruct.
-    window.open(target, "_blank", "noopener,noreferrer");
-  };
 
   const totalErrors = schemas.reduce((a, s) => a + s.errors.length, 0);
   const totalWarnings = schemas.reduce((a, s) => a + s.warnings.length, 0);
@@ -128,8 +158,9 @@ export default function Diagnostics() {
         <div className="container-custom max-w-4xl">
           <h1 className="font-display text-3xl md:text-4xl font-bold mb-2">Diagnóstico SEO</h1>
           <p className="text-muted-foreground mb-6">
-            Lista todos os JSON-LD e meta-tags renderizados nesta aba. Para auditar outra rota,
-            abra-a em outra aba e use o "Inspecionar URL" abaixo, ou navegue para a rota e volte.
+            Lista todos os JSON-LD e meta-tags renderizados. Informe um caminho (por exemplo
+            <code> /blog/algum-post</code>) e clique em "Auditar URL" — a rota é carregada num
+            iframe oculto e as tags são extraídas automaticamente.
           </p>
 
           <Card className="p-4 mb-6">
@@ -140,12 +171,28 @@ export default function Diagnostics() {
                 placeholder="/blog/algum-post"
                 className="flex-1 px-3 py-2 rounded border border-border bg-background"
               />
-              <Button variant="outline" onClick={inspectInIframe}>Abrir URL em nova aba</Button>
-              <Button onClick={refresh}>Reescanear esta aba</Button>
+              <Button onClick={() => auditPath(target)} disabled={loading}>
+                {loading ? "Carregando..." : "Auditar URL"}
+              </Button>
+              <Button variant="outline" onClick={refresh}>Reescanear esta aba</Button>
+              <Button variant="ghost" onClick={() => window.open(target, "_blank", "noopener,noreferrer")}>
+                Abrir
+              </Button>
             </div>
             <p className="text-xs text-muted-foreground mt-2">
               Auditando: <code>{loadedFor}</code>
             </p>
+            {iframeUrl && (
+              <iframe
+                ref={iframeRef}
+                src={iframeUrl}
+                onLoad={onIframeLoad}
+                title="audit-frame"
+                className="sr-only"
+                aria-hidden
+                style={{ position: "absolute", width: 1, height: 1, opacity: 0, pointerEvents: "none" }}
+              />
+            )}
           </Card>
 
           <div className="grid sm:grid-cols-3 gap-3 mb-6">

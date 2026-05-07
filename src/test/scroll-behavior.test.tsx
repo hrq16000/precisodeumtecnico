@@ -20,7 +20,8 @@ function PageA() {
     <div>
       <h1>Page A</h1>
       <Link to="/b">go-b</Link>
-      <Link to="/c#section">go-c-hash</Link>
+      <Link to="/c#always">go-c-immediate</Link>
+      <Link to="/c#late">go-c-late</Link>
     </div>
   );
 }
@@ -37,13 +38,14 @@ function PageB() {
 function PageC() {
   const [ready, setReady] = useState(false);
   useEffect(() => {
-    const t = setTimeout(() => setReady(true), 80);
+    const t = setTimeout(() => setReady(true), 30);
     return () => clearTimeout(t);
   }, []);
   return (
     <div>
       <h1>Page C</h1>
-      {ready && <div id="section">target</div>}
+      <div id="always">always-mounted</div>
+      {ready && <div id="late">late-mounted</div>}
     </div>
   );
 }
@@ -80,15 +82,27 @@ describe("SPA scroll behavior", () => {
     expect(last.top).toBe(0);
   });
 
-  it("scrolls into the matching element for #hash links, even when it mounts late", async () => {
+  it("scrolls into the element for an immediately-present hash anchor", async () => {
     renderApp("/");
     await act(async () => {
-      screen.getByText("go-c-hash").click();
+      screen.getByText("go-c-immediate").click();
     });
-    await waitFor(
-      () => expect(Element.prototype.scrollIntoView).toHaveBeenCalled(),
-      { timeout: 2000 },
-    );
+    await waitFor(() => {
+      expect(Element.prototype.scrollIntoView).toHaveBeenCalled();
+    }, { timeout: 1500 });
+  });
+
+  it("scrolls into the element when the hash anchor mounts late", async () => {
+    renderApp("/");
+    await act(async () => {
+      screen.getByText("go-c-late").click();
+    });
+    await waitFor(() => {
+      expect(screen.queryByText("late-mounted")).toBeInTheDocument();
+    }, { timeout: 1500 });
+    await waitFor(() => {
+      expect(Element.prototype.scrollIntoView).toHaveBeenCalled();
+    }, { timeout: 1500 });
   });
 
   it("does not call window.scrollTo({top:0}) when going back (POP)", async () => {

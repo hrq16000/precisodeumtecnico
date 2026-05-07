@@ -11,7 +11,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { blogPostsMap, blogCategories, blogPosts } from "@/data/blog";
+import { blogPostsMap, blogCategories, allBlogPosts as blogPosts } from "@/data/blog";
 import { servicesData } from "@/data/services";
 import { citiesData } from "@/data/regions";
 import { Calendar, Clock, MessageCircle, ArrowRight } from "lucide-react";
@@ -26,6 +26,7 @@ export default function BlogPost() {
 
   const category = blogCategories.find((c) => c.slug === post.category);
   const url = `https://precisodeumtecnico.com/blog/${post.slug}`;
+  const ogImage = `https://precisodeumtecnico.com/og/${post.category}.jpg`;
 
   const articleSchema = {
     "@context": "https://schema.org",
@@ -81,6 +82,7 @@ export default function BlogPost() {
         title={post.metaTitle}
         description={post.metaDescription}
         canonical={url}
+        ogImage={ogImage}
         type="article"
         keywords={post.tags.join(", ")}
         article={{

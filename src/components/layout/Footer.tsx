@@ -136,6 +136,9 @@ export function Footer() {
               © {currentYear} Preciso de Um Técnico. Todos os direitos reservados.
             </p>
             <div className="flex flex-wrap gap-6">
+              <Link to="/precos" className="text-background/60 hover:text-background text-sm transition-colors">
+                Preços
+              </Link>
               <Link to="/blog" className="text-background/60 hover:text-background text-sm transition-colors">
                 Blog
               </Link>

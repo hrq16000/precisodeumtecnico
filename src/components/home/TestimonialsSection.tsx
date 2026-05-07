@@ -1,41 +1,5 @@
 import { Star, Quote } from "lucide-react";
-const testimonials = [{
-  name: "Carlos Eduardo",
-  location: "Curitiba - Batel",
-  service: "Formatação de Notebook",
-  rating: 5,
-  text: "Excelente atendimento! O técnico chegou rápido, resolveu o problema do meu notebook em menos de 1 hora. Super recomendo!"
-}, {
-  name: "Ana Paula",
-  location: "São José dos Pinhais",
-  service: "Instalação de Câmeras",
-  rating: 5,
-  text: "Instalaram 4 câmeras na minha casa com muita qualidade. Serviço limpo e organizado. Garantia de 1 ano."
-}, {
-  name: "Roberto Silva",
-  location: "Curitiba - Água Verde",
-  service: "Manutenção Elétrica",
-  rating: 5,
-  text: "Precisava urgente arrumar a parte elétrica. Chamei pelo WhatsApp às 20h e o técnico chegou em 40 minutos. Impressionante!"
-}, {
-  name: "Mariana Costa",
-  location: "Colombo",
-  service: "Conserto de PC",
-  rating: 5,
-  text: "Meu computador não ligava mais. O técnico trocou a fonte e fez uma limpeza completa. Voltou a funcionar perfeito!"
-}, {
-  name: "Fernando Martins",
-  location: "Pinhais",
-  service: "Instalação de Ar",
-  rating: 5,
-  text: "Preço justo e serviço de qualidade. Instalaram o ar-condicionado no mesmo dia que entrei em contato."
-}, {
-  name: "Juliana Ferreira",
-  location: "Curitiba - Portão",
-  service: "Configuração de Rede",
-  rating: 5,
-  text: "O técnico configurou toda a rede Wi-Fi da minha casa. Agora tenho internet em todos os cômodos. Muito satisfeita!"
-}];
+import { testimonials } from "@/data/testimonials";
 export function TestimonialsSection() {
   return <section className="section-padding bg-secondary/30">
       <div className="container-custom">

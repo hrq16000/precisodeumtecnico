@@ -11,6 +11,7 @@ import { FAQSection } from "@/components/home/FAQSection";
 import { CTASection } from "@/components/home/CTASection";
 import { QuickQuoteForm } from "@/components/home/QuickQuoteForm";
 import { Reveal } from "@/components/Reveal";
+import { buildReviewsSchema } from "@/data/testimonials";
 import logoWebp from "@/assets/logo.webp";
 
 const Index = () => {
@@ -34,6 +35,10 @@ const Index = () => {
         title="Preciso de Um Técnico | Assistência Técnica Curitiba 24h"
         description="Assistência técnica especializada em Curitiba e Região Metropolitana. Informática, elétrica, CFTV, notebooks, ar-condicionado. Atendimento 24h via WhatsApp. Técnico vai até você!"
         canonical="https://precisodeumtecnico.com"
+        structuredData={(() => {
+          const reviews = buildReviewsSchema();
+          return reviews ? [reviews] : undefined;
+        })()}
       />
       
       <HeroSection />

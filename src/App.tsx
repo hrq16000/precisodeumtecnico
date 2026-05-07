@@ -17,6 +17,7 @@ import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
 import TermosOrcamento from "./pages/TermosOrcamento";
 import ServicoCidade from "./pages/ServicoCidade";
+import Precos from "./pages/Precos";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import BlogCategory from "./pages/BlogCategory";
@@ -45,6 +46,7 @@ const App = () => (
               <Route path="/admin" element={<Admin />} />
               <Route path="/termos-orcamento-pre-aprovado" element={<TermosOrcamento />} />
               <Route path="/servico-em/:city/:service" element={<ServicoCidade />} />
+              <Route path="/precos" element={<Precos />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/categoria/:slug" element={<BlogCategory />} />
               <Route path="/blog/:slug" element={<BlogPost />} />

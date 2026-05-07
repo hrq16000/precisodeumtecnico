@@ -4,7 +4,7 @@ import { SEOHead } from "@/components/seo/SEOHead";
 import { Reveal } from "@/components/Reveal";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { blogPosts, blogCategories } from "@/data/blog";
+import { allBlogPosts as blogPosts, blogCategories } from "@/data/blog";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
 
 export default function Blog() {
@@ -30,6 +30,7 @@ export default function Blog() {
         title="Blog | Dicas, Guias e Preços de Assistência Técnica"
         description="Guias práticos sobre informática, redes Wi-Fi, CFTV, ar-condicionado, elétrica e celulares. Conteúdo escrito por técnicos profissionais em Curitiba."
         canonical="https://precisodeumtecnico.com/blog"
+        ogImage="https://precisodeumtecnico.com/og/blog.jpg"
         structuredData={[blogSchema]}
       />
 

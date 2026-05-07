@@ -183,6 +183,17 @@ export function Header() {
                 </NavigationMenuItem>
 
                 <NavigationMenuItem>
+                  <Link to="/precos">
+                    <NavigationMenuLink className={cn(
+                      "group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary hover:text-foreground focus:bg-secondary focus:text-foreground focus:outline-none",
+                      location.pathname === "/precos" && "bg-secondary text-foreground"
+                    )}>
+                      Preços
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem>
                   <Link to="/sobre">
                     <NavigationMenuLink className={cn(
                       "group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary hover:text-foreground focus:bg-secondary focus:text-foreground focus:outline-none",
@@ -243,6 +254,9 @@ export function Header() {
                 </Link>
                 <Link to="/regioes" className="px-4 py-2 rounded-md hover:bg-secondary transition-colors font-medium" onClick={() => setMobileMenuOpen(false)}>
                   Regiões Atendidas
+                </Link>
+                <Link to="/precos" className="px-4 py-2 rounded-md hover:bg-secondary transition-colors font-medium" onClick={() => setMobileMenuOpen(false)}>
+                  Preços
                 </Link>
                 <Link to="/blog" className="px-4 py-2 rounded-md hover:bg-secondary transition-colors font-medium" onClick={() => setMobileMenuOpen(false)}>
                   Blog

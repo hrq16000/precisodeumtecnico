@@ -61,7 +61,7 @@ export function Logo({
           src={logoFallback}
           alt="Preciso de um Técnico"
           className={cn(
-            "w-auto object-contain transition-[height] duration-500 ease-out",
+            "w-auto object-contain transition-[height] duration-500 ease-out motion-reduce:transition-none",
             "h-[var(--logo-h-base)] sm:h-[var(--logo-h-sm)] md:h-[var(--logo-h-md)] lg:h-[var(--logo-h-lg)]",
           )}
           loading={priority ? "eager" : "lazy"}

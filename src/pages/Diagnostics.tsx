@@ -477,6 +477,12 @@ export default function Diagnostics() {
     const r = await auditRobots();
     setRobotsAudit(r);
     setRobotsLoading(false);
+    if (r.loaded && r.raw) {
+      setSitemapLoading(true);
+      const s = await auditSitemaps(r.raw);
+      setSitemapAudits(s);
+      setSitemapLoading(false);
+    }
   };
 
   useEffect(() => {

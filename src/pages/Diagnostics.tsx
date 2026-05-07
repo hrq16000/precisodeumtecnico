@@ -84,7 +84,6 @@ function runPageAudit(doc: Document, currentPath: string): AuditCheck[] {
   const checks: AuditCheck[] = [];
   const canonical = doc.querySelector('link[rel="canonical"]')?.getAttribute("href") ?? null;
 
-  // Canonical: present + absolute + matches current path (when audited via iframe).
   if (!canonical) {
     checks.push({ ok: false, label: "Canonical presente", detail: "rel=canonical ausente" });
   } else {
@@ -103,7 +102,6 @@ function runPageAudit(doc: Document, currentPath: string): AuditCheck[] {
     } catch { /* ignored */ }
   }
 
-  // Robots
   const robots = doc.querySelector('meta[name="robots"]')?.getAttribute("content") ?? "";
   const noindex = /noindex/i.test(robots);
   const isDiag = currentPath.startsWith("/diagnostic");
@@ -113,7 +111,6 @@ function runPageAudit(doc: Document, currentPath: string): AuditCheck[] {
     detail: robots || "(sem meta robots)",
   });
 
-  // Hreflang (optional but if present must have href + lang).
   const hreflangs = Array.from(doc.querySelectorAll('link[rel="alternate"][hreflang]'));
   if (hreflangs.length) {
     const broken = hreflangs.filter((l) => !l.getAttribute("href") || !l.getAttribute("hreflang"));
@@ -124,7 +121,6 @@ function runPageAudit(doc: Document, currentPath: string): AuditCheck[] {
     });
   }
 
-  // Exatamente 1 H1
   const h1s = doc.querySelectorAll("h1");
   checks.push({
     ok: h1s.length === 1,
@@ -132,11 +128,101 @@ function runPageAudit(doc: Document, currentPath: string): AuditCheck[] {
     detail: `${h1s.length} encontrado(s)${h1s.length ? `: "${(h1s[0].textContent ?? "").trim().slice(0, 80)}"` : ""}`,
   });
 
-  // OG essenciais
   const ogImg = doc.querySelector('meta[property="og:image"]')?.getAttribute("content");
   checks.push({ ok: !!ogImg, label: "og:image definido", detail: ogImg ?? "ausente" });
 
   return checks;
+}
+
+// ---------------- Bulk audit ----------------
+
+const BULK_DEFAULT_ROUTES = [
+  "/",
+  "/servicos",
+  "/servicos/informatica",
+  "/servicos/redes-wifi",
+  "/regioes",
+  "/regioes/curitiba",
+  "/regioes/curitiba/batel",
+  "/servico-em/curitiba/informatica",
+  "/precos",
+  "/blog",
+  "/blog/categoria/informatica",
+  "/contato",
+  "/sobre",
+];
+
+interface BulkResult {
+  path: string;
+  status: "pending" | "ok" | "fail" | "error";
+  schemaCount: number;
+  schemaErrors: number;
+  auditFails: number;
+  failingChecks: string[];
+}
+
+// ---------------- Robots.txt audit ----------------
+
+interface RobotsAudit {
+  loaded: boolean;
+  raw?: string;
+  checks: AuditCheck[];
+}
+
+async function auditRobots(): Promise<RobotsAudit> {
+  try {
+    const res = await fetch("/robots.txt", { cache: "no-store" });
+    if (!res.ok) {
+      return {
+        loaded: false,
+        checks: [{ ok: false, label: "robots.txt acessível", detail: `HTTP ${res.status}` }],
+      };
+    }
+    const raw = await res.text();
+    const lower = raw.toLowerCase();
+    const checks: AuditCheck[] = [];
+
+    checks.push({ ok: true, label: "robots.txt acessível", detail: `${raw.length} bytes` });
+
+    const sitemapMatches = raw.match(/^\s*Sitemap:\s*(\S+)/gim) ?? [];
+    checks.push({
+      ok: sitemapMatches.length > 0,
+      label: "Sitemap declarado",
+      detail: sitemapMatches.join(" | ") || "nenhuma diretiva Sitemap:",
+    });
+    const sitemapAbs = sitemapMatches.every((l) => /https?:\/\//i.test(l));
+    if (sitemapMatches.length) {
+      checks.push({
+        ok: sitemapAbs,
+        label: "Sitemap com URL absoluta (https://)",
+        detail: sitemapAbs ? "ok" : "use URL completa",
+      });
+    }
+
+    checks.push({
+      ok: /user-agent:\s*\*/i.test(raw),
+      label: "Possui User-agent: *",
+    });
+    checks.push({
+      ok: /user-agent:\s*googlebot/i.test(raw),
+      label: "Permite Googlebot explicitamente",
+    });
+    checks.push({
+      ok: !/disallow:\s*\/\s*$/im.test(raw) || /allow:\s*\//i.test(raw),
+      label: "Não bloqueia o site inteiro (Disallow: /)",
+    });
+    checks.push({
+      ok: /disallow:\s*\/admin/i.test(lower),
+      label: "Bloqueia /admin",
+    });
+
+    return { loaded: true, raw, checks };
+  } catch (e) {
+    return {
+      loaded: false,
+      checks: [{ ok: false, label: "robots.txt acessível", detail: (e as Error).message }],
+    };
+  }
 }
 
 export default function Diagnostics() {
@@ -151,6 +237,16 @@ export default function Diagnostics() {
   const [iframeUrl, setIframeUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
+  const onLoadHandlerRef = useRef<(() => void) | null>(null);
+
+  // Bulk audit state
+  const [bulkInput, setBulkInput] = useState<string>(BULK_DEFAULT_ROUTES.join("\n"));
+  const [bulkResults, setBulkResults] = useState<BulkResult[]>([]);
+  const [bulkRunning, setBulkRunning] = useState(false);
+
+  // Robots audit state
+  const [robotsAudit, setRobotsAudit] = useState<RobotsAudit | null>(null);
+  const [robotsLoading, setRobotsLoading] = useState(false);
 
   const collect = (doc: Document, path: string) => {
     setSchemas(readSchemasFromDoc(doc));
@@ -178,20 +274,76 @@ export default function Diagnostics() {
       return;
     }
     setLoading(true);
+    onLoadHandlerRef.current = () => {
+      const doc = iframeRef.current?.contentDocument;
+      if (!doc) { setLoading(false); return; }
+      setTimeout(() => {
+        collect(doc, path);
+        setLoading(false);
+      }, 250);
+    };
     setIframeUrl(path);
   };
 
   const onIframeLoad = () => {
-    const doc = iframeRef.current?.contentDocument;
-    if (!doc) {
-      setLoading(false);
-      return;
+    onLoadHandlerRef.current?.();
+  };
+
+  // Load a path into the hidden iframe and resolve with its document.
+  const loadPathInIframe = (path: string): Promise<Document | null> =>
+    new Promise((resolve) => {
+      onLoadHandlerRef.current = () => {
+        // Wait for Helmet to populate head.
+        setTimeout(() => resolve(iframeRef.current?.contentDocument ?? null), 350);
+      };
+      setIframeUrl((prev) => (prev === path ? `${path}?_=${Date.now()}` : path));
+    });
+
+  const runBulkAudit = async () => {
+    const paths = bulkInput
+      .split("\n")
+      .map((p) => p.trim())
+      .filter((p) => p && p.startsWith("/") && !p.startsWith("/diagnostic"));
+    if (!paths.length) return;
+    setBulkRunning(true);
+    const initial: BulkResult[] = paths.map((p) => ({
+      path: p, status: "pending", schemaCount: 0, schemaErrors: 0, auditFails: 0, failingChecks: [],
+    }));
+    setBulkResults(initial);
+
+    for (let i = 0; i < paths.length; i++) {
+      const path = paths[i];
+      try {
+        const doc = await loadPathInIframe(path);
+        if (!doc) {
+          setBulkResults((prev) => prev.map((r, idx) => idx === i ? { ...r, status: "error" } : r));
+          continue;
+        }
+        const ss = readSchemasFromDoc(doc);
+        const checks = runPageAudit(doc, path);
+        const schemaErrors = ss.reduce((a, s) => a + s.errors.length, 0);
+        const failing = checks.filter((c) => !c.ok);
+        const status: BulkResult["status"] = schemaErrors === 0 && failing.length === 0 ? "ok" : "fail";
+        setBulkResults((prev) => prev.map((r, idx) => idx === i ? {
+          ...r,
+          status,
+          schemaCount: ss.length,
+          schemaErrors,
+          auditFails: failing.length,
+          failingChecks: failing.map((c) => c.label),
+        } : r));
+      } catch {
+        setBulkResults((prev) => prev.map((r, idx) => idx === i ? { ...r, status: "error" } : r));
+      }
     }
-    // Helmet populates head async — wait one tick.
-    setTimeout(() => {
-      collect(doc, iframeUrl ?? "");
-      setLoading(false);
-    }, 250);
+    setBulkRunning(false);
+  };
+
+  const runRobotsAudit = async () => {
+    setRobotsLoading(true);
+    const r = await auditRobots();
+    setRobotsAudit(r);
+    setRobotsLoading(false);
   };
 
   useEffect(() => {
@@ -204,12 +356,22 @@ export default function Diagnostics() {
         refresh();
       }
     }, 50);
+    // Also auto-run robots audit.
+    runRobotsAudit();
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const totalErrors = schemas.reduce((a, s) => a + s.errors.length, 0);
   const totalWarnings = schemas.reduce((a, s) => a + s.warnings.length, 0);
+
+  const bulkSummary = {
+    total: bulkResults.length,
+    ok: bulkResults.filter((r) => r.status === "ok").length,
+    fail: bulkResults.filter((r) => r.status === "fail").length,
+    error: bulkResults.filter((r) => r.status === "error").length,
+    pending: bulkResults.filter((r) => r.status === "pending").length,
+  };
 
   return (
     <Layout>
@@ -221,11 +383,11 @@ export default function Diagnostics() {
         <div className="container-custom max-w-4xl">
           <h1 className="font-display text-3xl md:text-4xl font-bold mb-2">Diagnóstico SEO</h1>
           <p className="text-muted-foreground mb-6">
-            Lista todos os JSON-LD e meta-tags renderizados. Informe um caminho (por exemplo
-            <code> /blog/algum-post</code>) e clique em "Auditar URL" — a rota é carregada num
-            iframe oculto e as tags são extraídas automaticamente.
+            Auditoria de schemas, Open Graph, robots.txt e auditoria em lote de várias rotas.
+            Use <code>?path=/alguma-rota</code> para abrir uma rota específica direto.
           </p>
 
+          {/* Single URL */}
           <Card className="p-4 mb-6">
             <div className="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
               <input
@@ -234,7 +396,7 @@ export default function Diagnostics() {
                 placeholder="/blog/algum-post"
                 className="flex-1 px-3 py-2 rounded border border-border bg-background"
               />
-              <Button onClick={() => auditPath(target)} disabled={loading}>
+              <Button onClick={() => auditPath(target)} disabled={loading || bulkRunning}>
                 {loading ? "Carregando..." : "Auditar URL"}
               </Button>
               <Button variant="outline" onClick={refresh}>Reescanear esta aba</Button>
@@ -258,6 +420,108 @@ export default function Diagnostics() {
             )}
           </Card>
 
+          {/* Bulk audit */}
+          <h2 className="font-display text-xl font-bold mb-3">Auditoria em lote</h2>
+          <Card className="p-4 mb-8">
+            <p className="text-sm text-muted-foreground mb-2">
+              Uma rota por linha. Cada URL é carregada em sequência num iframe oculto e validada.
+            </p>
+            <textarea
+              value={bulkInput}
+              onChange={(e) => setBulkInput(e.target.value)}
+              rows={8}
+              className="w-full px-3 py-2 rounded border border-border bg-background font-mono text-xs"
+              disabled={bulkRunning}
+            />
+            <div className="flex flex-wrap gap-2 mt-3 items-center">
+              <Button onClick={runBulkAudit} disabled={bulkRunning || loading}>
+                {bulkRunning ? "Auditando..." : "Rodar auditoria em lote"}
+              </Button>
+              <Button variant="outline" onClick={() => setBulkInput(BULK_DEFAULT_ROUTES.join("\n"))} disabled={bulkRunning}>
+                Restaurar padrão
+              </Button>
+              {bulkResults.length > 0 && (
+                <div className="flex gap-2 text-xs ml-auto">
+                  <Badge variant="secondary">{bulkSummary.ok} OK</Badge>
+                  {bulkSummary.fail > 0 && <Badge variant="destructive">{bulkSummary.fail} falhas</Badge>}
+                  {bulkSummary.error > 0 && <Badge variant="destructive">{bulkSummary.error} erros</Badge>}
+                  {bulkSummary.pending > 0 && <Badge>{bulkSummary.pending} pendentes</Badge>}
+                </div>
+              )}
+            </div>
+
+            {bulkResults.length > 0 && (
+              <div className="mt-4 overflow-x-auto">
+                <table className="w-full text-xs">
+                  <thead className="text-left text-muted-foreground">
+                    <tr>
+                      <th className="py-1">Rota</th>
+                      <th className="py-1">Status</th>
+                      <th className="py-1">Schemas</th>
+                      <th className="py-1">Erros</th>
+                      <th className="py-1">Falhas</th>
+                      <th className="py-1">Detalhes</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {bulkResults.map((r) => (
+                      <tr key={r.path} className="border-t border-border">
+                        <td className="py-1 pr-2 font-mono break-all">{r.path}</td>
+                        <td className="py-1 pr-2">
+                          {r.status === "ok" && <Badge variant="secondary">OK</Badge>}
+                          {r.status === "fail" && <Badge variant="destructive">FALHA</Badge>}
+                          {r.status === "error" && <Badge variant="destructive">ERRO</Badge>}
+                          {r.status === "pending" && <Badge>...</Badge>}
+                        </td>
+                        <td className="py-1 pr-2">{r.schemaCount}</td>
+                        <td className="py-1 pr-2">{r.schemaErrors}</td>
+                        <td className="py-1 pr-2">{r.auditFails}</td>
+                        <td className="py-1 text-muted-foreground">{r.failingChecks.join(", ")}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </Card>
+
+          {/* robots.txt */}
+          <h2 className="font-display text-xl font-bold mb-3">robots.txt</h2>
+          <Card className="p-4 mb-8">
+            <div className="flex items-center gap-2 mb-3">
+              <Button size="sm" onClick={runRobotsAudit} disabled={robotsLoading}>
+                {robotsLoading ? "Verificando..." : "Reverificar robots.txt"}
+              </Button>
+              <a className="text-xs underline" href="/robots.txt" target="_blank" rel="noopener noreferrer">abrir</a>
+            </div>
+            {robotsAudit ? (
+              <>
+                <ul className="space-y-2 text-sm">
+                  {robotsAudit.checks.map((c, i) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <Badge variant={c.ok ? "secondary" : "destructive"} className="mt-0.5">
+                        {c.ok ? "OK" : "FALHA"}
+                      </Badge>
+                      <div className="flex-1">
+                        <p className="font-medium">{c.label}</p>
+                        {c.detail && <p className="text-xs text-muted-foreground break-all">{c.detail}</p>}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+                {robotsAudit.raw && (
+                  <details className="mt-3">
+                    <summary className="cursor-pointer text-xs text-muted-foreground">Ver robots.txt</summary>
+                    <pre className="mt-2 text-xs bg-secondary/40 p-3 rounded overflow-auto max-h-64">{robotsAudit.raw}</pre>
+                  </details>
+                )}
+              </>
+            ) : (
+              <p className="text-muted-foreground text-sm">Carregando…</p>
+            )}
+          </Card>
+
+          {/* Single page details */}
           <div className="grid sm:grid-cols-3 gap-3 mb-6">
             <Card className="p-4">
               <p className="text-xs text-muted-foreground">Schemas encontrados</p>

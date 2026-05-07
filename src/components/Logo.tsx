@@ -42,6 +42,7 @@ export function Logo({
         "inline-flex items-center rounded-xl px-2 py-1.5 sm:px-3 sm:py-2",
         "transition-[transform,box-shadow] duration-500 ease-out will-change-transform",
         "hover:scale-[1.03]",
+        "motion-reduce:transition-none motion-reduce:transform-none motion-reduce:hover:scale-100",
         bgClasses,
         className,
       )}
@@ -60,7 +61,7 @@ export function Logo({
           src={logoFallback}
           alt="Preciso de um Técnico"
           className={cn(
-            "w-auto object-contain transition-[height] duration-500 ease-out",
+            "w-auto object-contain transition-[height] duration-500 ease-out motion-reduce:transition-none",
             "h-[var(--logo-h-base)] sm:h-[var(--logo-h-sm)] md:h-[var(--logo-h-md)] lg:h-[var(--logo-h-lg)]",
           )}
           loading={priority ? "eager" : "lazy"}

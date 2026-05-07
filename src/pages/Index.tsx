@@ -10,6 +10,7 @@ import { BrandsSection } from "@/components/home/BrandsSection";
 import { FAQSection } from "@/components/home/FAQSection";
 import { CTASection } from "@/components/home/CTASection";
 import { QuickQuoteForm } from "@/components/home/QuickQuoteForm";
+import { Reveal } from "@/components/Reveal";
 import logoWebp from "@/assets/logo.webp";
 
 const Index = () => {
@@ -36,14 +37,14 @@ const Index = () => {
       />
       
       <HeroSection />
-      <ServicesSection />
-      <QuickQuoteForm />
-      <BenefitsSection />
-      <BrandsSection />
-      <RegionsSection />
-      <TestimonialsSection />
-      <FAQSection />
-      <CTASection />
+      <Reveal><ServicesSection /></Reveal>
+      <Reveal><QuickQuoteForm /></Reveal>
+      <Reveal><BenefitsSection /></Reveal>
+      <Reveal><BrandsSection /></Reveal>
+      <Reveal><RegionsSection /></Reveal>
+      <Reveal><TestimonialsSection /></Reveal>
+      <Reveal><FAQSection /></Reveal>
+      <Reveal><CTASection /></Reveal>
     </Layout>
   );
 };

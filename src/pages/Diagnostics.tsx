@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -179,8 +179,9 @@ export default function Diagnostics() {
         <div className="container-custom max-w-4xl">
           <h1 className="font-display text-3xl md:text-4xl font-bold mb-2">Diagnóstico SEO</h1>
           <p className="text-muted-foreground mb-6">
-            Lista todos os JSON-LD e meta-tags renderizados nesta aba. Para auditar outra rota,
-            abra-a em outra aba e use o "Inspecionar URL" abaixo, ou navegue para a rota e volte.
+            Lista todos os JSON-LD e meta-tags renderizados. Informe um caminho (por exemplo
+            <code> /blog/algum-post</code>) e clique em "Auditar URL" — a rota é carregada num
+            iframe oculto e as tags são extraídas automaticamente.
           </p>
 
           <Card className="p-4 mb-6">
@@ -191,12 +192,28 @@ export default function Diagnostics() {
                 placeholder="/blog/algum-post"
                 className="flex-1 px-3 py-2 rounded border border-border bg-background"
               />
-              <Button variant="outline" onClick={inspectInIframe}>Abrir URL em nova aba</Button>
-              <Button onClick={refresh}>Reescanear esta aba</Button>
+              <Button onClick={() => auditPath(target)} disabled={loading}>
+                {loading ? "Carregando..." : "Auditar URL"}
+              </Button>
+              <Button variant="outline" onClick={refresh}>Reescanear esta aba</Button>
+              <Button variant="ghost" onClick={() => window.open(target, "_blank", "noopener,noreferrer")}>
+                Abrir
+              </Button>
             </div>
             <p className="text-xs text-muted-foreground mt-2">
               Auditando: <code>{loadedFor}</code>
             </p>
+            {iframeUrl && (
+              <iframe
+                ref={iframeRef}
+                src={iframeUrl}
+                onLoad={onIframeLoad}
+                title="audit-frame"
+                className="sr-only"
+                aria-hidden
+                style={{ position: "absolute", width: 1, height: 1, opacity: 0, pointerEvents: "none" }}
+              />
+            )}
           </Card>
 
           <div className="grid sm:grid-cols-3 gap-3 mb-6">

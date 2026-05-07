@@ -744,6 +744,29 @@ export default function Diagnostics() {
             </ul>
           </Card>
 
+          <h2 className="font-display text-xl font-bold mb-3">Checklist final de SEO</h2>
+          <Card className="p-4 mb-8">
+            <p className="text-xs text-muted-foreground mb-3">
+              Cobre Core Web Vitals (TTFB), headings (H1/H2), links internos, indexabilidade, canonical, OG e metadados.
+            </p>
+            <ul className="space-y-2 text-sm">
+              {seoChecklist.map((c, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <Badge variant={c.ok ? "secondary" : "destructive"} className="mt-0.5">
+                    {c.ok ? "OK" : "REVER"}
+                  </Badge>
+                  <div className="flex-1">
+                    <p className="font-medium">{c.label}</p>
+                    {c.detail && <p className="text-xs text-muted-foreground break-all">{c.detail}</p>}
+                  </div>
+                </li>
+              ))}
+              {seoChecklist.length === 0 && (
+                <li className="text-muted-foreground">Sem checklist gerada ainda.</li>
+              )}
+            </ul>
+          </Card>
+
           <h2 className="font-display text-xl font-bold mb-3">Schemas JSON-LD</h2>
           <div className="space-y-4">
             {schemas.map((s, i) => (

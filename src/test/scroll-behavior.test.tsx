@@ -10,7 +10,7 @@
  *  - Going back (history POP) does not force scroll-to-top.
  */
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { render, screen, act } from "@testing-library/react";
+import { render, screen, act, waitFor } from "@testing-library/react";
 import { MemoryRouter, Routes, Route, Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ScrollToTop } from "@/components/ScrollToTop";
@@ -84,10 +84,11 @@ describe("SPA scroll behavior", () => {
     renderApp("/");
     await act(async () => {
       screen.getByText("go-c-hash").click();
-      // wait > the 80ms deferred mount in PageC
-      await new Promise((r) => setTimeout(r, 200));
     });
-    expect(Element.prototype.scrollIntoView).toHaveBeenCalled();
+    await waitFor(
+      () => expect(Element.prototype.scrollIntoView).toHaveBeenCalled(),
+      { timeout: 2000 },
+    );
   });
 
   it("does not call window.scrollTo({top:0}) when going back (POP)", async () => {

@@ -69,14 +69,7 @@ export function HeroSection() {
             <Button size="lg" className="w-full bg-[#22C55E] hover:bg-[#16A34A] text-white font-bold text-lg py-6 rounded-xl shadow-lg shadow-green-500/30 transition-all hover:scale-[1.02]" asChild>
               <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
                 <MessageCircle className="w-5 h-5 mr-2" />
-                Chamar Técnico Agora
-              </a>
-            </Button>
-            
-            <Button size="lg" variant="outline" className="w-full border-2 border-white/30 bg-white/5 text-white font-bold text-lg py-6 rounded-xl hover:bg-white/10 transition-all" asChild>
-              <a href="tel:+5541997452053">
-                <Phone className="w-5 h-5 mr-2" />
-                (41) 9 9745-2053
+                WhatsApp (41) 9 9745-2053
               </a>
             </Button>
           </div>

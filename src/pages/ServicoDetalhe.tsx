@@ -235,12 +235,6 @@ const ServicoDetalhe = () => {
                   Solicitar Orçamento
                 </a>
               </Button>
-              <Button variant="hero" size="xl" asChild>
-                <a href="tel:+5541997452053">
-                  <Phone className="w-5 h-5" />
-                  (41) 9 9745-2053
-                </a>
-              </Button>
             </div>
           </div>
         </div>

@@ -155,17 +155,6 @@ export default function BairroDetalhe() {
                   Chamar Técnico Agora
                 </a>
               </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="bg-transparent border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 text-lg h-14 px-8"
-              >
-                <a href="tel:+5541997452053">
-                  <Phone className="mr-2 h-5 w-5" />
-                  (41) 9 9745-2053
-                </a>
-              </Button>
             </div>
           </div>
         </div>

@@ -20,14 +20,6 @@ const contactInfo = [
     highlight: true,
   },
   {
-    icon: Phone,
-    title: "Telefone",
-    value: "(41) 9 9745-2053",
-    description: "Ligue para nós",
-    href: "tel:+5541997452053",
-    highlight: false,
-  },
-  {
     icon: Clock,
     title: "Horário Presencial",
     value: "08h às 22h",

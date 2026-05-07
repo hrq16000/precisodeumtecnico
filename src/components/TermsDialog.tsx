@@ -302,10 +302,8 @@ export function TermsDialog({
                 <DialogClose asChild>
                   <button
                     type="button"
-                    onClick={() => {
-                      trackEvent("terms_accept", { source });
-                      onAccept();
-                    }}
+                    data-testid="terms-accept"
+                    onClick={handleAccept}
                     className="w-full inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground text-sm font-semibold px-4 py-3 rounded-lg transition-colors"
                   >
                     <CheckCircle className="h-4 w-4" />
@@ -317,7 +315,7 @@ export function TermsDialog({
               <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
                 <a
                   href="/termos-orcamento-pre-aprovado"
-                  onClick={() => trackEvent("terms_full_page_click", { source })}
+                  onClick={() => trackTermsFullPageClick(source)}
                   className="text-xs text-muted-foreground hover:text-primary underline underline-offset-2"
                 >
                   Abrir página completa

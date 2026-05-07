@@ -371,10 +371,17 @@ export const blogPosts: BlogPost[] = [
   }),
 ];
 
+// Satellite long-tail posts (bairro × service) are merged here so the
+// blog listing, category pages, sitemap and BlogPost route all see them.
+// Keep this import at the bottom to avoid circular references.
+import { satellitePosts } from "./satellitePosts";
+
+export const allBlogPosts: BlogPost[] = [...blogPosts, ...satellitePosts];
+
 export const blogPostsMap: Record<string, BlogPost> = Object.fromEntries(
-  blogPosts.map((p) => [p.slug, p]),
+  allBlogPosts.map((p) => [p.slug, p]),
 );
 
 export function getPostsByCategory(slug: string) {
-  return blogPosts.filter((p) => p.category === slug);
+  return allBlogPosts.filter((p) => p.category === slug);
 }

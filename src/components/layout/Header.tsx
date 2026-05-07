@@ -78,9 +78,19 @@ export function Header() {
       {/* Main Header */}
       <div className="border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
         <div className="container-custom">
-          <div className="flex h-16 sm:h-20 md:h-24 lg:h-28 items-center justify-between gap-2">
+          <div
+            className={cn(
+              "flex items-center justify-between gap-2 transition-all duration-300",
+              scrolled ? "h-16 sm:h-18 md:h-20 lg:h-20" : "h-20 sm:h-24 md:h-28 lg:h-32",
+            )}
+          >
             {/* Logo */}
-            <Logo variant="dark" size="md" priority className="shrink-0 max-w-[60%] sm:max-w-none" />
+            <Logo
+              variant="dark"
+              size={scrolled ? "md" : "lg"}
+              priority
+              className="shrink-0 max-w-[60%] sm:max-w-none transition-all duration-300"
+            />
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-1">

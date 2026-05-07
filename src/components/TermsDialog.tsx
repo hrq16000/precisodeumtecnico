@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -6,6 +6,7 @@ import {
   DialogTitle,
   DialogDescription,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
@@ -22,25 +23,41 @@ import {
   Phone,
   Shield,
 } from "lucide-react";
+import { trackEvent } from "@/lib/analytics";
 
 interface TermsDialogProps {
   /** Element used as trigger. If omitted, a default underlined link is rendered. */
   trigger?: ReactNode;
   triggerClassName?: string;
   triggerLabel?: string;
+  /** Called when the user clicks "Li e aceito os termos" inside the popup. */
+  onAccept?: () => void;
+  /** Source label used for analytics (e.g. "hero", "contact_form", "quick_form", "quiz"). */
+  source?: string;
 }
 
 /**
- * Popup with the full "Termos de Orçamento Pré-Aprovado" content.
- * Use anywhere by passing a custom trigger element.
+ * Standardized "Termos de Orçamento Pré-Aprovado" popup.
+ * - Same title, description and CTAs across every entrypoint.
+ * - Tracks open + "Abrir página completa" click via analytics.
+ * - Radix Dialog provides focus trap, ESC-to-close and a11y by default.
  */
 export function TermsDialog({
   trigger,
   triggerClassName,
   triggerLabel = "Termos de Orçamento Pré-Aprovado",
+  onAccept,
+  source = "unknown",
 }: TermsDialogProps) {
+  const [open, setOpen] = useState(false);
+
+  const handleOpenChange = (next: boolean) => {
+    setOpen(next);
+    if (next) trackEvent("terms_open", { source });
+  };
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         {trigger ?? (
           <button
@@ -55,7 +72,10 @@ export function TermsDialog({
         )}
       </DialogTrigger>
 
-      <DialogContent className="max-w-3xl p-0 gap-0 overflow-hidden">
+      <DialogContent
+        className="max-w-3xl p-0 gap-0 overflow-hidden"
+        aria-describedby="terms-dialog-description"
+      >
         <DialogHeader className="px-6 pt-6 pb-4 border-b border-border bg-gradient-to-br from-primary/10 via-background to-accent/5">
           <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-semibold w-fit mb-2">
             <Shield className="h-3.5 w-3.5" />
@@ -64,7 +84,10 @@ export function TermsDialog({
           <DialogTitle className="text-2xl md:text-3xl font-bold text-foreground">
             Termos de Orçamento Pré-Aprovado
           </DialogTitle>
-          <DialogDescription className="text-muted-foreground">
+          <DialogDescription
+            id="terms-dialog-description"
+            className="text-muted-foreground"
+          >
             Política de diagnóstico, reparo, prazos e logística de serviços técnicos.
           </DialogDescription>
         </DialogHeader>
@@ -131,24 +154,23 @@ export function TermsDialog({
                   <div className="bg-accent/40 rounded-lg p-3 border border-border">
                     <div className="flex items-center gap-2 mb-1">
                       <Package className="h-4 w-4 text-primary" />
-                      <h4 className="font-semibold text-foreground text-sm">
-                        Coleta
-                      </h4>
+                      <h4 className="font-semibold text-foreground text-sm">Coleta</h4>
                     </div>
                     <p className="text-xs">
-                      Mediante <strong className="text-foreground">agendamento prévio</strong>
+                      Mediante{" "}
+                      <strong className="text-foreground">agendamento prévio</strong>
                     </p>
                   </div>
                   <div className="bg-accent/40 rounded-lg p-3 border border-border">
                     <div className="flex items-center gap-2 mb-1">
                       <MapPin className="h-4 w-4 text-primary" />
-                      <h4 className="font-semibold text-foreground text-sm">
-                        Entrega
-                      </h4>
+                      <h4 className="font-semibold text-foreground text-sm">Entrega</h4>
                     </div>
                     <p className="text-xs">
                       Mediante{" "}
-                      <strong className="text-foreground">agendamento após conclusão</strong>
+                      <strong className="text-foreground">
+                        agendamento após conclusão
+                      </strong>
                     </p>
                   </div>
                 </div>
@@ -236,7 +258,9 @@ export function TermsDialog({
             <section>
               <div className="flex items-center gap-2 mb-3">
                 <CheckCircle className="h-5 w-5 text-primary" />
-                <h3 className="text-lg font-bold text-foreground">6 – Aceitação dos Termos</h3>
+                <h3 className="text-lg font-bold text-foreground">
+                  6 – Aceitação dos Termos
+                </h3>
               </div>
               <p className="text-sm text-muted-foreground leading-relaxed">
                 Ao solicitar coleta, diagnóstico, envio para análise, orçamento ou reparo,
@@ -246,22 +270,45 @@ export function TermsDialog({
               </p>
             </section>
 
-            <div className="pt-2 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-3">
-              <a
-                href="/termos-orcamento-pre-aprovado"
-                className="text-xs text-muted-foreground hover:text-primary underline underline-offset-2"
-              >
-                Abrir página completa
-              </a>
-              <a
-                href="https://wa.me/5541997452053?text=Olá! Tenho dúvidas sobre os termos de orçamento pré-aprovado."
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#20BD5A] text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
-              >
-                <Phone className="h-4 w-4" />
-                Tirar dúvidas no WhatsApp
-              </a>
+            {/* Standardized footer / CTAs */}
+            <div className="pt-4 border-t border-border space-y-3">
+              {onAccept && (
+                <DialogClose asChild>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      trackEvent("terms_accept", { source });
+                      onAccept();
+                    }}
+                    className="w-full inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground text-sm font-semibold px-4 py-3 rounded-lg transition-colors"
+                  >
+                    <CheckCircle className="h-4 w-4" />
+                    Li e aceito os Termos de Orçamento Pré-Aprovado
+                  </button>
+                </DialogClose>
+              )}
+
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+                <a
+                  href="/termos-orcamento-pre-aprovado"
+                  onClick={() => trackEvent("terms_full_page_click", { source })}
+                  className="text-xs text-muted-foreground hover:text-primary underline underline-offset-2"
+                >
+                  Abrir página completa
+                </a>
+                <a
+                  href="https://wa.me/5541997452053?text=Olá! Tenho dúvidas sobre os termos de orçamento pré-aprovado."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() =>
+                    trackEvent("whatsapp_click", { source: `terms_${source}` })
+                  }
+                  className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#20BD5A] text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+                >
+                  <Phone className="h-4 w-4" />
+                  Tirar dúvidas no WhatsApp
+                </a>
+              </div>
             </div>
           </div>
         </ScrollArea>

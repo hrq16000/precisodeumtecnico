@@ -78,6 +78,67 @@ function readMetaFromDoc(doc: Document, name: string) {
   return el?.getAttribute("content") ?? null;
 }
 
+interface AuditCheck { ok: boolean; label: string; detail?: string }
+
+function runPageAudit(doc: Document, currentPath: string): AuditCheck[] {
+  const checks: AuditCheck[] = [];
+  const canonical = doc.querySelector('link[rel="canonical"]')?.getAttribute("href") ?? null;
+
+  // Canonical: present + absolute + matches current path (when audited via iframe).
+  if (!canonical) {
+    checks.push({ ok: false, label: "Canonical presente", detail: "rel=canonical ausente" });
+  } else {
+    const isAbsolute = /^https?:\/\//i.test(canonical);
+    checks.push({ ok: isAbsolute, label: "Canonical absoluto", detail: canonical });
+    try {
+      const u = new URL(canonical);
+      if (currentPath && currentPath.startsWith("/")) {
+        const matches = u.pathname.replace(/\/$/, "") === currentPath.split("?")[0].replace(/\/$/, "");
+        checks.push({
+          ok: matches,
+          label: "Canonical aponta para a rota atual",
+          detail: `${u.pathname} ↔ ${currentPath}`,
+        });
+      }
+    } catch { /* ignored */ }
+  }
+
+  // Robots
+  const robots = doc.querySelector('meta[name="robots"]')?.getAttribute("content") ?? "";
+  const noindex = /noindex/i.test(robots);
+  const isDiag = currentPath.startsWith("/diagnostic");
+  checks.push({
+    ok: isDiag ? noindex : !noindex,
+    label: isDiag ? "Diagnóstico marcado como noindex" : "Página indexável (sem noindex)",
+    detail: robots || "(sem meta robots)",
+  });
+
+  // Hreflang (optional but if present must have href + lang).
+  const hreflangs = Array.from(doc.querySelectorAll('link[rel="alternate"][hreflang]'));
+  if (hreflangs.length) {
+    const broken = hreflangs.filter((l) => !l.getAttribute("href") || !l.getAttribute("hreflang"));
+    checks.push({
+      ok: broken.length === 0,
+      label: `${hreflangs.length} hreflang declarado(s)`,
+      detail: broken.length ? `${broken.length} sem href/hreflang` : "todos válidos",
+    });
+  }
+
+  // Exatamente 1 H1
+  const h1s = doc.querySelectorAll("h1");
+  checks.push({
+    ok: h1s.length === 1,
+    label: "Exatamente um <h1>",
+    detail: `${h1s.length} encontrado(s)${h1s.length ? `: "${(h1s[0].textContent ?? "").trim().slice(0, 80)}"` : ""}`,
+  });
+
+  // OG essenciais
+  const ogImg = doc.querySelector('meta[property="og:image"]')?.getAttribute("content");
+  checks.push({ ok: !!ogImg, label: "og:image definido", detail: ogImg ?? "ausente" });
+
+  return checks;
+}
+
 export default function Diagnostics() {
   const [schemas, setSchemas] = useState<SchemaEntry[]>([]);
   const [target, setTarget] = useState<string>(() => {
@@ -86,6 +147,7 @@ export default function Diagnostics() {
   });
   const [loadedFor, setLoadedFor] = useState<string>("/diagnostics");
   const [meta, setMeta] = useState<Record<string, string | null>>({});
+  const [audit, setAudit] = useState<AuditCheck[]>([]);
   const [iframeUrl, setIframeUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
@@ -103,6 +165,7 @@ export default function Diagnostics() {
       "twitter:card": readMetaFromDoc(doc, "twitter:card"),
       "twitter:image": readMetaFromDoc(doc, "twitter:image"),
     });
+    setAudit(runPageAudit(doc, path));
     setLoadedFor(path);
   };
 
@@ -224,6 +287,28 @@ export default function Diagnostics() {
                 ))}
               </tbody>
             </table>
+          </Card>
+
+          <h2 className="font-display text-xl font-bold mb-3">Auditoria da página</h2>
+          <Card className="p-4 mb-8">
+            <ul className="space-y-2 text-sm">
+              {audit.map((c, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <Badge variant={c.ok ? "secondary" : "destructive"} className="mt-0.5">
+                    {c.ok ? "OK" : "FALHA"}
+                  </Badge>
+                  <div className="flex-1">
+                    <p className="font-medium">{c.label}</p>
+                    {c.detail && (
+                      <p className="text-xs text-muted-foreground break-all">{c.detail}</p>
+                    )}
+                  </div>
+                </li>
+              ))}
+              {audit.length === 0 && (
+                <li className="text-muted-foreground">Sem auditorias ainda.</li>
+              )}
+            </ul>
           </Card>
 
           <h2 className="font-display text-xl font-bold mb-3">Schemas JSON-LD</h2>

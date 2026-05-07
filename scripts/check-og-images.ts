@@ -1,16 +1,31 @@
 // Pre-publish OG image validator. Run with: bun scripts/check-og-images.ts
 // Verifies that every og:image referenced by the app exists locally, has
-// the correct 1200x630 dimensions, and (when a base URL is provided) returns
-// HTTP 200 over the network. Exits with code 1 on any failure so CI/build
-// pipelines can block deploys with broken cards.
+// the correct 1200x630 dimensions, and (with OG_BASE_URL) returns HTTP 200
+// over the network. Network HEAD checks are concurrency-limited and cached
+// to disk (.cache/og-head.json) so repeated audits don't hammer the server.
 
-import { existsSync, readFileSync, statSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { blogCategories, allBlogPosts } from "../src/data/blog";
 
 const PUBLIC_DIR = "public";
 const EXPECTED_W = 1200;
 const EXPECTED_H = 630;
 const BASE_URL = process.env.OG_BASE_URL ?? ""; // e.g. https://precisodeumtecnico.com
+const HEAD_CONCURRENCY = Number(process.env.OG_CONCURRENCY ?? 6);
+const CACHE_TTL_MS = Number(process.env.OG_CACHE_TTL_MS ?? 24 * 60 * 60 * 1000); // 24h
+const CACHE_DIR = ".cache";
+const CACHE_FILE = `${CACHE_DIR}/og-head.json`;
+
+interface CacheEntry { status: number; mtime: number; checkedAt: number }
+type Cache = Record<string, CacheEntry>;
+
+function loadCache(): Cache {
+  try { return JSON.parse(readFileSync(CACHE_FILE, "utf8")); } catch { return {}; }
+}
+function saveCache(c: Cache) {
+  try { mkdirSync(CACHE_DIR, { recursive: true }); writeFileSync(CACHE_FILE, JSON.stringify(c)); } catch {}
+}
+const cache = loadCache();
 
 interface Issue { path: string; reason: string }
 const issues: Issue[] = [];
@@ -64,18 +79,41 @@ async function checkPath(rel: string) {
     return;
   }
   if (BASE_URL) {
-    try {
-      const res = await fetch(`${BASE_URL}${rel}`, { method: "HEAD" });
-      if (!res.ok) {
-        issues.push({ path: rel, reason: `HTTP ${res.status} em ${BASE_URL}${rel}` });
+    const url = `${BASE_URL}${rel}`;
+    const localMtime = statSync(local).mtimeMs;
+    const cached = cache[url];
+    const fresh = cached && cached.mtime === localMtime && Date.now() - cached.checkedAt < CACHE_TTL_MS;
+    let status: number;
+    if (fresh) {
+      status = cached.status;
+    } else {
+      try {
+        const res = await fetch(url, { method: "HEAD" });
+        status = res.status;
+        cache[url] = { status, mtime: localMtime, checkedAt: Date.now() };
+      } catch (e) {
+        issues.push({ path: rel, reason: `falha ao buscar: ${(e as Error).message}` });
         return;
       }
-    } catch (e) {
-      issues.push({ path: rel, reason: `falha ao buscar: ${(e as Error).message}` });
+    }
+    if (status < 200 || status >= 400) {
+      issues.push({ path: rel, reason: `HTTP ${status} em ${url}` });
       return;
     }
   }
   ok.push(rel);
+}
+
+/** Run async tasks with bounded concurrency. */
+async function runLimited<T>(items: T[], limit: number, fn: (t: T) => Promise<void>) {
+  let i = 0;
+  const workers = Array.from({ length: Math.min(limit, items.length) }, async () => {
+    while (i < items.length) {
+      const idx = i++;
+      await fn(items[idx]);
+    }
+  });
+  await Promise.all(workers);
 }
 
 const targets = new Set<string>();
@@ -87,7 +125,8 @@ for (const p of allBlogPosts) targets.add(`/og/${p.category}.jpg`);
 
 console.log(`Verificando ${targets.size} imagens OG...${BASE_URL ? ` (HEAD via ${BASE_URL})` : ""}`);
 
-await Promise.all([...targets].map(checkPath));
+await runLimited([...targets], HEAD_CONCURRENCY, checkPath);
+saveCache(cache);
 
 console.log(`✓ ${ok.length} OK`);
 if (issues.length) {

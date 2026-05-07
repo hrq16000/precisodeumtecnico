@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { TermsDialog } from "@/components/TermsDialog";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";

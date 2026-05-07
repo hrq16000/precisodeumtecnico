@@ -18,13 +18,36 @@ const REQUIRED_BY_TYPE: Record<string, string[]> = {
   BreadcrumbList: ["itemListElement"],
   Article: ["headline", "datePublished", "author", "image"],
   BlogPosting: ["headline", "datePublished", "author", "image"],
+  NewsArticle: ["headline", "datePublished", "author", "image"],
   Service: ["name", "provider", "areaServed"],
   LocalBusiness: ["name", "address", "telephone", "url"],
   Organization: ["name", "url"],
-  Review: ["author", "reviewRating"],
+  Review: ["author", "reviewRating", "itemReviewed"],
   AggregateRating: ["ratingValue", "reviewCount"],
   WebSite: ["name", "url"],
+  WebPage: ["name", "url"],
   Blog: ["name"],
+  Product: ["name", "image", "description"],
+  Offer: ["price", "priceCurrency"],
+  Question: ["name", "acceptedAnswer"],
+  Answer: ["text"],
+  PostalAddress: ["addressLocality", "addressCountry"],
+  ImageObject: ["url"],
+  Person: ["name"],
+  VideoObject: ["name", "thumbnailUrl", "uploadDate"],
+  Event: ["name", "startDate", "location"],
+  HowTo: ["name", "step"],
+  Recipe: ["name", "recipeIngredient", "recipeInstructions"],
+};
+
+const RECOMMENDED_BY_TYPE: Record<string, string[]> = {
+  LocalBusiness: ["openingHoursSpecification", "aggregateRating", "geo", "priceRange", "image"],
+  Service: ["areaServed", "offers", "description"],
+  Article: ["publisher", "mainEntityOfPage", "dateModified"],
+  BlogPosting: ["publisher", "mainEntityOfPage", "dateModified"],
+  Product: ["offers", "brand", "aggregateRating"],
+  Organization: ["logo", "sameAs", "contactPoint"],
+  WebSite: ["potentialAction"],
 };
 
 const KNOWN_TYPES = new Set(Object.keys(REQUIRED_BY_TYPE));

@@ -45,6 +45,7 @@ export function HeroSection() {
               </div>
             </div>
             <TermsDialog
+              source="hero"
               triggerLabel="*Consulte os termos de orçamento pré-aprovado"
               triggerClassName="text-white/50 text-xs hover:text-white/70 transition-colors underline underline-offset-2 mt-2 cursor-pointer"
             />

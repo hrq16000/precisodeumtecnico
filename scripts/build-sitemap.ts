@@ -130,6 +130,17 @@ await consume("service×city matrix", matrixUrls());
 await consume("neighborhoods", neighborhoodUrls());
 await consume("blog", blogUrls());
 
+// Dedupe by loc (last write wins for lastmod) — defends against satellite/blog
+// slug overlaps and any future generator collisions.
+{
+  const before = urls.length;
+  const map = new Map<string, Url>();
+  for (const u of urls) map.set(u.loc, u);
+  urls.length = 0;
+  for (const u of map.values()) urls.push(u);
+  if (urls.length !== before) console.log(`  • dedupe: removed ${before - urls.length} duplicate URLs`);
+}
+
 // Sitemaps protocol limits each file to 50 000 URLs / 50 MB. We stay well
 // under that. When the project grows beyond MAX_PER_FILE we automatically
 // emit a sitemap index + N child files; otherwise we keep a single file.

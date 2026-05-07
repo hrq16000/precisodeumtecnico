@@ -125,7 +125,8 @@ for (const p of allBlogPosts) targets.add(`/og/${p.category}.jpg`);
 
 console.log(`Verificando ${targets.size} imagens OG...${BASE_URL ? ` (HEAD via ${BASE_URL})` : ""}`);
 
-await Promise.all([...targets].map(checkPath));
+await runLimited([...targets], HEAD_CONCURRENCY, checkPath);
+saveCache(cache);
 
 console.log(`✓ ${ok.length} OK`);
 if (issues.length) {

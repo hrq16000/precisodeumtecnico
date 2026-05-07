@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { MessageCircle, Sparkles, ArrowRight, RotateCcw } from "lucide-react";
+import { trackQuizComplete, trackWhatsAppClick, trackEvent } from "@/lib/analytics";
 
 type Step = "problema" | "detalhe" | "urgencia" | "resultado";
 
@@ -14,8 +15,20 @@ interface Problema {
   description: string;
   detalhes: { id: string; label: string }[];
   diagnostico: (detalhes: string[], urgencia: string) => string;
+  /** Display name of the service indicated for the user */
   servico: string;
+  /** Slug used in /servicos/:slug — drives internal linking + analytics */
+  servicoSlug: string;
+  /** High-level category for analytics dashboards */
+  categoria: "informatica" | "redes" | "seguranca";
   faixaPreco: string;
+}
+
+interface QuickDiagnosisQuizProps {
+  /** Optional: city slug (e.g. "sao-jose-dos-pinhais"). Used in WhatsApp message + analytics. */
+  city?: string;
+  /** Optional: neighborhood slug or name. Used in WhatsApp message + analytics. */
+  bairro?: string;
 }
 
 const PROBLEMAS: Problema[] = [

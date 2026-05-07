@@ -70,6 +70,7 @@ export default function ServicoCidade() {
   const localServiceSchema = {
     "@context": "https://schema.org",
     "@type": "Service",
+    name: `${serviceData.title} em ${cityData.name}`,
     serviceType: serviceData.title,
     provider: {
       "@type": "LocalBusiness",

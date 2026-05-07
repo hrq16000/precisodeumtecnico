@@ -12,6 +12,8 @@
     "check:og": "bun scripts/check-og-images.ts",
     "test": "vitest run",
     "test:watch": "vitest",
+    "e2e": "playwright test",
+    "e2e:install": "playwright install --with-deps chromium",
     "lint": "eslint .",
     "preview": "vite preview"
   },

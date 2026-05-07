@@ -9,6 +9,7 @@ import {
   Star, Users, FileText, Smartphone, Gamepad2
 } from "lucide-react";
 import { citiesData, formatNeighborhoodSlug, formatNameFromSlug, getCityBySlug } from "@/data/regions";
+import { trackCtaClick, trackWhatsAppClick } from "@/lib/analytics";
 
 const services = [
   { icon: Monitor, name: "Informática", href: "/servicos/informatica", desc: "Formatação, manutenção, upgrade" },
@@ -164,7 +165,7 @@ const RegiaoDetalhe = () => {
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4">
-                <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" onClick={() => trackWhatsAppClick({ source: neighborhood ? "bairro_cta" : "city_cta", city: city!, bairro: neighborhood })}>
                   <Button size="lg" className="w-full sm:w-auto text-lg px-8 py-6 bg-success hover:bg-success/90 cta-glow gap-3">
                     <MessageCircle className="w-6 h-6" />
                     Chamar Técnico Agora
@@ -218,6 +219,7 @@ const RegiaoDetalhe = () => {
               <Link
                 key={service.href}
                 to={service.href}
+                onClick={() => trackCtaClick({ surface: "city_page", cta_id: "city_service_card", label: service.name, destination: service.href, service: service.name, city: city!, bairro: neighborhood })}
                 className="region-card group hover:border-primary/50"
               >
                 <div className="w-14 h-14 rounded-2xl bg-primary/10 group-hover:bg-primary flex items-center justify-center mb-4 transition-colors">
@@ -261,6 +263,7 @@ const RegiaoDetalhe = () => {
                 <Link
                   key={bairro}
                   to={`/regioes/${city}/${formatNeighborhoodSlug(bairro)}`}
+                  onClick={() => trackCtaClick({ surface: "city_page", cta_id: "city_bairro_chip", label: bairro, destination: `/regioes/${city}/${formatNeighborhoodSlug(bairro)}`, city: city!, bairro: formatNeighborhoodSlug(bairro) })}
                   className="p-4 rounded-xl bg-card border border-border hover:border-primary/50 hover:bg-primary/5 transition-all text-center group"
                 >
                   <span className="font-medium text-foreground group-hover:text-primary transition-colors text-sm">

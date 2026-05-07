@@ -30,6 +30,7 @@ export default function Blog() {
         title="Blog | Dicas, Guias e Preços de Assistência Técnica"
         description="Guias práticos sobre informática, redes Wi-Fi, CFTV, ar-condicionado, elétrica e celulares. Conteúdo escrito por técnicos profissionais em Curitiba."
         canonical="https://precisodeumtecnico.com/blog"
+        ogImage="https://precisodeumtecnico.com/og/blog.jpg"
         structuredData={[blogSchema]}
       />
 

@@ -108,6 +108,8 @@ const PROBLEMAS: Problema[] = [
     diagnostico: () =>
       "Diagnóstico: formatação completa profissional inclui backup, instalação limpa do Windows 11, drivers oficiais, Office e antivírus. Custo: R$ 180 a R$ 280, garantia de 90 dias.",
     servico: "Formatação profissional",
+    servicoSlug: "informatica",
+    categoria: "informatica",
     faixaPreco: "R$ 180 a R$ 280",
   },
 ];

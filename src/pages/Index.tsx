@@ -10,6 +10,7 @@ import { BrandsSection } from "@/components/home/BrandsSection";
 import { FAQSection } from "@/components/home/FAQSection";
 import { CTASection } from "@/components/home/CTASection";
 import { QuickQuoteForm } from "@/components/home/QuickQuoteForm";
+import { Reveal } from "@/components/Reveal";
 import logoWebp from "@/assets/logo.webp";
 
 const Index = () => {

@@ -34,6 +34,10 @@ const Index = () => {
         title="Preciso de Um Técnico | Assistência Técnica Curitiba 24h"
         description="Assistência técnica especializada em Curitiba e Região Metropolitana. Informática, elétrica, CFTV, notebooks, ar-condicionado. Atendimento 24h via WhatsApp. Técnico vai até você!"
         canonical="https://precisodeumtecnico.com"
+        structuredData={(() => {
+          const reviews = buildReviewsSchema();
+          return reviews ? [reviews] : undefined;
+        })()}
       />
       
       <HeroSection />

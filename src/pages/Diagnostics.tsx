@@ -660,6 +660,36 @@ export default function Diagnostics() {
             )}
           </Card>
 
+          {/* Sitemaps referenced by robots.txt */}
+          <h2 className="font-display text-xl font-bold mb-3">Sitemaps (referenciados em robots.txt)</h2>
+          <Card className="p-4 mb-8">
+            {sitemapLoading && <p className="text-sm text-muted-foreground">Verificando sitemaps…</p>}
+            {!sitemapLoading && sitemapAudits.length === 0 && (
+              <p className="text-sm text-muted-foreground">Nenhum sitemap referenciado ou robots.txt indisponível.</p>
+            )}
+            {sitemapAudits.length > 0 && (
+              <ul className="space-y-3 text-sm">
+                {sitemapAudits.map((s, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <Badge variant={s.ok && s.hasExpected ? "secondary" : "destructive"} className="mt-0.5">
+                      {s.ok && s.hasExpected ? "OK" : s.ok ? "PARCIAL" : "FALHA"}
+                    </Badge>
+                    <div className="flex-1">
+                      <p className="font-medium break-all">
+                        <a className="underline" href={s.url} target="_blank" rel="noopener noreferrer">{s.url}</a>
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {s.ok
+                          ? `HTTP ${s.status} · ${s.urlCount} URL(s) · rotas essenciais ${s.hasExpected ? "presentes" : "AUSENTES"}`
+                          : s.error}
+                      </p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </Card>
+
           {/* Single page details */}
           <div className="grid sm:grid-cols-3 gap-3 mb-6">
             <Card className="p-4">

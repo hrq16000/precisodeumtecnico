@@ -8,10 +8,18 @@ interface LogoProps {
   /** light = for use on dark backgrounds, dark = for use on light backgrounds */
   variant?: "light" | "dark";
   size?: "sm" | "md" | "lg";
-  /** When true, smoothly scales between md and lg without remounting (used by sticky header). */
+  /** When true, smoothly shrinks the logo (used by sticky header). */
   compact?: boolean;
   priority?: boolean;
 }
+
+// Per-breakpoint heights in pixels so the height transition can actually
+// tween smoothly (Tailwind named sizes can't be interpolated by CSS).
+const HEIGHTS: Record<NonNullable<LogoProps["size"]>, { base: number; sm: number; md: number; lg: number }> = {
+  sm: { base: 32, sm: 36, md: 40, lg: 40 },
+  md: { base: 40, sm: 48, md: 56, lg: 64 },
+  lg: { base: 52, sm: 64, md: 80, lg: 96 },
+};
 
 export function Logo({
   className,
@@ -20,17 +28,7 @@ export function Logo({
   compact,
   priority = false,
 }: LogoProps) {
-  // Heights are picked carefully so the footer/header keep similar
-  // responsive rhythm. We always render the LARGEST height for a given
-  // size and apply a transform-scale when `compact` is requested. This
-  // produces a smooth, non-janky transition driven by GPU-accelerated
-  // transforms instead of swapping Tailwind height classes (which would
-  // jump because Tailwind classes can't tween between named sizes).
-  const sizeClasses = {
-    sm: "h-9 sm:h-10 md:h-11",
-    md: "h-12 sm:h-14 md:h-16 lg:h-20",
-    lg: "h-16 sm:h-20 md:h-24 lg:h-28",
-  };
+  const target = compact ? HEIGHTS.md : HEIGHTS[size];
 
   const bgClasses =
     variant === "light"
@@ -42,12 +40,18 @@ export function Logo({
       to="/"
       className={cn(
         "inline-flex items-center rounded-xl px-2 py-1.5 sm:px-3 sm:py-2",
-        "origin-left transition-transform duration-500 ease-out will-change-transform",
+        "transition-[transform,box-shadow] duration-500 ease-out will-change-transform",
         "hover:scale-[1.03]",
-        compact && "scale-[0.78] sm:scale-[0.82] md:scale-[0.85]",
         bgClasses,
         className,
       )}
+      style={{
+        // CSS vars consumed by the inner img element
+        ["--logo-h-base" as string]: `${target.base}px`,
+        ["--logo-h-sm" as string]: `${target.sm}px`,
+        ["--logo-h-md" as string]: `${target.md}px`,
+        ["--logo-h-lg" as string]: `${target.lg}px`,
+      }}
       aria-label="Preciso de um Técnico - Início"
     >
       <picture>
@@ -55,7 +59,10 @@ export function Logo({
         <img
           src={logoFallback}
           alt="Preciso de um Técnico"
-          className={cn("w-auto object-contain transition-[height] duration-500 ease-out", sizeClasses[size])}
+          className={cn(
+            "w-auto object-contain transition-[height] duration-500 ease-out",
+            "h-[var(--logo-h-base)] sm:h-[var(--logo-h-sm)] md:h-[var(--logo-h-md)] lg:h-[var(--logo-h-lg)]",
+          )}
           loading={priority ? "eager" : "lazy"}
           decoding="async"
           fetchPriority={priority ? "high" : "auto"}

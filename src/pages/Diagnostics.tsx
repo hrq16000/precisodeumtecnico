@@ -16,13 +16,18 @@ interface SchemaEntry {
 const REQUIRED_BY_TYPE: Record<string, string[]> = {
   FAQPage: ["mainEntity"],
   BreadcrumbList: ["itemListElement"],
-  Article: ["headline", "datePublished"],
-  BlogPosting: ["headline", "datePublished"],
-  Service: ["name", "provider"],
-  LocalBusiness: ["name", "address"],
+  Article: ["headline", "datePublished", "author", "image"],
+  BlogPosting: ["headline", "datePublished", "author", "image"],
+  Service: ["name", "provider", "areaServed"],
+  LocalBusiness: ["name", "address", "telephone", "url"],
+  Organization: ["name", "url"],
   Review: ["author", "reviewRating"],
   AggregateRating: ["ratingValue", "reviewCount"],
+  WebSite: ["name", "url"],
+  Blog: ["name"],
 };
+
+const KNOWN_TYPES = new Set(Object.keys(REQUIRED_BY_TYPE));
 
 function validate(parsed: unknown): { type: string; errors: string[]; warnings: string[] } {
   const errors: string[] = [];

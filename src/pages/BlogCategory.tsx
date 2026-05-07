@@ -20,6 +20,7 @@ export default function BlogCategory() {
         title={`${category.name} — Blog | Preciso de Um Técnico`}
         description={category.description}
         canonical={`https://precisodeumtecnico.com/blog/categoria/${category.slug}`}
+        ogImage={`https://precisodeumtecnico.com/og/${category.slug}.jpg`}
       />
 
       <section className="bg-gradient-to-br from-foreground to-primary/20 text-background py-16">

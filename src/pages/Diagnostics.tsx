@@ -52,6 +52,49 @@ const RECOMMENDED_BY_TYPE: Record<string, string[]> = {
 
 const KNOWN_TYPES = new Set(Object.keys(REQUIRED_BY_TYPE));
 
+function getType(obj: Record<string, unknown>): string {
+  const raw = obj["@type"];
+  return Array.isArray(raw) ? String(raw[0]) : String(raw ?? "unknown");
+}
+
+function validateNode(
+  obj: Record<string, unknown>,
+  path: string,
+  errors: string[],
+  warnings: string[],
+) {
+  const type = getType(obj);
+  const required = REQUIRED_BY_TYPE[type];
+  if (required) {
+    for (const k of required) {
+      const v = obj[k];
+      if (v === undefined || v === null || v === "" || (Array.isArray(v) && v.length === 0))
+        errors.push(`${path || type}: campo obrigatório ausente para @type=${type} → "${k}"`);
+    }
+  }
+  const recommended = RECOMMENDED_BY_TYPE[type];
+  if (recommended) {
+    for (const k of recommended) {
+      if (obj[k] === undefined || obj[k] === null || obj[k] === "")
+        warnings.push(`${path || type}: recomendado para @type=${type} → "${k}"`);
+    }
+  }
+  // Walk nested typed objects
+  for (const [k, v] of Object.entries(obj)) {
+    if (k.startsWith("@")) continue;
+    const items = Array.isArray(v) ? v : [v];
+    items.forEach((item, idx) => {
+      if (item && typeof item === "object" && !Array.isArray(item)) {
+        const child = item as Record<string, unknown>;
+        if (child["@type"]) {
+          const sub = Array.isArray(v) ? `${path || type}.${k}[${idx}]` : `${path || type}.${k}`;
+          validateNode(child, sub, errors, warnings);
+        }
+      }
+    });
+  }
+}
+
 function validate(parsed: unknown): { type: string; errors: string[]; warnings: string[] } {
   const errors: string[] = [];
   const warnings: string[] = [];
@@ -59,25 +102,22 @@ function validate(parsed: unknown): { type: string; errors: string[]; warnings: 
     return { type: "unknown", errors: ["Não é um objeto JSON válido."], warnings };
   }
   const obj = parsed as Record<string, unknown>;
-  const rawType = obj["@type"];
-  const type = Array.isArray(rawType) ? String(rawType[0]) : String(rawType ?? "unknown");
+  const type = getType(obj);
   if (!obj["@context"]) errors.push("Faltando @context");
   if (!obj["@type"]) errors.push("Faltando @type");
   if (obj["@type"] && !KNOWN_TYPES.has(type)) {
     warnings.push(`@type "${type}" não está na lista de tipos validados`);
   }
-  const required = REQUIRED_BY_TYPE[type];
-  if (required) {
-    for (const k of required) {
-      if (obj[k] === undefined || obj[k] === null || obj[k] === "")
-        errors.push(`Campo obrigatório ausente para @type=${type}: "${k}"`);
-    }
-  }
+  validateNode(obj, "", errors, warnings);
+
+  // Type-specific deep checks
   if (type === "FAQPage" && Array.isArray(obj.mainEntity)) {
     obj.mainEntity.forEach((q, i) => {
       const qq = q as Record<string, unknown>;
       if (!qq.name) errors.push(`mainEntity[${i}].name ausente`);
-      if (!qq.acceptedAnswer) errors.push(`mainEntity[${i}].acceptedAnswer ausente`);
+      const aa = qq.acceptedAnswer as Record<string, unknown> | undefined;
+      if (!aa) errors.push(`mainEntity[${i}].acceptedAnswer ausente`);
+      else if (!aa.text) errors.push(`mainEntity[${i}].acceptedAnswer.text ausente`);
     });
   }
   if (type === "BreadcrumbList" && Array.isArray(obj.itemListElement)) {
@@ -85,14 +125,9 @@ function validate(parsed: unknown): { type: string; errors: string[]; warnings: 
       const e = it as Record<string, unknown>;
       if (!e.position) warnings.push(`itemListElement[${i}].position ausente`);
       if (!e.name) warnings.push(`itemListElement[${i}].name ausente`);
+      if (!e.item) warnings.push(`itemListElement[${i}].item (URL) ausente`);
     });
   }
-  if (type === "LocalBusiness") {
-    if (!obj.openingHoursSpecification && !obj.openingHours)
-      warnings.push("LocalBusiness sem openingHoursSpecification (recomendado)");
-    if (!obj.aggregateRating) warnings.push("LocalBusiness sem aggregateRating (recomendado)");
-  }
-  if (type === "Service" && !obj.areaServed) warnings.push("Service sem areaServed (recomendado)");
   return { type, errors, warnings };
 }
 
@@ -109,7 +144,6 @@ function readSchemasFromDoc(doc: Document): SchemaEntry[] {
     }
   });
 }
-
 function readMetaFromDoc(doc: Document, name: string) {
   const el =
     doc.querySelector(`meta[property="${name}"]`) ||

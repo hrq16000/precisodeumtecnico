@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import logoImg from "@/assets/logo.png";
 
 interface LogoProps {
   className?: string;
@@ -9,26 +10,32 @@ interface LogoProps {
 
 export function Logo({ className, variant = "dark", size = "md" }: LogoProps) {
   const sizeClasses = {
-    sm: "text-sm",
-    md: "text-lg",
-    lg: "text-2xl",
+    sm: "h-12 md:h-14",
+    md: "h-16 md:h-20 lg:h-24",
+    lg: "h-20 md:h-24 lg:h-28",
   };
 
-  const topTextColor = variant === "light" ? "text-white" : "text-foreground";
-  const bottomTextColor = "text-[#FFD93D]"; // Yellow/gold like the original
+  const bgClasses =
+    variant === "light"
+      ? "bg-white/10 backdrop-blur-sm shadow-lg shadow-black/30"
+      : "bg-white shadow-lg shadow-black/20";
 
   return (
-    <Link to="/" className={cn("flex flex-col leading-tight", className)}>
-      <span className={cn("font-medium", sizeClasses[size], topTextColor)}>
-        preciso de um
-      </span>
-      <span className={cn("font-bold tracking-tight", bottomTextColor, {
-        "text-xl": size === "sm",
-        "text-2xl": size === "md", 
-        "text-4xl": size === "lg",
-      })}>
-        TÉCNICO<span className="text-xs align-top">.com</span>
-      </span>
+    <Link
+      to="/"
+      className={cn(
+        "inline-flex items-center rounded-xl px-3 py-2 transition-transform hover:scale-105",
+        bgClasses,
+        className,
+      )}
+      aria-label="Preciso de um Técnico - Início"
+    >
+      <img
+        src={logoImg}
+        alt="Preciso de um Técnico"
+        className={cn("w-auto object-contain", sizeClasses[size])}
+        loading="eager"
+      />
     </Link>
   );
 }

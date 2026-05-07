@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { MessageCircle, Sparkles, ArrowRight, RotateCcw } from "lucide-react";
+import { trackQuizComplete, trackWhatsAppClick, trackEvent } from "@/lib/analytics";
 
 type Step = "problema" | "detalhe" | "urgencia" | "resultado";
 
@@ -14,8 +15,20 @@ interface Problema {
   description: string;
   detalhes: { id: string; label: string }[];
   diagnostico: (detalhes: string[], urgencia: string) => string;
+  /** Display name of the service indicated for the user */
   servico: string;
+  /** Slug used in /servicos/:slug — drives internal linking + analytics */
+  servicoSlug: string;
+  /** High-level category for analytics dashboards */
+  categoria: "informatica" | "redes" | "seguranca";
   faixaPreco: string;
+}
+
+interface QuickDiagnosisQuizProps {
+  /** Optional: city slug (e.g. "sao-jose-dos-pinhais"). Used in WhatsApp message + analytics. */
+  city?: string;
+  /** Optional: neighborhood slug or name. Used in WhatsApp message + analytics. */
+  bairro?: string;
 }
 
 const PROBLEMAS: Problema[] = [
@@ -33,6 +46,8 @@ const PROBLEMAS: Problema[] = [
     diagnostico: () =>
       "Diagnóstico provável: HD lento, RAM insuficiente ou acúmulo de programas em segundo plano. Solução: upgrade SSD + RAM ou manutenção completa. Custo médio: R$ 380 a R$ 720 com peças.",
     servico: "Upgrade SSD + RAM / Manutenção completa",
+    servicoSlug: "informatica",
+    categoria: "informatica",
     faixaPreco: "R$ 380 a R$ 720",
   },
   {
@@ -53,6 +68,8 @@ const PROBLEMAS: Problema[] = [
       return "Diagnóstico provável: malware/adware ativo. Solução: protocolo de remoção em modo de segurança + scanners + limpeza de persistência. Custo: R$ 200 a R$ 350 com garantia de 30 dias.";
     },
     servico: "Remoção de vírus profissional",
+    servicoSlug: "informatica",
+    categoria: "seguranca",
     faixaPreco: "R$ 200 a R$ 350",
   },
   {
@@ -73,6 +90,8 @@ const PROBLEMAS: Problema[] = [
       return "Diagnóstico provável: configuração ruim ou roteador antigo. Solução: troca de canal, atualização de firmware ou substituição por Wi-Fi 6. Custo: R$ 150 a R$ 280 (mão de obra).";
     },
     servico: "Configuração de redes / Mesh",
+    servicoSlug: "redes",
+    categoria: "redes",
     faixaPreco: "R$ 150 a R$ 1.800",
   },
   {
@@ -89,6 +108,8 @@ const PROBLEMAS: Problema[] = [
     diagnostico: () =>
       "Diagnóstico: formatação completa profissional inclui backup, instalação limpa do Windows 11, drivers oficiais, Office e antivírus. Custo: R$ 180 a R$ 280, garantia de 90 dias.",
     servico: "Formatação profissional",
+    servicoSlug: "informatica",
+    categoria: "informatica",
     faixaPreco: "R$ 180 a R$ 280",
   },
 ];
@@ -100,25 +121,50 @@ const URGENCIA = [
   { id: "orcamento", label: "Só quero orçamento" },
 ];
 
-function buildWhatsApp(p: Problema, detalhes: string[], urgencia: string) {
+function buildWhatsApp(
+  p: Problema,
+  detalhes: string[],
+  urgencia: string,
+  ctx: { city?: string; bairro?: string },
+) {
   const det = p.detalhes.filter((d) => detalhes.includes(d.id)).map((d) => `• ${d.label}`).join("\n");
   const urg = URGENCIA.find((u) => u.id === urgencia)?.label ?? "";
+  const local = [ctx.bairro && `bairro ${ctx.bairro}`, ctx.city && ctx.city.replace(/-/g, " ")]
+    .filter(Boolean)
+    .join(", ");
   const msg =
     `Olá! Fiz o quiz no site e gostaria de orçamento.\n\n` +
     `*Problema:* ${p.label}\n` +
-    `*Detalhes:*\n${det}\n` +
-    `*Urgência:* ${urg}\n\n` +
-    `*Faixa estimada:* ${p.faixaPreco}`;
+    `*Serviço indicado:* ${p.servico}\n` +
+    `*Categoria:* ${p.categoria}\n\n` +
+    `*Checklist do que está acontecendo:*\n${det}\n\n` +
+    `*Urgência:* ${urg}\n` +
+    `*Faixa estimada:* ${p.faixaPreco}` +
+    (local ? `\n*Localização:* ${local}` : "");
   return `https://wa.me/5541997452053?text=${encodeURIComponent(msg)}`;
 }
 
-export function QuickDiagnosisQuiz() {
+export function QuickDiagnosisQuiz({ city, bairro }: QuickDiagnosisQuizProps = {}) {
   const [step, setStep] = useState<Step>("problema");
   const [problema, setProblema] = useState<Problema | null>(null);
   const [detalhes, setDetalhes] = useState<string[]>([]);
   const [urgencia, setUrgencia] = useState<string>("");
 
+  // Fire quiz_complete once per resultado view
+  useEffect(() => {
+    if (step === "resultado" && problema) {
+      trackQuizComplete({
+        problema: problema.id,
+        service: problema.servicoSlug,
+        urgencia,
+        city,
+        bairro,
+      });
+    }
+  }, [step, problema, urgencia, city, bairro]);
+
   const reset = () => {
+    trackEvent("quiz_reset", { city, bairro });
     setStep("problema");
     setProblema(null);
     setDetalhes([]);
@@ -250,9 +296,17 @@ export function QuickDiagnosisQuiz() {
 
               <Button asChild variant="whatsapp" size="lg" className="w-full">
                 <a
-                  href={buildWhatsApp(problema, detalhes, urgencia)}
+                  href={buildWhatsApp(problema, detalhes, urgencia, { city, bairro })}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() =>
+                    trackWhatsAppClick({
+                      source: "quiz_result",
+                      service: problema.servicoSlug,
+                      city,
+                      bairro,
+                    })
+                  }
                 >
                   <MessageCircle className="w-5 h-5 mr-2" />
                   Enviar para o WhatsApp (41) 9 9745-2053

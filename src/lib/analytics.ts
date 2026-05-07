@@ -67,6 +67,62 @@ export function setStoredTermsAcceptance(accepted: boolean): void {
 }
 
 
+// --- Generic CTA tracking (standardized parameters) ---
+// Use this for any internal/external CTA: service cards, city/bairro chips,
+// "Ver todos" buttons, footer links, header nav, etc.
+export type CtaSurface =
+  | "header"
+  | "footer"
+  | "hero"
+  | "services_section"
+  | "regions_section"
+  | "service_page"
+  | "city_page"
+  | "bairro_page"
+  | "cta_section"
+  | "blog"
+  | "quiz"
+  | "quick_form"
+  | "contact_form";
+
+export function trackCtaClick(opts: {
+  surface: CtaSurface;
+  cta_id: string; // stable id, e.g. "service_card", "city_chip", "view_all_services"
+  label?: string; // visible text
+  destination?: string; // href / route
+  service?: string;
+  city?: string;
+  bairro?: string;
+}) {
+  trackEvent("cta_click", {
+    surface: opts.surface,
+    cta_id: opts.cta_id,
+    label: opts.label,
+    destination: opts.destination,
+    service: opts.service,
+    city: opts.city,
+    bairro: opts.bairro,
+  });
+}
+
+// --- Core Web Vitals tracking ---
+// Pushes CLS/LCP/INP/FCP/TTFB to dataLayer + GA4. Initialised once in main.tsx.
+export function trackWebVital(metric: {
+  name: string;
+  value: number;
+  id: string;
+  rating?: string;
+  navigationType?: string;
+}) {
+  trackEvent("web_vital", {
+    metric_name: metric.name,
+    metric_value: Math.round(metric.name === "CLS" ? metric.value * 1000 : metric.value),
+    metric_id: metric.id,
+    metric_rating: metric.rating,
+    navigation_type: metric.navigationType,
+  });
+}
+
 export function trackWhatsAppClick(opts: {
   source: string; // e.g. "hero", "quiz_result", "bairro_cta", "footer"
   service?: string;

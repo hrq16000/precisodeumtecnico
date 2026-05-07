@@ -1,5 +1,31 @@
 import { Helmet } from "react-helmet-async";
 
+/**
+ * Validate and stringify a structured-data object. Catches the most common
+ * mistakes (missing @context/@type, FAQPage without mainEntity, BreadcrumbList
+ * without itemListElement) and warns in development. Always returns a JSON
+ * string in production so a misformed entry never breaks SSR/CSR rendering.
+ */
+function safeStringify(schema: unknown, idx: number): string | null {
+  try {
+    const obj = schema as Record<string, unknown>;
+    if (import.meta.env.DEV && obj && typeof obj === "object") {
+      if (!obj["@context"]) console.warn(`[SEO] schema[${idx}] missing @context`);
+      if (!obj["@type"]) console.warn(`[SEO] schema[${idx}] missing @type`);
+      if (obj["@type"] === "FAQPage" && !obj.mainEntity)
+        console.warn(`[SEO] FAQPage schema[${idx}] missing mainEntity`);
+      if (obj["@type"] === "BreadcrumbList" && !obj.itemListElement)
+        console.warn(`[SEO] BreadcrumbList schema[${idx}] missing itemListElement`);
+      if (obj["@type"] === "Article" && !obj.headline)
+        console.warn(`[SEO] Article schema[${idx}] missing headline`);
+    }
+    return JSON.stringify(schema);
+  } catch (e) {
+    if (import.meta.env.DEV) console.error(`[SEO] failed to stringify schema[${idx}]`, e);
+    return null;
+  }
+}
+
 interface SEOHeadProps {
   title: string;
   description: string;

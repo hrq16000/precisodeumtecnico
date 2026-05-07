@@ -378,8 +378,16 @@ export const blogPosts: BlogPost[] = [
 // Keep this import at the bottom to avoid circular references.
 import { satellitePosts } from "./satellitePosts";
 import { viralSjpPosts } from "./viralPostsSJP";
+import { viralSjpPosts2 } from "./viralPostsSJP2";
+import { viralCwbPosts } from "./viralPostsCWB";
 
-export const allBlogPosts: BlogPost[] = [...viralSjpPosts, ...blogPosts, ...satellitePosts];
+export const allBlogPosts: BlogPost[] = [
+  ...viralSjpPosts,
+  ...viralSjpPosts2,
+  ...viralCwbPosts,
+  ...blogPosts,
+  ...satellitePosts,
+];
 
 export const blogPostsMap: Record<string, BlogPost> = Object.fromEntries(
   allBlogPosts.map((p) => [p.slug, p]),

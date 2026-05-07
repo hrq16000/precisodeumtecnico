@@ -9,6 +9,14 @@ import {
   Smartphone, Gamepad2, ArrowRight, MessageCircle
 } from "lucide-react";
 import { citiesData, getCityBySlug, formatNeighborhoodSlug, formatNameFromSlug, curitibaBairros } from "@/data/regions";
+import { getBairroContent } from "@/data/sjpBairroContent";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { QuickDiagnosisQuiz } from "@/components/QuickDiagnosisQuiz";
 import NotFound from "./NotFound";
 
 const serviceIcons: Record<string, any> = {
@@ -62,6 +70,8 @@ export default function BairroDetalhe() {
     .filter((_, i) => i !== currentIndex)
     .slice(0, 6);
 
+  const bairroContent = getBairroContent(city!, neighborhood, neighborhoodName);
+
   const localBusinessSchema = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
@@ -89,13 +99,23 @@ export default function BairroDetalhe() {
     }
   };
 
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: bairroContent.faqs.map((f) => ({
+      "@type": "Question",
+      name: f.question,
+      acceptedAnswer: { "@type": "Answer", text: f.answer },
+    })),
+  };
+
   return (
     <Layout>
       <SEOHead
         title={`${pageTitle} | Assistência Técnica 24h`}
         description={pageDescription}
         canonical={`https://precisodeumtecnico.com/regioes/${city}/${neighborhood}`}
-        schema={localBusinessSchema}
+        structuredData={[localBusinessSchema, faqSchema]}
       />
 
       {/* Hero Section */}
@@ -207,18 +227,7 @@ export default function BairroDetalhe() {
               </h2>
               
               <p className="text-muted-foreground text-lg leading-relaxed mb-6">
-                Precisa de um técnico de confiança no bairro <strong>{neighborhoodName}</strong>? 
-                A <strong>Preciso de Um Técnico</strong> oferece assistência técnica especializada 
-                para moradores e empresas do bairro {neighborhoodName}, em {cityData.name}. 
-                Nossos técnicos são certificados e experientes, prontos para resolver qualquer 
-                problema técnico que você possa ter.
-              </p>
-
-              <p className="text-muted-foreground text-lg leading-relaxed mb-6">
-                Oferecemos atendimento <strong>24 horas via WhatsApp</strong> e visitas técnicas 
-                das 8h às 22h, todos os dias da semana. O técnico vai até você, seja em sua 
-                residência ou empresa no {neighborhoodName}. Trabalhamos com preços justos, 
-                a partir de <strong>R$ 99,99</strong> pela visita técnica com diagnóstico incluso.
+                {bairroContent.intro}
               </p>
 
               <h3 className="text-2xl font-bold text-foreground mb-4 mt-8">
@@ -226,16 +235,7 @@ export default function BairroDetalhe() {
               </h3>
 
               <div className="grid md:grid-cols-2 gap-4 mb-8">
-                {[
-                  "Técnicos certificados e experientes",
-                  "Atendimento imediato via WhatsApp",
-                  "Garantia de 90 dias a 1 ano",
-                  "Orçamento sem compromisso",
-                  "Peças originais e de qualidade",
-                  "Emissão de nota fiscal",
-                  "Técnico vai até você",
-                  "Maior rede de técnicos do Brasil"
-                ].map((item, index) => (
+                {bairroContent.highlights.map((item, index) => (
                   <div key={index} className="flex items-start gap-3">
                     <CheckCircle2 className="h-6 w-6 text-primary shrink-0 mt-0.5" />
                     <span className="text-foreground">{item}</span>
@@ -298,7 +298,26 @@ export default function BairroDetalhe() {
         </div>
       </section>
 
-      {/* Nearby Neighborhoods */}
+      {/* Quiz diagnóstico */}
+      <QuickDiagnosisQuiz />
+
+      {/* FAQ */}
+      <section className="py-16 bg-muted/30">
+        <div className="container mx-auto px-4 max-w-3xl">
+          <h2 className="text-3xl font-bold text-foreground mb-6 text-center">
+            Perguntas frequentes — {neighborhoodName}
+          </h2>
+          <Accordion type="single" collapsible>
+            {bairroContent.faqs.map((f, i) => (
+              <AccordionItem key={i} value={`faq-${i}`}>
+                <AccordionTrigger className="text-left">{f.question}</AccordionTrigger>
+                <AccordionContent>{f.answer}</AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+      </section>
+
       <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl font-bold text-foreground mb-8 text-center">

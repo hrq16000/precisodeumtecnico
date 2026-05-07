@@ -10,6 +10,7 @@ import { BrandsSection } from "@/components/home/BrandsSection";
 import { FAQSection } from "@/components/home/FAQSection";
 import { CTASection } from "@/components/home/CTASection";
 import { QuickQuoteForm } from "@/components/home/QuickQuoteForm";
+import { QuickDiagnosisQuiz } from "@/components/QuickDiagnosisQuiz";
 import { Reveal } from "@/components/Reveal";
 import { buildReviewsSchema } from "@/data/testimonials";
 import logoWebp from "@/assets/logo.webp";
@@ -43,6 +44,7 @@ const Index = () => {
       
       <HeroSection />
       <Reveal><ServicesSection /></Reveal>
+      <Reveal><QuickDiagnosisQuiz /></Reveal>
       <Reveal><QuickQuoteForm /></Reveal>
       <Reveal><BenefitsSection /></Reveal>
       <Reveal><BrandsSection /></Reveal>

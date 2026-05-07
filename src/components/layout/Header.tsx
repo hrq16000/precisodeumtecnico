@@ -70,7 +70,7 @@ export function Header() {
       {/* Main Header */}
       <div className="border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
         <div className="container-custom">
-          <div className="flex h-16 md:h-20 items-center justify-between">
+          <div className="flex h-20 md:h-24 lg:h-28 items-center justify-between">
             {/* Logo */}
             <Logo variant="dark" size="md" />
 

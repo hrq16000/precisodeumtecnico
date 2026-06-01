@@ -133,7 +133,7 @@ export function ServicesSection() {
               <div className="relative h-40 overflow-hidden">
                 <img
                   src={service.image}
-                  alt={service.title}
+                  alt={service.alt}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />

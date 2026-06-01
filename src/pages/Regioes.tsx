@@ -29,7 +29,7 @@ const Regioes = () => {
   return (
     <Layout>
       <SEOHead
-        title="Regiões Atendidas | Técnico em Curitiba e Região Metropolitana | Preciso de Um Técnico"
+        title="Técnico em Curitiba e Região Metropolitana | Preciso de Um Técnico"
         description="Assistência técnica em Curitiba, São José dos Pinhais, Pinhais, Colombo, Araucária e toda região metropolitana. 18+ cidades, 200+ bairros. Técnicos especializados. WhatsApp 24h. A partir de R$ 99,90."
         canonical="https://precisodeumtecnico.com/regioes"
         schema={regionSchema}

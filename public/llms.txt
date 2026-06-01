@@ -1,0 +1,20 @@
+# Preciso de Um Técnico
+
+> Assistência técnica especializada em Curitiba e Região Metropolitana: informática, elétrica, CFTV, notebooks, ar-condicionado, redes, celulares e games. Atendimento 24h via WhatsApp, visita técnica a partir de R$ 99,99.
+
+A Preciso de Um Técnico conecta clientes a técnicos qualificados em Curitiba, São José dos Pinhais, Pinhais, Colombo, Araucária e demais cidades da RMC. Diagnóstico com orçamento pré-aprovado, garantia de 90 dias a 1 ano e emissão de nota fiscal.
+
+## Pages
+
+- [Início](/): visão geral dos serviços, áreas atendidas e como agendar.
+- [Serviços](/servicos): lista completa de serviços técnicos oferecidos.
+- [Regiões](/regioes): cidades e bairros atendidos na RMC.
+- [Preços](/precos): faixas de preço por tipo de serviço.
+- [Blog](/blog): guias, dicas e conteúdo técnico.
+- [Sobre](/sobre): quem somos e como trabalhamos.
+- [Contato](/contato): formulário e WhatsApp para agendamento.
+- [Termos de Orçamento Pré-Aprovado](/termos-orcamento-pre-aprovado): regras da visita técnica e do orçamento.
+
+## Optional
+
+- [Categorias do Blog](/blog/categoria/informatica): artigos por categoria.

@@ -23,13 +23,10 @@ export function HeroSection() {
           </div>
 
           {/* Main Headline */}
-          <h1 className="font-display text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-2 animate-fade-up tracking-tight leading-tight">
-            Assistência Técnica
-          </h1>
-          <h2 className="font-display text-3xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fade-up tracking-tight leading-tight">
+          <h1 className="font-display text-3xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fade-up tracking-tight leading-tight">
+            <span className="text-white">Assistência Técnica </span>
             <span className="text-[#22C55E]">Especializada</span>
-            <span className="text-white"> ​  </span>
-          </h2>
+          </h1>
 
           <p className="text-base md:text-lg text-white/80 mb-8 max-w-2xl mx-auto animate-fade-up px-4">
             Informática, notebooks, CFTV, elétrica, ar-condicionado, celulares e muito mais. 

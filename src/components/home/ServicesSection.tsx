@@ -31,6 +31,7 @@ const services = [
   {
     icon: Monitor,
     title: "Informática",
+    alt: "Manutenção de informática e computadores",
     description: "Manutenção, formatação, limpeza e upgrade de computadores desktop.",
     href: "/servicos/informatica",
     color: "bg-blue-500/10 text-blue-600",
@@ -40,6 +41,7 @@ const services = [
   {
     icon: Laptop,
     title: "Notebooks",
+    alt: "Conserto e manutenção de notebooks",
     description: "Conserto de tela, teclado, bateria, limpeza interna e upgrade.",
     href: "/servicos/notebooks",
     color: "bg-indigo-500/10 text-indigo-600",
@@ -49,6 +51,7 @@ const services = [
   {
     icon: Camera,
     title: "CFTV / Câmeras",
+    alt: "Instalação de câmeras CFTV de segurança",
     description: "Instalação e manutenção de sistemas de câmeras de segurança.",
     href: "/servicos/cftv",
     color: "bg-purple-500/10 text-purple-600",
@@ -58,6 +61,7 @@ const services = [
   {
     icon: Zap,
     title: "Elétrica",
+    alt: "Serviços de elétrica residencial e comercial",
     description: "Instalações elétricas residenciais e comerciais conforme normas.",
     href: "/servicos/eletrica",
     color: "bg-yellow-500/10 text-yellow-600",
@@ -67,6 +71,7 @@ const services = [
   {
     icon: Wifi,
     title: "Redes e Wi-Fi",
+    alt: "Configuração de redes Wi-Fi e roteadores",
     description: "Configuração de redes, roteadores e sistemas mesh.",
     href: "/servicos/redes",
     color: "bg-cyan-500/10 text-cyan-600",
@@ -76,6 +81,7 @@ const services = [
   {
     icon: Wind,
     title: "Ar-Condicionado",
+    alt: "Instalação e manutenção de ar-condicionado",
     description: "Instalação, limpeza e manutenção de aparelhos de ar.",
     href: "/servicos/ar-condicionado",
     color: "bg-teal-500/10 text-teal-600",
@@ -85,6 +91,7 @@ const services = [
   {
     icon: Smartphone,
     title: "Celulares e Tablets",
+    alt: "Reparo de celulares e tablets",
     description: "Reparo de telas, baterias e componentes de dispositivos móveis.",
     href: "/servicos/celulares",
     color: "bg-emerald-500/10 text-emerald-600",
@@ -94,6 +101,7 @@ const services = [
   {
     icon: Gamepad2,
     title: "Games e Consoles",
+    alt: "Conserto de games e consoles PlayStation Xbox",
     description: "Conserto de PlayStation, Xbox, Nintendo e controles.",
     href: "/servicos/games",
     color: "bg-rose-500/10 text-rose-600",
@@ -133,7 +141,7 @@ export function ServicesSection() {
               <div className="relative h-40 overflow-hidden">
                 <img
                   src={service.image}
-                  alt={service.title}
+                  alt={service.alt}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />

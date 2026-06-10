@@ -64,6 +64,12 @@ function* staticUrls(): Generator<Url> {
   yield { loc: `${BASE}/termos-orcamento-pre-aprovado`, changefreq: "yearly", priority: 0.5, lastmod: fileDate("src/pages/TermosOrcamento.tsx") };
   yield { loc: `${BASE}/blog`, changefreq: "weekly", priority: 0.9, lastmod: blogMtime };
   yield { loc: `${BASE}/precos`, changefreq: "weekly", priority: 0.85, lastmod: precosMtime };
+  yield {
+    loc: `${BASE}/assistencia-tecnica-curitiba`,
+    changefreq: "weekly",
+    priority: 0.95,
+    lastmod: fileDate("src/pages/AssistenciaTecnicaCuritiba.tsx"),
+  };
 }
 
 function* serviceUrls(): Generator<Url> {

@@ -397,6 +397,9 @@ export default function AssistenciaTecnicaCuritiba() {
         <script type="application/ld+json">{JSON.stringify(localBusinessSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+        {serviceSchemas.map((s, i) => (
+          <script key={`svc-${i}`} type="application/ld+json">{JSON.stringify(s)}</script>
+        ))}
 
       </Helmet>
 

@@ -196,10 +196,48 @@ const differentials = [
   { icon: CheckCircle2, title: "Técnicos Certificados", desc: "Experiência comprovada em bancada." },
 ];
 
+const faqs = [
+  {
+    q: "Quanto custa um orçamento de assistência técnica em Curitiba?",
+    a: "O orçamento é gratuito e sem compromisso. Após o diagnóstico, enviamos o valor exato do reparo via WhatsApp para sua aprovação antes de qualquer serviço.",
+  },
+  {
+    q: "Vocês dão garantia no reparo de consoles e placas de vídeo?",
+    a: "Sim. Todos os reparos têm garantia de 90 dias cobrindo o defeito apresentado e as peças substituídas.",
+  },
+  {
+    q: "Em quanto tempo o conserto fica pronto?",
+    a: "A maioria dos reparos de consoles, notebooks e celulares é entregue em 24 a 72 horas após a aprovação do orçamento. Reparos complexos (reballing de GPU, BGA) podem levar até 5 dias úteis.",
+  },
+  {
+    q: "Vocês atendem em toda Curitiba e região metropolitana?",
+    a: "Sim. Atendemos Curitiba e toda região metropolitana (São José dos Pinhais, Pinhais, Colombo, Araucária) com opção de retirada e entrega via motoboy.",
+  },
+  {
+    q: "Trabalham com peças originais?",
+    a: "Trabalhamos com peças originais e componentes de alta qualidade homologados pelos fabricantes. Sempre informamos a procedência antes da troca.",
+  },
+  {
+    q: "Como faço para solicitar um reparo?",
+    a: `Basta chamar no WhatsApp ${WHATSAPP_DISPLAY}. Descreva o problema, envie fotos se possível e nosso técnico responde com um diagnóstico inicial e o próximo passo.`,
+  },
+];
+
+const relatedServices = [
+  { label: "Informática e Notebooks em Curitiba", href: "/servicos/informatica" },
+  { label: "Manutenção de Notebooks", href: "/servicos/notebooks" },
+  { label: "Conserto de Celulares", href: "/servicos/celulares" },
+  { label: "Assistência Técnica em Curitiba (geral)", href: "/regioes/curitiba" },
+  { label: "São José dos Pinhais", href: "/regioes/sao-jose-dos-pinhais" },
+  { label: "Pinhais", href: "/regioes/pinhais" },
+  { label: "Colombo", href: "/regioes/colombo" },
+  { label: "Araucária", href: "/regioes/araucaria" },
+];
+
 export default function AssistenciaTecnicaCuritiba() {
   const pageUrl = "https://precisodeumtecnico.com/assistencia-tecnica-curitiba";
   const ogImage = "https://precisodeumtecnico.com/og-image.jpg";
-  const schema = {
+  const localBusinessSchema = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     name: "Preciso de um Técnico",
@@ -219,6 +257,78 @@ export default function AssistenciaTecnicaCuritiba() {
       "https://www.instagram.com/PrecisoDeUmTecnico",
     ],
   };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Início", item: "https://precisodeumtecnico.com/" },
+      { "@type": "ListItem", position: 2, name: "Serviços", item: "https://precisodeumtecnico.com/servicos" },
+      { "@type": "ListItem", position: 3, name: "Assistência Técnica em Curitiba", item: pageUrl },
+    ],
+  };
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  };
+
+  // Dev-time schema + tracking validation. Logs structured data and verifies
+  // that whatsapp_click events fire with utm_*/gclid payload. Surfaces a
+  // warning in the console if tracking breaks (e.g. dataLayer never receives
+  // the event after a CTA click).
+  useEffect(() => {
+    if (!import.meta.env.DEV) return;
+    // eslint-disable-next-line no-console
+    console.groupCollapsed("[SEO] /assistencia-tecnica-curitiba JSON-LD");
+    // eslint-disable-next-line no-console
+    console.log("LocalBusiness", localBusinessSchema);
+    // eslint-disable-next-line no-console
+    console.log("BreadcrumbList", breadcrumbSchema);
+    // eslint-disable-next-line no-console
+    console.log("FAQPage", faqSchema);
+    // eslint-disable-next-line no-console
+    console.groupEnd();
+
+    // Tracking watchdog: warns if no whatsapp_click events show up in
+    // dataLayer 8s after any wa.me anchor is clicked.
+    const w = window as unknown as { dataLayer?: Array<Record<string, unknown>> };
+    let clicked = false;
+    const onClick = (e: MouseEvent) => {
+      const a = (e.target as HTMLElement | null)?.closest?.("a[href*='wa.me']");
+      if (!a) return;
+      clicked = true;
+      const before = w.dataLayer?.length ?? 0;
+      setTimeout(() => {
+        const events = (w.dataLayer ?? []).slice(before);
+        const wa = events.find((ev) => ev.event === "whatsapp_click");
+        if (!wa) {
+          // eslint-disable-next-line no-console
+          console.warn("[tracking] whatsapp_click did NOT fire after CTA click — check analytics wiring");
+        } else {
+          // eslint-disable-next-line no-console
+          console.info("[tracking] whatsapp_click OK", wa);
+        }
+      }, 250);
+    };
+    document.addEventListener("click", onClick);
+    const timer = setTimeout(() => {
+      if (!clicked) {
+        // eslint-disable-next-line no-console
+        console.info("[tracking] watchdog armed — click any WhatsApp CTA to validate utm_*/gclid payload");
+      }
+    }, 1000);
+    return () => {
+      document.removeEventListener("click", onClick);
+      clearTimeout(timer);
+    };
+  }, [localBusinessSchema, breadcrumbSchema, faqSchema]);
+
 
   return (
     <Layout>

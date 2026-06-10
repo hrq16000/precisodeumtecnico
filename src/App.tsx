@@ -7,6 +7,7 @@ import { ScrollToTop } from "@/components/ScrollToTop";
 import { GlobalReveal } from "@/components/GlobalReveal";
 import { HelmetProvider } from "react-helmet-async";
 import { AuthProvider } from "@/hooks/useAuth";
+import { WhatsAppFunnelProvider } from "@/components/WhatsAppFunnel";
 import Index from "./pages/Index";
 import Servicos from "./pages/Servicos";
 import ServicoDetalhe from "./pages/ServicoDetalhe";
@@ -40,6 +41,8 @@ const App = () => (
           <BrowserRouter>
             <ScrollToTop />
             <GlobalReveal />
+            <WhatsAppFunnelProvider>
+
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/servicos" element={<Servicos />} />
@@ -64,6 +67,7 @@ const App = () => (
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
+            </WhatsAppFunnelProvider>
           </BrowserRouter>
         </TooltipProvider>
       </AuthProvider>

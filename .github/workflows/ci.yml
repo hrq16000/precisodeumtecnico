@@ -62,7 +62,15 @@ jobs:
         run: bun run build
       - name: Install Lighthouse CI
         run: npm install -g @lhci/cli@0.14.x
-      - name: Lighthouse — desktop
+      - name: Lighthouse — desktop (curitiba + brasil)
         run: lhci autorun --config=./lighthouserc.cjs
-      - name: Lighthouse — mobile
+      - name: Lighthouse — mobile (curitiba + brasil)
         run: lhci autorun --config=./lighthouserc.mobile.cjs
+      - name: Upload Lighthouse reports on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports
+          path: lighthouse-reports/
+          if-no-files-found: ignore
+          retention-days: 14

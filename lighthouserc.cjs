@@ -1,13 +1,14 @@
 module.exports = {
   ci: {
     collect: {
-      url: ["http://localhost:4173/assistencia-tecnica-curitiba"],
+      url: [
+        "http://localhost:4173/assistencia-tecnica-curitiba",
+        "http://localhost:4173/assistencia-tecnica",
+      ],
       startServerCommand: "bun run preview --port 4173",
       startServerReadyPattern: "Local:",
       numberOfRuns: 1,
-      settings: {
-        preset: "desktop",
-      },
+      settings: { preset: "desktop" },
     },
     assert: {
       assertions: {
@@ -17,6 +18,6 @@ module.exports = {
         "interactive": ["warn", { maxNumericValue: 3500 }],
       },
     },
-    upload: { target: "temporary-public-storage" },
+    upload: { target: "filesystem", outputDir: "./lighthouse-reports/desktop" },
   },
 };

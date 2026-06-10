@@ -11,6 +11,7 @@ export function WhatsAppFloat() {
       rel="noopener noreferrer"
       className="whatsapp-float"
       aria-label="Chamar no WhatsApp"
+      data-wa-source="float"
     >
       <MessageCircle className="w-6 h-6" />
       <span className="hidden sm:inline font-semibold">WhatsApp 24h</span>

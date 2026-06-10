@@ -283,19 +283,19 @@ function FunnelDialog({ isOpen, onClose, step, setStep, answers, setAnswers, met
 
 function TransparencyBar() {
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px] sm:text-xs">
-      <Pill icon={<MessageCircle className="w-3.5 h-3.5" />} title="Orçamento grátis" body="WhatsApp + fotos/vídeos" />
-      <Pill icon={<FileText className="w-3.5 h-3.5" />} title="Diagnóstico R$ 90" body="só se não aprovar" />
-      <Pill icon={<Home className="w-3.5 h-3.5" />} title="Visita a partir R$ 99,99" body="até 30 min · Combo 2h R$ 299,99" />
-      <Pill icon={<Cpu className="w-3.5 h-3.5" />} title="Reparo placa: R$ 300–500" body="pré-aprovado" />
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-[10px] sm:text-[11px]">
+      <Pill icon={<MessageCircle className="w-3 h-3" />} title="Orçamento grátis" body="WhatsApp + fotos" />
+      <Pill icon={<FileText className="w-3 h-3" />} title="Diagnóstico R$ 90" body="só se não aprovar" />
+      <Pill icon={<Home className="w-3 h-3" />} title="Visita a partir R$ 99,99" body="até 30 min" />
+      <Pill icon={<Cpu className="w-3 h-3" />} title="Reparo placa: R$ 300–500" body="pré-aprovado" />
     </div>
   );
 }
 
 function Pill({ icon, title, body }: { icon: ReactNode; title: string; body: string }) {
   return (
-    <div className="rounded-lg border border-border bg-muted/40 px-2.5 py-2">
-      <div className="flex items-center gap-1.5 font-semibold text-foreground">
+    <div className="rounded-md border border-border bg-muted/40 px-2 py-1.5">
+      <div className="flex items-center gap-1 font-semibold text-foreground">
         {icon}
         {title}
       </div>

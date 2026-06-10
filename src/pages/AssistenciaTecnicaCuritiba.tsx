@@ -278,6 +278,32 @@ export default function AssistenciaTecnicaCuritiba() {
     })),
   };
 
+  // Service schemas — one per repair category, linked to the LocalBusiness
+  // via `provider`. Helps Google surface each as a distinct rich result.
+  const serviceCategories = [
+    { name: "Conserto de PlayStation (PS5, PS4, PS3) em Curitiba", type: "Reparo de Consoles" },
+    { name: "Conserto de Xbox (Series X|S, One) em Curitiba", type: "Reparo de Consoles" },
+    { name: "Conserto de Nintendo Switch em Curitiba", type: "Reparo de Consoles" },
+    { name: "Reparo de Placa de Vídeo (NVIDIA / AMD) em Curitiba", type: "Reparo de GPU" },
+    { name: "Conserto de TV em Curitiba", type: "Reparo de Eletrônicos" },
+    { name: "Manutenção de Notebook e PC em Curitiba", type: "Manutenção de Informática" },
+    { name: "Troca de Tela de Celular em Curitiba", type: "Reparo de Smartphone" },
+    { name: "Reparo de Equipamentos de Som em Curitiba", type: "Reparo de Áudio" },
+  ];
+  const serviceSchemas = serviceCategories.map((s) => ({
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: s.name,
+    serviceType: s.type,
+    areaServed: { "@type": "City", name: "Curitiba" },
+    provider: {
+      "@type": "LocalBusiness",
+      name: "Preciso de um Técnico",
+      url: pageUrl,
+      telephone: "+55-41-99745-2053",
+    },
+  }));
+
   // Dev-time schema + tracking validation. Logs structured data and verifies
   // that whatsapp_click events fire with utm_*/gclid payload. Surfaces a
   // warning in the console if tracking breaks (e.g. dataLayer never receives

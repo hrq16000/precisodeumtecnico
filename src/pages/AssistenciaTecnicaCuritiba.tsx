@@ -27,11 +27,16 @@ import {
   CheckCircle2,
   ArrowRight,
 } from "lucide-react";
+import { trackWhatsAppClick } from "@/lib/analytics";
 
 const WHATSAPP_NUMBER = "5541997452053";
 const WHATSAPP_DISPLAY = "(41) 9 9745-2053";
-const waLink = (text = "Olá, preciso de um orçamento de assistência técnica em Curitiba.") =>
+const DEFAULT_WA_TEXT = "Olá, preciso de um orçamento de assistência técnica em Curitiba.";
+const waLink = (text = DEFAULT_WA_TEXT) =>
   `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+const waClick = (source: string, service?: string) => () =>
+  trackWhatsAppClick({ source: `curitiba_lp_${source}`, service, city: "Curitiba" });
+
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -172,18 +177,27 @@ const differentials = [
 ];
 
 export default function AssistenciaTecnicaCuritiba() {
+  const pageUrl = "https://precisodeumtecnico.com/assistencia-tecnica-curitiba";
+  const ogImage = "https://precisodeumtecnico.com/og-image.jpg";
   const schema = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     name: "Preciso de um Técnico",
     description:
       "Assistência técnica especializada em Curitiba: reparo de consoles, computadores, notebooks, smartphones e placas de vídeo.",
-    url: "https://precisodeumtecnico.com/assistencia-tecnica-curitiba",
+    url: pageUrl,
     telephone: "+55-41-99745-2053",
-    areaServed: { "@type": "City", name: "Curitiba" },
-    address: { "@type": "PostalAddress", addressLocality: "Curitiba", addressRegion: "PR", addressCountry: "BR" },
+    image: ogImage,
+    areaServed: [
+      { "@type": "City", name: "Curitiba", "@id": "https://www.wikidata.org/wiki/Q40269" },
+    ],
+    serviceArea: { "@type": "AdministrativeArea", name: "Curitiba - PR" },
     priceRange: "$$",
     aggregateRating: { "@type": "AggregateRating", ratingValue: "4.9", reviewCount: "523" },
+    sameAs: [
+      "https://www.facebook.com/precisodeumtecnico/",
+      "https://www.instagram.com/PrecisoDeUmTecnico",
+    ],
   };
 
   return (
@@ -194,13 +208,30 @@ export default function AssistenciaTecnicaCuritiba() {
           name="description"
           content="Reparo de PS5, Xbox, Nintendo, computadores, notebooks, celulares e placas de vídeo em Curitiba. Diagnóstico grátis, garantia e atendimento via WhatsApp (41) 9 9745-2053."
         />
-        <link rel="canonical" href="https://precisodeumtecnico.com/assistencia-tecnica-curitiba" />
+        <meta name="keywords" content="assistência técnica curitiba, conserto ps5 curitiba, reparo xbox curitiba, troca de tela notebook curitiba, conserto placa de vídeo curitiba, assistência celular curitiba" />
+        <meta name="robots" content="index, follow, max-image-preview:large" />
+        <meta name="geo.region" content="BR-PR" />
+        <meta name="geo.placename" content="Curitiba" />
+        <link rel="canonical" href={pageUrl} />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Preciso de um Técnico" />
+        <meta property="og:locale" content="pt_BR" />
         <meta property="og:title" content="Assistência Técnica Especializada em Curitiba" />
         <meta
           property="og:description"
           content="Reparo de consoles, computadores, notebooks, smartphones e placas de vídeo em Curitiba. Atendimento via WhatsApp."
         />
-        <meta property="og:url" content="https://precisodeumtecnico.com/assistencia-tecnica-curitiba" />
+        <meta property="og:url" content={pageUrl} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Assistência Técnica Especializada em Curitiba" />
+        <meta name="twitter:description" content="Reparo de consoles, PC, notebooks, smartphones e GPUs em Curitiba. Atendimento via WhatsApp." />
+        <meta name="twitter:image" content={ogImage} />
+
         <script type="application/ld+json">{JSON.stringify(schema)}</script>
       </Helmet>
 
@@ -217,6 +248,7 @@ export default function AssistenciaTecnicaCuritiba() {
           </a>
           <a
             href={waLink()}
+            onClick={waClick("header")}
             target="_blank"
             rel="noopener noreferrer"
             className="hidden sm:inline-flex items-center gap-2 text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition"
@@ -287,6 +319,7 @@ export default function AssistenciaTecnicaCuritiba() {
             >
               <a
                 href={waLink()}
+                onClick={waClick("hero")}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group relative inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-emerald-500 text-[#04140d] font-bold shadow-[0_0_0_0_rgba(16,185,129,0.6)] hover:shadow-[0_0_40px_0_rgba(16,185,129,0.55)] transition-all duration-300 hover:scale-[1.03]"
@@ -409,6 +442,7 @@ export default function AssistenciaTecnicaCuritiba() {
                     </ul>
                     <a
                       href={waLink(`Olá! Quero um orçamento para: ${s.title}.`)}
+                      onClick={waClick("service_card", s.title)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-cyan-300 hover:text-cyan-200 transition"
@@ -490,6 +524,7 @@ export default function AssistenciaTecnicaCuritiba() {
           <div className="mt-12 text-center">
             <a
               href={waLink("Olá! Quero enviar meu console ou placa de vídeo para reparo.")}
+              onClick={waClick("consoles_section", "Consoles e GPUs")}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-7 py-4 rounded-xl bg-emerald-500 text-[#04140d] font-bold hover:shadow-[0_0_40px_0_rgba(16,185,129,0.5)] hover:scale-[1.03] transition"
@@ -565,6 +600,7 @@ export default function AssistenciaTecnicaCuritiba() {
               </p>
               <a
                 href={waLink()}
+                onClick={waClick("final_cta")}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-8 inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-emerald-500 text-[#04140d] font-bold text-lg hover:shadow-[0_0_50px_0_rgba(16,185,129,0.55)] hover:scale-[1.03] transition"
@@ -585,6 +621,7 @@ export default function AssistenciaTecnicaCuritiba() {
           </p>
           <a
             href={waLink()}
+            onClick={waClick("footer")}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-emerald-400 hover:text-emerald-300 font-semibold"
@@ -597,6 +634,7 @@ export default function AssistenciaTecnicaCuritiba() {
       {/* FLOATING WHATSAPP */}
       <a
         href={waLink()}
+        onClick={waClick("floating")}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chamar no WhatsApp"

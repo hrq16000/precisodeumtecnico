@@ -62,6 +62,11 @@ export function Footer() {
                 </li>
               ))}
               <li>
+                <Link to="/assistencia-tecnica-curitiba" onClick={() => trackCtaClick({ surface: "footer", cta_id: "footer_curitiba_lp", label: "Assistência Técnica em Curitiba", destination: "/assistencia-tecnica-curitiba", city: "Curitiba" })} className="text-background/70 hover:text-primary transition-colors text-sm">
+                  Assistência Técnica em Curitiba
+                </Link>
+              </li>
+              <li>
                 <Link to="/servicos" className="text-primary hover:text-primary/80 transition-colors text-sm font-medium">
                   Ver todos →
                 </Link>

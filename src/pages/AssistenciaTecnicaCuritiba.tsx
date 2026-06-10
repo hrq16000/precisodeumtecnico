@@ -621,6 +621,7 @@ export default function AssistenciaTecnicaCuritiba() {
           </p>
           <a
             href={waLink()}
+            onClick={waClick("footer")}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-emerald-400 hover:text-emerald-300 font-semibold"

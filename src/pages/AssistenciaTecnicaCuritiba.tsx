@@ -27,11 +27,16 @@ import {
   CheckCircle2,
   ArrowRight,
 } from "lucide-react";
+import { trackWhatsAppClick } from "@/lib/analytics";
 
 const WHATSAPP_NUMBER = "5541997452053";
 const WHATSAPP_DISPLAY = "(41) 9 9745-2053";
-const waLink = (text = "Olá, preciso de um orçamento de assistência técnica em Curitiba.") =>
+const DEFAULT_WA_TEXT = "Olá, preciso de um orçamento de assistência técnica em Curitiba.";
+const waLink = (text = DEFAULT_WA_TEXT) =>
   `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+const waClick = (source: string, service?: string) => () =>
+  trackWhatsAppClick({ source: `curitiba_lp_${source}`, service, city: "Curitiba" });
+
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },

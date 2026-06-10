@@ -406,30 +406,30 @@ function Step2({
   onBack: () => void;
 }) {
   return (
-    <div className="space-y-3">
-      <h3 className="font-display text-lg font-bold">2. Conta o problema e o modelo</h3>
-      <div className="space-y-2">
-        <label className="text-sm font-medium">Qual o problema ou aparelho?</label>
+    <div className="space-y-2">
+      <h3 className="font-display text-base font-bold">2. Problema e modelo</h3>
+      <div className="space-y-1">
+        <label className="text-sm font-medium">Problema ou aparelho</label>
         <Input
           autoFocus
-          placeholder="Ex: PS5 não liga · TV Samsung sem imagem · placa com superaquecimento"
+          placeholder="Ex: PS5 não liga · TV sem imagem · placa superaquecendo"
           value={answers.problema}
           onChange={(e) => setAnswers((a) => ({ ...a, problema: e.target.value }))}
         />
       </div>
-      <div className="space-y-2">
+      <div className="space-y-1">
         <label className="text-sm font-medium">Marca e modelo</label>
         <Input
-          placeholder="Ex: PlayStation 5 Slim · Notebook Dell Inspiron 15 · TV Samsung 55"
+          placeholder="Ex: PS5 Slim · Dell Inspiron 15 · Samsung 55"
           value={answers.marcaModelo}
           onChange={(e) => setAnswers((a) => ({ ...a, marcaModelo: e.target.value }))}
         />
       </div>
 
       {answers.path === "reparo" && (
-        <div className="rounded-lg border bg-muted/40 p-3 space-y-2">
+        <div className="rounded-lg border bg-muted/40 p-2.5 space-y-1.5">
           <p className="text-sm font-medium flex items-center gap-1.5">
-            <Info className="w-4 h-4 text-primary" /> O defeito é em placa? (não liga, tela preta, artefatos, superaquecimento)
+            <Info className="w-4 h-4 text-primary shrink-0" /> Defeito em placa?
           </p>
           <div className="grid grid-cols-2 gap-2">
             <Button
@@ -444,32 +444,32 @@ function Step2({
               variant={answers.defeitoPlaca === "nao" ? "default" : "outline"}
               onClick={() => setAnswers((a) => ({ ...a, defeitoPlaca: "nao" }))}
             >
-              Não / não sei
+              Não sei
             </Button>
           </div>
           {answers.defeitoPlaca === "sim" && (
             <p className="text-xs text-foreground bg-accent/15 border border-accent/30 rounded p-2">
-              ⚠️ Valor mínimo pré-aprovado de reparo de placa: <b>R$ 300</b> (diagnóstico incluso quando aprovado). Se desistir após análise: <b>R$ 90</b>.
+              ⚠️ Reparo de placa: mínimo <b>R$ 300</b> (diagnóstico incluso se aprovado). Se desistir: <b>R$ 90</b>.
             </p>
           )}
         </div>
       )}
 
       {answers.path === "visita" && (
-        <div className="space-y-2">
-          <label className="text-sm font-medium">Qual tipo de serviço na visita?</label>
+        <div className="space-y-1">
+          <label className="text-sm font-medium">Tipo de serviço na visita</label>
           <Input
-            placeholder="Ex: instalar programa · formatar · configurar roteador · tomada"
+            placeholder="Ex: instalar programa · formatar · roteador"
             value={answers.tipoVisita}
             onChange={(e) => setAnswers((a) => ({ ...a, tipoVisita: e.target.value }))}
           />
           <p className="text-xs text-foreground bg-accent/15 border border-accent/30 rounded p-2">
-            🏠 Visita: <b>R$ 99,99</b> por até 30 min · Combo 2h: <b>R$ 299,99</b>. Não inclui peças nem estacionamento.
+            🏠 Visita: <b>R$ 99,99</b> (30 min) · Combo 2h: <b>R$ 299,99</b>.
           </p>
         </div>
       )}
 
-      <div className="flex justify-between pt-2">
+      <div className="flex justify-between pt-1">
         <Button variant="outline" onClick={onBack}>
           <ArrowLeft className="w-4 h-4" /> Voltar
         </Button>

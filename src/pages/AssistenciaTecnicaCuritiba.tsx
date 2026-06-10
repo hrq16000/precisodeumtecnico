@@ -524,6 +524,7 @@ export default function AssistenciaTecnicaCuritiba() {
           <div className="mt-12 text-center">
             <a
               href={waLink("Olá! Quero enviar meu console ou placa de vídeo para reparo.")}
+              onClick={waClick("consoles_section", "Consoles e GPUs")}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-7 py-4 rounded-xl bg-emerald-500 text-[#04140d] font-bold hover:shadow-[0_0_40px_0_rgba(16,185,129,0.5)] hover:scale-[1.03] transition"

@@ -26,6 +26,7 @@ import BlogCategory from "./pages/BlogCategory";
 import Diagnostics from "./pages/Diagnostics";
 import NotFound from "./pages/NotFound";
 import AssistenciaTecnicaCuritiba from "./pages/AssistenciaTecnicaCuritiba";
+import AssistenciaTecnica from "./pages/AssistenciaTecnica";
 
 const queryClient = new QueryClient();
 
@@ -59,6 +60,7 @@ const App = () => (
               <Route path="/diagnostics" element={<Diagnostics />} />
               <Route path="/diagnostico" element={<Diagnostics />} />
               <Route path="/assistencia-tecnica-curitiba" element={<AssistenciaTecnicaCuritiba />} />
+              <Route path="/assistencia-tecnica" element={<AssistenciaTecnica />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

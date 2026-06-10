@@ -70,6 +70,12 @@ function* staticUrls(): Generator<Url> {
     priority: 0.95,
     lastmod: fileDate("src/pages/AssistenciaTecnicaCuritiba.tsx"),
   };
+  yield {
+    loc: `${BASE}/assistencia-tecnica`,
+    changefreq: "weekly",
+    priority: 0.95,
+    lastmod: fileDate("src/pages/AssistenciaTecnica.tsx"),
+  };
 }
 
 function* serviceUrls(): Generator<Url> {

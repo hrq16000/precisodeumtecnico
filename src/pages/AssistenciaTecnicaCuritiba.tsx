@@ -600,6 +600,7 @@ export default function AssistenciaTecnicaCuritiba() {
               </p>
               <a
                 href={waLink()}
+                onClick={waClick("final_cta")}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-8 inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-emerald-500 text-[#04140d] font-bold text-lg hover:shadow-[0_0_50px_0_rgba(16,185,129,0.55)] hover:scale-[1.03] transition"

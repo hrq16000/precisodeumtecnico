@@ -498,14 +498,14 @@ function Step3({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <div className="space-y-3">
-      <h3 className="font-display text-lg font-bold">3. Como vamos atender?</h3>
+    <div className="space-y-2">
+      <h3 className="font-display text-base font-bold">3. Como vamos atender?</h3>
       {answers.path === "reparo" && (
         <>
           <OptionCard
             active={answers.logistica === "parceiro"}
             icon={<ShieldCheck className="w-5 h-5" />}
-            title="Levo até um parceiro em Curitiba (grátis)"
+            title="Levo até parceiro em Curitiba (grátis)"
             body="você economiza e acompanha o orçamento"
             onClick={() => setAnswers((a) => ({ ...a, logistica: "parceiro" }))}
           />
@@ -519,16 +519,16 @@ function Step3({
         </>
       )}
       {answers.path === "visita" && (
-        <div className="space-y-2">
+        <div className="space-y-1">
           <label className="text-sm font-medium">Endereço completo + bairro</label>
           <Input
-            placeholder="Rua, número, bairro, cidade — usaremos só para agendar"
+            placeholder="Rua, número, bairro, cidade"
             value={answers.endereco}
             onChange={(e) => setAnswers((a) => ({ ...a, endereco: e.target.value }))}
           />
         </div>
       )}
-      <div className="flex justify-between pt-2">
+      <div className="flex justify-between pt-1">
         <Button variant="outline" onClick={onBack}>
           <ArrowLeft className="w-4 h-4" /> Voltar
         </Button>
@@ -560,31 +560,31 @@ function Step4({
   preview: string;
 }) {
   return (
-    <div className="space-y-3">
-      <h3 className="font-display text-lg font-bold">4. Algo mais antes de abrir o WhatsApp?</h3>
+    <div className="space-y-2">
+      <h3 className="font-display text-base font-bold">4. Revisar e enviar</h3>
       <p className="text-sm text-muted-foreground">
-        Você pode descrever detalhes adicionais. Depois é só anexar fotos e vídeos direto no chat.
+        Adicione detalhes opcionais. Depois anexe fotos direto no WhatsApp.
       </p>
       <textarea
-        className="w-full min-h-[90px] rounded-md border border-input bg-background p-3 text-sm"
+        className="w-full min-h-[70px] rounded-md border border-input bg-background p-2.5 text-sm"
         placeholder="Detalhes adicionais (opcional)"
         value={answers.observacoes}
         onChange={(e) => setAnswers((a) => ({ ...a, observacoes: e.target.value }))}
       />
 
-      <details className="rounded-lg border bg-muted/30 p-3 text-xs">
+      <details className="rounded-lg border bg-muted/30 p-2.5 text-xs">
         <summary className="cursor-pointer font-medium text-foreground">
-          Ver pré-visualização da mensagem
+          Ver resumo da mensagem
         </summary>
-        <pre className="whitespace-pre-wrap mt-2 font-sans text-muted-foreground">{preview}</pre>
+        <pre className="whitespace-pre-wrap mt-1.5 font-sans text-muted-foreground">{preview}</pre>
       </details>
 
-      <div className="rounded-lg bg-success/10 border border-success/30 p-3 text-sm flex gap-2">
+      <div className="rounded-lg bg-success/10 border border-success/30 p-2.5 text-sm flex gap-2">
         <CheckCircle2 className="w-5 h-5 text-success flex-shrink-0" />
-        <span>Resposta humana em até 30 minutos. Garantia de 90 dias no serviço executado.</span>
+        <span>Resposta em até 30 min. Garantia de 90 dias.</span>
       </div>
 
-      <div className="flex flex-col sm:flex-row justify-between gap-2 pt-2">
+      <div className="flex flex-col sm:flex-row justify-between gap-2 pt-1">
         <Button variant="outline" onClick={onBack}>
           <ArrowLeft className="w-4 h-4" /> Voltar
         </Button>

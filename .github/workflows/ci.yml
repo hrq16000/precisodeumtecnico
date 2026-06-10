@@ -8,7 +8,7 @@ on:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
@@ -30,5 +30,39 @@ jobs:
         run: bun run build
       - name: Install Playwright (chromium)
         run: bun run e2e:install
-      - name: Run E2E (a11y + flows)
+      - name: Run E2E (a11y + flows + tracking)
         run: bun run e2e
+      - name: Start preview server
+        run: |
+          bun run preview --port 4173 &
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:4173/ > /dev/null && break
+            sleep 1
+          done
+      - name: Validate page images & alt text (/assistencia-tecnica-curitiba)
+        run: bun scripts/check-page-images.ts
+        env:
+          PAGE_BASE_URL: http://localhost:4173
+
+  lighthouse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: verify
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+      - name: Build
+        run: bun run build
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli@0.14.x
+      - name: Lighthouse — desktop
+        run: lhci autorun --config=./lighthouserc.cjs
+      - name: Lighthouse — mobile
+        run: lhci autorun --config=./lighthouserc.mobile.cjs

@@ -1,5 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import {
   Gamepad2,
   Monitor,
@@ -25,10 +27,19 @@ import {
   Clock,
   CheckCircle2,
   ArrowRight,
+  HelpCircle,
+  MapPin,
 } from "lucide-react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { trackWhatsAppClick } from "@/lib/analytics";
+
 
 const WHATSAPP_NUMBER = "5541997452053";
 const WHATSAPP_DISPLAY = "(41) 9 9745-2053";

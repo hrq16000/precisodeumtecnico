@@ -22,6 +22,7 @@ const services = [
   { name: "Ar-Condicionado", href: "/servicos/ar-condicionado", description: "Instalação e manutenção" },
   { name: "Celulares", href: "/servicos/celulares", description: "Reparo de smartphones e tablets" },
   { name: "Games", href: "/servicos/games", description: "Conserto de videogames e consoles" },
+  { name: "Consoles & Eletrônicos (Curitiba)", href: "/assistencia-tecnica-curitiba", description: "Assistência técnica especializada em PS5, Xbox, Nintendo e GPUs" },
 ];
 
 const regions = [

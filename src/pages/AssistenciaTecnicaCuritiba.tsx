@@ -634,6 +634,7 @@ export default function AssistenciaTecnicaCuritiba() {
       {/* FLOATING WHATSAPP */}
       <a
         href={waLink()}
+        onClick={waClick("floating")}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chamar no WhatsApp"

@@ -671,7 +671,89 @@ export default function AssistenciaTecnicaCuritiba() {
         </div>
       </section>
 
+      {/* FAQ */}
+      <section id="faq" className="py-16 md:py-24 bg-muted/30 border-t border-border">
+        <div className="container-custom max-w-3xl">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+            variants={fadeUp}
+            className="text-center"
+          >
+            <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-semibold text-primary">
+              <HelpCircle className="w-3.5 h-3.5" /> Perguntas Frequentes
+            </span>
+            <h2 className="mt-4 text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
+              Dúvidas sobre <span className="text-primary">assistência técnica em Curitiba</span>
+            </h2>
+            <p className="mt-3 text-muted-foreground">
+              Respostas rápidas sobre orçamento, garantia, prazos e formas de atendimento.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-60px" }}
+            variants={fadeUp}
+            className="mt-10"
+          >
+            <Accordion type="single" collapsible className="w-full">
+              {faqs.map((f, i) => (
+                <AccordionItem key={f.q} value={`faq-${i}`}>
+                  <AccordionTrigger className="text-left text-base font-semibold">
+                    {f.q}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground leading-relaxed">
+                    {f.a}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* RELATED INTERNAL LINKS */}
+      <section className="py-14 border-t border-border">
+        <div className="container-custom">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            className="max-w-2xl"
+          >
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
+              Veja também
+            </h2>
+            <p className="mt-2 text-muted-foreground">
+              Serviços relacionados e atendimento em cidades próximas de Curitiba.
+            </p>
+          </motion.div>
+
+          <ul className="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {relatedServices.map((r) => (
+              <li key={r.href}>
+                <Link
+                  to={r.href}
+                  className="group flex items-center justify-between gap-3 rounded-xl border border-border bg-card p-4 hover:border-primary/50 hover:shadow-md transition"
+                >
+                  <span className="flex items-center gap-2 text-sm font-medium text-foreground">
+                    <MapPin className="w-4 h-4 text-primary" />
+                    {r.label}
+                  </span>
+                  <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition" />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
       {/* FINAL CTA */}
+
       <section className="py-16 md:py-24 bg-muted/30 border-t border-border">
         <div className="container-custom max-w-4xl">
           <motion.div

@@ -319,6 +319,7 @@ export default function AssistenciaTecnicaCuritiba() {
             >
               <a
                 href={waLink()}
+                onClick={waClick("hero")}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group relative inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-emerald-500 text-[#04140d] font-bold shadow-[0_0_0_0_rgba(16,185,129,0.6)] hover:shadow-[0_0_40px_0_rgba(16,185,129,0.55)] transition-all duration-300 hover:scale-[1.03]"

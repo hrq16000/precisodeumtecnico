@@ -123,6 +123,35 @@ export function trackWebVital(metric: {
   });
 }
 
+export function getAttributionParams(): Record<string, string> {
+  try {
+    if (typeof window === "undefined") return {};
+    const sp = new URLSearchParams(window.location.search);
+    const keys = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "gclid", "fbclid"];
+    const out: Record<string, string> = {};
+    for (const k of keys) {
+      const v = sp.get(k);
+      if (v) out[k] = v;
+    }
+    // Persist first-touch attribution for the session
+    try {
+      const stored = window.sessionStorage?.getItem("pdt_attr_v1");
+      if (stored) {
+        const parsed = JSON.parse(stored) as Record<string, string>;
+        for (const [k, v] of Object.entries(parsed)) if (!out[k]) out[k] = v;
+      }
+      if (Object.keys(out).length) {
+        window.sessionStorage?.setItem("pdt_attr_v1", JSON.stringify(out));
+      }
+    } catch {
+      /* ignore */
+    }
+    return out;
+  } catch {
+    return {};
+  }
+}
+
 export function trackWhatsAppClick(opts: {
   source: string; // e.g. "hero", "quiz_result", "bairro_cta", "footer"
   service?: string;
@@ -134,8 +163,10 @@ export function trackWhatsAppClick(opts: {
     service: opts.service,
     city: opts.city,
     bairro: opts.bairro,
+    ...getAttributionParams(),
   });
 }
+
 
 export function trackQuizComplete(opts: {
   problema: string;

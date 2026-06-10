@@ -215,26 +215,26 @@ function FunnelDialog({ isOpen, onClose, step, setStep, answers, setAnswers, met
 
   return (
     <Dialog open={isOpen} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-w-2xl max-h-[92vh] overflow-y-auto p-0">
-        <div className="bg-gradient-to-br from-primary/95 to-primary p-5 sm:p-6 text-primary-foreground">
+      <DialogContent className="max-w-2xl max-h-[82vh] overflow-hidden p-0 flex flex-col">
+        <div className="bg-gradient-to-br from-primary/95 to-primary p-4 sm:p-5 text-primary-foreground shrink-0">
           <DialogHeader>
-            <DialogTitle className="text-xl sm:text-2xl font-display flex items-center gap-2">
-              <MessageCircle className="w-6 h-6" />
-              Atendimento WhatsApp · 4 passos rápidos
+            <DialogTitle className="text-lg sm:text-xl font-display flex items-center gap-2">
+              <MessageCircle className="w-5 h-5" />
+              Atendimento WhatsApp · 4 passos
             </DialogTitle>
           </DialogHeader>
-          <p className="text-primary-foreground/85 text-sm mt-2">
-            Antes de abrir a conversa, conta pra gente o essencial. Assim já chegamos com a resposta certa.
+          <p className="text-primary-foreground/85 text-xs sm:text-sm mt-1">
+            Conta o essencial pra gente chegar com a resposta certa.
           </p>
         </div>
 
-        <div className="px-5 sm:px-6 pt-4">
+        <div className="px-4 sm:px-5 pt-3 shrink-0">
           <TransparencyBar />
         </div>
 
-        <div className="px-5 sm:px-6 py-5">
+        <div className="px-4 sm:px-5 py-4 flex-1 overflow-y-auto">
           <Stepper current={step} />
-          <div className="mt-5 min-h-[260px]">
+          <div className="mt-4">
             {step === 0 && <Step1 answers={answers} setAnswers={setAnswers} onNext={next} />}
             {step === 1 && (
               <Step2
@@ -262,8 +262,10 @@ function FunnelDialog({ isOpen, onClose, step, setStep, answers, setAnswers, met
               />
             )}
           </div>
+        </div>
 
-          <p className="text-xs text-muted-foreground mt-5 text-center">
+        <div className="px-4 sm:px-5 pb-3 shrink-0">
+          <p className="text-[10px] sm:text-xs text-muted-foreground text-center">
             <Link to="/termos-orcamento-pre-aprovado" className="underline hover:text-primary">
               Políticas de serviço e termos
             </Link>{" "}

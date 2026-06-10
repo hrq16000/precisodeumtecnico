@@ -25,6 +25,7 @@ import BlogPost from "./pages/BlogPost";
 import BlogCategory from "./pages/BlogCategory";
 import Diagnostics from "./pages/Diagnostics";
 import NotFound from "./pages/NotFound";
+import AssistenciaTecnicaCuritiba from "./pages/AssistenciaTecnicaCuritiba";
 
 const queryClient = new QueryClient();
 

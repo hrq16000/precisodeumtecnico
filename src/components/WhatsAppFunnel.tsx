@@ -367,27 +367,27 @@ function Step1({
     setTimeout(onNext, 120);
   }
   return (
-    <div className="space-y-3">
-      <h3 className="font-display text-lg font-bold">1. O que você precisa?</h3>
+    <div className="space-y-2">
+      <h3 className="font-display text-base font-bold">1. O que você precisa?</h3>
       <OptionCard
         active={answers.path === "reparo"}
         icon={<Wrench className="w-5 h-5" />}
-        title="Consertar um equipamento"
-        body="TV, som, console, PC, notebook, celular, placa"
+        title="Consertar equipamento"
+        body="TV, console, PC, notebook, celular, placa"
         onClick={() => pick("reparo")}
       />
       <OptionCard
         active={answers.path === "visita"}
         icon={<Home className="w-5 h-5" />}
         title="Visita técnica local"
-        body="instalação, formatação, impressora, roteador, elétrica simples"
+        body="instalação, formatação, impressora, roteador"
         onClick={() => pick("visita")}
       />
       <OptionCard
         active={answers.path === "orcamento"}
         icon={<MessageCircle className="w-5 h-5" />}
-        title="Só quero um orçamento rápido"
-        body="vou mandar foto/vídeo e descrição"
+        title="Orçamento rápido"
+        body="foto/vídeo e descrição"
         onClick={() => pick("orcamento")}
       />
     </div>

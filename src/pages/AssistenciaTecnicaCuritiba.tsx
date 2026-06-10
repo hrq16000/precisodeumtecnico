@@ -224,14 +224,16 @@ const faqs = [
 ];
 
 const relatedServices = [
-  { label: "Informática e Notebooks em Curitiba", href: "/servicos/informatica" },
-  { label: "Manutenção de Notebooks", href: "/servicos/notebooks" },
-  { label: "Conserto de Celulares", href: "/servicos/celulares" },
+  { label: "Assistência Técnica de Informática em Curitiba", href: "/servico-em/curitiba/informatica" },
+  { label: "Manutenção de Notebooks em Curitiba", href: "/servico-em/curitiba/notebooks" },
+  { label: "Conserto de Celulares em Curitiba", href: "/servico-em/curitiba/celulares" },
+  { label: "Instalação Elétrica em Curitiba", href: "/servico-em/curitiba/eletrica" },
+  { label: "Câmeras de Segurança / CFTV em Curitiba", href: "/servico-em/curitiba/cftv" },
   { label: "Assistência Técnica em Curitiba (geral)", href: "/regioes/curitiba" },
-  { label: "São José dos Pinhais", href: "/regioes/sao-jose-dos-pinhais" },
-  { label: "Pinhais", href: "/regioes/pinhais" },
-  { label: "Colombo", href: "/regioes/colombo" },
-  { label: "Araucária", href: "/regioes/araucaria" },
+  { label: "Técnico em São José dos Pinhais", href: "/regioes/sao-jose-dos-pinhais" },
+  { label: "Técnico em Pinhais", href: "/regioes/pinhais" },
+  { label: "Técnico em Colombo", href: "/regioes/colombo" },
+  { label: "Técnico em Araucária", href: "/regioes/araucaria" },
 ];
 
 export default function AssistenciaTecnicaCuritiba() {

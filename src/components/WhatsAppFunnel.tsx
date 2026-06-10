@@ -215,26 +215,26 @@ function FunnelDialog({ isOpen, onClose, step, setStep, answers, setAnswers, met
 
   return (
     <Dialog open={isOpen} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-w-2xl max-h-[92vh] overflow-y-auto p-0">
-        <div className="bg-gradient-to-br from-primary/95 to-primary p-5 sm:p-6 text-primary-foreground">
+      <DialogContent className="max-w-2xl max-h-[82vh] overflow-hidden p-0 flex flex-col">
+        <div className="bg-gradient-to-br from-primary/95 to-primary p-4 sm:p-5 text-primary-foreground shrink-0">
           <DialogHeader>
-            <DialogTitle className="text-xl sm:text-2xl font-display flex items-center gap-2">
-              <MessageCircle className="w-6 h-6" />
-              Atendimento WhatsApp · 4 passos rápidos
+            <DialogTitle className="text-lg sm:text-xl font-display flex items-center gap-2">
+              <MessageCircle className="w-5 h-5" />
+              Atendimento WhatsApp · 4 passos
             </DialogTitle>
           </DialogHeader>
-          <p className="text-primary-foreground/85 text-sm mt-2">
-            Antes de abrir a conversa, conta pra gente o essencial. Assim já chegamos com a resposta certa.
+          <p className="text-primary-foreground/85 text-xs sm:text-sm mt-1">
+            Conta o essencial pra gente chegar com a resposta certa.
           </p>
         </div>
 
-        <div className="px-5 sm:px-6 pt-4">
+        <div className="px-4 sm:px-5 pt-3 shrink-0">
           <TransparencyBar />
         </div>
 
-        <div className="px-5 sm:px-6 py-5">
+        <div className="px-4 sm:px-5 py-4 flex-1 overflow-y-auto">
           <Stepper current={step} />
-          <div className="mt-5 min-h-[260px]">
+          <div className="mt-4">
             {step === 0 && <Step1 answers={answers} setAnswers={setAnswers} onNext={next} />}
             {step === 1 && (
               <Step2
@@ -262,8 +262,10 @@ function FunnelDialog({ isOpen, onClose, step, setStep, answers, setAnswers, met
               />
             )}
           </div>
+        </div>
 
-          <p className="text-xs text-muted-foreground mt-5 text-center">
+        <div className="px-4 sm:px-5 pb-3 shrink-0">
+          <p className="text-[10px] sm:text-xs text-muted-foreground text-center">
             <Link to="/termos-orcamento-pre-aprovado" className="underline hover:text-primary">
               Políticas de serviço e termos
             </Link>{" "}
@@ -281,19 +283,19 @@ function FunnelDialog({ isOpen, onClose, step, setStep, answers, setAnswers, met
 
 function TransparencyBar() {
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px] sm:text-xs">
-      <Pill icon={<MessageCircle className="w-3.5 h-3.5" />} title="Orçamento grátis" body="WhatsApp + fotos/vídeos" />
-      <Pill icon={<FileText className="w-3.5 h-3.5" />} title="Diagnóstico R$ 90" body="só se não aprovar" />
-      <Pill icon={<Home className="w-3.5 h-3.5" />} title="Visita a partir R$ 99,99" body="até 30 min · Combo 2h R$ 299,99" />
-      <Pill icon={<Cpu className="w-3.5 h-3.5" />} title="Reparo placa: R$ 300–500" body="pré-aprovado" />
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-[10px] sm:text-[11px]">
+      <Pill icon={<MessageCircle className="w-3 h-3" />} title="Orçamento grátis" body="WhatsApp + fotos" />
+      <Pill icon={<FileText className="w-3 h-3" />} title="Diagnóstico R$ 90" body="só se não aprovar" />
+      <Pill icon={<Home className="w-3 h-3" />} title="Visita a partir R$ 99,99" body="até 30 min" />
+      <Pill icon={<Cpu className="w-3 h-3" />} title="Reparo placa: R$ 300–500" body="pré-aprovado" />
     </div>
   );
 }
 
 function Pill({ icon, title, body }: { icon: ReactNode; title: string; body: string }) {
   return (
-    <div className="rounded-lg border border-border bg-muted/40 px-2.5 py-2">
-      <div className="flex items-center gap-1.5 font-semibold text-foreground">
+    <div className="rounded-md border border-border bg-muted/40 px-2 py-1.5">
+      <div className="flex items-center gap-1 font-semibold text-foreground">
         {icon}
         {title}
       </div>
@@ -365,27 +367,27 @@ function Step1({
     setTimeout(onNext, 120);
   }
   return (
-    <div className="space-y-3">
-      <h3 className="font-display text-lg font-bold">1. O que você precisa?</h3>
+    <div className="space-y-2">
+      <h3 className="font-display text-base font-bold">1. O que você precisa?</h3>
       <OptionCard
         active={answers.path === "reparo"}
         icon={<Wrench className="w-5 h-5" />}
-        title="Consertar um equipamento"
-        body="TV, som, console, PC, notebook, celular, placa"
+        title="Consertar equipamento"
+        body="TV, console, PC, notebook, celular, placa"
         onClick={() => pick("reparo")}
       />
       <OptionCard
         active={answers.path === "visita"}
         icon={<Home className="w-5 h-5" />}
         title="Visita técnica local"
-        body="instalação, formatação, impressora, roteador, elétrica simples"
+        body="instalação, formatação, impressora, roteador"
         onClick={() => pick("visita")}
       />
       <OptionCard
         active={answers.path === "orcamento"}
         icon={<MessageCircle className="w-5 h-5" />}
-        title="Só quero um orçamento rápido"
-        body="vou mandar foto/vídeo e descrição"
+        title="Orçamento rápido"
+        body="foto/vídeo e descrição"
         onClick={() => pick("orcamento")}
       />
     </div>
@@ -404,30 +406,30 @@ function Step2({
   onBack: () => void;
 }) {
   return (
-    <div className="space-y-3">
-      <h3 className="font-display text-lg font-bold">2. Conta o problema e o modelo</h3>
-      <div className="space-y-2">
-        <label className="text-sm font-medium">Qual o problema ou aparelho?</label>
+    <div className="space-y-2">
+      <h3 className="font-display text-base font-bold">2. Problema e modelo</h3>
+      <div className="space-y-1">
+        <label className="text-sm font-medium">Problema ou aparelho</label>
         <Input
           autoFocus
-          placeholder="Ex: PS5 não liga · TV Samsung sem imagem · placa com superaquecimento"
+          placeholder="Ex: PS5 não liga · TV sem imagem · placa superaquecendo"
           value={answers.problema}
           onChange={(e) => setAnswers((a) => ({ ...a, problema: e.target.value }))}
         />
       </div>
-      <div className="space-y-2">
+      <div className="space-y-1">
         <label className="text-sm font-medium">Marca e modelo</label>
         <Input
-          placeholder="Ex: PlayStation 5 Slim · Notebook Dell Inspiron 15 · TV Samsung 55"
+          placeholder="Ex: PS5 Slim · Dell Inspiron 15 · Samsung 55"
           value={answers.marcaModelo}
           onChange={(e) => setAnswers((a) => ({ ...a, marcaModelo: e.target.value }))}
         />
       </div>
 
       {answers.path === "reparo" && (
-        <div className="rounded-lg border bg-muted/40 p-3 space-y-2">
+        <div className="rounded-lg border bg-muted/40 p-2.5 space-y-1.5">
           <p className="text-sm font-medium flex items-center gap-1.5">
-            <Info className="w-4 h-4 text-primary" /> O defeito é em placa? (não liga, tela preta, artefatos, superaquecimento)
+            <Info className="w-4 h-4 text-primary shrink-0" /> Defeito em placa?
           </p>
           <div className="grid grid-cols-2 gap-2">
             <Button
@@ -442,32 +444,32 @@ function Step2({
               variant={answers.defeitoPlaca === "nao" ? "default" : "outline"}
               onClick={() => setAnswers((a) => ({ ...a, defeitoPlaca: "nao" }))}
             >
-              Não / não sei
+              Não sei
             </Button>
           </div>
           {answers.defeitoPlaca === "sim" && (
             <p className="text-xs text-foreground bg-accent/15 border border-accent/30 rounded p-2">
-              ⚠️ Valor mínimo pré-aprovado de reparo de placa: <b>R$ 300</b> (diagnóstico incluso quando aprovado). Se desistir após análise: <b>R$ 90</b>.
+              ⚠️ Reparo de placa: mínimo <b>R$ 300</b> (diagnóstico incluso se aprovado). Se desistir: <b>R$ 90</b>.
             </p>
           )}
         </div>
       )}
 
       {answers.path === "visita" && (
-        <div className="space-y-2">
-          <label className="text-sm font-medium">Qual tipo de serviço na visita?</label>
+        <div className="space-y-1">
+          <label className="text-sm font-medium">Tipo de serviço na visita</label>
           <Input
-            placeholder="Ex: instalar programa · formatar · configurar roteador · tomada"
+            placeholder="Ex: instalar programa · formatar · roteador"
             value={answers.tipoVisita}
             onChange={(e) => setAnswers((a) => ({ ...a, tipoVisita: e.target.value }))}
           />
           <p className="text-xs text-foreground bg-accent/15 border border-accent/30 rounded p-2">
-            🏠 Visita: <b>R$ 99,99</b> por até 30 min · Combo 2h: <b>R$ 299,99</b>. Não inclui peças nem estacionamento.
+            🏠 Visita: <b>R$ 99,99</b> (30 min) · Combo 2h: <b>R$ 299,99</b>.
           </p>
         </div>
       )}
 
-      <div className="flex justify-between pt-2">
+      <div className="flex justify-between pt-1">
         <Button variant="outline" onClick={onBack}>
           <ArrowLeft className="w-4 h-4" /> Voltar
         </Button>
@@ -496,14 +498,14 @@ function Step3({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <div className="space-y-3">
-      <h3 className="font-display text-lg font-bold">3. Como vamos atender?</h3>
+    <div className="space-y-2">
+      <h3 className="font-display text-base font-bold">3. Como vamos atender?</h3>
       {answers.path === "reparo" && (
         <>
           <OptionCard
             active={answers.logistica === "parceiro"}
             icon={<ShieldCheck className="w-5 h-5" />}
-            title="Levo até um parceiro em Curitiba (grátis)"
+            title="Levo até parceiro em Curitiba (grátis)"
             body="você economiza e acompanha o orçamento"
             onClick={() => setAnswers((a) => ({ ...a, logistica: "parceiro" }))}
           />
@@ -517,16 +519,16 @@ function Step3({
         </>
       )}
       {answers.path === "visita" && (
-        <div className="space-y-2">
+        <div className="space-y-1">
           <label className="text-sm font-medium">Endereço completo + bairro</label>
           <Input
-            placeholder="Rua, número, bairro, cidade — usaremos só para agendar"
+            placeholder="Rua, número, bairro, cidade"
             value={answers.endereco}
             onChange={(e) => setAnswers((a) => ({ ...a, endereco: e.target.value }))}
           />
         </div>
       )}
-      <div className="flex justify-between pt-2">
+      <div className="flex justify-between pt-1">
         <Button variant="outline" onClick={onBack}>
           <ArrowLeft className="w-4 h-4" /> Voltar
         </Button>
@@ -558,31 +560,31 @@ function Step4({
   preview: string;
 }) {
   return (
-    <div className="space-y-3">
-      <h3 className="font-display text-lg font-bold">4. Algo mais antes de abrir o WhatsApp?</h3>
+    <div className="space-y-2">
+      <h3 className="font-display text-base font-bold">4. Revisar e enviar</h3>
       <p className="text-sm text-muted-foreground">
-        Você pode descrever detalhes adicionais. Depois é só anexar fotos e vídeos direto no chat.
+        Adicione detalhes opcionais. Depois anexe fotos direto no WhatsApp.
       </p>
       <textarea
-        className="w-full min-h-[90px] rounded-md border border-input bg-background p-3 text-sm"
+        className="w-full min-h-[70px] rounded-md border border-input bg-background p-2.5 text-sm"
         placeholder="Detalhes adicionais (opcional)"
         value={answers.observacoes}
         onChange={(e) => setAnswers((a) => ({ ...a, observacoes: e.target.value }))}
       />
 
-      <details className="rounded-lg border bg-muted/30 p-3 text-xs">
+      <details className="rounded-lg border bg-muted/30 p-2.5 text-xs">
         <summary className="cursor-pointer font-medium text-foreground">
-          Ver pré-visualização da mensagem
+          Ver resumo da mensagem
         </summary>
-        <pre className="whitespace-pre-wrap mt-2 font-sans text-muted-foreground">{preview}</pre>
+        <pre className="whitespace-pre-wrap mt-1.5 font-sans text-muted-foreground">{preview}</pre>
       </details>
 
-      <div className="rounded-lg bg-success/10 border border-success/30 p-3 text-sm flex gap-2">
+      <div className="rounded-lg bg-success/10 border border-success/30 p-2.5 text-sm flex gap-2">
         <CheckCircle2 className="w-5 h-5 text-success flex-shrink-0" />
-        <span>Resposta humana em até 30 minutos. Garantia de 90 dias no serviço executado.</span>
+        <span>Resposta em até 30 min. Garantia de 90 dias.</span>
       </div>
 
-      <div className="flex flex-col sm:flex-row justify-between gap-2 pt-2">
+      <div className="flex flex-col sm:flex-row justify-between gap-2 pt-1">
         <Button variant="outline" onClick={onBack}>
           <ArrowLeft className="w-4 h-4" /> Voltar
         </Button>

@@ -22,6 +22,8 @@ jobs:
         run: bun run validate:sitemap
       - name: Validate OG images
         run: bun run check:og
+      - name: Validate JSON-LD structured data
+        run: bun run validate:jsonld
       - name: Run tests
         run: bun run test
       - name: Build

@@ -11,6 +11,7 @@
     "sitemap": "bun scripts/build-sitemap.ts",
     "validate:sitemap": "bun scripts/validate-sitemap.ts",
     "check:og": "bun scripts/check-og-images.ts",
+    "validate:jsonld": "bun scripts/validate-jsonld.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "e2e": "playwright test",

@@ -19,6 +19,10 @@ const PAGES: PageSpec[] = [
     file: "src/pages/AssistenciaTecnicaCuritiba.tsx",
     required: ["LocalBusiness", "BreadcrumbList", "FAQPage", "Service"],
   },
+  {
+    file: "src/pages/AssistenciaTecnica.tsx",
+    required: ["LocalBusiness", "BreadcrumbList", "FAQPage", "Service"],
+  },
 ];
 
 const REQUIRED_PROPS: Record<string, string[]> = {

@@ -442,6 +442,7 @@ export default function AssistenciaTecnicaCuritiba() {
                     </ul>
                     <a
                       href={waLink(`Olá! Quero um orçamento para: ${s.title}.`)}
+                      onClick={waClick("service_card", s.title)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-cyan-300 hover:text-cyan-200 transition"

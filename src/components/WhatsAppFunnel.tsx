@@ -4,10 +4,11 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
@@ -22,6 +23,7 @@ import {
   ShieldCheck,
   Info,
   CheckCircle2,
+  X,
 } from "lucide-react";
 import { trackWhatsAppClick, trackEvent } from "@/lib/analytics";
 
@@ -30,6 +32,7 @@ import { trackWhatsAppClick, trackEvent } from "@/lib/analytics";
 /* -------------------------------------------------------------------------- */
 
 const WHATSAPP_NUMBER = "5541997452053";
+const STORAGE_KEY = "wa-funnel-draft-v1";
 
 type OpenOptions = { source?: string; service?: string; city?: string; bairro?: string };
 
@@ -74,32 +77,94 @@ const emptyAnswers: Answers = {
   observacoes: "",
 };
 
+function loadDraft(): { step: Step; answers: Answers } | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed !== "object") return null;
+    return { step: (parsed.step ?? 0) as Step, answers: { ...emptyAnswers, ...parsed.answers } };
+  } catch {
+    return null;
+  }
+}
+
+function hasMeaningfulDraft(a: Answers): boolean {
+  return Boolean(
+    a.path ||
+      a.problema.trim() ||
+      a.marcaModelo.trim() ||
+      a.endereco.trim() ||
+      a.observacoes.trim() ||
+      a.defeitoPlaca ||
+      a.logistica ||
+      a.tipoVisita.trim(),
+  );
+}
+
 export function WhatsAppFunnelProvider({ children }: { children: ReactNode }) {
   const [isOpen, setOpen] = useState(false);
   const [step, setStep] = useState<Step>(0);
   const [answers, setAnswers] = useState<Answers>(emptyAnswers);
   const [meta, setMeta] = useState<OpenOptions>({});
+  const hasDraftRef = useRef(false);
 
-  const reset = useCallback(() => {
-    setStep(0);
-    setAnswers(emptyAnswers);
-    setMeta({});
+  // Persist draft as the user types
+  useEffect(() => {
+    if (!isOpen) return;
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ step, answers }));
+    } catch {
+      /* ignore */
+    }
+  }, [isOpen, step, answers]);
+
+  const clearDraft = useCallback(() => {
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch {
+      /* ignore */
+    }
   }, []);
 
   const openFunnel = useCallback((opts: OpenOptions = {}) => {
     setMeta(opts);
-    setStep(0);
-    setAnswers(emptyAnswers);
+    const draft = loadDraft();
+    if (draft && hasMeaningfulDraft(draft.answers)) {
+      hasDraftRef.current = true;
+      setStep(draft.step);
+      setAnswers(draft.answers);
+      trackEvent("whatsapp_funnel_resume", { source: opts.source ?? "unknown" });
+    } else {
+      hasDraftRef.current = false;
+      setStep(0);
+      setAnswers(emptyAnswers);
+    }
     setOpen(true);
     trackEvent("whatsapp_funnel_open", {
       source: opts.source ?? "unknown",
       service: opts.service,
       city: opts.city,
       bairro: opts.bairro,
+      resumed: hasDraftRef.current,
     });
   }, []);
 
-  // Global interceptor: any anchor pointing at our wa.me number opens the funnel
+  const closeFunnel = useCallback(
+    (opts: { clear?: boolean } = {}) => {
+      setOpen(false);
+      if (opts.clear) {
+        setStep(0);
+        setAnswers(emptyAnswers);
+        setMeta({});
+        clearDraft();
+      }
+    },
+    [clearDraft],
+  );
+
+  // Global interceptor
   useEffect(() => {
     function handler(e: MouseEvent) {
       const target = e.target as HTMLElement | null;
@@ -108,13 +173,10 @@ export function WhatsAppFunnelProvider({ children }: { children: ReactNode }) {
       if (!anchor) return;
       const href = anchor.getAttribute("href") ?? "";
       if (!/wa\.me\/5541997452053/i.test(href)) return;
-      // Allow opt-out for raw send (e.g. final modal button itself uses data-wa-direct)
       if (anchor.dataset.waDirect === "true") return;
       e.preventDefault();
       const source =
-        anchor.dataset.waSource ??
-        anchor.getAttribute("data-source") ??
-        "global_anchor";
+        anchor.dataset.waSource ?? anchor.getAttribute("data-source") ?? "global_anchor";
       openFunnel({ source });
     }
     document.addEventListener("click", handler, true);
@@ -128,15 +190,13 @@ export function WhatsAppFunnelProvider({ children }: { children: ReactNode }) {
       {children}
       <FunnelDialog
         isOpen={isOpen}
-        onClose={() => {
-          setOpen(false);
-          reset();
-        }}
+        onClose={closeFunnel}
         step={step}
         setStep={setStep}
         answers={answers}
         setAnswers={setAnswers}
         meta={meta}
+        clearDraft={clearDraft}
       />
     </FunnelContext.Provider>
   );
@@ -148,15 +208,25 @@ export function WhatsAppFunnelProvider({ children }: { children: ReactNode }) {
 
 interface DialogProps {
   isOpen: boolean;
-  onClose: () => void;
+  onClose: (opts?: { clear?: boolean }) => void;
   step: Step;
   setStep: (s: Step) => void;
   answers: Answers;
   setAnswers: React.Dispatch<React.SetStateAction<Answers>>;
   meta: OpenOptions;
+  clearDraft: () => void;
 }
 
-function FunnelDialog({ isOpen, onClose, step, setStep, answers, setAnswers, meta }: DialogProps) {
+function FunnelDialog({
+  isOpen,
+  onClose,
+  step,
+  setStep,
+  answers,
+  setAnswers,
+  meta,
+  clearDraft,
+}: DialogProps) {
   const next = () => setStep(Math.min(3, (step + 1) as Step) as Step);
   const back = () => setStep(Math.max(0, (step - 1) as Step) as Step);
 
@@ -210,66 +280,122 @@ function FunnelDialog({ isOpen, onClose, step, setStep, answers, setAnswers, met
       logistica: answers.logistica ?? "",
     });
     window.open(url, "_blank", "noopener,noreferrer");
-    onClose();
+    clearDraft();
+    onClose({ clear: true });
   }
+
+  // Compute disabled state for "Continuar" per step
+  const canContinue = (() => {
+    if (step === 0) return Boolean(answers.path);
+    if (step === 1) return answers.problema.trim().length > 0;
+    if (step === 2) {
+      if (answers.path === "reparo") return Boolean(answers.logistica);
+      if (answers.path === "visita") return answers.endereco.trim().length > 0;
+      return true;
+    }
+    return true;
+  })();
 
   return (
     <Dialog open={isOpen} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-w-2xl max-h-[82vh] overflow-hidden p-0 flex flex-col">
-        <div className="bg-gradient-to-br from-primary/95 to-primary p-4 sm:p-5 text-primary-foreground shrink-0">
-          <DialogHeader>
-            <DialogTitle className="text-lg sm:text-xl font-display flex items-center gap-2">
-              <MessageCircle className="w-5 h-5" />
-              Atendimento WhatsApp · 4 passos
-            </DialogTitle>
-          </DialogHeader>
-          <p className="text-primary-foreground/85 text-xs sm:text-sm mt-1">
-            Conta o essencial pra gente chegar com a resposta certa.
-          </p>
-        </div>
+      <DialogContent
+        className="p-0 gap-0 border-border max-w-2xl w-[calc(100vw-1rem)] sm:w-full
+                   h-[100dvh] sm:h-auto sm:max-h-[88vh] rounded-none sm:rounded-lg
+                   flex flex-col overflow-hidden"
+      >
+        {/* Header — compact + close button */}
+        <div className="relative bg-gradient-to-br from-primary/95 to-primary px-3 sm:px-5 pt-3 pb-2 sm:pb-3 text-primary-foreground shrink-0">
+          <DialogTitle className="text-[15px] sm:text-lg font-display flex items-center gap-2 pr-8">
+            <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5" />
+            Atendimento WhatsApp
+            <span className="ml-auto text-[11px] sm:text-xs font-normal opacity-80">
+              Passo {step + 1}/4
+            </span>
+          </DialogTitle>
+          <button
+            type="button"
+            onClick={() => onClose()}
+            aria-label="Fechar (mantém preenchimento)"
+            className="absolute top-2 right-2 sm:top-3 sm:right-3 p-1.5 rounded-full
+                       text-primary-foreground/80 hover:text-primary-foreground
+                       hover:bg-white/10 transition"
+          >
+            <X className="w-4 h-4" />
+          </button>
 
-        <div className="px-4 sm:px-5 pt-3 shrink-0">
-          <TransparencyBar />
-        </div>
-
-        <div className="px-4 sm:px-5 py-4 flex-1 overflow-y-auto">
-          <Stepper current={step} />
-          <div className="mt-4">
-            {step === 0 && <Step1 answers={answers} setAnswers={setAnswers} onNext={next} />}
-            {step === 1 && (
-              <Step2
-                answers={answers}
-                setAnswers={setAnswers}
-                onNext={next}
-                onBack={back}
-              />
-            )}
-            {step === 2 && (
-              <Step3
-                answers={answers}
-                setAnswers={setAnswers}
-                onNext={next}
-                onBack={back}
-              />
-            )}
-            {step === 3 && (
-              <Step4
-                answers={answers}
-                setAnswers={setAnswers}
-                onBack={back}
-                onSubmit={submit}
-                preview={buildMessage()}
-              />
-            )}
+          {/* Slim progress bar */}
+          <div
+            className="mt-2 h-1 w-full rounded-full bg-white/20 overflow-hidden"
+            aria-label={`Progresso: passo ${step + 1} de 4`}
+          >
+            <div
+              className="h-full bg-white transition-all duration-300"
+              style={{ width: `${((step + 1) / 4) * 100}%` }}
+            />
           </div>
         </div>
 
-        <div className="px-4 sm:px-5 pb-3 shrink-0">
-          <p className="text-[10px] sm:text-xs text-muted-foreground text-center">
+        {/* Transparency strip — hidden on very small screens to save space */}
+        <div className="hidden xs:block px-3 sm:px-5 pt-2 shrink-0">
+          <TransparencyBar />
+        </div>
+
+        {/* Scrollable step content */}
+        <div className="flex-1 overflow-y-auto px-3 sm:px-5 py-3 sm:py-4">
+          {step === 0 && <Step1 answers={answers} setAnswers={setAnswers} />}
+          {step === 1 && <Step2 answers={answers} setAnswers={setAnswers} />}
+          {step === 2 && <Step3 answers={answers} setAnswers={setAnswers} onAutoSkip={next} />}
+          {step === 3 && (
+            <Step4 answers={answers} setAnswers={setAnswers} preview={buildMessage()} />
+          )}
+        </div>
+
+        {/* Sticky footer with safe-area respect */}
+        <div
+          className="shrink-0 border-t border-border bg-background/95 backdrop-blur
+                     px-3 sm:px-5 pt-2.5"
+          style={{ paddingBottom: "max(0.625rem, env(safe-area-inset-bottom))" }}
+        >
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={back}
+              disabled={step === 0}
+              className="shrink-0"
+              aria-label="Voltar"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span className="hidden xs:inline ml-1">Voltar</span>
+            </Button>
+
+            {step < 3 ? (
+              <Button
+                onClick={next}
+                disabled={!canContinue}
+                className="flex-1"
+                size="sm"
+              >
+                Continuar
+                <ArrowRight className="w-4 h-4 ml-1" />
+              </Button>
+            ) : (
+              <Button
+                variant="whatsapp"
+                onClick={submit}
+                className="flex-1"
+                size="sm"
+              >
+                <MessageCircle className="w-4 h-4 mr-1" />
+                Enviar no WhatsApp
+              </Button>
+            )}
+          </div>
+          <p className="text-[10px] text-muted-foreground text-center mt-1.5 leading-tight">
             <Link to="/termos-orcamento-pre-aprovado" className="underline hover:text-primary">
-              Políticas de serviço e termos
+              Políticas
             </Link>{" "}
-            · WhatsApp (41) 9 9745-2053
+            · WhatsApp (41) 9 9745-2053 · fechar mantém os dados
           </p>
         </div>
       </DialogContent>
@@ -283,38 +409,23 @@ function FunnelDialog({ isOpen, onClose, step, setStep, answers, setAnswers, met
 
 function TransparencyBar() {
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-[10px] sm:text-[11px]">
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-1 text-[10px] sm:text-[11px]">
       <Pill icon={<MessageCircle className="w-3 h-3" />} title="Orçamento grátis" body="WhatsApp + fotos" />
       <Pill icon={<FileText className="w-3 h-3" />} title="Diagnóstico R$ 90" body="só se não aprovar" />
-      <Pill icon={<Home className="w-3 h-3" />} title="Visita a partir R$ 99,99" body="até 30 min" />
-      <Pill icon={<Cpu className="w-3 h-3" />} title="Reparo placa: R$ 300–500" body="pré-aprovado" />
+      <Pill icon={<Home className="w-3 h-3" />} title="Visita R$ 99,99" body="até 30 min" />
+      <Pill icon={<Cpu className="w-3 h-3" />} title="Placa R$ 300–500" body="pré-aprovado" />
     </div>
   );
 }
 
 function Pill({ icon, title, body }: { icon: ReactNode; title: string; body: string }) {
   return (
-    <div className="rounded-md border border-border bg-muted/40 px-2 py-1.5">
-      <div className="flex items-center gap-1 font-semibold text-foreground">
+    <div className="rounded-md border border-border bg-muted/40 px-2 py-1">
+      <div className="flex items-center gap-1 font-semibold text-foreground leading-tight">
         {icon}
         {title}
       </div>
-      <div className="text-muted-foreground leading-tight mt-0.5">{body}</div>
-    </div>
-  );
-}
-
-function Stepper({ current }: { current: Step }) {
-  return (
-    <div className="flex items-center gap-1.5" aria-label={`Passo ${current + 1} de 4`}>
-      {[0, 1, 2, 3].map((i) => (
-        <div
-          key={i}
-          className={`h-1.5 flex-1 rounded-full transition-colors ${
-            i <= current ? "bg-primary" : "bg-muted"
-          }`}
-        />
-      ))}
+      <div className="text-muted-foreground leading-tight">{body}</div>
     </div>
   );
 }
@@ -336,15 +447,15 @@ function OptionCard({
     <button
       type="button"
       onClick={onClick}
-      className={`w-full text-left rounded-xl border-2 px-4 py-3 transition-all hover:-translate-y-0.5 hover:shadow-md ${
+      className={`w-full text-left rounded-lg border-2 px-3 py-2.5 transition-all hover:-translate-y-0.5 hover:shadow-md ${
         active ? "border-primary bg-primary/5" : "border-border bg-card"
       }`}
     >
-      <div className="flex items-start gap-3">
-        <div className="mt-0.5 text-primary">{icon}</div>
-        <div>
-          <div className="font-semibold text-foreground">{title}</div>
-          {body && <div className="text-sm text-muted-foreground mt-0.5">{body}</div>}
+      <div className="flex items-start gap-2.5">
+        <div className="mt-0.5 text-primary shrink-0">{icon}</div>
+        <div className="min-w-0">
+          <div className="font-semibold text-sm text-foreground">{title}</div>
+          {body && <div className="text-xs text-muted-foreground mt-0.5 leading-tight">{body}</div>}
         </div>
       </div>
     </button>
@@ -356,39 +467,33 @@ function OptionCard({
 function Step1({
   answers,
   setAnswers,
-  onNext,
 }: {
   answers: Answers;
   setAnswers: React.Dispatch<React.SetStateAction<Answers>>;
-  onNext: () => void;
 }) {
-  function pick(path: Path) {
-    setAnswers((a) => ({ ...a, path }));
-    setTimeout(onNext, 120);
-  }
   return (
     <div className="space-y-2">
-      <h3 className="font-display text-base font-bold">1. O que você precisa?</h3>
+      <h3 className="font-display text-sm sm:text-base font-bold">O que você precisa?</h3>
       <OptionCard
         active={answers.path === "reparo"}
-        icon={<Wrench className="w-5 h-5" />}
+        icon={<Wrench className="w-4 h-4" />}
         title="Consertar equipamento"
         body="TV, console, PC, notebook, celular, placa"
-        onClick={() => pick("reparo")}
+        onClick={() => setAnswers((a) => ({ ...a, path: "reparo" }))}
       />
       <OptionCard
         active={answers.path === "visita"}
-        icon={<Home className="w-5 h-5" />}
+        icon={<Home className="w-4 h-4" />}
         title="Visita técnica local"
         body="instalação, formatação, impressora, roteador"
-        onClick={() => pick("visita")}
+        onClick={() => setAnswers((a) => ({ ...a, path: "visita" }))}
       />
       <OptionCard
         active={answers.path === "orcamento"}
-        icon={<MessageCircle className="w-5 h-5" />}
+        icon={<MessageCircle className="w-4 h-4" />}
         title="Orçamento rápido"
         body="foto/vídeo e descrição"
-        onClick={() => pick("orcamento")}
+        onClick={() => setAnswers((a) => ({ ...a, path: "orcamento" }))}
       />
     </div>
   );
@@ -397,43 +502,40 @@ function Step1({
 function Step2({
   answers,
   setAnswers,
-  onNext,
-  onBack,
 }: {
   answers: Answers;
   setAnswers: React.Dispatch<React.SetStateAction<Answers>>;
-  onNext: () => void;
-  onBack: () => void;
 }) {
   return (
-    <div className="space-y-2">
-      <h3 className="font-display text-base font-bold">2. Problema e modelo</h3>
+    <div className="space-y-2.5">
+      <h3 className="font-display text-sm sm:text-base font-bold">Problema e modelo</h3>
       <div className="space-y-1">
-        <label className="text-sm font-medium">Problema ou aparelho</label>
+        <label className="text-xs sm:text-sm font-medium">Problema ou aparelho</label>
         <Input
           autoFocus
-          placeholder="Ex: PS5 não liga · TV sem imagem · placa superaquecendo"
+          placeholder="Ex: PS5 não liga · TV sem imagem"
           value={answers.problema}
           onChange={(e) => setAnswers((a) => ({ ...a, problema: e.target.value }))}
         />
       </div>
       <div className="space-y-1">
-        <label className="text-sm font-medium">Marca e modelo</label>
+        <label className="text-xs sm:text-sm font-medium">Marca e modelo</label>
         <Input
-          placeholder="Ex: PS5 Slim · Dell Inspiron 15 · Samsung 55"
+          placeholder="Ex: PS5 Slim · Dell Inspiron 15"
           value={answers.marcaModelo}
           onChange={(e) => setAnswers((a) => ({ ...a, marcaModelo: e.target.value }))}
         />
       </div>
 
       {answers.path === "reparo" && (
-        <div className="rounded-lg border bg-muted/40 p-2.5 space-y-1.5">
-          <p className="text-sm font-medium flex items-center gap-1.5">
-            <Info className="w-4 h-4 text-primary shrink-0" /> Defeito em placa?
+        <div className="rounded-lg border bg-muted/40 p-2 space-y-1.5">
+          <p className="text-xs sm:text-sm font-medium flex items-center gap-1.5">
+            <Info className="w-3.5 h-3.5 text-primary shrink-0" /> Defeito em placa?
           </p>
           <div className="grid grid-cols-2 gap-2">
             <Button
               type="button"
+              size="sm"
               variant={answers.defeitoPlaca === "sim" ? "default" : "outline"}
               onClick={() => setAnswers((a) => ({ ...a, defeitoPlaca: "sim" }))}
             >
@@ -441,6 +543,7 @@ function Step2({
             </Button>
             <Button
               type="button"
+              size="sm"
               variant={answers.defeitoPlaca === "nao" ? "default" : "outline"}
               onClick={() => setAnswers((a) => ({ ...a, defeitoPlaca: "nao" }))}
             >
@@ -448,8 +551,8 @@ function Step2({
             </Button>
           </div>
           {answers.defeitoPlaca === "sim" && (
-            <p className="text-xs text-foreground bg-accent/15 border border-accent/30 rounded p-2">
-              ⚠️ Reparo de placa: mínimo <b>R$ 300</b> (diagnóstico incluso se aprovado). Se desistir: <b>R$ 90</b>.
+            <p className="text-[11px] text-foreground bg-accent/15 border border-accent/30 rounded p-1.5 leading-tight">
+              ⚠️ Reparo de placa: mínimo <b>R$ 300</b>. Se desistir: <b>R$ 90</b>.
             </p>
           )}
         </div>
@@ -457,26 +560,17 @@ function Step2({
 
       {answers.path === "visita" && (
         <div className="space-y-1">
-          <label className="text-sm font-medium">Tipo de serviço na visita</label>
+          <label className="text-xs sm:text-sm font-medium">Tipo de serviço</label>
           <Input
-            placeholder="Ex: instalar programa · formatar · roteador"
+            placeholder="Ex: formatar · roteador · impressora"
             value={answers.tipoVisita}
             onChange={(e) => setAnswers((a) => ({ ...a, tipoVisita: e.target.value }))}
           />
-          <p className="text-xs text-foreground bg-accent/15 border border-accent/30 rounded p-2">
+          <p className="text-[11px] text-foreground bg-accent/15 border border-accent/30 rounded p-1.5 leading-tight">
             🏠 Visita: <b>R$ 99,99</b> (30 min) · Combo 2h: <b>R$ 299,99</b>.
           </p>
         </div>
       )}
-
-      <div className="flex justify-between pt-1">
-        <Button variant="outline" onClick={onBack}>
-          <ArrowLeft className="w-4 h-4" /> Voltar
-        </Button>
-        <Button onClick={onNext} disabled={!answers.problema.trim()}>
-          Continuar <ArrowRight className="w-4 h-4" />
-        </Button>
-      </div>
     </div>
   );
 }
@@ -484,34 +578,31 @@ function Step2({
 function Step3({
   answers,
   setAnswers,
-  onNext,
-  onBack,
+  onAutoSkip,
 }: {
   answers: Answers;
   setAnswers: React.Dispatch<React.SetStateAction<Answers>>;
-  onNext: () => void;
-  onBack: () => void;
+  onAutoSkip: () => void;
 }) {
-  // For "orcamento" path we don't need this step — skip forward
   useEffect(() => {
-    if (answers.path === "orcamento") onNext();
+    if (answers.path === "orcamento") onAutoSkip();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div className="space-y-2">
-      <h3 className="font-display text-base font-bold">3. Como vamos atender?</h3>
+      <h3 className="font-display text-sm sm:text-base font-bold">Como vamos atender?</h3>
       {answers.path === "reparo" && (
         <>
           <OptionCard
             active={answers.logistica === "parceiro"}
-            icon={<ShieldCheck className="w-5 h-5" />}
+            icon={<ShieldCheck className="w-4 h-4" />}
             title="Levo até parceiro em Curitiba (grátis)"
             body="você economiza e acompanha o orçamento"
             onClick={() => setAnswers((a) => ({ ...a, logistica: "parceiro" }))}
           />
           <OptionCard
             active={answers.logistica === "coleta"}
-            icon={<Home className="w-5 h-5" />}
+            icon={<Home className="w-4 h-4" />}
             title="Preciso de coleta e entrega"
             body="custo informado no WhatsApp"
             onClick={() => setAnswers((a) => ({ ...a, logistica: "coleta" }))}
@@ -520,7 +611,7 @@ function Step3({
       )}
       {answers.path === "visita" && (
         <div className="space-y-1">
-          <label className="text-sm font-medium">Endereço completo + bairro</label>
+          <label className="text-xs sm:text-sm font-medium">Endereço + bairro</label>
           <Input
             placeholder="Rua, número, bairro, cidade"
             value={answers.endereco}
@@ -528,20 +619,6 @@ function Step3({
           />
         </div>
       )}
-      <div className="flex justify-between pt-1">
-        <Button variant="outline" onClick={onBack}>
-          <ArrowLeft className="w-4 h-4" /> Voltar
-        </Button>
-        <Button
-          onClick={onNext}
-          disabled={
-            (answers.path === "reparo" && !answers.logistica) ||
-            (answers.path === "visita" && !answers.endereco.trim())
-          }
-        >
-          Continuar <ArrowRight className="w-4 h-4" />
-        </Button>
-      </div>
     </div>
   );
 }
@@ -549,48 +626,35 @@ function Step3({
 function Step4({
   answers,
   setAnswers,
-  onBack,
-  onSubmit,
   preview,
 }: {
   answers: Answers;
   setAnswers: React.Dispatch<React.SetStateAction<Answers>>;
-  onBack: () => void;
-  onSubmit: () => void;
   preview: string;
 }) {
   return (
-    <div className="space-y-2">
-      <h3 className="font-display text-base font-bold">4. Revisar e enviar</h3>
-      <p className="text-sm text-muted-foreground">
-        Adicione detalhes opcionais. Depois anexe fotos direto no WhatsApp.
+    <div className="space-y-2.5">
+      <h3 className="font-display text-sm sm:text-base font-bold">Revisar e enviar</h3>
+      <p className="text-xs sm:text-sm text-muted-foreground leading-snug">
+        Detalhes opcionais. Anexe fotos direto no WhatsApp.
       </p>
       <textarea
-        className="w-full min-h-[70px] rounded-md border border-input bg-background p-2.5 text-sm"
+        className="w-full min-h-[60px] rounded-md border border-input bg-background p-2 text-sm"
         placeholder="Detalhes adicionais (opcional)"
         value={answers.observacoes}
         onChange={(e) => setAnswers((a) => ({ ...a, observacoes: e.target.value }))}
       />
 
-      <details className="rounded-lg border bg-muted/30 p-2.5 text-xs">
+      <details className="rounded-lg border bg-muted/30 p-2 text-xs">
         <summary className="cursor-pointer font-medium text-foreground">
           Ver resumo da mensagem
         </summary>
         <pre className="whitespace-pre-wrap mt-1.5 font-sans text-muted-foreground">{preview}</pre>
       </details>
 
-      <div className="rounded-lg bg-success/10 border border-success/30 p-2.5 text-sm flex gap-2">
-        <CheckCircle2 className="w-5 h-5 text-success flex-shrink-0" />
+      <div className="rounded-lg bg-success/10 border border-success/30 p-2 text-xs sm:text-sm flex gap-2">
+        <CheckCircle2 className="w-4 h-4 text-success flex-shrink-0 mt-0.5" />
         <span>Resposta em até 30 min. Garantia de 90 dias.</span>
-      </div>
-
-      <div className="flex flex-col sm:flex-row justify-between gap-2 pt-1">
-        <Button variant="outline" onClick={onBack}>
-          <ArrowLeft className="w-4 h-4" /> Voltar
-        </Button>
-        <Button variant="whatsapp" size="lg" onClick={onSubmit} className="flex-1 sm:flex-none">
-          <MessageCircle className="w-5 h-5" /> Abrir WhatsApp com resumo
-        </Button>
       </div>
     </div>
   );

@@ -368,7 +368,10 @@ export default function AssistenciaTecnicaCuritiba() {
         />
         <meta name="twitter:image" content={ogImage} />
 
-        <script type="application/ld+json">{JSON.stringify(schema)}</script>
+        <script type="application/ld+json">{JSON.stringify(localBusinessSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+
       </Helmet>
 
       {/* HERO */}

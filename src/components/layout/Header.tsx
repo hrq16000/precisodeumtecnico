@@ -60,7 +60,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full bg-background shadow-sm">
       {/* Top Bar */}
-      <div className="hidden xl:block bg-primary text-primary-foreground py-2">
+      <div className="hidden lg:block bg-primary text-primary-foreground py-2">
         <div className="container-custom">
           <div className="flex items-center justify-between text-sm">
             <div className="flex items-center gap-6">

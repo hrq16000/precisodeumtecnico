@@ -42,7 +42,7 @@ export function Logo({
     <Link
       to="/"
       className={cn(
-        "inline-flex items-center rounded-xl px-2 py-1.5 sm:px-3 sm:py-2",
+        "inline-flex items-center rounded-xl px-1 py-1 sm:px-2 sm:py-1.5",
         "transition-[transform,box-shadow] duration-500 ease-out will-change-transform",
         "hover:scale-[1.03]",
         "motion-reduce:transition-none motion-reduce:transform-none motion-reduce:hover:scale-100",

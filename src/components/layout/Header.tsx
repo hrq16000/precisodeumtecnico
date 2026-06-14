@@ -31,7 +31,8 @@ const regions = [
   { name: "Curitiba", href: "/regioes/curitiba" },
   { name: "São José dos Pinhais", href: "/regioes/sao-jose-dos-pinhais" },
   { name: "Pinhais", href: "/regioes/pinhais" },
-  { name: "Todas as Regiões", href: "/regioes" },
+  { name: "Todas as Regiões (PR)", href: "/regioes" },
+  { name: "🇧🇷 Atendimento Nacional", href: "/atendimento-nacional" },
 ];
 
 export function Header() {

@@ -302,18 +302,19 @@ export function Header() {
                 <nav className="overflow-y-auto px-3 py-3">
                   <ul className="flex flex-col gap-1">
                     {[
-                      { to: "/", label: "Início" },
-                      { to: "/servicos", label: "Serviços" },
-                      { to: "/regioes", label: "Regiões Atendidas" },
-                      { to: "/precos", label: "Preços" },
-                      { to: "/blog", label: "Blog" },
-                      { to: "/sobre", label: "Sobre" },
-                      { to: "/contato", label: "Contato" },
+                      { to: "/", label: "Início", icon: Home },
+                      { to: "/servicos", label: "Serviços", icon: Wrench },
+                      { to: "/regioes", label: "Regiões Atendidas", icon: MapPinned },
+                      { to: "/precos", label: "Preços", icon: Tag },
+                      { to: "/blog", label: "Blog", icon: Newspaper },
+                      { to: "/sobre", label: "Sobre", icon: Info },
+                      { to: "/contato", label: "Contato", icon: Mail },
                     ].map((item, i) => {
                       const active =
                         item.to === "/"
                           ? location.pathname === "/"
                           : location.pathname.startsWith(item.to);
+                      const MIcon = item.icon;
                       return (
                         <li
                           key={item.to}
@@ -324,29 +325,38 @@ export function Header() {
                             to={item.to}
                             onClick={() => setMobileMenuOpen(false)}
                             className={cn(
-                              "group flex items-center justify-between px-4 py-3 rounded-lg font-medium",
+                              "group flex items-center gap-3 px-4 py-3 rounded-lg font-medium",
                               "transition-all duration-300",
-                              "hover:bg-secondary hover:translate-x-1",
+                              "hover:bg-primary/5 hover:translate-x-1",
                               "border border-transparent",
                               active
                                 ? "bg-primary/10 text-primary border-primary/20 shadow-sm"
                                 : "text-foreground/80 hover:text-foreground",
                             )}
                           >
-                            <span>{item.label}</span>
                             <span
                               className={cn(
-                                "text-primary opacity-0 -translate-x-2 transition-all duration-300",
+                                "shrink-0 w-8 h-8 rounded-md flex items-center justify-center transition-all duration-300",
+                                active
+                                  ? "bg-primary text-primary-foreground"
+                                  : "bg-secondary text-primary group-hover:bg-primary group-hover:text-primary-foreground group-hover:scale-110",
+                              )}
+                            >
+                              <MIcon className="w-4 h-4" />
+                            </span>
+                            <span className="flex-1">{item.label}</span>
+                            <ChevronRight
+                              className={cn(
+                                "w-4 h-4 text-primary opacity-0 -translate-x-2 transition-all duration-300",
                                 "group-hover:opacity-100 group-hover:translate-x-0",
                                 active && "opacity-100 translate-x-0",
                               )}
-                            >
-                              →
-                            </span>
+                            />
                           </Link>
                         </li>
                       );
                     })}
+
                   </ul>
                 </nav>
               </div>

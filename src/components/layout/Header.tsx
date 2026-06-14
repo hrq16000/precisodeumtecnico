@@ -143,7 +143,8 @@ export function Header() {
                   // Insert Serviços + Regiões after "Início"
                   const insertDropdowns = idx === 1;
                   return (
-                    <>
+                    <React.Fragment key={item.to}>
+
                       {insertDropdowns && (
                         <>
                           <NavigationMenuItem key="services-menu">

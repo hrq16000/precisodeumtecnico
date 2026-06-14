@@ -138,11 +138,18 @@ export function ServicesSection() {
               className="group bg-card rounded-2xl overflow-hidden border border-border hover:shadow-xl hover:border-primary/30 transition-all duration-300 hover:-translate-y-1"
             >
               {/* Image */}
-              <div className="relative h-40 overflow-hidden">
+              <div className="relative h-40 overflow-hidden bg-secondary">
                 <img
                   src={service.image}
                   alt={service.alt}
+                  width={400}
+                  height={160}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).style.display = "none";
+                  }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 <div className={`absolute top-3 left-3 w-10 h-10 rounded-lg ${service.color} flex items-center justify-center backdrop-blur-sm`}>

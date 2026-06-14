@@ -89,6 +89,9 @@ function* nationalCityUrls(): Generator<Url> {
   const lm = fileDate("src/data/nationalCities.ts");
   for (const c of nationalCities)
     yield { loc: `${BASE}/atendimento-nacional/${c.slug}`, changefreq: "weekly", priority: 0.8, lastmod: lm };
+}
+
+
 
 function* serviceUrls(): Generator<Url> {
   for (const slug of Object.keys(servicesData))

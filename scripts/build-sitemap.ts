@@ -15,6 +15,7 @@ import {
   araucariaBairros,
 } from "../src/data/regions";
 import { allBlogPosts as blogPosts, blogCategories } from "../src/data/blog";
+import { nationalCities } from "../src/data/nationalCities";
 
 const BASE = "https://precisodeumtecnico.com";
 const today = new Date().toISOString().split("T")[0];
@@ -76,7 +77,18 @@ function* staticUrls(): Generator<Url> {
     priority: 0.95,
     lastmod: fileDate("src/pages/AssistenciaTecnica.tsx"),
   };
+  yield {
+    loc: `${BASE}/atendimento-nacional`,
+    changefreq: "weekly",
+    priority: 0.9,
+    lastmod: fileDate("src/pages/AtendimentoNacional.tsx"),
+  };
 }
+
+function* nationalCityUrls(): Generator<Url> {
+  const lm = fileDate("src/data/nationalCities.ts");
+  for (const c of nationalCities)
+    yield { loc: `${BASE}/atendimento-nacional/${c.slug}`, changefreq: "weekly", priority: 0.8, lastmod: lm };
 
 function* serviceUrls(): Generator<Url> {
   for (const slug of Object.keys(servicesData))
@@ -141,6 +153,7 @@ await consume("cities", cityUrls());
 await consume("service×city matrix", matrixUrls());
 await consume("neighborhoods", neighborhoodUrls());
 await consume("blog", blogUrls());
+await consume("national cities", nationalCityUrls());
 
 // Dedupe by loc (last write wins for lastmod) — defends against satellite/blog
 // slug overlaps and any future generator collisions.

@@ -1,7 +1,34 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Phone, MessageCircle, MapPin, Clock, Globe2 } from "lucide-react";
+import {
+  Menu,
+  MessageCircle,
+  Clock,
+  Globe2,
+  Home,
+  Wrench,
+  MapPinned,
+  Newspaper,
+  Tag,
+  Info,
+  Mail,
+  Monitor,
+  Laptop,
+  Camera,
+  Zap,
+  Wifi,
+  Snowflake,
+  Smartphone,
+  Gamepad2,
+  Cpu,
+  Building2,
+  MapPin,
+  Map,
+  Flag,
+  ChevronRight,
+  Sparkles,
+} from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { RegionIndicator } from "@/components/layout/RegionIndicator";
 import {
@@ -16,23 +43,23 @@ import { cn } from "@/lib/utils";
 import { Logo } from "@/components/Logo";
 
 const services = [
-  { name: "Informática", href: "/servicos/informatica", description: "Manutenção e suporte em computadores" },
-  { name: "Notebooks", href: "/servicos/notebooks", description: "Conserto e upgrade de notebooks" },
-  { name: "CFTV / Câmeras", href: "/servicos/cftv", description: "Instalação e manutenção de câmeras" },
-  { name: "Elétrica", href: "/servicos/eletrica", description: "Serviços elétricos residenciais e comerciais" },
-  { name: "Redes", href: "/servicos/redes", description: "Configuração de redes e Wi-Fi" },
-  { name: "Ar-Condicionado", href: "/servicos/ar-condicionado", description: "Instalação e manutenção" },
-  { name: "Celulares", href: "/servicos/celulares", description: "Reparo de smartphones e tablets" },
-  { name: "Games", href: "/servicos/games", description: "Conserto de videogames e consoles" },
-  { name: "Consoles & Eletrônicos (Curitiba)", href: "/assistencia-tecnica-curitiba", description: "Assistência técnica especializada em PS5, Xbox, Nintendo e GPUs" },
+  { name: "Informática", href: "/servicos/informatica", description: "Manutenção e suporte em computadores", icon: Monitor },
+  { name: "Notebooks", href: "/servicos/notebooks", description: "Conserto e upgrade de notebooks", icon: Laptop },
+  { name: "CFTV / Câmeras", href: "/servicos/cftv", description: "Instalação e manutenção de câmeras", icon: Camera },
+  { name: "Elétrica", href: "/servicos/eletrica", description: "Serviços elétricos residenciais e comerciais", icon: Zap },
+  { name: "Redes", href: "/servicos/redes", description: "Configuração de redes e Wi-Fi", icon: Wifi },
+  { name: "Ar-Condicionado", href: "/servicos/ar-condicionado", description: "Instalação e manutenção", icon: Snowflake },
+  { name: "Celulares", href: "/servicos/celulares", description: "Reparo de smartphones e tablets", icon: Smartphone },
+  { name: "Games", href: "/servicos/games", description: "Conserto de videogames e consoles", icon: Gamepad2 },
+  { name: "Consoles & Eletrônicos (Curitiba)", href: "/assistencia-tecnica-curitiba", description: "Assistência técnica especializada em PS5, Xbox, Nintendo e GPUs", icon: Cpu },
 ];
 
 const regions = [
-  { name: "Curitiba", href: "/regioes/curitiba" },
-  { name: "São José dos Pinhais", href: "/regioes/sao-jose-dos-pinhais" },
-  { name: "Pinhais", href: "/regioes/pinhais" },
-  { name: "Todas as Regiões (PR)", href: "/regioes" },
-  { name: "🇧🇷 Atendimento Nacional", href: "/atendimento-nacional" },
+  { name: "Curitiba", href: "/regioes/curitiba", icon: Building2 },
+  { name: "São José dos Pinhais", href: "/regioes/sao-jose-dos-pinhais", icon: MapPin },
+  { name: "Pinhais", href: "/regioes/pinhais", icon: MapPin },
+  { name: "Todas as Regiões (PR)", href: "/regioes", icon: Map },
+  { name: "🇧🇷 Atendimento Nacional", href: "/atendimento-nacional", icon: Flag },
 ];
 
 export function Header() {
@@ -103,127 +130,152 @@ export function Header() {
           {/* Desktop Navigation */}
           <nav className="hidden xl:flex items-center gap-1">
             <NavigationMenu>
-              <NavigationMenuList>
-                <NavigationMenuItem>
-                  <Link to="/">
-                    <NavigationMenuLink className={cn(
-                      "group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary hover:text-foreground focus:bg-secondary focus:text-foreground focus:outline-none",
-                      location.pathname === "/" && "bg-secondary text-foreground"
-                    )}>
-                      Início
-                    </NavigationMenuLink>
-                  </Link>
-                </NavigationMenuItem>
-                
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger>Serviços</NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <ul className="grid w-[400px] gap-2 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                      {services.map((service) => (
-                        <li key={service.name}>
-                          <NavigationMenuLink asChild>
-                            <Link
-                              to={service.href}
-                              className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-secondary hover:text-foreground focus:bg-secondary focus:text-foreground"
-                            >
-                              <div className="text-sm font-medium leading-none">{service.name}</div>
-                              <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                                {service.description}
-                              </p>
-                            </Link>
-                          </NavigationMenuLink>
-                        </li>
-                      ))}
-                      <li className="col-span-2">
-                        <NavigationMenuLink asChild>
-                          <Link
-                            to="/servicos"
-                            className="block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors bg-primary/5 hover:bg-primary/10 text-primary font-medium text-center"
+              <NavigationMenuList className="gap-1">
+                {[
+                  { to: "/", label: "Início", icon: Home, match: (p: string) => p === "/" },
+                  { to: "/blog", label: "Blog", icon: Newspaper, match: (p: string) => p.startsWith("/blog") },
+                  { to: "/precos", label: "Preços", icon: Tag, match: (p: string) => p === "/precos" },
+                  { to: "/sobre", label: "Sobre", icon: Info, match: (p: string) => p === "/sobre" },
+                  { to: "/contato", label: "Contato", icon: Mail, match: (p: string) => p === "/contato" },
+                ].map((item, idx) => {
+                  const active = item.match(location.pathname);
+                  const Icon = item.icon;
+                  // Insert Serviços + Regiões after "Início"
+                  const insertDropdowns = idx === 1;
+                  return (
+                    <React.Fragment key={item.to}>
+
+                      {insertDropdowns && (
+                        <>
+                          <NavigationMenuItem key="services-menu">
+                            <NavigationMenuTrigger className="group/trigger relative h-10 px-3 text-sm font-medium bg-transparent data-[state=open]:bg-primary/10 hover:bg-primary/5">
+                              <Wrench className="w-4 h-4 mr-1.5 text-primary transition-transform duration-300 group-hover/trigger:rotate-12" />
+                              Serviços
+                            </NavigationMenuTrigger>
+                            <NavigationMenuContent>
+                              <ul className="grid w-[560px] gap-1.5 p-4 md:grid-cols-2">
+                                {services.map((service, i) => {
+                                  const SIcon = service.icon;
+                                  return (
+                                    <li
+                                      key={service.name}
+                                      className="opacity-0 animate-fade-in"
+                                      style={{ animationDelay: `${i * 30}ms`, animationFillMode: "forwards" }}
+                                    >
+                                      <NavigationMenuLink asChild>
+                                        <Link
+                                          to={service.href}
+                                          className="group/item flex items-start gap-3 select-none rounded-lg p-3 leading-none no-underline outline-none border border-transparent transition-all duration-300 hover:bg-gradient-to-br hover:from-primary/5 hover:to-accent/5 hover:border-primary/20 hover:shadow-md hover:-translate-y-0.5 focus:bg-secondary"
+                                        >
+                                          <div className="shrink-0 w-9 h-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center transition-all duration-300 group-hover/item:bg-primary group-hover/item:text-primary-foreground group-hover/item:scale-110 group-hover/item:rotate-6">
+                                            <SIcon className="w-4.5 h-4.5" />
+                                          </div>
+                                          <div className="flex-1 min-w-0">
+                                            <div className="text-sm font-semibold leading-tight text-foreground group-hover/item:text-primary transition-colors">
+                                              {service.name}
+                                            </div>
+                                            <p className="mt-1 line-clamp-2 text-xs leading-snug text-muted-foreground">
+                                              {service.description}
+                                            </p>
+                                          </div>
+                                          <ChevronRight className="w-4 h-4 text-muted-foreground/0 group-hover/item:text-primary group-hover/item:translate-x-0 -translate-x-2 transition-all duration-300 self-center" />
+                                        </Link>
+                                      </NavigationMenuLink>
+                                    </li>
+                                  );
+                                })}
+                                <li className="col-span-2 mt-1">
+                                  <NavigationMenuLink asChild>
+                                    <Link
+                                      to="/servicos"
+                                      className="group/all flex items-center justify-center gap-2 select-none rounded-lg p-3 no-underline outline-none bg-gradient-to-r from-primary to-primary-glow text-primary-foreground font-semibold text-sm shadow-md hover:shadow-lg hover:brightness-110 transition-all duration-300"
+                                    >
+                                      <Sparkles className="w-4 h-4 transition-transform duration-500 group-hover/all:rotate-180" />
+                                      Ver todos os serviços
+                                      <ChevronRight className="w-4 h-4 transition-transform duration-300 group-hover/all:translate-x-1" />
+                                    </Link>
+                                  </NavigationMenuLink>
+                                </li>
+                              </ul>
+                            </NavigationMenuContent>
+                          </NavigationMenuItem>
+
+                          <NavigationMenuItem key="regions-menu">
+                            <NavigationMenuTrigger className="group/trigger relative h-10 px-3 text-sm font-medium bg-transparent data-[state=open]:bg-primary/10 hover:bg-primary/5">
+                              <MapPinned className="w-4 h-4 mr-1.5 text-primary transition-transform duration-300 group-hover/trigger:-translate-y-0.5" />
+                              Regiões
+                            </NavigationMenuTrigger>
+                            <NavigationMenuContent>
+                              <ul className="grid w-[320px] gap-1 p-3">
+                                {regions.map((region, i) => {
+                                  const RIcon = region.icon;
+                                  return (
+                                    <li
+                                      key={region.name}
+                                      className="opacity-0 animate-fade-in"
+                                      style={{ animationDelay: `${i * 40}ms`, animationFillMode: "forwards" }}
+                                    >
+                                      <NavigationMenuLink asChild>
+                                        <Link
+                                          to={region.href}
+                                          className="group/r flex items-center gap-3 select-none rounded-lg px-3 py-2.5 leading-none no-underline outline-none transition-all duration-300 hover:bg-primary/10 hover:translate-x-1 font-medium text-sm"
+                                        >
+                                          <RIcon className="w-4 h-4 text-primary shrink-0 transition-transform duration-300 group-hover/r:scale-125" />
+                                          <span className="flex-1">{region.name}</span>
+                                          <ChevronRight className="w-4 h-4 text-muted-foreground/0 group-hover/r:text-primary -translate-x-2 group-hover/r:translate-x-0 transition-all duration-300" />
+                                        </Link>
+                                      </NavigationMenuLink>
+                                    </li>
+                                  );
+                                })}
+                              </ul>
+                            </NavigationMenuContent>
+                          </NavigationMenuItem>
+                        </>
+                      )}
+                      <NavigationMenuItem key={item.to}>
+                        <Link to={item.to}>
+                          <NavigationMenuLink
+                            className={cn(
+                              "group/link relative inline-flex h-10 w-max items-center gap-1.5 rounded-md bg-transparent px-3 py-2 text-sm font-medium transition-all duration-300 hover:bg-primary/5 focus:outline-none",
+                              active && "text-primary",
+                            )}
                           >
-                            Ver todos os serviços →
-                          </Link>
-                        </NavigationMenuLink>
-                      </li>
-                    </ul>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger>Regiões</NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <ul className="grid w-[300px] gap-2 p-4">
-                      {regions.map((region) => (
-                        <li key={region.name}>
-                          <NavigationMenuLink asChild>
-                            <Link
-                              to={region.href}
-                              className="block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-secondary hover:text-foreground focus:bg-secondary focus:text-foreground font-medium"
-                            >
-                              {region.name}
-                            </Link>
+                            <Icon
+                              className={cn(
+                                "w-4 h-4 transition-all duration-300 group-hover/link:scale-110 group-hover/link:text-primary",
+                                active ? "text-primary" : "text-muted-foreground",
+                              )}
+                            />
+                            <span>{item.label}</span>
+                            <span
+                              className={cn(
+                                "absolute left-3 right-3 -bottom-0.5 h-0.5 rounded-full bg-gradient-to-r from-primary to-primary-glow origin-left transition-transform duration-300",
+                                active ? "scale-x-100" : "scale-x-0 group-hover/link:scale-x-100",
+                              )}
+                            />
                           </NavigationMenuLink>
-                        </li>
-                      ))}
-                    </ul>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
+                        </Link>
+                      </NavigationMenuItem>
+                    </React.Fragment>
 
-                <NavigationMenuItem>
-                  <Link to="/blog">
-                    <NavigationMenuLink className={cn(
-                      "group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary hover:text-foreground focus:bg-secondary focus:text-foreground focus:outline-none",
-                      location.pathname.startsWith("/blog") && "bg-secondary text-foreground"
-                    )}>
-                      Blog
-                    </NavigationMenuLink>
-                  </Link>
-                </NavigationMenuItem>
-
-                <NavigationMenuItem>
-                  <Link to="/precos">
-                    <NavigationMenuLink className={cn(
-                      "group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary hover:text-foreground focus:bg-secondary focus:text-foreground focus:outline-none",
-                      location.pathname === "/precos" && "bg-secondary text-foreground"
-                    )}>
-                      Preços
-                    </NavigationMenuLink>
-                  </Link>
-                </NavigationMenuItem>
-
-                <NavigationMenuItem>
-                  <Link to="/sobre">
-                    <NavigationMenuLink className={cn(
-                      "group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary hover:text-foreground focus:bg-secondary focus:text-foreground focus:outline-none",
-                      location.pathname === "/sobre" && "bg-secondary text-foreground"
-                    )}>
-                      Sobre
-                    </NavigationMenuLink>
-                  </Link>
-                </NavigationMenuItem>
-
-                <NavigationMenuItem>
-                  <Link to="/contato">
-                    <NavigationMenuLink className={cn(
-                      "group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary hover:text-foreground focus:bg-secondary focus:text-foreground focus:outline-none",
-                      location.pathname === "/contato" && "bg-secondary text-foreground"
-                    )}>
-                      Contato
-                    </NavigationMenuLink>
-                  </Link>
-                </NavigationMenuItem>
+                  );
+                })}
               </NavigationMenuList>
             </NavigationMenu>
           </nav>
 
           {/* CTA Buttons */}
           <div className="hidden xl:flex items-center gap-3">
-            <Button variant="whatsapp" size="sm" asChild>
+            <Button variant="whatsapp" size="sm" asChild className="relative overflow-hidden group/cta">
               <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
-                <MessageCircle className="w-4 h-4" />
+                <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover/cta:translate-x-full transition-transform duration-700" />
+                <MessageCircle className="w-4 h-4 transition-transform duration-300 group-hover/cta:rotate-12" />
                 <span className="hidden sm:inline">WhatsApp (41) 9 9745-2053</span>
               </a>
             </Button>
           </div>
+
 
           {/* Mobile menu trigger (Sheet handles outside-click close) */}
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
@@ -250,18 +302,19 @@ export function Header() {
                 <nav className="overflow-y-auto px-3 py-3">
                   <ul className="flex flex-col gap-1">
                     {[
-                      { to: "/", label: "Início" },
-                      { to: "/servicos", label: "Serviços" },
-                      { to: "/regioes", label: "Regiões Atendidas" },
-                      { to: "/precos", label: "Preços" },
-                      { to: "/blog", label: "Blog" },
-                      { to: "/sobre", label: "Sobre" },
-                      { to: "/contato", label: "Contato" },
+                      { to: "/", label: "Início", icon: Home },
+                      { to: "/servicos", label: "Serviços", icon: Wrench },
+                      { to: "/regioes", label: "Regiões Atendidas", icon: MapPinned },
+                      { to: "/precos", label: "Preços", icon: Tag },
+                      { to: "/blog", label: "Blog", icon: Newspaper },
+                      { to: "/sobre", label: "Sobre", icon: Info },
+                      { to: "/contato", label: "Contato", icon: Mail },
                     ].map((item, i) => {
                       const active =
                         item.to === "/"
                           ? location.pathname === "/"
                           : location.pathname.startsWith(item.to);
+                      const MIcon = item.icon;
                       return (
                         <li
                           key={item.to}
@@ -272,29 +325,38 @@ export function Header() {
                             to={item.to}
                             onClick={() => setMobileMenuOpen(false)}
                             className={cn(
-                              "group flex items-center justify-between px-4 py-3 rounded-lg font-medium",
+                              "group flex items-center gap-3 px-4 py-3 rounded-lg font-medium",
                               "transition-all duration-300",
-                              "hover:bg-secondary hover:translate-x-1",
+                              "hover:bg-primary/5 hover:translate-x-1",
                               "border border-transparent",
                               active
                                 ? "bg-primary/10 text-primary border-primary/20 shadow-sm"
                                 : "text-foreground/80 hover:text-foreground",
                             )}
                           >
-                            <span>{item.label}</span>
                             <span
                               className={cn(
-                                "text-primary opacity-0 -translate-x-2 transition-all duration-300",
+                                "shrink-0 w-8 h-8 rounded-md flex items-center justify-center transition-all duration-300",
+                                active
+                                  ? "bg-primary text-primary-foreground"
+                                  : "bg-secondary text-primary group-hover:bg-primary group-hover:text-primary-foreground group-hover:scale-110",
+                              )}
+                            >
+                              <MIcon className="w-4 h-4" />
+                            </span>
+                            <span className="flex-1">{item.label}</span>
+                            <ChevronRight
+                              className={cn(
+                                "w-4 h-4 text-primary opacity-0 -translate-x-2 transition-all duration-300",
                                 "group-hover:opacity-100 group-hover:translate-x-0",
                                 active && "opacity-100 translate-x-0",
                               )}
-                            >
-                              →
-                            </span>
+                            />
                           </Link>
                         </li>
                       );
                     })}
+
                   </ul>
                 </nav>
               </div>

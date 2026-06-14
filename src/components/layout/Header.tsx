@@ -257,7 +257,8 @@ export function Header() {
                           </NavigationMenuLink>
                         </Link>
                       </NavigationMenuItem>
-                    </>
+                    </React.Fragment>
+
                   );
                 })}
               </NavigationMenuList>

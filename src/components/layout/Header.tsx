@@ -43,23 +43,23 @@ import { cn } from "@/lib/utils";
 import { Logo } from "@/components/Logo";
 
 const services = [
-  { name: "Informática", href: "/servicos/informatica", description: "Manutenção e suporte em computadores" },
-  { name: "Notebooks", href: "/servicos/notebooks", description: "Conserto e upgrade de notebooks" },
-  { name: "CFTV / Câmeras", href: "/servicos/cftv", description: "Instalação e manutenção de câmeras" },
-  { name: "Elétrica", href: "/servicos/eletrica", description: "Serviços elétricos residenciais e comerciais" },
-  { name: "Redes", href: "/servicos/redes", description: "Configuração de redes e Wi-Fi" },
-  { name: "Ar-Condicionado", href: "/servicos/ar-condicionado", description: "Instalação e manutenção" },
-  { name: "Celulares", href: "/servicos/celulares", description: "Reparo de smartphones e tablets" },
-  { name: "Games", href: "/servicos/games", description: "Conserto de videogames e consoles" },
-  { name: "Consoles & Eletrônicos (Curitiba)", href: "/assistencia-tecnica-curitiba", description: "Assistência técnica especializada em PS5, Xbox, Nintendo e GPUs" },
+  { name: "Informática", href: "/servicos/informatica", description: "Manutenção e suporte em computadores", icon: Monitor },
+  { name: "Notebooks", href: "/servicos/notebooks", description: "Conserto e upgrade de notebooks", icon: Laptop },
+  { name: "CFTV / Câmeras", href: "/servicos/cftv", description: "Instalação e manutenção de câmeras", icon: Camera },
+  { name: "Elétrica", href: "/servicos/eletrica", description: "Serviços elétricos residenciais e comerciais", icon: Zap },
+  { name: "Redes", href: "/servicos/redes", description: "Configuração de redes e Wi-Fi", icon: Wifi },
+  { name: "Ar-Condicionado", href: "/servicos/ar-condicionado", description: "Instalação e manutenção", icon: Snowflake },
+  { name: "Celulares", href: "/servicos/celulares", description: "Reparo de smartphones e tablets", icon: Smartphone },
+  { name: "Games", href: "/servicos/games", description: "Conserto de videogames e consoles", icon: Gamepad2 },
+  { name: "Consoles & Eletrônicos (Curitiba)", href: "/assistencia-tecnica-curitiba", description: "Assistência técnica especializada em PS5, Xbox, Nintendo e GPUs", icon: Cpu },
 ];
 
 const regions = [
-  { name: "Curitiba", href: "/regioes/curitiba" },
-  { name: "São José dos Pinhais", href: "/regioes/sao-jose-dos-pinhais" },
-  { name: "Pinhais", href: "/regioes/pinhais" },
-  { name: "Todas as Regiões (PR)", href: "/regioes" },
-  { name: "🇧🇷 Atendimento Nacional", href: "/atendimento-nacional" },
+  { name: "Curitiba", href: "/regioes/curitiba", icon: Building2 },
+  { name: "São José dos Pinhais", href: "/regioes/sao-jose-dos-pinhais", icon: MapPin },
+  { name: "Pinhais", href: "/regioes/pinhais", icon: MapPin },
+  { name: "Todas as Regiões (PR)", href: "/regioes", icon: Map },
+  { name: "🇧🇷 Atendimento Nacional", href: "/atendimento-nacional", icon: Flag },
 ];
 
 export function Header() {

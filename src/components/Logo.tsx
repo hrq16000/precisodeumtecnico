@@ -16,9 +16,9 @@ interface LogoProps {
 // Per-breakpoint heights in pixels so the height transition can actually
 // tween smoothly (Tailwind named sizes can't be interpolated by CSS).
 const HEIGHTS: Record<NonNullable<LogoProps["size"]>, { base: number; sm: number; md: number; lg: number }> = {
-  sm: { base: 32, sm: 36, md: 40, lg: 40 },
-  md: { base: 40, sm: 48, md: 56, lg: 64 },
-  lg: { base: 52, sm: 64, md: 80, lg: 96 },
+  sm: { base: 28, sm: 32, md: 36, lg: 36 },
+  md: { base: 36, sm: 40, md: 44, lg: 48 },
+  lg: { base: 40, sm: 48, md: 56, lg: 60 },
 };
 
 export function Logo({

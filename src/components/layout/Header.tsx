@@ -88,7 +88,7 @@ export function Header() {
           <div
             className={cn(
               "flex items-center justify-between gap-2 transition-[height] duration-500 ease-out",
-              scrolled ? "h-16 sm:h-20 md:h-24 lg:h-24" : "h-20 sm:h-24 md:h-28 lg:h-32",
+              scrolled ? "h-14 sm:h-16 md:h-16 lg:h-16" : "h-16 sm:h-18 md:h-20 lg:h-20",
             )}
           >
             {/* Logo */}

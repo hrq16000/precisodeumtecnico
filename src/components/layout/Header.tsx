@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Phone, MessageCircle, Mail, MapPin, Clock } from "lucide-react";
+import { Menu, X, Phone, MessageCircle, MapPin, Clock, Globe2 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { RegionIndicator } from "@/components/layout/RegionIndicator";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -68,16 +69,13 @@ export function Header() {
                 <Clock className="w-4 h-4" />
                 Atendimento 24h via WhatsApp
               </span>
-              <span className="flex items-center gap-2">
-                <MapPin className="w-4 h-4" />
-                Curitiba e Região Metropolitana
-              </span>
+              <RegionIndicator />
             </div>
             <div className="flex items-center gap-6">
-              <a href="mailto:contato@precisodeumtecnico.com" className="flex items-center gap-2 hover:text-accent transition-colors">
-                <Mail className="w-4 h-4" />
-                contato@precisodeumtecnico.com
-              </a>
+              <span className="flex items-center gap-2 text-primary-foreground/90">
+                <Globe2 className="w-4 h-4" />
+                Prestadores parceiros em todo o Brasil
+              </span>
             </div>
           </div>
         </div>

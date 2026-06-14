@@ -59,7 +59,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full bg-background shadow-sm">
       {/* Top Bar */}
-      <div className="hidden lg:block bg-primary text-primary-foreground py-2">
+      <div className="hidden xl:block bg-primary text-primary-foreground py-2">
         <div className="container-custom">
           <div className="flex items-center justify-between text-sm">
             <div className="flex items-center gap-6">
@@ -101,7 +101,7 @@ export function Header() {
             />
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-1">
+          <nav className="hidden xl:flex items-center gap-1">
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
@@ -216,7 +216,7 @@ export function Header() {
           </nav>
 
           {/* CTA Buttons */}
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden xl:flex items-center gap-3">
             <Button variant="whatsapp" size="sm" asChild>
               <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
                 <MessageCircle className="w-4 h-4" />
@@ -227,7 +227,7 @@ export function Header() {
 
           {/* Mobile menu button */}
           <button
-            className="lg:hidden p-2 rounded-md hover:bg-secondary transition-colors"
+            className="xl:hidden p-2 rounded-md hover:bg-secondary transition-colors"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Menu"
           >
@@ -237,7 +237,7 @@ export function Header() {
 
           {/* Mobile Navigation */}
           {mobileMenuOpen && (
-            <div className="lg:hidden py-4 border-t border-border/50 animate-fade-in">
+            <div className="xl:hidden py-4 border-t border-border/50 animate-fade-in">
               <nav className="flex flex-col gap-2">
                 <Link to="/" className="px-4 py-2 rounded-md hover:bg-secondary transition-colors font-medium" onClick={() => setMobileMenuOpen(false)}>
                   Início

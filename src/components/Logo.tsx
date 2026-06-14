@@ -16,9 +16,9 @@ interface LogoProps {
 // Per-breakpoint heights in pixels so the height transition can actually
 // tween smoothly (Tailwind named sizes can't be interpolated by CSS).
 const HEIGHTS: Record<NonNullable<LogoProps["size"]>, { base: number; sm: number; md: number; lg: number }> = {
-  sm: { base: 28, sm: 32, md: 36, lg: 36 },
-  md: { base: 36, sm: 40, md: 44, lg: 48 },
-  lg: { base: 40, sm: 48, md: 56, lg: 60 },
+  sm: { base: 24, sm: 28, md: 30, lg: 32 },
+  md: { base: 30, sm: 34, md: 36, lg: 38 },
+  lg: { base: 34, sm: 38, md: 42, lg: 44 },
 };
 
 export function Logo({
@@ -28,18 +28,21 @@ export function Logo({
   compact,
   priority = false,
 }: LogoProps) {
-  const target = compact ? HEIGHTS.md : HEIGHTS[size];
+  const target = compact ? HEIGHTS.sm : HEIGHTS[size];
 
+  // On the light header (variant "dark"), the header background is already
+  // light — drop the white tile/shadow so the logo doesn't visually "hang"
+  // below the header. Keep the white tile only on dark surfaces (hero/footer).
   const bgClasses =
     variant === "light"
       ? "bg-white shadow-xl shadow-black/40 ring-1 ring-white/20"
-      : "bg-white shadow-md shadow-black/15 ring-1 ring-black/5";
+      : "bg-transparent";
 
   return (
     <Link
       to="/"
       className={cn(
-        "inline-flex items-center rounded-xl px-2 py-1.5 sm:px-3 sm:py-2",
+        "inline-flex items-center rounded-xl px-1 py-1 sm:px-2 sm:py-1.5",
         "transition-[transform,box-shadow] duration-500 ease-out will-change-transform",
         "hover:scale-[1.03]",
         "motion-reduce:transition-none motion-reduce:transform-none motion-reduce:hover:scale-100",

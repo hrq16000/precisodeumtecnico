@@ -79,18 +79,18 @@ export function QuickQuoteForm() {
   };
 
   return (
-    <section className="py-16 bg-gradient-to-br from-primary/5 via-background to-accent/5">
-      <div className="container mx-auto px-4">
-        <div className="max-w-2xl mx-auto">
+    <section className="py-12 md:py-16 bg-gradient-to-br from-primary/5 via-background to-accent/5">
+      <div className="container-custom">
+        <div className="max-w-2xl mx-auto w-full">
           <div className="text-center mb-8">
-            <span className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-semibold mb-4">
+            <span className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-semibold mb-4">
               <MessageCircle className="h-4 w-4" />
               Orçamento em Minutos
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-3 break-words">
               Solicite um <span className="text-primary">Orçamento Rápido</span>
             </h2>
-            <p className="text-muted-foreground text-lg">
+            <p className="text-muted-foreground text-base sm:text-lg">
               Preencha o formulário e receba atendimento imediato via WhatsApp
             </p>
           </div>

@@ -1,7 +1,34 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Phone, MessageCircle, MapPin, Clock, Globe2 } from "lucide-react";
+import {
+  Menu,
+  MessageCircle,
+  Clock,
+  Globe2,
+  Home,
+  Wrench,
+  MapPinned,
+  Newspaper,
+  Tag,
+  Info,
+  Mail,
+  Monitor,
+  Laptop,
+  Camera,
+  Zap,
+  Wifi,
+  Snowflake,
+  Smartphone,
+  Gamepad2,
+  Cpu,
+  Building2,
+  MapPin,
+  Map,
+  Flag,
+  ChevronRight,
+  Sparkles,
+} from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { RegionIndicator } from "@/components/layout/RegionIndicator";
 import {

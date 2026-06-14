@@ -238,16 +238,17 @@ export function Header() {
             </SheetTrigger>
             <SheetContent
               side="right"
-              className="w-[85vw] max-w-sm p-0 border-l border-border/50 bg-gradient-to-b from-background via-background to-secondary/30"
+              className="w-[85vw] max-w-sm p-0 rounded-xl border border-border/50 bg-gradient-to-b from-background via-background to-secondary/30 shadow-2xl"
+              style={{ top: "5rem", bottom: "auto", height: "auto", maxHeight: "80dvh" }}
             >
-              <div className="flex flex-col h-full">
-                <div className="px-6 pt-6 pb-4 border-b border-border/40">
+              <div className="flex flex-col">
+                <div className="px-6 pt-5 pb-3 border-b border-border/40">
                   <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground font-semibold">Menu</span>
                   <h2 className="mt-1 text-xl font-display font-bold bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
                     Navegação
                   </h2>
                 </div>
-                <nav className="flex-1 overflow-y-auto px-3 py-4">
+                <nav className="overflow-y-auto px-3 py-3">
                   <ul className="flex flex-col gap-1">
                     {[
                       { to: "/", label: "Início" },

@@ -225,52 +225,81 @@ export function Header() {
             </Button>
           </div>
 
-          {/* Mobile menu button */}
-          <button
-            className="xl:hidden p-2 rounded-md hover:bg-secondary transition-colors"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Menu"
-          >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
-
-          {/* Mobile Navigation */}
-          {mobileMenuOpen && (
-            <div className="xl:hidden py-4 border-t border-border/50 animate-fade-in">
-              <nav className="flex flex-col gap-2">
-                <Link to="/" className="px-4 py-2 rounded-md hover:bg-secondary transition-colors font-medium" onClick={() => setMobileMenuOpen(false)}>
-                  Início
-                </Link>
-                <Link to="/servicos" className="px-4 py-2 rounded-md hover:bg-secondary transition-colors font-medium" onClick={() => setMobileMenuOpen(false)}>
-                  Serviços
-                </Link>
-                <Link to="/regioes" className="px-4 py-2 rounded-md hover:bg-secondary transition-colors font-medium" onClick={() => setMobileMenuOpen(false)}>
-                  Regiões Atendidas
-                </Link>
-                <Link to="/precos" className="px-4 py-2 rounded-md hover:bg-secondary transition-colors font-medium" onClick={() => setMobileMenuOpen(false)}>
-                  Preços
-                </Link>
-                <Link to="/blog" className="px-4 py-2 rounded-md hover:bg-secondary transition-colors font-medium" onClick={() => setMobileMenuOpen(false)}>
-                  Blog
-                </Link>
-                <Link to="/sobre" className="px-4 py-2 rounded-md hover:bg-secondary transition-colors font-medium" onClick={() => setMobileMenuOpen(false)}>
-                  Sobre
-                </Link>
-                <Link to="/contato" className="px-4 py-2 rounded-md hover:bg-secondary transition-colors font-medium" onClick={() => setMobileMenuOpen(false)}>
-                  Contato
-                </Link>
-                <div className="pt-4 mt-2 border-t border-border/50 flex flex-col gap-2">
-                  <Button variant="whatsapp" className="mx-4" asChild>
-                    <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
-                      <MessageCircle className="w-4 h-4" />
-                      WhatsApp (41) 9 9745-2053
-                    </a>
-                  </Button>
+          {/* Mobile menu trigger (Sheet handles outside-click close) */}
+          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+            <SheetTrigger asChild>
+              <button
+                className="xl:hidden relative p-2 rounded-lg hover:bg-secondary transition-all duration-300 active:scale-95"
+                aria-label="Abrir menu"
+              >
+                <Menu className="w-6 h-6 transition-transform duration-300" />
+              </button>
+            </SheetTrigger>
+            <SheetContent
+              side="right"
+              className="w-[85vw] max-w-sm p-0 border-l border-border/50 bg-gradient-to-b from-background via-background to-secondary/30"
+            >
+              <div className="flex flex-col h-full">
+                <div className="px-6 pt-6 pb-4 border-b border-border/40">
+                  <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground font-semibold">Menu</span>
+                  <h2 className="mt-1 text-xl font-display font-bold bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
+                    Navegação
+                  </h2>
                 </div>
-              </nav>
-            </div>
-          )}
+                <nav className="flex-1 overflow-y-auto px-3 py-4">
+                  <ul className="flex flex-col gap-1">
+                    {[
+                      { to: "/", label: "Início" },
+                      { to: "/servicos", label: "Serviços" },
+                      { to: "/regioes", label: "Regiões Atendidas" },
+                      { to: "/precos", label: "Preços" },
+                      { to: "/blog", label: "Blog" },
+                      { to: "/sobre", label: "Sobre" },
+                      { to: "/contato", label: "Contato" },
+                    ].map((item, i) => {
+                      const active =
+                        item.to === "/"
+                          ? location.pathname === "/"
+                          : location.pathname.startsWith(item.to);
+                      return (
+                        <li
+                          key={item.to}
+                          className="opacity-0 animate-fade-in"
+                          style={{ animationDelay: `${i * 50}ms`, animationFillMode: "forwards" }}
+                        >
+                          <Link
+                            to={item.to}
+                            onClick={() => setMobileMenuOpen(false)}
+                            className={cn(
+                              "group flex items-center justify-between px-4 py-3 rounded-lg font-medium",
+                              "transition-all duration-300",
+                              "hover:bg-secondary hover:translate-x-1",
+                              "border border-transparent",
+                              active
+                                ? "bg-primary/10 text-primary border-primary/20 shadow-sm"
+                                : "text-foreground/80 hover:text-foreground",
+                            )}
+                          >
+                            <span>{item.label}</span>
+                            <span
+                              className={cn(
+                                "text-primary opacity-0 -translate-x-2 transition-all duration-300",
+                                "group-hover:opacity-100 group-hover:translate-x-0",
+                                active && "opacity-100 translate-x-0",
+                              )}
+                            >
+                              →
+                            </span>
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </nav>
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
         </div>
       </div>
     </header>

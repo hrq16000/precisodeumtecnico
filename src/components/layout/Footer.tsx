@@ -118,6 +118,9 @@ export function Footer() {
                 <div>
                   <span className="block text-sm text-background/70">Área de Atendimento</span>
                   <span className="font-semibold">Curitiba e Região Metropolitana</span>
+                  <Link to="/atendimento-nacional" className="block text-xs mt-1 text-background/80 hover:text-primary underline-offset-2 hover:underline">
+                    + Prestadores parceiros em todo o Brasil →
+                  </Link>
                 </div>
               </li>
             </ul>

@@ -134,12 +134,12 @@ export function TriageWizard({
               acesse:
             </p>
             <a
-              href="https://www.mestredosservicos.com.br"
+              href="https://www.precisodeumtecnico.com"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block font-semibold text-primary underline underline-offset-4"
             >
-              www.mestredosservicos.com.br
+              www.precisodeumtecnico.com
             </a>
             <p className="text-sm text-muted-foreground">Estaremos de portas abertas.</p>
             {onClose && (

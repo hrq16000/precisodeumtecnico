@@ -101,7 +101,7 @@ export function Footer() {
                 <MessageCircle className="w-5 h-5 text-success mt-0.5 flex-shrink-0" />
                 <div>
                   <span className="block text-sm text-background/70">WhatsApp 24h</span>
-                  <a href={whatsappLink} target="_blank" rel="noopener noreferrer" onClick={() => trackWhatsAppClick({ source: "footer" })} className="font-semibold hover:text-primary transition-colors">
+                  <a href={whatsappLink} target="_blank" rel="noopener noreferrer" onClick={() => trackWhatsAppClick({ source: "footer" })} data-wa-keep="footer" className="font-semibold hover:text-primary transition-colors">
                     (41) 9 9745-2053
                   </a>
                 </div>

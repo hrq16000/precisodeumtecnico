@@ -17,6 +17,9 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { QuickDiagnosisQuiz } from "@/components/QuickDiagnosisQuiz";
+import { OfferHighlight } from "@/components/marketing/OfferHighlight";
+import { buildOfferSchema } from "@/components/seo/OfferSchema";
+import { buildReviewsSchema } from "@/data/testimonials";
 import { trackWhatsAppClick, trackCtaClick } from "@/lib/analytics";
 import NotFound from "./NotFound";
 
@@ -110,13 +113,21 @@ export default function BairroDetalhe() {
     })),
   };
 
+  const pageUrl = `https://precisodeumtecnico.com/regioes/${city}/${neighborhood}`;
+  const offerSchema = buildOfferSchema({
+    serviceName: `Assistência técnica em ${neighborhoodName}, ${cityData.name}`,
+    areaServed: `${neighborhoodName}, ${cityData.name}`,
+    url: pageUrl,
+  });
+  const reviewsSchema = buildReviewsSchema();
+
   return (
     <Layout>
       <SEOHead
         title={`${pageTitle} | Assistência Técnica 24h`}
         description={pageDescription}
-        canonical={`https://precisodeumtecnico.com/regioes/${city}/${neighborhood}`}
-        structuredData={[localBusinessSchema, faqSchema]}
+        canonical={pageUrl}
+        structuredData={[localBusinessSchema, faqSchema, offerSchema, reviewsSchema].filter(Boolean) as object[]}
       />
 
       {/* Hero Section */}
@@ -177,6 +188,18 @@ export default function BairroDetalhe() {
                 </a>
               </Button>
             </div>
+          </div>
+        </div>
+      </section>
+
+        </div>
+      </section>
+
+      {/* Oferta âncora — preço + termos com hierarquia forte */}
+      <section className="bg-background py-8">
+        <div className="container mx-auto px-4">
+          <div className="mx-auto max-w-3xl">
+            <OfferHighlight region={`${neighborhoodName}, ${cityData.name}`} />
           </div>
         </div>
       </section>

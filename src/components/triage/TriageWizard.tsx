@@ -172,7 +172,7 @@ export function TriageWizard({
           </section>
         )}
 
-        {state.step === "device" && (
+        {!exited && state.step === "device" && (
           <section className="space-y-3">
             <h2 className="text-lg font-bold">Marca e modelo</h2>
             <div className="grid gap-3 sm:grid-cols-2">

@@ -16,43 +16,97 @@ export type Database = {
     Tables: {
       leads: {
         Row: {
+          brand: string | null
+          category: string | null
           city: string | null
           created_at: string
           email: string
+          estimated_ticket_max: number | null
+          estimated_ticket_min: number | null
           id: string
+          media_urls: string[]
           message: string | null
+          model: string | null
           name: string
           neighborhood: string | null
           phone: string
+          referrer: string | null
           service: string | null
+          service_mode: string | null
+          sla_days_max: number | null
+          sla_days_min: number | null
+          source: string | null
           status: string
+          symptom: string | null
+          symptom_slug: string | null
+          terms_accepted: boolean
+          terms_accepted_at: string | null
+          triage_completed: boolean
+          triage_payload: Json | null
           updated_at: string
+          user_agent: string | null
         }
         Insert: {
+          brand?: string | null
+          category?: string | null
           city?: string | null
           created_at?: string
           email: string
+          estimated_ticket_max?: number | null
+          estimated_ticket_min?: number | null
           id?: string
+          media_urls?: string[]
           message?: string | null
+          model?: string | null
           name: string
           neighborhood?: string | null
           phone: string
+          referrer?: string | null
           service?: string | null
+          service_mode?: string | null
+          sla_days_max?: number | null
+          sla_days_min?: number | null
+          source?: string | null
           status?: string
+          symptom?: string | null
+          symptom_slug?: string | null
+          terms_accepted?: boolean
+          terms_accepted_at?: string | null
+          triage_completed?: boolean
+          triage_payload?: Json | null
           updated_at?: string
+          user_agent?: string | null
         }
         Update: {
+          brand?: string | null
+          category?: string | null
           city?: string | null
           created_at?: string
           email?: string
+          estimated_ticket_max?: number | null
+          estimated_ticket_min?: number | null
           id?: string
+          media_urls?: string[]
           message?: string | null
+          model?: string | null
           name?: string
           neighborhood?: string | null
           phone?: string
+          referrer?: string | null
           service?: string | null
+          service_mode?: string | null
+          sla_days_max?: number | null
+          sla_days_min?: number | null
+          source?: string | null
           status?: string
+          symptom?: string | null
+          symptom_slug?: string | null
+          terms_accepted?: boolean
+          terms_accepted_at?: string | null
+          triage_completed?: boolean
+          triage_payload?: Json | null
           updated_at?: string
+          user_agent?: string | null
         }
         Relationships: []
       }

@@ -1,4 +1,5 @@
 import { useParams, Link, Navigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { Layout } from "@/components/layout/Layout";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { Button } from "@/components/ui/button";
@@ -29,7 +30,10 @@ const CidadeNacional = () => {
 
   const url = `https://precisodeumtecnico.com/atendimento-nacional/${city.slug}`;
   const ogImage = `https://precisodeumtecnico.com/og/cidade/${city.slug}.jpg`;
-  const heroImage = `/hero/cidade/${city.slug}.jpg`;
+  const heroBase = `/hero/cidade/${city.slug}`;
+  const heroWebpSrcSet = `${heroBase}-800.webp 800w, ${heroBase}-1200.webp 1200w, ${heroBase}-1600.webp 1600w`;
+  const heroJpgFallback = `${heroBase}-800.jpg`;
+  const heroPreload = `${heroBase}-1200.webp`;
   const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
     `Olá! Preciso de um técnico parceiro em ${city.name} - ${city.state}.`
   )}`;
@@ -123,18 +127,39 @@ const CidadeNacional = () => {
         keywords={`técnico em ${city.name}, assistência técnica ${city.name}, técnico informática ${city.name} ${city.state}, suporte ti ${city.name}`}
         structuredData={[breadcrumb, service, faq]}
       />
+      <Helmet>
+        {/* Preload the LCP hero in modern format with responsive srcset */}
+        <link
+          rel="preload"
+          as="image"
+          href={heroPreload}
+          imageSrcSet={heroWebpSrcSet}
+          imageSizes="100vw"
+          type="image/webp"
+          fetchPriority="high"
+        />
+        <meta property="og:image:secure_url" content={ogImage} />
+        <meta property="og:image:type" content="image/jpeg" />
+        <meta property="og:image:alt" content={`Técnico em ${city.name} - ${city.state}`} />
+      </Helmet>
 
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary to-primary-glow text-primary-foreground py-14 md:py-20">
         {/* City-specific hero illustration */}
         <div className="absolute inset-0 pointer-events-none">
-          <img
-            src={heroImage}
-            alt={`Assistência técnica em ${city.name} - ${city.state}`}
-            className="w-full h-full object-cover opacity-30 md:opacity-40"
-            loading="eager"
-            decoding="async"
-          />
+          <picture>
+            <source type="image/webp" srcSet={heroWebpSrcSet} sizes="100vw" />
+            <img
+              src={heroJpgFallback}
+              alt={`Assistência técnica em ${city.name} - ${city.state}`}
+              className="w-full h-full object-cover opacity-30 md:opacity-40"
+              loading="eager"
+              decoding="async"
+              fetchPriority="high"
+              width={1600}
+              height={900}
+            />
+          </picture>
           <div className="absolute inset-0 bg-gradient-to-r from-primary/95 via-primary/85 to-primary/40" />
         </div>
 

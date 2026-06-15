@@ -28,6 +28,8 @@ const CidadeNacional = () => {
   if (!city) return <Navigate to="/atendimento-nacional" replace />;
 
   const url = `https://precisodeumtecnico.com/atendimento-nacional/${city.slug}`;
+  const ogImage = `https://precisodeumtecnico.com/og/cidade/${city.slug}.jpg`;
+  const heroImage = `/hero/cidade/${city.slug}.jpg`;
   const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
     `Olá! Preciso de um técnico parceiro em ${city.name} - ${city.state}.`
   )}`;
@@ -50,6 +52,7 @@ const CidadeNacional = () => {
     "@type": "Service",
     name: `Assistência Técnica em ${city.name} - ${city.state}`,
     description,
+    image: ogImage,
     provider: {
       "@type": "Organization",
       name: "Preciso de Um Técnico",
@@ -61,6 +64,13 @@ const CidadeNacional = () => {
       containedInPlace: { "@type": "State", name: city.stateName, addressCountry: "BR" },
     },
     serviceType: "Assistência técnica em informática, redes, CFTV, elétrica e ar-condicionado",
+    offers: {
+      "@type": "Offer",
+      priceCurrency: "BRL",
+      price: "99.90",
+      availability: "https://schema.org/InStock",
+      url,
+    },
   };
 
   const faq = {
@@ -108,13 +118,27 @@ const CidadeNacional = () => {
         title={title}
         description={description}
         canonical={url}
+        ogImage={ogImage}
+        type="service"
         keywords={`técnico em ${city.name}, assistência técnica ${city.name}, técnico informática ${city.name} ${city.state}, suporte ti ${city.name}`}
         structuredData={[breadcrumb, service, faq]}
       />
 
       {/* Hero */}
-      <section className="relative bg-gradient-to-br from-primary via-primary to-primary-glow text-primary-foreground py-14 md:py-20">
-        <div className="container-custom">
+      <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary to-primary-glow text-primary-foreground py-14 md:py-20">
+        {/* City-specific hero illustration */}
+        <div className="absolute inset-0 pointer-events-none">
+          <img
+            src={heroImage}
+            alt={`Assistência técnica em ${city.name} - ${city.state}`}
+            className="w-full h-full object-cover opacity-30 md:opacity-40"
+            loading="eager"
+            decoding="async"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/95 via-primary/85 to-primary/40" />
+        </div>
+
+        <div className="container-custom relative">
           <nav className="text-xs md:text-sm text-primary-foreground/80 mb-4">
             <Link to="/" className="hover:text-accent">Início</Link>
             <span className="mx-2">/</span>
@@ -124,11 +148,11 @@ const CidadeNacional = () => {
           </nav>
 
           <div className="max-w-3xl">
-            <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary-foreground/10 border border-primary-foreground/20 text-xs font-semibold uppercase tracking-wider mb-4">
+            <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary-foreground/10 border border-primary-foreground/20 text-xs font-semibold uppercase tracking-wider mb-4 backdrop-blur-sm">
               <MapPin className="w-4 h-4" />
               {city.region} • {city.stateName}
             </span>
-            <h1 className="font-display text-3xl md:text-5xl font-bold mb-4 leading-tight">
+            <h1 className="font-display text-3xl md:text-5xl font-bold mb-4 leading-tight drop-shadow-sm">
               Técnico em <span className="text-accent">{city.name} – {city.state}</span>
             </h1>
             <p className="text-lg md:text-xl text-primary-foreground/90 mb-6 leading-relaxed">

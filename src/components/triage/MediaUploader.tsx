@@ -104,16 +104,17 @@ export function MediaUploader({
       >
         <div className="flex items-start gap-3">
           <AlertTriangle className="h-5 w-5 shrink-0" aria-hidden />
-          <div className="space-y-1">
+          <div className="space-y-2">
             <p className="font-extrabold uppercase tracking-wide">
-              AVISO: Faça um vídeo completo do aparelho mostrando o dano e a etiqueta traseira.
+              ⚠️ ATENÇÃO: Faça um vídeo nítido mostrando o aparelho por completo,
+              o dano e a etiqueta traseira.
             </p>
             <p className="font-bold">
-              VÍDEOS COM BARULHO OU ÁUDIOS SERÃO IGNORADOS E O ATENDIMENTO CANCELADO.
+              Não envie vídeos com barulho de fundo.{" "}
+              <span className="underline">ÁUDIOS SERÃO IGNORADOS E O ATENDIMENTO CANCELADO.</span>
             </p>
             <p className="text-xs opacity-90">
-              Grave em local silencioso, sem fala, música ou TV de fundo. Mostre a tela ligada (se possível),
-              o defeito e a etiqueta com número de série.
+              Relate o problema apenas por escrito na próxima etapa.
             </p>
           </div>
         </div>

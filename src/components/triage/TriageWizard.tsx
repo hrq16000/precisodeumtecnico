@@ -38,6 +38,7 @@ const STEP_LABELS: Record<string, string> = {
   accept: "6 · Aceite",
 };
 
+
 const STEP_ORDER: string[] = ["category", "device", "symptom", "branch", "contact", "accept"];
 
 export function TriageWizard({

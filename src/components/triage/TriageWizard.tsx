@@ -99,7 +99,7 @@ export function TriageWizard({
         <div className="flex items-center gap-2 text-sm font-semibold">
           <Zap className="h-4 w-4 text-primary" />
           Triagem técnica
-          {state.step !== "submitting" && state.step !== "done" && state.step !== "error" && (
+          {!exited && state.step !== "submitting" && state.step !== "done" && state.step !== "error" && (
             <span className="ml-2 rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
               {STEP_LABELS[state.step] ?? state.step}
             </span>
@@ -112,9 +112,43 @@ export function TriageWizard({
         )}
       </header>
 
+      {/* Progress bar */}
+      {!exited && !["submitting", "done", "error"].includes(state.step) && (
+        <div className="h-1 w-full bg-muted" aria-hidden>
+          <div
+            className="h-full bg-primary transition-[width] duration-500 ease-out"
+            style={{ width: `${progressPct}%` }}
+          />
+        </div>
+      )}
+
       {/* Body */}
-      <div className="space-y-5 px-5 py-6">
-        {state.step === "category" && (
+      <div key={exited ? "exited" : state.step} className="space-y-5 px-5 py-6 animate-in fade-in slide-in-from-bottom-1 duration-300">
+        {exited && (
+          <section className="space-y-4 py-4 text-center">
+            <h2 className="text-xl font-bold">Agradecemos o seu tempo.</h2>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Nosso foco é oferecer um serviço técnico definitivo, transparente e de altíssima qualidade.
+              Entendemos que este pode não ser o seu momento. Sempre que pensar{" "}
+              <em>"preciso de uma solução"</em> altamente qualificada para resolver problemas sem dor de cabeça,
+              acesse:
+            </p>
+            <a
+              href="https://www.mestredosservicos.com.br"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block font-semibold text-primary underline underline-offset-4"
+            >
+              www.mestredosservicos.com.br
+            </a>
+            <p className="text-sm text-muted-foreground">Estaremos de portas abertas.</p>
+            {onClose && (
+              <Button variant="outline" onClick={onClose} className="mt-4">Fechar</Button>
+            )}
+          </section>
+        )}
+
+        {!exited && state.step === "category" && (
           <section>
             <h2 className="mb-3 text-lg font-bold">Qual é o aparelho?</h2>
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">

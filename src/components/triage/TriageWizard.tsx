@@ -237,45 +237,66 @@ export function TriageWizard({
           </section>
         )}
 
-        {state.step === "branch" && sym && (
+        {!exited && state.step === "branch" && sym && (
           <section className="space-y-4">
-            {/* === 4a · COLETA (gate impositivo) === */}
+            {/* === 4a · COLETA (gate impositivo) — copy de autoridade === */}
             {sym.triage.mode === "coleta" && (
               <div className="space-y-4">
-                <div className="flex items-start gap-3 rounded-xl border-2 border-amber-500 bg-amber-500/10 p-4">
-                  <ShieldAlert className="mt-0.5 h-6 w-6 text-amber-600" />
-                  <div className="space-y-2 text-sm">
-                    <p className="text-base font-extrabold uppercase">
-                      Atenção: este reparo é por COLETA, em bancada.
-                    </p>
-                    <p>
-                      Para o sintoma <strong>“{sym.label}”</strong> trabalhamos com
-                      orçamento mínimo pré-aprovado de{" "}
-                      <strong>R$ {sym.triage.ticketMin.toLocaleString("pt-BR")}</strong> a{" "}
-                      <strong>R$ {sym.triage.ticketMax.toLocaleString("pt-BR")}</strong>.
-                    </p>
-                    <p>
-                      Prazo realista: <strong>{sym.triage.slaMinDays} a {sym.triage.slaMaxDays} dias</strong>,
-                      conforme disponibilidade de peça. Coleta e devolução R$ 99,99,
-                      abatido em caso de aprovação.{" "}
-                      <Link to="/termos-orcamento-pre-aprovado" className="underline">
-                        Ver termos
-                      </Link>.
-                    </p>
+                <div className="rounded-xl border-2 border-amber-500 bg-amber-500/10 p-5">
+                  <div className="flex items-start gap-3">
+                    <ShieldAlert className="mt-0.5 h-6 w-6 shrink-0 text-amber-600" />
+                    <div className="space-y-3">
+                      <h3 className="text-lg font-extrabold leading-tight">
+                        Diagnóstico Transparente: Foco na Solução.
+                      </h3>
+                      <p className="text-sm leading-relaxed">
+                        Identificamos que o sintoma do seu equipamento requer{" "}
+                        <strong>análise profunda em laboratório</strong>. Não trabalhamos com
+                        especulações rápidas ou achismos que não resolvem o problema.
+                        Nosso compromisso é entregar o equipamento funcionando.
+                      </p>
+                      <ul className="space-y-2 rounded-lg border border-amber-600/30 bg-amber-500/10 p-3 text-sm">
+                        <li>
+                          <strong>Modalidade Exclusiva:</strong> Coleta e Entrega.
+                        </li>
+                        <li>
+                          <strong>Orçamento pré-aprovado estimado:</strong>{" "}
+                          de <strong>R$ {sym.triage.ticketMin.toLocaleString("pt-BR")}</strong> a{" "}
+                          <strong>R$ {sym.triage.ticketMax.toLocaleString("pt-BR")}</strong>{" "}
+                          <em>(só cobramos o reparo se houver solução).</em>
+                        </li>
+                        <li className="text-xs text-muted-foreground">
+                          Prazo realista: <strong>{sym.triage.slaMinDays} a {sym.triage.slaMaxDays} dias úteis</strong>.{" "}
+                          <Link to="/termos-orcamento-pre-aprovado" className="underline">
+                            Ver Termos e Condições
+                          </Link>.
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
 
                 <div className="flex flex-col gap-2 sm:flex-row">
                   <Button
                     type="button"
+                    size="lg"
                     onClick={() => dispatch({ type: "ACK_GATE" })}
-                    className={cn(state.acknowledgedGate && "ring-2 ring-primary")}
+                    className={cn(
+                      "h-12 flex-1 bg-green-600 text-white hover:bg-green-700",
+                      state.acknowledgedGate && "ring-2 ring-green-300",
+                    )}
                   >
-                    <CheckCircle2 className="mr-2 h-4 w-4" />
-                    Entendi e quero continuar
+                    <CheckCircle2 className="mr-2 h-5 w-5" />
+                    Entendi, quero uma solução definitiva
                   </Button>
-                  <Button type="button" variant="outline" onClick={onClose}>
-                    Sair
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="lg"
+                    className="h-12 text-muted-foreground"
+                    onClick={() => setExited(true)}
+                  >
+                    Não tenho interesse no momento
                   </Button>
                 </div>
               </div>

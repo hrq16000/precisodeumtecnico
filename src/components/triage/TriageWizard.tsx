@@ -200,7 +200,7 @@ export function TriageWizard({
           </section>
         )}
 
-        {state.step === "symptom" && (
+        {!exited && state.step === "symptom" && (
           <section className="space-y-3">
             <h2 className="text-lg font-bold">Qual o sintoma?</h2>
             <div className="space-y-2">
@@ -210,9 +210,9 @@ export function TriageWizard({
                   type="button"
                   onClick={() => dispatch({ type: "SET_SYMPTOM", slug: s.slug })}
                   className={cn(
-                    "flex w-full items-start justify-between gap-3 rounded-xl border p-3 text-left transition",
+                    "flex min-h-[64px] w-full items-start justify-between gap-3 rounded-xl border-2 p-3.5 text-left transition active:scale-[0.99]",
                     state.symptomSlug === s.slug
-                      ? "border-primary bg-primary/5"
+                      ? "border-primary bg-primary/5 shadow-sm"
                       : "border-border hover:border-primary/40",
                   )}
                 >
@@ -220,7 +220,7 @@ export function TriageWizard({
                     <p className="font-semibold">{s.label}</p>
                     <p className="text-xs text-muted-foreground">{s.shortDescription}</p>
                   </div>
-                  <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                  <ChevronRight className="h-5 w-5 shrink-0 text-muted-foreground" />
                 </button>
               ))}
             </div>

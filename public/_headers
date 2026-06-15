@@ -1,0 +1,25 @@
+# CDN cache headers (Netlify/Cloudflare Pages style — honored by Lovable hosting).
+# Generated assets under /og and /hero are content-hashed by city slug and rebuilt
+# only when the source data changes, so they're safe to cache aggressively.
+
+/og/*
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+  X-Content-Type-Options: nosniff
+
+/hero/*
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+  X-Content-Type-Options: nosniff
+  Vary: Accept
+
+# Static OG preview HTMLs — short cache so updates propagate quickly to crawlers
+/og-preview/*
+  Cache-Control: public, max-age=300, s-maxage=3600, must-revalidate
+  X-Robots-Tag: noindex, follow
+
+# Fonts and other long-lived static assets
+/*.woff2
+  Cache-Control: public, max-age=31536000, immutable
+/*.woff
+  Cache-Control: public, max-age=31536000, immutable

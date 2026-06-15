@@ -136,7 +136,7 @@ const CidadeNacional = () => {
           imageSrcSet={heroWebpSrcSet}
           imageSizes="100vw"
           type="image/webp"
-          fetchpriority="high"
+          fetchPriority="high"
         />
         <meta property="og:image:secure_url" content={ogImage} />
         <meta property="og:image:type" content="image/jpeg" />

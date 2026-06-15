@@ -83,6 +83,41 @@ export function TriageWizard({
       };
       const { error } = await supabase.from("leads").insert(enriched as never);
       if (error) throw error;
+
+      // P0 Legal: registra evidência separada e auditável dos 3 aceites.
+      // Não bloqueia o sucesso do funil se este registro falhar — apenas loga.
+      try {
+        await supabase.from("terms_acceptances").insert({
+          name: payload.name,
+          phone: payload.phone,
+          email: payload.email,
+          service: payload.symptom ?? payload.category ?? "triagem",
+          terms_version: "triagem-v1",
+          accepted_items: state.accepts as never,
+        } as never);
+      } catch (legalErr) {
+        // eslint-disable-next-line no-console
+        console.warn("[triage] terms_acceptances insert failed:", legalErr);
+      }
+
+      // Notifica o time (email via Resend) — fire-and-forget.
+      try {
+        await supabase.functions.invoke("send-lead-notification", {
+          body: {
+            name: payload.name,
+            email: payload.email,
+            phone: payload.phone,
+            service: payload.symptom ?? payload.category,
+            city: payload.city,
+            message:
+              `[TRIAGEM] ${payload.category ?? ""} ${payload.brand ?? ""} ${payload.model ?? ""}\n` +
+              `Sintoma: ${payload.symptom ?? "(custom)"}\n` +
+              `Modo: ${payload.service_mode ?? "—"} · Ticket R$ ${payload.estimated_ticket_min ?? "?"}–${payload.estimated_ticket_max ?? "?"}\n` +
+              `Mídias: ${payload.media_urls.length} · Origem: ${payload.source}`,
+          },
+        });
+      } catch (_notifyErr) { /* não bloqueia */ }
+
       dispatch({ type: "SUBMIT_OK" });
     } catch (e) {
       dispatch({ type: "SUBMIT_ERR", message: (e as Error).message || "Falha ao enviar." });

@@ -38,6 +38,8 @@ const STEP_LABELS: Record<string, string> = {
   accept: "6 · Aceite",
 };
 
+const STEP_ORDER: string[] = ["category", "device", "symptom", "branch", "contact", "accept"];
+
 export function TriageWizard({
   initialCategory, initialSymptomSlug, source = "triagem-preview", onClose,
 }: TriageWizardProps) {
@@ -54,6 +56,12 @@ export function TriageWizard({
     return s;
   });
   const [lastPayload, setLastPayload] = useState<unknown>(null);
+  const [exited, setExited] = useState(false);
+
+  const stepIdx = Math.max(0, STEP_ORDER.indexOf(state.step));
+  const progressPct = state.step === "done"
+    ? 100
+    : Math.round(((stepIdx + 1) / STEP_ORDER.length) * 100);
 
   const sym = getSymptom(state);
   const symptomsForCat = useMemo(

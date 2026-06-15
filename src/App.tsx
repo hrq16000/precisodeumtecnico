@@ -46,6 +46,8 @@ const App = () => (
             <ScrollToTop />
             <GlobalReveal />
             <WhatsAppFunnelProvider>
+            <GlobalTriageLauncher />
+
 
             <Routes>
               <Route path="/" element={<Index />} />

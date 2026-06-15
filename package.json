@@ -5,10 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prebuild": "bun scripts/build-sitemap.ts",
+    "prebuild": "bun scripts/build-sitemap.ts && bun scripts/build-og-preview.ts",
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "sitemap": "bun scripts/build-sitemap.ts",
+    "og:preview": "bun scripts/build-og-preview.ts",
+    "og:validate": "bun scripts/check-og-validators.ts",
     "validate:sitemap": "bun scripts/validate-sitemap.ts",
     "check:og": "bun scripts/check-og-images.ts",
     "validate:jsonld": "bun scripts/validate-jsonld.ts",

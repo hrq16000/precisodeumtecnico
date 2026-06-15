@@ -30,6 +30,7 @@ import AssistenciaTecnicaCuritiba from "./pages/AssistenciaTecnicaCuritiba";
 import AssistenciaTecnica from "./pages/AssistenciaTecnica";
 import AtendimentoNacional from "./pages/AtendimentoNacional";
 import CidadeNacional from "./pages/CidadeNacional";
+import TriagemPreview from "./pages/TriagemPreview";
 
 const queryClient = new QueryClient();
 
@@ -68,6 +69,7 @@ const App = () => (
               <Route path="/assistencia-tecnica" element={<AssistenciaTecnica />} />
               <Route path="/atendimento-nacional" element={<AtendimentoNacional />} />
               <Route path="/atendimento-nacional/:slug" element={<CidadeNacional />} />
+              <Route path="/triagem-preview" element={<TriagemPreview />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

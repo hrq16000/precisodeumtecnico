@@ -38,6 +38,9 @@ import {
 } from "@/components/ui/accordion";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
+import { OfferHighlight } from "@/components/marketing/OfferHighlight";
+import { buildOfferSchema } from "@/components/seo/OfferSchema";
+import { buildReviewsSchema } from "@/data/testimonials";
 import { trackWhatsAppClick } from "@/lib/analytics";
 
 
@@ -399,6 +402,11 @@ export default function AssistenciaTecnicaCuritiba() {
         <script type="application/ld+json">{JSON.stringify(localBusinessSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(buildOfferSchema({ serviceName: "Assistência técnica especializada em Curitiba", areaServed: "Curitiba", url: pageUrl }))}</script>
+        {(() => {
+          const r = buildReviewsSchema();
+          return r ? <script type="application/ld+json">{JSON.stringify(r)}</script> : null;
+        })()}
         {serviceSchemas.map((s, i) => (
           <script key={`svc-${i}`} type="application/ld+json">{JSON.stringify(s)}</script>
         ))}
@@ -517,6 +525,13 @@ export default function AssistenciaTecnicaCuritiba() {
               </div>
             </div>
           </motion.aside>
+        </div>
+      </section>
+
+      {/* Oferta âncora — preço (R$ 99,99) + termos com hierarquia forte */}
+      <section className="bg-background py-8">
+        <div className="container-custom max-w-4xl">
+          <OfferHighlight region="Curitiba — PR" />
         </div>
       </section>
 

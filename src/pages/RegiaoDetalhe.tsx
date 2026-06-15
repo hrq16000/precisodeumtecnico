@@ -9,6 +9,9 @@ import {
   Star, Users, FileText, Smartphone, Gamepad2
 } from "lucide-react";
 import { citiesData, formatNeighborhoodSlug, formatNameFromSlug, getCityBySlug } from "@/data/regions";
+import { OfferHighlight } from "@/components/marketing/OfferHighlight";
+import { buildOfferSchema } from "@/components/seo/OfferSchema";
+import { buildReviewsSchema } from "@/data/testimonials";
 import { trackCtaClick, trackWhatsAppClick } from "@/lib/analytics";
 
 const services = [
@@ -71,13 +74,21 @@ const RegiaoDetalhe = () => {
     }
   };
 
+  const pageUrl = `https://precisodeumtecnico.com/regioes/${city}${neighborhood ? `/${neighborhood}` : ''}`;
+  const offerSchema = buildOfferSchema({
+    serviceName: `Assistência técnica em ${neighborhood ? neighborhoodName + ", " + cityName : cityName}`,
+    areaServed: neighborhood ? `${neighborhoodName}, ${cityName}` : cityName,
+    url: pageUrl,
+  });
+  const reviewsSchema = buildReviewsSchema();
+
   return (
     <Layout>
       <SEOHead
         title={`${pageTitle} | Assistência Técnica 24h | Preciso de Um Técnico`}
         description={pageDescription}
-        canonical={`https://precisodeumtecnico.com/regioes/${city}${neighborhood ? `/${neighborhood}` : ''}`}
-        schema={localSchema}
+        canonical={pageUrl}
+        structuredData={[localSchema, offerSchema, reviewsSchema].filter(Boolean) as object[]}
       />
       
       {/* Hero Section */}
@@ -198,6 +209,13 @@ const RegiaoDetalhe = () => {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Oferta âncora — preço + termos com hierarquia forte */}
+      <section className="bg-background py-8">
+        <div className="container-custom max-w-4xl">
+          <OfferHighlight region={`${neighborhood ? neighborhoodName + ", " : ""}${cityName}`} />
         </div>
       </section>
 

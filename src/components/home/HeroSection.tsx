@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { MessageCircle, Phone, Zap, CheckCircle, FileText, Award, Clock, Shield, MapPin, Users } from "lucide-react";
 import { TermsDialog } from "@/components/TermsDialog";
 import { TERMS_SOURCE } from "@/lib/termsSource";
+import { OfferHighlight } from "@/components/marketing/OfferHighlight";
 export function HeroSection() {
   const whatsappNumber = "5541997452053";
   const whatsappLink = `https://wa.me/${whatsappNumber}?text=Olá! Preciso de um técnico.`;
@@ -33,20 +34,9 @@ export function HeroSection() {
             Atendimento 24h via WhatsApp. O técnico vai até você!
           </p>
 
-          {/* Price Card */}
-          <div className="flex flex-col items-center mb-6 animate-fade-up">
-            <div className="inline-flex items-center gap-3 bg-[#22C55E]/10 border border-[#22C55E]/30 rounded-xl px-6 py-4">
-              <Zap className="w-6 h-6 text-[#22C55E]" />
-              <div className="text-left">
-                <p className="text-white/70 text-sm">Visita Técnica a partir de</p>
-                <p className="text-white text-2xl font-bold">R$ 99,99 <span className="text-sm font-normal text-white/60">(até 30 min)</span></p>
-              </div>
-            </div>
-            <TermsDialog
-              source={TERMS_SOURCE.hero}
-              triggerLabel="*Consulte os termos de orçamento pré-aprovado"
-              triggerClassName="text-white/50 text-xs hover:text-white/70 transition-colors underline underline-offset-2 mt-2 cursor-pointer"
-            />
+          {/* Oferta âncora — preço (1) + Termos (2) com hierarquia forte */}
+          <div className="mb-6 animate-fade-up max-w-xl mx-auto">
+            <OfferHighlight region="Curitiba e Brasil" />
           </div>
 
           {/* Trust Badges */}

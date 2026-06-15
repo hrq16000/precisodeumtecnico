@@ -6,6 +6,9 @@ import { Card } from "@/components/ui/card";
 import { Reveal } from "@/components/Reveal";
 import { servicesData } from "@/data/services";
 import { citiesData } from "@/data/regions";
+import { OfferHighlight } from "@/components/marketing/OfferHighlight";
+import { buildOfferSchema } from "@/components/seo/OfferSchema";
+import { buildReviewsSchema } from "@/data/testimonials";
 import { CheckCircle2, MapPin, Phone, MessageCircle, Clock, Shield, Star, ArrowRight } from "lucide-react";
 import {
   Accordion,
@@ -88,6 +91,13 @@ export default function ServicoCidade() {
     aggregateRating: { "@type": "AggregateRating", ratingValue: "4.9", reviewCount: "523" },
   };
 
+  const offerSchema = buildOfferSchema({
+    serviceName: `${serviceData.title} em ${cityData.name}`,
+    areaServed: cityData.name,
+    url,
+  });
+  const reviewsSchema = buildReviewsSchema();
+
   // Related cross-links
   const otherServices = Object.values(servicesData)
     .filter((s) => s.slug !== serviceData.slug)
@@ -108,7 +118,7 @@ export default function ServicoCidade() {
           `técnico ${cityData.name.toLowerCase()}`,
           `assistência técnica ${cityData.name.toLowerCase()}`,
         ].join(", ")}
-        structuredData={[breadcrumbSchema, faqSchema, localServiceSchema]}
+        structuredData={[breadcrumbSchema, faqSchema, localServiceSchema, offerSchema, reviewsSchema].filter(Boolean) as object[]}
       />
 
       {/* Hero */}
@@ -145,6 +155,13 @@ export default function ServicoCidade() {
               <span className="flex items-center gap-2"><Star className="w-4 h-4 text-primary" /> 4,9★ (523 avaliações)</span>
             </div>
           </Reveal>
+        </div>
+      </section>
+
+      {/* Oferta âncora — preço (R$ 99,99) + termos com hierarquia forte */}
+      <section className="bg-background pt-8">
+        <div className="container-custom max-w-4xl">
+          <OfferHighlight region={`${cityData.name} — ${cityData.state}`} serviceSlug={serviceData.slug} />
         </div>
       </section>
 

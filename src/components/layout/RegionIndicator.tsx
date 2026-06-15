@@ -23,9 +23,9 @@ export function RegionIndicator({ className, iconClassName }: Props) {
   const [city, setCity] = useState("");
   const [uf, setUf] = useState("");
 
-  useEffect(() => {
-    if (askPrompt) setOpen(true);
-  }, [askPrompt]);
+  // CRO P0: NÃO abrir modal automaticamente — bloqueava o Hero/above-the-fold
+  // no mobile e matava conversão. Usuário abre clicando no chip de região.
+  // O `askPrompt` continua existindo para um futuro nudge não-bloqueante (toast).
 
   useEffect(() => {
     if (open) {

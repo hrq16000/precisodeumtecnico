@@ -151,16 +151,16 @@ export function TriageWizard({
         {!exited && state.step === "category" && (
           <section>
             <h2 className="mb-3 text-lg font-bold">Qual é o aparelho?</h2>
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+            <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
               {CATEGORIES.map((c) => (
                 <button
                   key={c.value}
                   type="button"
                   onClick={() => dispatch({ type: "SET_CATEGORY", value: c.value })}
                   className={cn(
-                    "rounded-xl border-2 p-4 text-left transition",
+                    "min-h-[88px] rounded-xl border-2 p-4 text-left transition active:scale-[0.98]",
                     state.category === c.value
-                      ? "border-primary bg-primary/5"
+                      ? "border-primary bg-primary/5 shadow-sm"
                       : "border-border hover:border-primary/40",
                   )}
                 >

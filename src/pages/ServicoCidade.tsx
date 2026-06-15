@@ -158,9 +158,6 @@ export default function ServicoCidade() {
         </div>
       </section>
 
-        </div>
-      </section>
-
       {/* Oferta âncora — preço (R$ 99,99) + termos com hierarquia forte */}
       <section className="bg-background pt-8">
         <div className="container-custom max-w-4xl">

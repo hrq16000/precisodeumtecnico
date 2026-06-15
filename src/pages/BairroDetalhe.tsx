@@ -192,9 +192,6 @@ export default function BairroDetalhe() {
         </div>
       </section>
 
-        </div>
-      </section>
-
       {/* Oferta âncora — preço + termos com hierarquia forte */}
       <section className="bg-background py-8">
         <div className="container mx-auto px-4">

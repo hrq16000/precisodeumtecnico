@@ -87,13 +87,16 @@ export function TriageWizard({
       // P0 Legal: registra evidência separada e auditável dos 3 aceites.
       // Não bloqueia o sucesso do funil se este registro falhar — apenas loga.
       try {
+        const acceptedSummary = [
+          state.accepts.bancada && "taxa-bancada-90-visita-99",
+          state.accepts.visita && "prazos-celular-1a3d-tvplaca-15a60d",
+          state.accepts.sla && "termos-condicoes-garantia",
+        ].filter(Boolean).join("|");
         await supabase.from("terms_acceptances").insert({
           name: payload.name,
           phone: payload.phone,
           email: payload.email,
-          service: payload.symptom ?? payload.category ?? "triagem",
-          terms_version: "triagem-v1",
-          accepted_items: state.accepts as never,
+          service: `triagem:${payload.symptom ?? payload.category ?? "geral"} [${acceptedSummary}]`,
         } as never);
       } catch (legalErr) {
         // eslint-disable-next-line no-console

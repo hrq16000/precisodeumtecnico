@@ -31,6 +31,7 @@ import AssistenciaTecnica from "./pages/AssistenciaTecnica";
 import AtendimentoNacional from "./pages/AtendimentoNacional";
 import CidadeNacional from "./pages/CidadeNacional";
 import TriagemPreview from "./pages/TriagemPreview";
+import { GlobalTriageLauncher } from "@/components/triage/GlobalTriageLauncher";
 
 const queryClient = new QueryClient();
 

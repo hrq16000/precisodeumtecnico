@@ -352,7 +352,7 @@ export function TriageWizard({
           </section>
         )}
 
-        {state.step === "contact" && (
+        {!exited && state.step === "contact" && (
           <section className="space-y-3">
             <h2 className="text-lg font-bold">Seu contato</h2>
             <div className="grid gap-3 sm:grid-cols-2">
@@ -360,6 +360,7 @@ export function TriageWizard({
                 <Label htmlFor="name">Nome completo</Label>
                 <Input
                   id="name"
+                  className="h-11"
                   value={state.contact.name}
                   maxLength={200}
                   onChange={(e) => dispatch({ type: "SET_CONTACT", field: "name", value: e.target.value })}
@@ -369,6 +370,8 @@ export function TriageWizard({
                 <Label htmlFor="phone">WhatsApp</Label>
                 <Input
                   id="phone"
+                  className="h-11"
+                  inputMode="tel"
                   value={state.contact.phone}
                   maxLength={50}
                   onChange={(e) => dispatch({ type: "SET_CONTACT", field: "phone", value: e.target.value })}
@@ -380,6 +383,8 @@ export function TriageWizard({
                 <Input
                   id="email"
                   type="email"
+                  className="h-11"
+                  inputMode="email"
                   value={state.contact.email}
                   maxLength={320}
                   onChange={(e) => dispatch({ type: "SET_CONTACT", field: "email", value: e.target.value })}
@@ -389,46 +394,52 @@ export function TriageWizard({
           </section>
         )}
 
-        {state.step === "accept" && (
+        {!exited && state.step === "accept" && (
           <section className="space-y-4">
             <h2 className="text-lg font-bold">Aceite obrigatório</h2>
             <p className="text-sm text-muted-foreground">
-              Marque os três itens para liberar o envio. Estes termos estão registrados no momento do envio.
+              Marque os três itens para liberar o envio. Estes termos ficam registrados no momento do envio.
             </p>
             <div className="space-y-3">
-              <label className="flex items-start gap-3 rounded-lg border border-border p-3 text-sm">
+              <label className="flex cursor-pointer items-start gap-3 rounded-lg border-2 border-border p-4 text-sm transition hover:border-primary/40 has-[:checked]:border-primary has-[:checked]:bg-primary/5">
                 <Checkbox
+                  className="mt-0.5"
                   checked={state.accepts.bancada}
                   onCheckedChange={(v) =>
                     dispatch({ type: "TOGGLE_ACCEPT", key: "bancada", value: v === true })
                   }
                 />
                 <span>
-                  Aceito o valor de <strong>R$ 90,00</strong> para atendimento em bancada (sem visita).
+                  Estou ciente de que o atendimento presencial sem compromisso possui uma taxa de{" "}
+                  <strong>R$ 90 (bancada)</strong> ou <strong>R$ 99,99 (visita técnica com laudo em até 30 min)</strong>.
                 </span>
               </label>
-              <label className="flex items-start gap-3 rounded-lg border border-border p-3 text-sm">
+              <label className="flex cursor-pointer items-start gap-3 rounded-lg border-2 border-border p-4 text-sm transition hover:border-primary/40 has-[:checked]:border-primary has-[:checked]:bg-primary/5">
                 <Checkbox
+                  className="mt-0.5"
                   checked={state.accepts.visita}
                   onCheckedChange={(v) =>
                     dispatch({ type: "TOGGLE_ACCEPT", key: "visita", value: v === true })
                   }
                 />
                 <span>
-                  Aceito o valor de <strong>R$ 99,99</strong> pela visita técnica de até 30 min — abatido se o serviço for fechado.
+                  Compreendo e aceito os prazos técnicos estipulados para a solução definitiva:{" "}
+                  <strong>1 a 3 dias úteis para celulares</strong> e{" "}
+                  <strong>15 a 60 dias úteis para TVs, Som ou Placas</strong>.
                 </span>
               </label>
-              <label className="flex items-start gap-3 rounded-lg border border-border p-3 text-sm">
+              <label className="flex cursor-pointer items-start gap-3 rounded-lg border-2 border-border p-4 text-sm transition hover:border-primary/40 has-[:checked]:border-primary has-[:checked]:bg-primary/5">
                 <Checkbox
+                  className="mt-0.5"
                   checked={state.accepts.sla}
                   onCheckedChange={(v) =>
                     dispatch({ type: "TOGGLE_ACCEPT", key: "sla", value: v === true })
                   }
                 />
                 <span>
-                  Estou ciente do SLA realista informado para o sintoma escolhido e dos{" "}
-                  <Link to="/termos-orcamento-pre-aprovado" className="underline">
-                    Termos de Orçamento Pré-Aprovado
+                  Li e concordo com os{" "}
+                  <Link to="/termos-orcamento-pre-aprovado" className="font-semibold underline">
+                    Termos e Condições de Serviço e Garantia
                   </Link>.
                 </span>
               </label>
@@ -436,14 +447,14 @@ export function TriageWizard({
           </section>
         )}
 
-        {state.step === "submitting" && (
+        {!exited && state.step === "submitting" && (
           <div className="flex flex-col items-center gap-3 py-10 text-center">
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
             <p className="text-sm text-muted-foreground">Enviando triagem segura…</p>
           </div>
         )}
 
-        {state.step === "done" && (
+        {!exited && state.step === "done" && (
           <div className="space-y-3 py-6 text-center">
             <CheckCircle2 className="mx-auto h-12 w-12 text-green-500" />
             <h2 className="text-xl font-bold">Triagem enviada!</h2>
@@ -463,7 +474,7 @@ export function TriageWizard({
           </div>
         )}
 
-        {state.step === "error" && (
+        {!exited && state.step === "error" && (
           <div className="space-y-3 py-6 text-center">
             <p className="font-bold text-destructive">Falha ao enviar.</p>
             <p className="text-sm text-muted-foreground">{state.error}</p>
@@ -473,23 +484,27 @@ export function TriageWizard({
       </div>
 
       {/* Footer nav */}
-      {!["submitting", "done", "error"].includes(state.step) && (
-        <footer className="flex items-center justify-between border-t border-border px-5 py-3">
+      {!exited && !["submitting", "done", "error"].includes(state.step) && (
+        <footer className="flex items-center justify-between gap-2 border-t border-border px-5 py-3">
           <Button
             type="button"
             variant="ghost"
+            size="lg"
+            className="h-12"
             onClick={() => dispatch({ type: "BACK" })}
             disabled={state.step === "category"}
           >
             <ArrowLeft className="mr-1 h-4 w-4" /> Voltar
           </Button>
           {state.step === "accept" ? (
-            <Button type="button" onClick={handleSubmit} disabled={!canAdvance(state)}>
+            <Button type="button" size="lg" className="h-12 bg-green-600 text-white hover:bg-green-700" onClick={handleSubmit} disabled={!canAdvance(state)}>
               <Send className="mr-2 h-4 w-4" /> Enviar triagem
             </Button>
           ) : (
             <Button
               type="button"
+              size="lg"
+              className="h-12"
               onClick={() => dispatch({ type: "NEXT" })}
               disabled={!canAdvance(state)}
             >

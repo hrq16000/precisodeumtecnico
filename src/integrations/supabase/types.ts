@@ -143,6 +143,54 @@ export type Database = {
         }
         Relationships: []
       }
+      triage_alert_state: {
+        Row: {
+          id: string
+          last_alert_at: string
+          updated_at: string
+        }
+        Insert: {
+          id: string
+          last_alert_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          last_alert_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      triage_media_failures: {
+        Row: {
+          created_at: string
+          details: Json | null
+          id: string
+          ip_address: string | null
+          reason: string
+          session_id: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          created_at?: string
+          details?: Json | null
+          id?: string
+          ip_address?: string | null
+          reason: string
+          session_id?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          created_at?: string
+          details?: Json | null
+          id?: string
+          ip_address?: string | null
+          reason?: string
+          session_id?: string | null
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       triage_media_uploads: {
         Row: {
           created_at: string

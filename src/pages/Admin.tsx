@@ -49,6 +49,7 @@ import {
 } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { TriageMediaAuditLog } from "@/components/admin/TriageMediaAuditLog";
 
 interface Lead {
   id: string;

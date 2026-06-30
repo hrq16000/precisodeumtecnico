@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Upload, X, Loader2, Image as ImageIcon, Video as VideoIcon, AlertTriangle } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+
 import { cn } from "@/lib/utils";
 
 interface MediaUploaderProps {

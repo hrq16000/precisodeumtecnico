@@ -2,3 +2,6 @@ project_id = "fqqufspxwujutthpjymh"
 
 [functions.send-lead-notification]
 verify_jwt = false
+
+[functions.triage-media-upload]
+verify_jwt = false

@@ -10,6 +10,16 @@ import { MessageCircle, Send, Phone, User, Wrench, FileText } from "lucide-react
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { getStoredTermsAcceptance } from "@/lib/analytics";
+import { openTriage } from "@/lib/triageFlag";
+
+// Mapeia o serviço selecionado para a categoria do funil de triagem.
+const SERVICE_TO_CATEGORY: Record<string, "tv" | "celular" | "console" | "notebook" | "pc" | "som" | undefined> = {
+  "Informática": "pc",
+  "Notebooks": "notebook",
+  "Celulares": "celular",
+  "Games": "console",
+  "Servidores": "pc",
+};
 
 const services = [
   "Informática",
@@ -38,7 +48,7 @@ export function QuickQuoteForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.name || !formData.phone || !formData.service) {
       toast.error("Por favor, preencha nome, telefone e serviço.");
       return;
@@ -50,14 +60,8 @@ export function QuickQuoteForm() {
     }
 
     setIsLoading(true);
-    
-    // Format message for WhatsApp
-    const message = `🔧 *ORÇAMENTO RÁPIDO*%0A%0A👤 *Nome:* ${formData.name}%0A📱 *Telefone:* ${formData.phone}%0A🛠️ *Serviço:* ${formData.service}%0A%0A📝 *Descrição do Problema:*%0A${formData.description || "Não informada"}`;
-    
-    // Open WhatsApp with the message
-    window.open(`https://wa.me/5541997452053?text=${message}`, "_blank");
-    
-    // Register terms acceptance
+
+    // Registra o aceite (legal) — não bloqueia.
     try {
       await supabase.from("terms_acceptances").insert({
         name: formData.name,
@@ -68,7 +72,13 @@ export function QuickQuoteForm() {
       // non-blocking
     }
 
-    toast.success("Redirecionando para o WhatsApp...");
+    // Abre o FUNIL OBRIGATÓRIO (triagem) com contexto pré-preenchido.
+    openTriage({
+      source: `quick-quote:${formData.service}`,
+      category: SERVICE_TO_CATEGORY[formData.service],
+    });
+
+    toast.success("Abrindo triagem técnica para captar os detalhes…");
     setIsLoading(false);
     setAcceptedTerms(false);
     setFormData({ name: "", phone: "", service: "", description: "" });
@@ -178,12 +188,12 @@ export function QuickQuoteForm() {
                 className="w-full h-14 text-lg font-semibold bg-[#25D366] hover:bg-[#20BD5A] text-white gap-2"
               >
                 <Send className="h-5 w-5" />
-                {isLoading ? "Enviando..." : "Solicitar Orçamento via WhatsApp"}
+                {isLoading ? "Abrindo triagem..." : "Iniciar Triagem Técnica"}
               </Button>
             </div>
 
             <p className="text-center text-sm text-muted-foreground mt-4">
-              💬 Atendimento exclusivo via WhatsApp: <a href={`https://wa.me/5541997452053`} target="_blank" rel="noopener noreferrer" className="text-primary font-semibold hover:underline">WhatsApp 24h</a>
+              💬 Atendimento 100% via funil técnico — valor mínimo de visita: <strong>R$ 99,99</strong> (30 min).
             </p>
           </form>
         </div>

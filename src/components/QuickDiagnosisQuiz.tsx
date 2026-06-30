@@ -7,6 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { MessageCircle, Sparkles, ArrowRight, RotateCcw } from "lucide-react";
 import { trackQuizComplete, trackWhatsAppClick, trackEvent } from "@/lib/analytics";
+import { openTriage } from "@/lib/triageFlag";
 
 type Step = "problema" | "detalhe" | "urgencia" | "resultado";
 
@@ -296,23 +297,27 @@ export function QuickDiagnosisQuiz({ city, bairro }: QuickDiagnosisQuizProps = {
                 </div>
               </div>
 
-              <Button asChild variant="whatsapp" size="lg" className="w-full">
-                <a
-                  href={buildWhatsApp(problema, detalhes, urgencia, { city, bairro })}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() =>
-                    trackWhatsAppClick({
-                      source: "quiz_result",
-                      service: problema.servicoSlug,
-                      city,
-                      bairro,
-                    })
-                  }
-                >
-                  <MessageCircle className="w-5 h-5 mr-2" />
-                  Enviar para o WhatsApp WhatsApp 24h
-                </a>
+              <Button
+                variant="whatsapp"
+                size="lg"
+                className="w-full"
+                onClick={() => {
+                  trackWhatsAppClick({
+                    source: "quiz_result",
+                    service: problema.servicoSlug,
+                    city,
+                    bairro,
+                  });
+                  // Suppress unused-import warning while preserving builder for analytics parity.
+                  void buildWhatsApp;
+                  openTriage({
+                    source: `quiz:${problema.id}:${urgencia}`,
+                    category: problema.categoria === "informatica" ? "pc" : undefined,
+                  });
+                }}
+              >
+                <MessageCircle className="w-5 h-5 mr-2" />
+                Continuar a triagem técnica
               </Button>
 
               <button

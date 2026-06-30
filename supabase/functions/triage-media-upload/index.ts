@@ -131,6 +131,28 @@ Deno.serve(async (req) => {
       return json({ error: "upload_failed" }, 500);
     }
 
+    // Best-effort audit log — never block the upload on logging failure.
+    try {
+      const ip =
+        req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+        req.headers.get("cf-connecting-ip") ??
+        null;
+      const userAgent = req.headers.get("user-agent") ?? null;
+      const { error: logErr } = await admin
+        .from("triage_media_uploads")
+        .insert({
+          session_id: sessionId,
+          object_path: objectKey,
+          mime_type: file.type,
+          size_bytes: file.size,
+          ip_address: ip,
+          user_agent: userAgent,
+        });
+      if (logErr) console.error("audit log insert failed", logErr);
+    } catch (logE) {
+      console.error("audit log threw", logE);
+    }
+
     return json({ path: objectKey });
   } catch (e) {
     console.error("triage-media-upload error", e);

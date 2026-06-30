@@ -7,7 +7,7 @@ import { ScrollToTop } from "@/components/ScrollToTop";
 import { GlobalReveal } from "@/components/GlobalReveal";
 import { HelmetProvider } from "react-helmet-async";
 import { AuthProvider } from "@/hooks/useAuth";
-import { WhatsAppFunnelProvider } from "@/components/WhatsAppFunnel";
+// WhatsAppFunnelProvider removed — replaced by GlobalTriageLauncher (single source of truth)
 import Index from "./pages/Index";
 import Servicos from "./pages/Servicos";
 import ServicoDetalhe from "./pages/ServicoDetalhe";
@@ -45,11 +45,9 @@ const App = () => (
           <BrowserRouter>
             <ScrollToTop />
             <GlobalReveal />
-            <WhatsAppFunnelProvider>
             <GlobalTriageLauncher />
 
 
-            <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/servicos" element={<Servicos />} />
               <Route path="/servicos/:slug" element={<ServicoDetalhe />} />

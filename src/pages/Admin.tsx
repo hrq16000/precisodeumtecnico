@@ -49,6 +49,7 @@ import {
 } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { TriageMediaAuditLog } from "@/components/admin/TriageMediaAuditLog";
 
 interface Lead {
   id: string;
@@ -230,6 +231,10 @@ export default function Admin() {
           <Card><CardHeader className="pb-2"><CardTitle className="text-sm font-medium text-muted-foreground">Convertidos</CardTitle></CardHeader>
             <CardContent><div className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-green-500" /><span className="text-2xl font-bold">{stats.converted}</span></div></CardContent></Card>
         </div>
+
+        <TriageMediaAuditLog />
+
+
 
         <div className="flex flex-col md:flex-row gap-4 mb-6">
           <div className="relative flex-1">

@@ -143,6 +143,50 @@ export type Database = {
         }
         Relationships: []
       }
+      triage_media_uploads: {
+        Row: {
+          created_at: string
+          id: string
+          ip_address: string | null
+          lead_id: string | null
+          mime_type: string | null
+          object_path: string
+          session_id: string
+          size_bytes: number | null
+          user_agent: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          ip_address?: string | null
+          lead_id?: string | null
+          mime_type?: string | null
+          object_path: string
+          session_id: string
+          size_bytes?: number | null
+          user_agent?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          ip_address?: string | null
+          lead_id?: string | null
+          mime_type?: string | null
+          object_path?: string
+          session_id?: string
+          size_bytes?: number | null
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "triage_media_uploads_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string

@@ -1,10 +1,11 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Upload, X, Loader2, Image as ImageIcon, Video as VideoIcon, AlertTriangle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
 
 interface MediaUploaderProps {
-  sessionId: string;
+  /** Mantido para compatibilidade; não é usado como pasta de storage. */
+  sessionId?: string;
   paths: string[];
   onAdd: (path: string) => void;
   onRemove: (path: string) => void;
@@ -18,6 +19,10 @@ interface MediaUploaderProps {
 const MAX_PHOTO_MB = 5;
 const MAX_VIDEO_MB = 50;
 const ACCEPTED = "image/jpeg,image/png,image/webp,image/heic,video/mp4,video/quicktime,video/webm";
+
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
+const SUPABASE_ANON = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string;
+const FN_URL = `${SUPABASE_URL}/functions/v1/triage-media-upload`;
 
 /** Aceita File e devolve `{ kind, mb, duration? }` ou erro humano. */
 async function inspect(file: File, maxVideoSeconds: number) {
@@ -46,7 +51,6 @@ async function inspect(file: File, maxVideoSeconds: number) {
 }
 
 export function MediaUploader({
-  sessionId,
   paths,
   onAdd,
   onRemove,
@@ -57,6 +61,31 @@ export function MediaUploader({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  // Sessão emitida pelo servidor (HMAC) — a pasta de storage é controlada pelo backend.
+  const sessionRef = useRef<{ sessionId: string; sessionToken: string } | null>(null);
+
+  const ensureSession = useCallback(async () => {
+    if (sessionRef.current) return sessionRef.current;
+    const res = await fetch(FN_URL, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        apikey: SUPABASE_ANON,
+        authorization: `Bearer ${SUPABASE_ANON}`,
+      },
+      body: JSON.stringify({ action: "init" }),
+    });
+    if (!res.ok) throw new Error("Não foi possível iniciar a sessão de upload.");
+    const data = (await res.json()) as { sessionId: string; sessionToken: string };
+    sessionRef.current = data;
+    return data;
+  }, []);
+
+  useEffect(() => {
+    ensureSession().catch(() => {
+      /* tentaremos novamente ao escolher o arquivo */
+    });
+  }, [ensureSession]);
 
   const photos = paths.filter((p) => /\.(jpe?g|png|webp|heic)$/i.test(p));
   const videos = paths.filter((p) => /\.(mp4|mov|webm|m4v)$/i.test(p));
@@ -67,29 +96,43 @@ export function MediaUploader({
       setError(null);
       setBusy(true);
       try {
+        const session = await ensureSession().catch((e) => {
+          setError(e?.message ?? "Falha ao iniciar upload.");
+          return null;
+        });
+        if (!session) return;
         for (const file of Array.from(files)) {
           const info = await inspect(file, maxVideoSeconds);
           if ("error" in info) {
             setError(info.error);
             continue;
           }
-          const safeName = file.name.replace(/[^\w.\-]+/g, "_").slice(-80);
-          const key = `${sessionId}/${crypto.randomUUID()}-${safeName}`;
-          const { error: upErr } = await supabase.storage
-            .from("triage-media")
-            .upload(key, file, { contentType: file.type, upsert: false });
-          if (upErr) {
-            setError(`Falha no upload: ${upErr.message}`);
+          const fd = new FormData();
+          fd.append("sessionId", session.sessionId);
+          fd.append("sessionToken", session.sessionToken);
+          fd.append("file", file);
+          const res = await fetch(FN_URL, {
+            method: "POST",
+            headers: {
+              apikey: SUPABASE_ANON,
+              authorization: `Bearer ${SUPABASE_ANON}`,
+            },
+            body: fd,
+          });
+          if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            setError(`Falha no upload: ${err?.error ?? res.statusText}`);
             continue;
           }
-          onAdd(key);
+          const { path } = (await res.json()) as { path: string };
+          onAdd(path);
         }
       } finally {
         setBusy(false);
         if (inputRef.current) inputRef.current.value = "";
       }
     },
-    [sessionId, onAdd, maxVideoSeconds],
+    [ensureSession, onAdd, maxVideoSeconds],
   );
 
   const photosOk = photos.length >= minPhotos;

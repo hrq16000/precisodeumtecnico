@@ -95,22 +95,52 @@ Deno.serve(async (req) => {
     const sessionToken = String(form.get("sessionToken") ?? "");
     const file = form.get("file");
 
+    const ip =
+      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+      req.headers.get("cf-connecting-ip") ??
+      null;
+    const userAgent = req.headers.get("user-agent") ?? null;
+
+    const logFailure = async (reason: string, details?: Record<string, unknown>) => {
+      try {
+        const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+          auth: { persistSession: false },
+        });
+        await admin.from("triage_media_failures").insert({
+          reason,
+          session_id: sessionId || null,
+          ip_address: ip,
+          user_agent: userAgent,
+          details: details ?? null,
+        });
+      } catch (e) {
+        console.error("failure log insert threw", e);
+      }
+    };
+
     if (!/^[a-f0-9]{16,64}$/.test(sessionId)) {
+      await logFailure("invalid_session");
       return json({ error: "invalid_session" }, 400);
     }
     const expected = await hmac(sessionId);
     if (!timingSafeEqual(sessionToken, expected)) {
+      await logFailure("invalid_token");
       return json({ error: "invalid_token" }, 401);
     }
     if (!(file instanceof File)) {
+      await logFailure("missing_file");
       return json({ error: "missing_file" }, 400);
     }
     if (!ALLOWED.has(file.type)) {
+      await logFailure("unsupported_mime", { mime: file.type });
       return json({ error: "unsupported_mime" }, 415);
     }
     const isVideo = file.type.startsWith("video/");
     const maxBytes = isVideo ? MAX_VIDEO_BYTES : MAX_PHOTO_BYTES;
-    if (file.size > maxBytes) return json({ error: "file_too_large" }, 413);
+    if (file.size > maxBytes) {
+      await logFailure("file_too_large", { size: file.size, mime: file.type });
+      return json({ error: "file_too_large" }, 413);
+    }
 
     const safeName = file.name.replace(/[^\w.\-]+/g, "_").slice(-80) || "file";
     const objectKey = `${sessionId}/${crypto.randomUUID()}-${safeName}`;
@@ -128,16 +158,12 @@ Deno.serve(async (req) => {
 
     if (upErr) {
       console.error("upload failed", upErr);
+      await logFailure("upload_failed", { message: upErr.message });
       return json({ error: "upload_failed" }, 500);
     }
 
     // Best-effort audit log — never block the upload on logging failure.
     try {
-      const ip =
-        req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-        req.headers.get("cf-connecting-ip") ??
-        null;
-      const userAgent = req.headers.get("user-agent") ?? null;
       const { error: logErr } = await admin
         .from("triage_media_uploads")
         .insert({

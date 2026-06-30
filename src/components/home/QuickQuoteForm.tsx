@@ -183,7 +183,7 @@ export function QuickQuoteForm() {
             </div>
 
             <p className="text-center text-sm text-muted-foreground mt-4">
-              💬 Atendimento exclusivo via WhatsApp: <a href={`https://wa.me/5541997452053`} target="_blank" rel="noopener noreferrer" className="text-primary font-semibold hover:underline">(41) 9 9745-2053</a>
+              💬 Atendimento exclusivo via WhatsApp: <a href={`https://wa.me/5541997452053`} target="_blank" rel="noopener noreferrer" className="text-primary font-semibold hover:underline">WhatsApp 24h</a>
             </p>
           </form>
         </div>

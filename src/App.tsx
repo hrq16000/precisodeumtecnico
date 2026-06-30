@@ -7,7 +7,7 @@ import { ScrollToTop } from "@/components/ScrollToTop";
 import { GlobalReveal } from "@/components/GlobalReveal";
 import { HelmetProvider } from "react-helmet-async";
 import { AuthProvider } from "@/hooks/useAuth";
-import { WhatsAppFunnelProvider } from "@/components/WhatsAppFunnel";
+// WhatsAppFunnelProvider removed — replaced by GlobalTriageLauncher (single source of truth)
 import Index from "./pages/Index";
 import Servicos from "./pages/Servicos";
 import ServicoDetalhe from "./pages/ServicoDetalhe";
@@ -45,9 +45,7 @@ const App = () => (
           <BrowserRouter>
             <ScrollToTop />
             <GlobalReveal />
-            <WhatsAppFunnelProvider>
             <GlobalTriageLauncher />
-
 
             <Routes>
               <Route path="/" element={<Index />} />
@@ -77,7 +75,7 @@ const App = () => (
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
-            </WhatsAppFunnelProvider>
+
           </BrowserRouter>
         </TooltipProvider>
       </AuthProvider>

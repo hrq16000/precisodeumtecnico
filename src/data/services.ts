@@ -55,7 +55,7 @@ export const servicesData: Record<string, ServiceData> = {
       "Configuração de e-mail e Office"
     ],
     process: [
-      { step: 1, title: "Contato via WhatsApp", description: "Entre em contato via WhatsApp (41) 9 9745-2053 e descreva o problema do seu computador" },
+      { step: 1, title: "Contato via WhatsApp", description: "Entre em contato via WhatsApp WhatsApp 24h e descreva o problema do seu computador" },
       { step: 2, title: "Agendamento Flexível", description: "Escolha o melhor horário para a visita técnica - atendemos das 8h às 22h" },
       { step: 3, title: "Diagnóstico Completo", description: "Técnico realiza diagnóstico detalhado no local com equipamentos profissionais" },
       { step: 4, title: "Orçamento Transparente", description: "Apresentamos orçamento detalhado sem compromisso - você decide se aprova" },

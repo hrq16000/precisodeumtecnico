@@ -24,7 +24,6 @@ export function buildOfferSchema(input: OfferSchemaInput) {
     provider: {
       "@type": "LocalBusiness",
       name: "Preciso de Um Técnico",
-      telephone: "+55-41-99745-2053",
       url: "https://precisodeumtecnico.com",
     },
     areaServed: areas.map((a) => ({ "@type": "City", name: a })),

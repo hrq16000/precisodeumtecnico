@@ -311,7 +311,7 @@ export function QuickDiagnosisQuiz({ city, bairro }: QuickDiagnosisQuizProps = {
                   }
                 >
                   <MessageCircle className="w-5 h-5 mr-2" />
-                  Enviar para o WhatsApp (41) 9 9745-2053
+                  Enviar para o WhatsApp WhatsApp 24h
                 </a>
               </Button>
 

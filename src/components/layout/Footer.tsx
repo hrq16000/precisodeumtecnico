@@ -102,7 +102,7 @@ export function Footer() {
                 <div>
                   <span className="block text-sm text-background/70">WhatsApp 24h</span>
                   <a href={whatsappLink} target="_blank" rel="noopener noreferrer" onClick={() => trackWhatsAppClick({ source: "footer" })} data-wa-keep="footer" className="font-semibold hover:text-primary transition-colors">
-                    (41) 9 9745-2053
+                    WhatsApp 24h
                   </a>
                 </div>
               </li>

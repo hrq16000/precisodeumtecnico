@@ -45,7 +45,7 @@ import { trackWhatsAppClick } from "@/lib/analytics";
 
 
 const WHATSAPP_NUMBER = "5541997452053";
-const WHATSAPP_DISPLAY = "(41) 9 9745-2053";
+const WHATSAPP_DISPLAY = "WhatsApp 24h";
 const DEFAULT_WA_TEXT =
   "Olá, preciso de um orçamento de assistência técnica em Curitiba.";
 const waLink = (text = DEFAULT_WA_TEXT) =>
@@ -249,7 +249,6 @@ export default function AssistenciaTecnicaCuritiba() {
     description:
       "Assistência técnica especializada em Curitiba: reparo de consoles, placas de vídeo, computadores, notebooks e smartphones.",
     url: pageUrl,
-    telephone: "+55-41-99745-2053",
     image: ogImage,
     areaServed: [
       { "@type": "City", name: "Curitiba", "@id": "https://www.wikidata.org/wiki/Q40269" },
@@ -305,7 +304,6 @@ export default function AssistenciaTecnicaCuritiba() {
       "@type": "LocalBusiness",
       name: "Preciso de um Técnico",
       url: pageUrl,
-      telephone: "+55-41-99745-2053",
     },
   }));
 
@@ -367,7 +365,7 @@ export default function AssistenciaTecnicaCuritiba() {
         <title>Assistência Técnica de Consoles em Curitiba | PS5, Xbox, Nintendo e Placa de Vídeo</title>
         <meta
           name="description"
-          content="Assistência técnica especializada em reparo de consoles em Curitiba. PlayStation, Xbox, Nintendo Switch, placas de vídeo, PCs e notebooks. Orçamento rápido pelo WhatsApp (41) 9 9745-2053."
+          content="Assistência técnica especializada em reparo de consoles em Curitiba. PlayStation, Xbox, Nintendo Switch, placas de vídeo, PCs e notebooks. Orçamento rápido pelo WhatsApp WhatsApp 24h."
         />
         <meta
           name="keywords"

@@ -5,3 +5,9 @@ verify_jwt = false
 
 [functions.triage-media-upload]
 verify_jwt = false
+
+[functions.triage-media-cleanup]
+verify_jwt = false
+
+[functions.triage-media-alerts]
+verify_jwt = false

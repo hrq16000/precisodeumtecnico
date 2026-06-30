@@ -78,7 +78,6 @@ export default function ServicoCidade() {
     provider: {
       "@type": "LocalBusiness",
       name: "Preciso de Um Técnico",
-      telephone: "+55-41-99745-2053",
       areaServed: { "@type": "City", name: cityData.name, addressRegion: cityData.state },
     },
     areaServed: { "@type": "City", name: cityData.name },

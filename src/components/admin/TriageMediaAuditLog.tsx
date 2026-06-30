@@ -53,7 +53,7 @@ function toCsv(rows: AuditRow[]): string {
   };
   const lines = [headers.join(",")];
   for (const r of rows) {
-    lines.push(headers.map((h) => esc((r as Record<string, unknown>)[h])).join(","));
+    lines.push(headers.map((h) => esc((r as unknown as Record<string, unknown>)[h])).join(","));
   }
   return lines.join("\n");
 }

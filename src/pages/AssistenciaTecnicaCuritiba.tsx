@@ -249,7 +249,6 @@ export default function AssistenciaTecnicaCuritiba() {
     description:
       "Assistência técnica especializada em Curitiba: reparo de consoles, placas de vídeo, computadores, notebooks e smartphones.",
     url: pageUrl,
-    telephone: "+55-41-99745-2053",
     image: ogImage,
     areaServed: [
       { "@type": "City", name: "Curitiba", "@id": "https://www.wikidata.org/wiki/Q40269" },
@@ -305,7 +304,6 @@ export default function AssistenciaTecnicaCuritiba() {
       "@type": "LocalBusiness",
       name: "Preciso de um Técnico",
       url: pageUrl,
-      telephone: "+55-41-99745-2053",
     },
   }));
 

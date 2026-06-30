@@ -49,7 +49,6 @@ const RegiaoDetalhe = () => {
     "name": `Preciso de Um Técnico - ${pageTitle}`,
     "description": pageDescription,
     "url": `https://precisodeumtecnico.com/regioes/${city}${neighborhood ? `/${neighborhood}` : ''}`,
-    "telephone": "+55-41-99745-2053",
     "address": {
       "@type": "PostalAddress",
       "addressLocality": cityName,

@@ -107,7 +107,6 @@ export default function AssistenciaTecnica() {
     description:
       "Assistência técnica nacional: reparo de consoles, placas de vídeo, computadores, notebooks, smartphones, TVs e equipamentos de som. Central em Curitiba e parceiros em todo o Brasil.",
     url: pageUrl,
-    telephone: "+55-41-99745-2053",
     image: ogImage,
     areaServed: { "@type": "Country", name: "Brasil" },
     serviceArea: { "@type": "Country", name: "BR" },
@@ -144,7 +143,6 @@ export default function AssistenciaTecnica() {
       "@type": "LocalBusiness",
       name: "Preciso de um Técnico",
       url: pageUrl,
-      telephone: "+55-41-99745-2053",
     },
   }));
 

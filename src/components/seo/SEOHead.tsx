@@ -68,7 +68,6 @@ export function SEOHead({
     description:
       "Assistência técnica especializada em Curitiba e Região Metropolitana. Informática, elétrica, CFTV, notebooks, ar-condicionado e muito mais.",
     url: "https://precisodeumtecnico.com",
-    telephone: "+55-41-99745-2053",
     address: {
       "@type": "PostalAddress",
       addressLocality: "Curitiba",

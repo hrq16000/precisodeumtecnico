@@ -18,7 +18,6 @@ const Regioes = () => {
     "name": "Preciso de Um Técnico",
     "description": "Assistência técnica em Curitiba e Região Metropolitana",
     "url": "https://precisodeumtecnico.com/regioes",
-    "telephone": "+55-41-99745-2053",
     "areaServed": [
       ...mainCities.map(city => ({ "@type": "City", "name": city.name })),
       ...otherCities.map(city => ({ "@type": "City", "name": city.name }))

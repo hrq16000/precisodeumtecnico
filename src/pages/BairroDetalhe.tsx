@@ -82,7 +82,6 @@ export default function BairroDetalhe() {
     "name": `Preciso de Um Técnico - ${neighborhoodName}`,
     "description": pageDescription,
     "url": `https://precisodeumtecnico.com/regioes/${city}/${neighborhood}`,
-    "telephone": "+55-41-99745-2053",
     "address": {
       "@type": "PostalAddress",
       "addressLocality": cityData.name,

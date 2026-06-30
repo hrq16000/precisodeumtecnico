@@ -90,17 +90,47 @@ export function MediaUploader({
   const photos = paths.filter((p) => /\.(jpe?g|png|webp|heic)$/i.test(p));
   const videos = paths.filter((p) => /\.(mp4|mov|webm|m4v)$/i.test(p));
 
+  const friendlyError = useCallback((code: string | undefined, status: number) => {
+    switch (code) {
+      case "invalid_session":
+        return "Sessão de upload inválida. Recarregue a página e tente novamente.";
+      case "invalid_token":
+        return "Sua sessão de envio expirou. Recarregue a página para reiniciar com segurança.";
+      case "missing_file":
+        return "Nenhum arquivo recebido. Selecione um arquivo válido.";
+      case "unsupported_mime":
+        return "Formato não suportado. Envie JPG, PNG, WEBP, HEIC, MP4, MOV ou WEBM.";
+      case "file_too_large":
+        return "Arquivo excede o tamanho permitido (foto até 5MB, vídeo até 50MB).";
+      case "upload_failed":
+        return "Não foi possível salvar o arquivo no servidor. Tente novamente em instantes.";
+      case "bad_action":
+      case "unsupported_content_type":
+        return "Requisição inválida. Recarregue a página e tente novamente.";
+      default:
+        if (status === 401) return "Sessão expirada. Recarregue a página para continuar.";
+        if (status === 413) return "Arquivo muito grande para envio.";
+        if (status >= 500) return "Servidor temporariamente indisponível. Tente novamente.";
+        return "Falha no upload. Tente novamente.";
+    }
+  }, []);
+
   const handleFiles = useCallback(
     async (files: FileList | null) => {
       if (!files?.length) return;
       setError(null);
       setBusy(true);
       try {
-        const session = await ensureSession().catch((e) => {
-          setError(e?.message ?? "Falha ao iniciar upload.");
-          return null;
-        });
-        if (!session) return;
+        // Always re-init if we don't have a session, with a clear message on failure.
+        let session = sessionRef.current;
+        if (!session) {
+          try {
+            session = await ensureSession();
+          } catch {
+            setError("Não foi possível iniciar a sessão de upload. Verifique sua conexão e recarregue a página.");
+            return;
+          }
+        }
         for (const file of Array.from(files)) {
           const info = await inspect(file, maxVideoSeconds);
           if ("error" in info) {
@@ -111,17 +141,27 @@ export function MediaUploader({
           fd.append("sessionId", session.sessionId);
           fd.append("sessionToken", session.sessionToken);
           fd.append("file", file);
-          const res = await fetch(FN_URL, {
-            method: "POST",
-            headers: {
-              apikey: SUPABASE_ANON,
-              authorization: `Bearer ${SUPABASE_ANON}`,
-            },
-            body: fd,
-          });
+          let res: Response;
+          try {
+            res = await fetch(FN_URL, {
+              method: "POST",
+              headers: {
+                apikey: SUPABASE_ANON,
+                authorization: `Bearer ${SUPABASE_ANON}`,
+              },
+              body: fd,
+            });
+          } catch {
+            setError("Falha de rede ao enviar o arquivo. Verifique sua conexão e tente novamente.");
+            continue;
+          }
           if (!res.ok) {
             const err = await res.json().catch(() => ({}));
-            setError(`Falha no upload: ${err?.error ?? res.statusText}`);
+            // If the server rejected our token, drop it so the next attempt re-inits.
+            if (res.status === 401 || err?.error === "invalid_token" || err?.error === "invalid_session") {
+              sessionRef.current = null;
+            }
+            setError(friendlyError(err?.error, res.status));
             continue;
           }
           const { path } = (await res.json()) as { path: string };
@@ -132,7 +172,7 @@ export function MediaUploader({
         if (inputRef.current) inputRef.current.value = "";
       }
     },
-    [ensureSession, onAdd, maxVideoSeconds],
+    [ensureSession, onAdd, maxVideoSeconds, friendlyError],
   );
 
   const photosOk = photos.length >= minPhotos;

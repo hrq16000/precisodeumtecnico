@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
 import {
-  Download, Eye, FileVideo, Filter, Image as ImageIcon, Loader2,
+  Download, ExternalLink, Eye, FileVideo, Filter, Image as ImageIcon, Loader2,
   RefreshCw, ShieldCheck, X,
 } from "lucide-react";
 import { format } from "date-fns";
@@ -249,9 +249,26 @@ export function TriageMediaAuditLog() {
                       <TableCell className="text-xs">{humanSize(r.size_bytes)}</TableCell>
                       <TableCell className="text-xs">{r.ip_address ?? "—"}</TableCell>
                       <TableCell className="text-right">
-                        <Button size="sm" variant="ghost" onClick={() => preview(r.object_path)}>
-                          <Eye className="h-3 w-3 mr-1" /> Ver
-                        </Button>
+                        <div className="flex justify-end gap-1">
+                          <Button size="sm" variant="ghost" onClick={() => preview(r.object_path)}>
+                            <Eye className="h-3 w-3 mr-1" /> Ver
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            disabled={!r.session_id && !r.lead_id}
+                            onClick={() =>
+                              window.dispatchEvent(
+                                new CustomEvent("admin:open-lead-by-session", {
+                                  detail: { sessionId: r.session_id, leadId: r.lead_id },
+                                }),
+                              )
+                            }
+                            title="Abrir lead relacionado"
+                          >
+                            <ExternalLink className="h-3 w-3 mr-1" /> Lead
+                          </Button>
+                        </div>
                       </TableCell>
                     </TableRow>
                   );

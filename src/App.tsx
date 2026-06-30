@@ -47,7 +47,7 @@ const App = () => (
             <GlobalReveal />
             <GlobalTriageLauncher />
 
-
+            <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/servicos" element={<Servicos />} />
               <Route path="/servicos/:slug" element={<ServicoDetalhe />} />
@@ -75,7 +75,7 @@ const App = () => (
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
-            </WhatsAppFunnelProvider>
+
           </BrowserRouter>
         </TooltipProvider>
       </AuthProvider>

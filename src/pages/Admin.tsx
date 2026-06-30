@@ -232,6 +232,10 @@ export default function Admin() {
             <CardContent><div className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-green-500" /><span className="text-2xl font-bold">{stats.converted}</span></div></CardContent></Card>
         </div>
 
+        <TriageMediaAuditLog />
+
+
+
         <div className="flex flex-col md:flex-row gap-4 mb-6">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />

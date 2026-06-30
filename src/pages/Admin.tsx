@@ -50,6 +50,7 @@ import {
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { TriageMediaAuditLog } from "@/components/admin/TriageMediaAuditLog";
+import { TriageFailuresLog } from "@/components/admin/TriageFailuresLog";
 
 interface Lead {
   id: string;
@@ -113,6 +114,31 @@ export default function Admin() {
   useEffect(() => {
     if (user && isAdmin) fetchLeads();
   }, [user, isAdmin]);
+
+  // Permite outras seções do admin (audit log, falhas) abrirem o lead correspondente.
+  useEffect(() => {
+    const onOpen = (e: Event) => {
+      const ce = e as CustomEvent<{ sessionId?: string | null; leadId?: string | null }>;
+      const { sessionId, leadId } = ce.detail || {};
+      const match = leads.find((l) => {
+        if (leadId && l.id === leadId) return true;
+        const sid = (l.triage_payload as { sessionId?: string } | null)?.sessionId;
+        return sessionId && sid === sessionId;
+      });
+      if (match) {
+        openLead(match);
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Lead não encontrado",
+          description: sessionId ? `Sessão ${sessionId.slice(0, 10)}…` : "Sem vínculo.",
+        });
+      }
+    };
+    window.addEventListener("admin:open-lead-by-session", onOpen);
+    return () => window.removeEventListener("admin:open-lead-by-session", onOpen);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [leads]);
 
   const fetchLeads = async () => {
     setLoading(true);
@@ -233,6 +259,8 @@ export default function Admin() {
         </div>
 
         <TriageMediaAuditLog />
+        <TriageFailuresLog />
+
 
 
 

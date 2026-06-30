@@ -49,7 +49,7 @@ const Index = () => {
               { question: "Quanto tempo leva para fazer o reparo?", answer: "A maioria dos reparos é concluída no mesmo dia, em até 2 horas. Problemas mais complexos podem levar de 1 a 3 dias úteis. Informamos o prazo exato no momento do diagnóstico." },
               { question: "Vocês atendem empresas?", answer: "Sim! Temos planos especiais para empresas, com contratos de manutenção, atendimento prioritário e condições diferenciadas. Entre em contato para uma proposta personalizada." },
               { question: "Atendem aos finais de semana e feriados?", answer: "Sim, atendemos de segunda a domingo, das 08h às 22h, incluindo feriados. Para emergências fora do horário, consulte disponibilidade pelo WhatsApp." },
-              { question: "Como faço para agendar um técnico?", answer: "É simples! Basta clicar no botão de WhatsApp ou ligar para (41) 99745-2053. Informe o problema e sua localização, e agendaremos o técnico mais próximo de você." },
+              { question: "Como faço para agendar um técnico?", answer: "É simples! Basta clicar no botão de WhatsApp ou ligar para WhatsApp 24h. Informe o problema e sua localização, e agendaremos o técnico mais próximo de você." },
             ].map((q) => ({
               "@type": "Question",
               name: q.question,

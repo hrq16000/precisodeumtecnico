@@ -395,7 +395,7 @@ function FunnelDialog({
             <Link to="/termos-orcamento-pre-aprovado" className="underline hover:text-primary">
               Políticas
             </Link>{" "}
-            · WhatsApp (41) 9 9745-2053 · fechar mantém os dados
+            · WhatsApp WhatsApp 24h · fechar mantém os dados
           </p>
         </div>
       </DialogContent>

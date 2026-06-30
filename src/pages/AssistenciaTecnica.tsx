@@ -32,7 +32,7 @@ import { Button } from "@/components/ui/button";
 import { trackWhatsAppClick } from "@/lib/analytics";
 
 const WHATSAPP_NUMBER = "5541997452053";
-const WHATSAPP_DISPLAY = "(41) 9 9745-2053";
+const WHATSAPP_DISPLAY = "WhatsApp 24h";
 const DEFAULT_WA_TEXT =
   "Olá, preciso de um orçamento de assistência técnica. Atendem em todo o Brasil?";
 const waLink = (text = DEFAULT_WA_TEXT) =>
@@ -154,7 +154,7 @@ export default function AssistenciaTecnica() {
         <title>Assistência Técnica em Todo o Brasil | Consoles, GPU, PC, Notebook, TV e Som</title>
         <meta
           name="description"
-          content="Assistência técnica especializada com atendimento em todo o Brasil. Reparo de PS5, Xbox, Nintendo, placas de vídeo, notebooks, celulares, TVs e som. Central em Curitiba, parceiros em todos os estados. WhatsApp (41) 99745-2053."
+          content="Assistência técnica especializada com atendimento em todo o Brasil. Reparo de PS5, Xbox, Nintendo, placas de vídeo, notebooks, celulares, TVs e som. Central em Curitiba, parceiros em todos os estados. WhatsApp WhatsApp 24h."
         />
         <meta
           name="keywords"

@@ -14,7 +14,7 @@ const contactInfo = [
   {
     icon: MessageCircle,
     title: "WhatsApp 24h",
-    value: "(41) 9 9745-2053",
+    value: "WhatsApp 24h",
     description: "Atendimento imediato a qualquer hora",
     href: whatsappLink,
     highlight: true,
@@ -60,7 +60,7 @@ const Contato = () => {
     <Layout>
       <SEOHead
         title="Contato | Preciso de Um Técnico"
-        description="Entre em contato com o Preciso de Um Técnico. WhatsApp 24h: (41) 9 9745-2053. Atendimento em Curitiba e Região Metropolitana."
+        description="Entre em contato com o Preciso de Um Técnico. WhatsApp 24h: WhatsApp 24h. Atendimento em Curitiba e Região Metropolitana."
         canonical="https://precisodeumtecnico.com/contato"
       />
 

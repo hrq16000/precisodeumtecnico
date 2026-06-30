@@ -37,7 +37,7 @@ const faqs = [
   },
   {
     question: "Como faço para agendar um técnico?",
-    answer: "É simples! Basta clicar no botão de WhatsApp ou ligar para (41) 99745-2053. Informe o problema e sua localização, e agendaremos o técnico mais próximo de você."
+    answer: "É simples! Basta clicar no botão de WhatsApp ou ligar para WhatsApp 24h. Informe o problema e sua localização, e agendaremos o técnico mais próximo de você."
   }
 ];
 

@@ -322,7 +322,7 @@ export function TermsDialog({
                   Abrir página completa
                 </a>
                 <a
-                  href={buildWhatsAppUrl()}
+                  href={buildWhatsAppUrl({ service: "assistência técnica" })}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() =>

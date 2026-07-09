@@ -383,7 +383,7 @@ const TermosOrcamento = () => {
           <div className="text-center py-8">
             <p className="text-muted-foreground mb-4">Tem dúvidas sobre nossos termos?</p>
             <a
-              href=buildWhatsAppUrl()
+              href={buildWhatsAppUrl()}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold px-6 py-3 rounded-xl transition-colors"

@@ -86,7 +86,7 @@ export function FAQSection() {
             Não encontrou sua dúvida? Fale conosco!
           </p>
           <a
-            href=buildWhatsAppUrl()
+            href={buildWhatsAppUrl()}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-6 py-3 bg-success text-success-foreground rounded-lg font-semibold hover:bg-success/90 transition-colors"

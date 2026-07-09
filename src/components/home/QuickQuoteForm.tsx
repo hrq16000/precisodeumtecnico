@@ -192,12 +192,18 @@ export function QuickQuoteForm() {
               <Button
                 type="submit"
                 size="lg"
-                disabled={isLoading || !acceptedTerms}
+                disabled={isLoading}
+                aria-disabled={isLoading}
                 className="w-full h-14 text-lg font-semibold bg-[#25D366] hover:bg-[#20BD5A] text-white gap-2"
               >
                 <Send className="h-5 w-5" />
                 {isLoading ? "Abrindo triagem..." : "Iniciar Triagem Técnica"}
               </Button>
+              {!acceptedTerms && (
+                <p className="text-xs text-center text-muted-foreground -mt-2">
+                  Marque a caixa acima para habilitar o envio — o aceite dos Termos é obrigatório.
+                </p>
+              )}
             </div>
 
             <p className="text-center text-sm text-muted-foreground mt-4">

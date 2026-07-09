@@ -322,15 +322,13 @@ const TermosOrcamento = () => {
             </div>
 
             <div className="space-y-4 text-muted-foreground leading-relaxed">
-              <p>
-                Caso o cliente opte por cancelar o serviço ou desistir do reparo após a realização do diagnóstico, 
-                será cobrada uma taxa de diagnóstico no valor de:
-              </p>
+              <p>{COMMERCIAL_TERMS.cancellationText}</p>
 
               <div className="bg-destructive/5 border-2 border-destructive/20 rounded-xl p-6 text-center my-6">
-                <p className="text-sm text-muted-foreground mb-1">Taxa de diagnóstico (visita ou bancada)</p>
-                <p className="text-4xl md:text-5xl font-bold text-destructive">{PRICING.technicalVisit.priceLabel}</p>
+                <p className="text-sm text-muted-foreground mb-1">Taxa de diagnóstico (visita, bancada ou parceiros)</p>
+                <p className="text-4xl md:text-5xl font-bold text-destructive">{COMMERCIAL_TERMS.diagnosisFee.priceLabel}</p>
               </div>
+
 
               <p>Essa taxa cobre os custos técnicos envolvidos em:</p>
               <ul className="space-y-2 ml-1">

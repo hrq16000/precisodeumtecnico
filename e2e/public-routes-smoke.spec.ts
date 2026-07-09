@@ -31,7 +31,7 @@ const FABRICATED = /523\s*avalia|15\.000\+\s*clientes|500\+\s*técnicos cadastra
 const WHITE_SCREEN = /Cannot read properties of undefined|createContext.*undefined/i;
 
 const isCriticalError = (msg: string) =>
-  /ChunkLoadError|Loading chunk \d+ failed|Failed to fetch dynamically imported module|Minified React error/i.test(
+  /ChunkLoadError|Loading chunk \d+ failed|Failed to fetch dynamically imported module|Minified React error|Cannot read properties of undefined|createContext/i.test(
     msg,
   );
 
@@ -53,9 +53,11 @@ for (const route of PUBLIC_ROUTES) {
     // Pelo menos um heading renderizado (não ficou preso no Suspense fallback={null})
     expect(await page.locator("h1, h2").count()).toBeGreaterThan(0);
 
-    // Nenhum texto fabricado bloqueado
+    // Nenhum texto fabricado bloqueado + conteúdo real (guard anti-tela branca)
     const body = (await page.locator("body").innerText()).replace(/\s+/g, " ");
     expect(body).not.toMatch(FABRICATED);
+    expect(body.length, `conteúdo mínimo em ${route}`).toBeGreaterThan(500);
+    expect(body, `sem erro runtime em ${route}`).not.toMatch(WHITE_SCREEN);
 
     // Nenhum erro crítico de chunk / runtime
     const critical = consoleErrors.filter(isCriticalError);

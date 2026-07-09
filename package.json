@@ -24,7 +24,7 @@
     "lhci:desktop": "lhci autorun --config=./lighthouserc.cjs",
     "lhci:mobile": "lhci autorun --config=./lighthouserc.mobile.cjs",
     "lhci:local": "lhci autorun --config=./lighthouserc.json",
-    "postbuild": "bunx tsx scripts/check-seo-dedup.ts && bunx tsx scripts/check-no-debug.ts && bunx tsx scripts/check-cta-attrs.ts"
+    "postbuild": "bunx tsx scripts/check-seo-dedup.ts && bunx tsx scripts/check-no-debug.ts && bunx tsx scripts/check-cta-attrs.ts && bunx tsx scripts/check-no-bancada-legacy.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

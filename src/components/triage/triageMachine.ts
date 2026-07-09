@@ -290,7 +290,7 @@ export function buildPayload(state: TriageState, source: string): TriagePayload 
     name: state.contact.name.trim(),
     email: state.contact.email.trim(),
     phone: state.contact.phone.trim(),
-    city: state.cep ? "Curitiba" : undefined,
+    city: undefined,
     neighborhood: state.bairro || undefined,
     category: state.category,
     brand: state.brand || undefined,

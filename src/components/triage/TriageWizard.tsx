@@ -2,7 +2,7 @@ import { useMemo, useReducer, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowLeft, ArrowRight, CheckCircle2, ChevronRight, Loader2,
-  ShieldAlert, Zap, X, Send,
+  ShieldAlert, Zap, X, Send, MessageCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,9 +14,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { SYMPTOMS } from "@/data/symptoms";
 import {
   CATEGORIES, advanceHint, buildPayload, canAdvance, getSymptom, makeInitialState, reducer,
-  type Category,
+  type Category, type TriagePayload,
 } from "./triageMachine";
 import { MediaUploader } from "./MediaUploader";
+import { buildTriageWhatsAppUrl, currentSourcePage, readStoredLocation, type TriageWhatsAppResult } from "@/lib/whatsapp";
+import { trackWhatsAppClick } from "@/lib/analytics";
+import { logWaEvent } from "@/lib/waAudit";
 
 interface TriageWizardProps {
   /** Categoria pré-selecionada (vinda do CTA da página). */
@@ -56,7 +59,8 @@ export function TriageWizard({
     }
     return s;
   });
-  const [lastPayload, setLastPayload] = useState<unknown>(null);
+  const [lastPayload, setLastPayload] = useState<TriagePayload | null>(null);
+  const [triageWhatsApp, setTriageWhatsApp] = useState<TriageWhatsAppResult | null>(null);
   const [exited, setExited] = useState(false);
 
   const stepIdx = Math.max(0, STEP_ORDER.indexOf(state.step));
@@ -71,6 +75,53 @@ export function TriageWizard({
   );
 
   const hint = advanceHint(state);
+
+  const buildWhatsAppResult = (payload: TriagePayload): TriageWhatsAppResult => {
+    const stored = readStoredLocation();
+    const storedIsUsable = stored.source !== "default";
+    const city = payload.city || (storedIsUsable ? stored.city : undefined);
+    const neighborhood = payload.neighborhood || (storedIsUsable ? stored.neighborhood : undefined);
+    const addressOrReference = [storedIsUsable ? stored.address : undefined, state.cep && `CEP ${state.cep}`]
+      .filter(Boolean)
+      .join(" · ") || undefined;
+
+    return buildTriageWhatsAppUrl({
+      category: payload.category,
+      brand: payload.brand,
+      model: payload.model,
+      symptom: payload.symptom || payload.message,
+      serviceMode: payload.service_mode,
+      city,
+      neighborhood,
+      addressOrReference,
+      slaDaysMin: payload.sla_days_min,
+      slaDaysMax: payload.sla_days_max,
+      mediaCount: payload.media_urls.length,
+      sourceDetail: payload.source,
+      pagePath: currentSourcePage(),
+    });
+  };
+
+  const handleWhatsAppContinue = () => {
+    if (!triageWhatsApp) return;
+    trackWhatsAppClick({
+      source: "triage",
+      service: triageWhatsApp.serviceTag,
+      city: triageWhatsApp.city,
+      bairro: triageWhatsApp.neighborhood,
+      has_full_address: false,
+      source_component: "triage_wizard_success",
+      cta_label: "Continuar no WhatsApp",
+    });
+    void logWaEvent({
+      source: "triage",
+      href: null,
+      kind: "whatsapp",
+      category: lastPayload?.category ?? null,
+      bypass: true,
+      sessionId: lastPayload?.triage_payload?.sessionId as string | undefined,
+    });
+  };
 
   const handleSubmit = async () => {
     dispatch({ type: "START_SUBMIT" });
@@ -92,6 +143,7 @@ export function TriageWizard({
 
 
     setLastPayload(payload);
+    setTriageWhatsApp(buildWhatsAppResult(payload));
     try {
       const enriched = {
         ...payload,
@@ -518,15 +570,28 @@ export function TriageWizard({
             <p className="text-sm text-muted-foreground">
               Em até 24h um técnico responde no seu WhatsApp com o próximo passo.
             </p>
-            {lastPayload != null && (
-              <details className="mx-auto mt-4 max-w-full text-left">
-                <summary className="cursor-pointer text-xs text-muted-foreground">
-                  Ver payload de teste (debug)
-                </summary>
-                <pre className="mt-2 max-h-72 overflow-auto rounded-lg bg-muted/50 p-3 text-[11px] leading-relaxed">
-                  {JSON.stringify(lastPayload, null, 2)}
-                </pre>
-              </details>
+            {triageWhatsApp && (
+              <div className="mx-auto mt-5 max-w-sm space-y-3">
+                <Button variant="whatsapp" size="lg" className="w-full" asChild>
+                  <a
+                    href={triageWhatsApp.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-wa-source="triage"
+                    data-service={triageWhatsApp.serviceTag}
+                    data-city={triageWhatsApp.city}
+                    data-neighborhood={triageWhatsApp.neighborhood}
+                    aria-label="Continuar atendimento técnico no WhatsApp com os dados da triagem"
+                    onClick={handleWhatsAppContinue}
+                  >
+                    <MessageCircle className="h-5 w-5" />
+                    Continuar no WhatsApp
+                  </a>
+                </Button>
+                <p className="text-xs text-muted-foreground">
+                  A mensagem já vai preenchida com os dados informados na triagem.
+                </p>
+              </div>
             )}
           </div>
         )}

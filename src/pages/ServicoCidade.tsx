@@ -88,7 +88,6 @@ export default function ServicoCidade() {
       priceCurrency: "BRL",
       url,
     },
-    aggregateRating: { "@type": "AggregateRating", ratingValue: "4.9", reviewCount: "523" },
   };
 
   const offerSchema = buildOfferSchema({

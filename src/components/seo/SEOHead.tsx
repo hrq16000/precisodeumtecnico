@@ -62,7 +62,10 @@ export function SEOHead({
   title,
   description,
   canonical = "https://precisodeumtecnico.com",
-  ogImage = "https://precisodeumtecnico.com/og-image.jpg",
+  // ogImage é opcional. Quando não informado, mantemos apenas o og:image
+  // estático do index.html (evita duplicação de meta og:image / twitter:image
+  // que o react-helmet-async NÃO deduplicava contra tags pré-existentes).
+  ogImage,
   type = "website",
   schema,
   structuredData,

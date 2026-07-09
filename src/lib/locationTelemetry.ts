@@ -18,7 +18,8 @@ export function trackLocationEvent(
     | "manual_edit"
     | "manual_save"
     | "ip_fallback"
-    | "location_persisted",
+    | "location_persisted"
+    | "location_reset",
   params: {
     source?: LocationSource;
     duration_ms?: number;
@@ -27,9 +28,24 @@ export function trackLocationEvent(
     has_neighborhood?: boolean;
     has_address?: boolean;
     has_coords?: boolean;
+    /** GeolocationPositionError.code, HTTP status, etc. — nunca coordenadas. */
     error?: string;
-    accuracy?: number;
+    /** Motivo textual normalizado (http_5xx, network, abort, empty, denied, timeout). */
+    reason?: string;
+    /** HTTP status do provider quando aplicável. */
+    status?: number;
+    /** gps | ip | manual | default — indica qual fallback assumiu. */
+    fallback?: LocationSource;
+    accuracy_bucket?: "high" | "medium" | "low";
   } = {},
 ) {
   trackEvent("location_flow", { action, ...params });
+}
+
+/** Bucket qualitativo — evita expor accuracy exata em analytics. */
+export function accuracyBucket(accuracy: number | undefined): "high" | "medium" | "low" | undefined {
+  if (accuracy == null || Number.isNaN(accuracy)) return undefined;
+  if (accuracy <= 50) return "high";
+  if (accuracy <= 250) return "medium";
+  return "low";
 }

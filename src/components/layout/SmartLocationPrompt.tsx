@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { AlertTriangle, CheckCircle2, Loader2, MapPin } from "lucide-react";
+import { AlertTriangle, CheckCircle2, Loader2, MapPin, RotateCcw } from "lucide-react";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter,
 } from "@/components/ui/dialog";
@@ -7,17 +7,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { LOCATION_UPDATED_EVENT, useUserRegion } from "@/hooks/useUserRegion";
 import { reverseGeocode } from "@/lib/reverseGeocode";
-import { trackLocationEvent } from "@/lib/locationTelemetry";
+import { accuracyBucket, trackLocationEvent } from "@/lib/locationTelemetry";
 
-/**
- * Prompt não-agressivo de localização.
- * - Aparece após 5s de navegação (uma vez por sessão).
- * - Não abre em rotas admin/quiz.
- * - Salva em `user_location_full_v1` com lat/lng/accuracy quando via GPS.
- * - Reverse geocode via helper com cache local; falha não descarta as coordenadas.
- * - Permite edição manual mesmo após o GPS preencher.
- */
 const KEY = "user_location_full_v1";
+const REGION_KEY = "user_region_v1";
 const PROMPTED = "user_location_prompted_v2";
 const BLOCKED_PATHS = ["/admin", "/auth", "/diagnostics"];
 
@@ -47,6 +40,14 @@ function readStored(): StoredLocation | null {
   } catch { return null; }
 }
 
+function confidenceLabel(accuracy?: number): { label: string; tone: "text-green-600" | "text-amber-600" | "text-destructive" } | null {
+  const b = accuracyBucket(accuracy);
+  if (!b) return null;
+  if (b === "high") return { label: `Alta precisão (~${Math.round(accuracy!)}m)`, tone: "text-green-600" };
+  if (b === "medium") return { label: `Precisão média (~${Math.round(accuracy!)}m)`, tone: "text-amber-600" };
+  return { label: `Baixa precisão (~${Math.round(accuracy!)}m)`, tone: "text-destructive" };
+}
+
 export function SmartLocationPrompt() {
   const { region } = useUserRegion();
   const [open, setOpen] = useState(false);
@@ -54,6 +55,7 @@ export function SmartLocationPrompt() {
   const [gpsError, setGpsError] = useState<string | null>(null);
   const [gpsWarning, setGpsWarning] = useState<string | null>(null);
   const [gpsSuccess, setGpsSuccess] = useState(false);
+  const [confirmReset, setConfirmReset] = useState(false);
   const [form, setForm] = useState<StoredLocation>({});
 
   useEffect(() => {
@@ -64,14 +66,7 @@ export function SmartLocationPrompt() {
 
     const t = setTimeout(() => {
       if (document.querySelector('[role="dialog"]')) return;
-      setForm({
-        city: region.city,
-        uf: region.region,
-        neighborhood: "",
-        street: "",
-        number: "",
-        source: "ip",
-      });
+      setForm({ city: region.city, uf: region.region, source: "ip" });
       setOpen(true);
       trackLocationEvent("prompt_shown", { source: region.source });
       try { sessionStorage.setItem(PROMPTED, "1"); } catch { /* noop */ }
@@ -88,7 +83,7 @@ export function SmartLocationPrompt() {
       has_neighborhood: !!payload.neighborhood,
       has_address: !!payload.street,
       has_coords: payload.latitude != null && payload.longitude != null,
-      accuracy: payload.accuracy,
+      accuracy_bucket: accuracyBucket(payload.accuracy),
     });
   };
 
@@ -100,12 +95,10 @@ export function SmartLocationPrompt() {
   };
 
   const useGps = () => {
-    setGpsError(null);
-    setGpsWarning(null);
-    setGpsSuccess(false);
+    setGpsError(null); setGpsWarning(null); setGpsSuccess(false);
     if (!("geolocation" in navigator)) {
       setGpsError("Geolocalização indisponível neste navegador. Preencha manualmente.");
-      trackLocationEvent("gps_error", { error: "unavailable" });
+      trackLocationEvent("gps_error", { reason: "unavailable", fallback: "manual" });
       return;
     }
     trackLocationEvent("gps_request");
@@ -114,17 +107,11 @@ export function SmartLocationPrompt() {
       async (pos) => {
         const { latitude, longitude, accuracy } = pos.coords;
         const detectedAt = new Date().toISOString();
-        trackLocationEvent("gps_success", { accuracy });
+        trackLocationEvent("gps_success", { accuracy_bucket: accuracyBucket(accuracy) });
 
-        // Base: sempre grava coordenadas, mesmo se reverse geocode falhar.
         const base: StoredLocation = {
-          ...form,
-          latitude,
-          longitude,
-          accuracy,
-          source: "gps",
-          detectedAt,
-          savedAt: detectedAt,
+          ...form, latitude, longitude, accuracy,
+          source: "gps", detectedAt, savedAt: detectedAt,
         };
 
         const rg = await reverseGeocode(latitude, longitude);
@@ -143,27 +130,18 @@ export function SmartLocationPrompt() {
             reverseGeocodedAt: new Date().toISOString(),
             savedAt: new Date().toISOString(),
           };
-          setForm(next);
-          persist(next);
-          setGpsSuccess(true);
+          setForm(next); persist(next); setGpsSuccess(true);
           trackLocationEvent("reverse_geocode_ok", {
-            from_cache: rg.fromCache,
-            duration_ms: rg.durationMs,
-            has_city: !!next.city,
-            has_neighborhood: !!next.neighborhood,
+            from_cache: rg.fromCache, duration_ms: rg.durationMs, status: rg.status,
+            has_city: !!next.city, has_neighborhood: !!next.neighborhood,
           });
-          if (!next.city) {
-            setGpsWarning("Localização aproximada detectada. Confirme a cidade abaixo.");
-          }
+          if (!next.city) setGpsWarning("Localização aproximada detectada. Confirme a cidade abaixo.");
         } else {
-          // Falha do reverse geocode: NÃO descarta as coordenadas nem volta ao IP.
-          setForm(base);
-          persist(base);
-          setGpsSuccess(true);
+          setForm(base); persist(base); setGpsSuccess(true);
           setGpsWarning("Localização aproximada detectada, mas não foi possível obter o endereço. Ajuste manualmente se preferir.");
           trackLocationEvent("reverse_geocode_fail", {
-            duration_ms: rg.durationMs,
-            error: rg.error,
+            duration_ms: rg.durationMs, status: rg.status, reason: rg.reason,
+            fallback: "gps", has_coords: true,
           });
         }
         setGpsLoading(false);
@@ -171,19 +149,22 @@ export function SmartLocationPrompt() {
       (err) => {
         setGpsLoading(false);
         const denied = err.code === err.PERMISSION_DENIED;
+        const timeout = err.code === err.TIMEOUT;
         setGpsError(
           denied
             ? "Permissão negada. Preencha manualmente sua cidade e bairro."
             : "Não foi possível obter sua localização. Preencha manualmente.",
         );
-        trackLocationEvent(denied ? "gps_denied" : "gps_error", { error: String(err.code) });
+        trackLocationEvent(denied ? "gps_denied" : "gps_error", {
+          error: String(err.code),
+          reason: denied ? "denied" : timeout ? "timeout" : "position_unavailable",
+          fallback: "manual",
+        });
       },
       { enableHighAccuracy: true, timeout: 8000 },
     );
   };
 
-  // Edição manual pós-GPS: persiste imediatamente mantendo coordenadas e source=gps
-  // se elas existirem, ou source=manual caso contrário.
   const updateField = (patch: Partial<StoredLocation>) => {
     const next = { ...form, ...patch };
     setForm(next);
@@ -198,16 +179,26 @@ export function SmartLocationPrompt() {
     }
   };
 
+  const resetLocation = () => {
+    try { localStorage.removeItem(KEY); } catch { /* noop */ }
+    try { localStorage.removeItem(REGION_KEY); } catch { /* noop */ }
+    try { sessionStorage.removeItem(PROMPTED); } catch { /* noop */ }
+    try { window.dispatchEvent(new Event(LOCATION_UPDATED_EVENT)); } catch { /* noop */ }
+    trackLocationEvent("location_reset", { fallback: "ip" });
+    setForm({}); setGpsSuccess(false); setGpsError(null); setGpsWarning(null);
+    setConfirmReset(false);
+    setOpen(false);
+  };
+
   const dismiss = () => {
     if (form.city && !gpsSuccess && !readStored()) {
-      persist({
-        city: form.city, uf: form.uf, source: "ip",
-        savedAt: new Date().toISOString(),
-      });
+      persist({ city: form.city, uf: form.uf, source: "ip", savedAt: new Date().toISOString() });
       trackLocationEvent("ip_fallback", { has_city: !!form.city });
     }
     setOpen(false);
   };
+
+  const conf = confidenceLabel(form.accuracy);
 
   return (
     <Dialog open={open} onOpenChange={(v) => (v ? setOpen(v) : dismiss())}>
@@ -225,42 +216,32 @@ export function SmartLocationPrompt() {
 
         <div className="grid grid-cols-2 gap-3">
           <div className="col-span-2">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={useGps}
-              disabled={gpsLoading}
-              className="w-full"
-              data-testid="smart-location-gps"
-            >
+            <Button type="button" variant="outline" onClick={useGps} disabled={gpsLoading}
+              className="w-full" data-testid="smart-location-gps">
               {gpsLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <MapPin className="w-4 h-4 mr-2" />}
               {gpsLoading ? "Detectando..." : "Usar minha localização (GPS)"}
             </Button>
           </div>
           {gpsSuccess && (
-            <p
-              className="col-span-2 flex items-center gap-2 text-xs text-green-600"
-              data-testid="smart-location-success"
-              role="status"
-            >
+            <p className="col-span-2 flex items-center gap-2 text-xs text-green-600"
+               data-testid="smart-location-success" role="status">
               <CheckCircle2 className="w-4 h-4" /> Localização detectada e salva.
             </p>
           )}
+          {conf && (
+            <p className={`col-span-2 text-xs ${conf.tone}`} data-testid="smart-location-accuracy">
+              {conf.label}
+            </p>
+          )}
           {gpsWarning && (
-            <p
-              className="col-span-2 flex items-center gap-2 text-xs text-amber-600"
-              data-testid="smart-location-warning"
-              role="status"
-            >
+            <p className="col-span-2 flex items-center gap-2 text-xs text-amber-600"
+               data-testid="smart-location-warning" role="status">
               <AlertTriangle className="w-4 h-4" /> {gpsWarning}
             </p>
           )}
           {gpsError && (
-            <p
-              className="col-span-2 text-xs text-destructive"
-              data-testid="smart-location-error"
-              role="alert"
-            >
+            <p className="col-span-2 text-xs text-destructive"
+               data-testid="smart-location-error" role="alert">
               {gpsError}
             </p>
           )}
@@ -273,9 +254,22 @@ export function SmartLocationPrompt() {
           <Input value={form.complement ?? ""} onChange={(e) => updateField({ complement: e.target.value })} placeholder="Complemento" />
         </div>
 
-        <DialogFooter className="gap-2">
+        <DialogFooter className="gap-2 flex-wrap">
+          {!confirmReset ? (
+            <Button type="button" variant="ghost" size="sm" onClick={() => setConfirmReset(true)}
+                    data-testid="smart-location-reset" className="mr-auto text-xs">
+              <RotateCcw className="w-3 h-3 mr-1" /> Redefinir localização
+            </Button>
+          ) : (
+            <div className="mr-auto flex items-center gap-2 text-xs" data-testid="smart-location-reset-confirm">
+              <span className="text-muted-foreground">Confirmar reset?</span>
+              <Button type="button" variant="destructive" size="sm" onClick={resetLocation}>Sim</Button>
+              <Button type="button" variant="ghost" size="sm" onClick={() => setConfirmReset(false)}>Não</Button>
+            </div>
+          )}
           <Button variant="ghost" onClick={dismiss}>Agora não</Button>
-          <Button onClick={() => save(form.latitude != null ? "gps" : "manual")} disabled={!form.city && form.latitude == null}>
+          <Button onClick={() => save(form.latitude != null ? "gps" : "manual")}
+                  disabled={!form.city && form.latitude == null}>
             {gpsSuccess ? "Fechar" : "Confirmar"}
           </Button>
         </DialogFooter>

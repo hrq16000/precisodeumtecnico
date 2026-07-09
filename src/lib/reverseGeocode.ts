@@ -1,7 +1,7 @@
 /**
  * Reverse geocoding com cache local por coordenadas (arredondadas a ~11m)
  * e normalização estável dos campos comuns do Nominatim.
- * Nunca lança — retorna { ok:false } em falha.
+ * Nunca lança — retorna { ok:false } em falha, com status/reason para telemetria.
  */
 export interface ReverseGeocodeResult {
   city?: string;
@@ -19,7 +19,10 @@ export interface ReverseGeocodeOutcome {
   data?: ReverseGeocodeResult;
   fromCache?: boolean;
   durationMs?: number;
-  error?: string;
+  /** HTTP status code quando disponível. */
+  status?: number;
+  /** Motivo textual do erro (http_xxx, network, abort, parse, empty). */
+  reason?: string;
 }
 
 const CACHE_KEY = "reverse_geocode_cache_v1";
@@ -30,7 +33,6 @@ type CacheEntry = { at: number; data: ReverseGeocodeResult };
 type CacheShape = Record<string, CacheEntry>;
 
 function keyFor(lat: number, lon: number): string {
-  // ~4 casas decimais ≈ 11m — suficiente para cachear resultado do mesmo bairro.
   return `${lat.toFixed(4)},${lon.toFixed(4)}`;
 }
 
@@ -63,6 +65,10 @@ function normalize(address: Record<string, string | undefined>): ReverseGeocodeR
   };
 }
 
+function hasAnyField(r: ReverseGeocodeResult): boolean {
+  return !!(r.city || r.neighborhood || r.street || r.postalCode);
+}
+
 export async function reverseGeocode(
   lat: number,
   lon: number,
@@ -80,19 +86,26 @@ export async function reverseGeocode(
       `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`,
       { headers: { "Accept-Language": "pt-BR" }, signal: opts.signal },
     );
+    const durationMs = (performance.now?.() ?? Date.now()) - started;
     if (!res.ok) {
-      return { ok: false, durationMs: (performance.now?.() ?? Date.now()) - started, error: `http_${res.status}` };
+      return { ok: false, durationMs, status: res.status, reason: `http_${res.status}` };
     }
-    const j = await res.json();
+    const j = await res.json().catch(() => null);
     const data = normalize((j?.address ?? {}) as Record<string, string | undefined>);
+    // Não gravar cache vazio como se fosse válido.
+    if (!hasAnyField(data)) {
+      return { ok: false, durationMs, status: res.status, reason: "empty" };
+    }
     cache[key] = { at: Date.now(), data };
     writeCache(cache);
-    return { ok: true, data, fromCache: false, durationMs: (performance.now?.() ?? Date.now()) - started };
+    return { ok: true, data, fromCache: false, durationMs, status: res.status };
   } catch (err) {
+    const durationMs = (performance.now?.() ?? Date.now()) - started;
+    const name = err instanceof Error ? err.name : "";
     return {
       ok: false,
-      durationMs: (performance.now?.() ?? Date.now()) - started,
-      error: err instanceof Error ? err.message : "unknown",
+      durationMs,
+      reason: name === "AbortError" ? "abort" : "network",
     };
   }
 }

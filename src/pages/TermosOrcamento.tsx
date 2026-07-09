@@ -341,7 +341,44 @@ const TermosOrcamento = () => {
             </div>
           </div>
 
-          {/* CTA */}
+          {/* 7 – Condições comerciais */}
+          <div className="bg-card border border-border rounded-2xl p-6 md:p-10 shadow-sm">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="bg-primary/10 p-3 rounded-xl">
+                <CreditCard className="h-6 w-6 text-primary" />
+              </div>
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground">
+                7 – Condições Comerciais e Experiência
+              </h2>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-4 text-sm">
+              <div className="bg-accent/40 rounded-xl p-5 border border-border">
+                <CreditCard className="h-5 w-5 text-primary mb-2" />
+                <p className="font-semibold text-foreground mb-1">Parcelamento</p>
+                <p className="text-muted-foreground">{COMMERCIAL.installments}.</p>
+              </div>
+              <div className="bg-accent/40 rounded-xl p-5 border border-border">
+                <Award className="h-5 w-5 text-primary mb-2" />
+                <p className="font-semibold text-foreground mb-1">Experiência</p>
+                <p className="text-muted-foreground">{COMMERCIAL.experienceLabel} entregando soluções com garantia de qualidade.</p>
+              </div>
+              <div className="bg-accent/40 rounded-xl p-5 border border-border">
+                <Users className="h-5 w-5 text-primary mb-2" />
+                <p className="font-semibold text-foreground mb-1">Rede nacional</p>
+                <p className="text-muted-foreground">{COMMERCIAL.partnersLabel}.</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3 bg-accent/50 rounded-lg p-4 mt-6">
+              <AlertTriangle className="h-5 w-5 text-primary mt-0.5 shrink-0" />
+              <p className="text-sm text-muted-foreground">
+                <strong className="text-foreground">Importante:</strong> {COMMERCIAL.partnersDisclaimer}{" "}
+                {COMMERCIAL.triageRequirement}
+              </p>
+            </div>
+          </div>
+
           <div className="text-center py-8">
             <p className="text-muted-foreground mb-4">Tem dúvidas sobre nossos termos?</p>
             <a

@@ -256,6 +256,45 @@ export type Database = {
         }
         Relationships: []
       }
+      wa_bypass_events: {
+        Row: {
+          bypass: boolean
+          category: string | null
+          created_at: string
+          href: string | null
+          id: string
+          kind: string
+          page_path: string | null
+          session_id: string | null
+          source: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          bypass?: boolean
+          category?: string | null
+          created_at?: string
+          href?: string | null
+          id?: string
+          kind?: string
+          page_path?: string | null
+          session_id?: string | null
+          source?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          bypass?: boolean
+          category?: string | null
+          created_at?: string
+          href?: string | null
+          id?: string
+          kind?: string
+          page_path?: string | null
+          session_id?: string | null
+          source?: string | null
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

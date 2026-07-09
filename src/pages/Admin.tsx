@@ -53,6 +53,7 @@ import { TriageMediaAuditLog } from "@/components/admin/TriageMediaAuditLog";
 import { TriageFailuresLog } from "@/components/admin/TriageFailuresLog";
 import { WABypassLog } from "@/components/admin/WABypassLog";
 import { AdminBypassSummary } from "@/components/admin/AdminBypassSummary";
+import { WAClicksDashboard } from "@/components/admin/WAClicksDashboard";
 
 interface Lead {
   id: string;
@@ -261,6 +262,7 @@ export default function Admin() {
         </div>
 
         <AdminBypassSummary />
+        <WAClicksDashboard />
         <WABypassLog />
         <TriageMediaAuditLog />
         <TriageFailuresLog />

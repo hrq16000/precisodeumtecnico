@@ -70,12 +70,20 @@ export function TriageWizard({
     [state.category],
   );
 
+  const hint = advanceHint(state);
+
   const handleSubmit = async () => {
     dispatch({ type: "START_SUBMIT" });
     const payload = buildPayload(state, source);
+
+    // Guarda dupla: valor mínimo R$ 99,99 obrigatório em visita.
+    if (payload.service_mode === "visit" || payload.service_mode === "visita") {
+      if (!payload.estimated_ticket_min || payload.estimated_ticket_min < 99) {
+        payload.estimated_ticket_min = 99;
+      }
+    }
     setLastPayload(payload);
     try {
-      // Captura metadados leves (server-side já reforça com IP via edge function).
       const enriched = {
         ...payload,
         user_agent: typeof navigator !== "undefined" ? navigator.userAgent.slice(0, 500) : null,
@@ -523,32 +531,44 @@ export function TriageWizard({
 
       {/* Footer nav */}
       {!exited && !["submitting", "done", "error"].includes(state.step) && (
-        <footer className="flex items-center justify-between gap-2 border-t border-border px-5 py-3">
-          <Button
-            type="button"
-            variant="ghost"
-            size="lg"
-            className="h-12"
-            onClick={() => dispatch({ type: "BACK" })}
-            disabled={state.step === "category"}
-          >
-            <ArrowLeft className="mr-1 h-4 w-4" /> Voltar
-          </Button>
-          {state.step === "accept" ? (
-            <Button type="button" size="lg" className="h-12 bg-green-600 text-white hover:bg-green-700" onClick={handleSubmit} disabled={!canAdvance(state)}>
-              <Send className="mr-2 h-4 w-4" /> Enviar triagem
-            </Button>
-          ) : (
+        <footer className="border-t border-border px-5 py-3">
+          {hint && (
+            <p
+              role="status"
+              aria-live="polite"
+              data-testid="triage-hint"
+              className="mb-2 text-xs font-medium text-amber-600"
+            >
+              ⚠ {hint}
+            </p>
+          )}
+          <div className="flex items-center justify-between gap-2">
             <Button
               type="button"
+              variant="ghost"
               size="lg"
               className="h-12"
-              onClick={() => dispatch({ type: "NEXT" })}
-              disabled={!canAdvance(state)}
+              onClick={() => dispatch({ type: "BACK" })}
+              disabled={state.step === "category"}
             >
-              Avançar <ArrowRight className="ml-1 h-4 w-4" />
+              <ArrowLeft className="mr-1 h-4 w-4" /> Voltar
             </Button>
-          )}
+            {state.step === "accept" ? (
+              <Button type="button" size="lg" className="h-12 bg-green-600 text-white hover:bg-green-700" onClick={handleSubmit} disabled={!canAdvance(state)}>
+                <Send className="mr-2 h-4 w-4" /> Enviar triagem
+              </Button>
+            ) : (
+              <Button
+                type="button"
+                size="lg"
+                className="h-12"
+                onClick={() => dispatch({ type: "NEXT" })}
+                disabled={!canAdvance(state)}
+              >
+                Avançar <ArrowRight className="ml-1 h-4 w-4" />
+              </Button>
+            )}
+          </div>
         </footer>
       )}
     </div>

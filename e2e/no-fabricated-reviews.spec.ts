@@ -17,11 +17,12 @@ const ROUTES = [
 
 const FABRICATED_PATTERNS: RegExp[] = [
   /523\s*avalia/i,
-  /15\.?000\s*atendimentos/i,
-  /\+?\s*15\.?000\s*avalia/i,
+  /15\.?000\+?\s*(atendimentos|clientes|avalia)/i,
+  /500\+\s*t[ée]cnicos\s*cadastrados/i,
   /4[.,]9\s*\/\s*5/i,
   /4[.,]9\s*★/i,
   /\(\s*523\s*\)/,
+  /★★★★★/,
 ];
 
 for (const route of ROUTES) {

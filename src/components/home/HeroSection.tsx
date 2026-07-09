@@ -4,9 +4,13 @@ import { TermsDialog } from "@/components/TermsDialog";
 import { TERMS_SOURCE } from "@/lib/termsSource";
 import { OfferHighlight } from "@/components/marketing/OfferHighlight";
 import { COMMERCIAL, SLA } from "@/data/pricingPolicy";
+import { buildWhatsAppUrl, readStoredLocation, currentSourcePage } from "@/lib/whatsapp";
 export function HeroSection() {
-  const whatsappNumber = "5541997452053";
-  const whatsappLink = `https://wa.me/${whatsappNumber}?text=Olá! Preciso de um técnico.`;
+  const whatsappLink = buildWhatsAppUrl({
+    service: "assistência técnica",
+    ...readStoredLocation(),
+    sourcePage: currentSourcePage(),
+  });
   return <section className="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-[#1e3a5f] via-[#2d4a6f] to-[#1a3050]">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-30">
@@ -76,9 +80,9 @@ export function HeroSection() {
           {/* CTA Buttons */}
           <div className="flex flex-col gap-3 px-4 mb-6 animate-fade-up">
             <Button size="lg" className="w-full bg-[#22C55E] hover:bg-[#16A34A] text-white font-bold text-lg py-6 rounded-xl shadow-lg shadow-green-500/30 transition-all hover:scale-[1.02]" asChild>
-              <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+              <a href={whatsappLink} target="_blank" rel="noopener noreferrer" data-wa-source="hero" data-cta-label="hero_whatsapp">
                 <MessageCircle className="w-5 h-5 mr-2" />
-                WhatsApp WhatsApp 24h
+                Falar com técnico agora
               </a>
             </Button>
           </div>

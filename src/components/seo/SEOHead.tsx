@@ -26,6 +26,14 @@ function safeStringify(schema: unknown, idx: number): string | null {
   }
 }
 
+interface Breadcrumb { name: string; url: string; }
+interface ServiceInfo {
+  name: string;
+  description?: string;
+  priceMinBRL?: number;
+  areaServed?: string;
+}
+
 interface SEOHeadProps {
   title: string;
   description: string;
@@ -36,6 +44,10 @@ interface SEOHeadProps {
   /** Optional list of additional structured-data objects (FAQ, Breadcrumb, etc.) */
   structuredData?: object[];
   keywords?: string;
+  /** Breadcrumbs; emitem BreadcrumbList schema. */
+  breadcrumbs?: Breadcrumb[];
+  /** Se presente, emite Service schema (páginas de serviço). */
+  service?: ServiceInfo;
   /** Article publication metadata for blog posts */
   article?: {
     publishedTime?: string;
@@ -55,6 +67,8 @@ export function SEOHead({
   schema,
   structuredData,
   keywords,
+  breadcrumbs,
+  service,
   article,
 }: SEOHeadProps) {
   const fullTitle = title.includes("Preciso de Um Técnico")
@@ -68,6 +82,8 @@ export function SEOHead({
     description:
       "Assistência técnica especializada em Curitiba e Região Metropolitana. Informática, elétrica, CFTV, notebooks, ar-condicionado e muito mais.",
     url: "https://precisodeumtecnico.com",
+    taxID: "41.723.708/0001-58",
+    foundingDate: "1998",
     address: {
       "@type": "PostalAddress",
       addressLocality: "Curitiba",
@@ -91,10 +107,44 @@ export function SEOHead({
       { "@type": "City", name: "Araucária" },
     ],
     priceRange: "$$",
-    aggregateRating: { "@type": "AggregateRating", ratingValue: "4.9", reviewCount: "523" },
   };
 
-  const schemas = structuredData ?? (schema ? [schema] : [localBusinessSchema]);
+  const extra: object[] = [];
+  if (breadcrumbs && breadcrumbs.length > 0) {
+    extra.push({
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: breadcrumbs.map((b, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: b.name,
+        item: b.url,
+      })),
+    });
+  }
+  if (service) {
+    extra.push({
+      "@context": "https://schema.org",
+      "@type": "Service",
+      name: service.name,
+      description: service.description,
+      areaServed: service.areaServed ?? "Curitiba e Região Metropolitana",
+      provider: { "@type": "LocalBusiness", name: "Preciso de Um Técnico" },
+      ...(service.priceMinBRL
+        ? {
+            offers: {
+              "@type": "Offer",
+              price: service.priceMinBRL,
+              priceCurrency: "BRL",
+              availability: "https://schema.org/InStock",
+            },
+          }
+        : {}),
+    });
+  }
+
+  const schemas = structuredData ?? (schema ? [schema, ...extra] : [localBusinessSchema, ...extra]);
+
 
   return (
     <Helmet>

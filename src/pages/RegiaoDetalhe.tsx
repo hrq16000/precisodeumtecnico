@@ -32,7 +32,11 @@ const RegiaoDetalhe = () => {
   
   const cityName = cityData?.name || (city ? formatNameFromSlug(city) : "");
   const neighborhoodName = neighborhood ? formatNameFromSlug(neighborhood) : "";
-  const whatsappLink = buildWhatsAppUrl();
+  const whatsappLink = buildWhatsAppUrl({
+    service: "assistência técnica",
+    city: cityName || undefined,
+    neighborhood: neighborhoodName || undefined,
+  });
   
   const pageTitle = neighborhood 
     ? `Técnico em ${neighborhoodName}, ${cityName}`

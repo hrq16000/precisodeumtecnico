@@ -106,34 +106,45 @@ export function useUserRegion() {
   const [loading, setLoading] = useState(false);
   const [askPrompt, setAskPrompt] = useState(false);
 
+  // Escuta atualizações do SmartLocationPrompt (mesma aba) e de outras abas.
+  useEffect(() => {
+    const refresh = () => {
+      const s = readStored();
+      if (s) setRegion(s);
+    };
+    window.addEventListener(LOCATION_UPDATED_EVENT, refresh);
+    window.addEventListener("storage", refresh);
+    return () => {
+      window.removeEventListener(LOCATION_UPDATED_EVENT, refresh);
+      window.removeEventListener("storage", refresh);
+    };
+  }, []);
+
   useEffect(() => {
     const stored = readStored();
-    // If user already set manually, respect it.
-    if (stored && stored.source === "manual") return;
+    // GPS / manual têm prioridade absoluta sobre IP.
+    if (stored && (stored.source === "gps" || stored.source === "manual")) return;
     let cancelled = false;
     setLoading(true);
     fetchByIp()
       .then((r) => {
         if (cancelled) return;
         if (r) {
-          setRegion(r);
+          setRegion((cur) =>
+            cur.source === "gps" || cur.source === "manual" ? cur : r,
+          );
           writeStored(r);
         }
-        // After detection (or failure), prompt user once to confirm
         const promptedKey = "user_region_prompted_v1";
         try {
           if (!localStorage.getItem(promptedKey)) {
             setAskPrompt(true);
             localStorage.setItem(promptedKey, "1");
           }
-        } catch {
-          /* noop */
-        }
+        } catch { /* noop */ }
       })
       .finally(() => !cancelled && setLoading(false));
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
   }, []);
 
   const setManualRegion = useCallback((city: string, uf?: string) => {

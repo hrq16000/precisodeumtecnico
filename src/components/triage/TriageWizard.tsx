@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { SYMPTOMS } from "@/data/symptoms";
 import {
-  CATEGORIES, buildPayload, canAdvance, getSymptom, makeInitialState, reducer,
+  CATEGORIES, advanceHint, buildPayload, canAdvance, getSymptom, makeInitialState, reducer,
   type Category,
 } from "./triageMachine";
 import { MediaUploader } from "./MediaUploader";

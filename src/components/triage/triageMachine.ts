@@ -166,6 +166,54 @@ export function canAdvance(state: TriageState): boolean {
   }
 }
 
+/** Retorna o motivo específico pelo qual o passo atual não pode avançar (para UX). */
+export function advanceHint(state: TriageState): string | null {
+  const sym = getSymptom(state);
+  switch (state.step) {
+    case "category":
+      return state.category ? null : "Selecione a categoria do aparelho.";
+    case "device":
+      if (state.brand.trim().length < 2) return "Informe a marca (mín. 2 letras).";
+      if (state.model.trim().length < 1) return "Informe o modelo.";
+      return null;
+    case "symptom":
+      if (!state.symptomSlug && (state.symptomCustom?.trim().length ?? 0) < 5) {
+        return "Escolha um sintoma da lista ou descreva com pelo menos 5 caracteres.";
+      }
+      return null;
+    case "branch": {
+      if (!sym) return null;
+      if (sym.triage.mode === "coleta" && !state.acknowledgedGate)
+        return "Confirme o gate: clique em 'Entendi, quero uma solução definitiva'.";
+      if (sym.triage.mediaRequired) {
+        const photos = state.mediaPaths.filter((p) => /\.(jpe?g|png|webp|heic)$/i.test(p)).length;
+        const videos = state.mediaPaths.filter((p) => /\.(mp4|mov|webm|m4v)$/i.test(p)).length;
+        if (photos < 3) return `Envie mais ${3 - photos} foto(s) do defeito.`;
+        if (videos < 1) return "Envie 1 vídeo curto mostrando o defeito.";
+      }
+      if (sym.triage.mode === "visita") {
+        if (state.cep.replace(/\D/g, "").length < 8) return "Informe um CEP válido (8 dígitos).";
+        if (state.bairro.trim().length < 2) return "Informe o bairro.";
+      }
+      return null;
+    }
+    case "contact": {
+      const c = state.contact;
+      if (c.name.trim().length < 2) return "Informe seu nome completo.";
+      const phoneDigits = c.phone.replace(/\D/g, "");
+      if (phoneDigits.length < 10) return "Informe um WhatsApp válido com DDD.";
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(c.email)) return "Informe um e-mail válido.";
+      return null;
+    }
+    case "accept":
+      if (!state.accepts.bancada) return "Confirme ciência da taxa mínima de R$ 99,99 (visita).";
+      if (!state.accepts.visita) return "Confirme ciência dos prazos técnicos.";
+      if (!state.accepts.sla) return "Confirme leitura dos Termos e Condições.";
+      return null;
+    default:
+      return null;
+  }
+
 export function reducer(state: TriageState, action: Action): TriageState {
   switch (action.type) {
     case "NEXT":

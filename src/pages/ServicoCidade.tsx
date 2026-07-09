@@ -106,6 +106,11 @@ export default function ServicoCidade() {
     .filter((c) => c.slug !== cityData.slug)
     .slice(0, 8);
 
+  const whatsappLink = buildWhatsAppUrl({
+    service: serviceData.title,
+    city: cityData.name,
+  });
+
   return (
     <Layout>
       <SEOHead
@@ -118,7 +123,19 @@ export default function ServicoCidade() {
           `técnico ${cityData.name.toLowerCase()}`,
           `assistência técnica ${cityData.name.toLowerCase()}`,
         ].join(", ")}
-        structuredData={[breadcrumbSchema, faqSchema, localServiceSchema, offerSchema, reviewsSchema].filter(Boolean) as object[]}
+        breadcrumbs={[
+          { name: "Início", url: "https://precisodeumtecnico.com/" },
+          { name: "Serviços", url: "https://precisodeumtecnico.com/servicos" },
+          { name: serviceData.title, url: `https://precisodeumtecnico.com/servicos/${serviceData.slug}` },
+          { name: cityData.name, url },
+        ]}
+        service={{
+          name: `${serviceData.title} em ${cityData.name}`,
+          description,
+          priceMinBRL: 99.99,
+          areaServed: `${cityData.name}, ${cityData.state}`,
+        }}
+        structuredData={[faqSchema, localServiceSchema, offerSchema, reviewsSchema].filter(Boolean) as object[]}
       />
 
       {/* Hero */}

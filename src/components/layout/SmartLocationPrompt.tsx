@@ -40,6 +40,8 @@ export function SmartLocationPrompt() {
   const { region } = useUserRegion();
   const [open, setOpen] = useState(false);
   const [gpsLoading, setGpsLoading] = useState(false);
+  const [gpsError, setGpsError] = useState<string | null>(null);
+  const [gpsSuccess, setGpsSuccess] = useState(false);
   const [form, setForm] = useState<StoredLocation>({});
 
   useEffect(() => {
@@ -65,15 +67,25 @@ export function SmartLocationPrompt() {
     return () => clearTimeout(t);
   }, [region.city, region.region]);
 
+  // Persiste + notifica consumidores (useUserRegion, WhatsApp helpers).
+  const persist = (payload: StoredLocation) => {
+    try { localStorage.setItem(KEY, JSON.stringify(payload)); } catch { /* noop */ }
+    try { window.dispatchEvent(new Event(LOCATION_UPDATED_EVENT)); } catch { /* noop */ }
+  };
+
   const save = (source: StoredLocation["source"] = "manual") => {
     if (!form.city) return;
-    const payload: StoredLocation = { ...form, source, savedAt: new Date().toISOString() };
-    try { localStorage.setItem(KEY, JSON.stringify(payload)); } catch { /* noop */ }
+    persist({ ...form, source, savedAt: new Date().toISOString() });
     setOpen(false);
   };
 
   const useGps = () => {
-    if (!("geolocation" in navigator)) return;
+    setGpsError(null);
+    setGpsSuccess(false);
+    if (!("geolocation" in navigator)) {
+      setGpsError("Geolocalização indisponível neste navegador. Preencha manualmente.");
+      return;
+    }
     setGpsLoading(true);
     navigator.geolocation.getCurrentPosition(
       async (pos) => {
@@ -84,32 +96,49 @@ export function SmartLocationPrompt() {
           );
           const j = await r.json();
           const a = j.address ?? {};
-          setForm((f) => ({
-            ...f,
-            city: a.city || a.town || a.village || a.municipality || f.city,
-            uf: a.state_code || a.state || f.uf,
-            neighborhood: a.suburb || a.neighbourhood || a.city_district || f.neighborhood,
-            street: a.road || f.street,
-            number: a.house_number || f.number,
+          const next: StoredLocation = {
+            city: a.city || a.town || a.village || a.municipality || form.city,
+            uf: a.state_code || a.state || form.uf,
+            neighborhood: a.suburb || a.neighbourhood || a.city_district || form.neighborhood,
+            street: a.road || form.street,
+            number: a.house_number || form.number,
+            complement: form.complement,
             source: "gps",
-          }));
-        } catch { /* noop */ }
+            savedAt: new Date().toISOString(),
+          };
+          setForm(next);
+          // Persistência automática — GPS aceito não pode ficar dependendo
+          // do usuário clicar "Confirmar" para atualizar cidade/bairro.
+          if (next.city) {
+            persist(next);
+            setGpsSuccess(true);
+          } else {
+            setGpsError("Não foi possível identificar sua cidade. Confirme manualmente.");
+          }
+        } catch {
+          setGpsError("Falha ao obter endereço. Confirme manualmente.");
+        }
         setGpsLoading(false);
       },
-      () => setGpsLoading(false),
+      (err) => {
+        setGpsLoading(false);
+        setGpsError(
+          err.code === err.PERMISSION_DENIED
+            ? "Permissão negada. Preencha manualmente sua cidade e bairro."
+            : "Não foi possível obter sua localização. Preencha manualmente.",
+        );
+      },
       { enableHighAccuracy: true, timeout: 8000 },
     );
   };
 
   const dismiss = () => {
     // salva o que já temos por IP para uso no WhatsApp
-    if (form.city) {
-      try {
-        localStorage.setItem(KEY, JSON.stringify({
-          city: form.city, uf: form.uf, source: "ip",
-          savedAt: new Date().toISOString(),
-        } satisfies StoredLocation));
-      } catch { /* noop */ }
+    if (form.city && !gpsSuccess) {
+      persist({
+        city: form.city, uf: form.uf, source: "ip",
+        savedAt: new Date().toISOString(),
+      });
     }
     setOpen(false);
   };

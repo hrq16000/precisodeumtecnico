@@ -59,8 +59,12 @@ const Contato = () => {
     <Layout>
       <SEOHead
         title="Contato | Preciso de Um Técnico"
-        description="Entre em contato com o Preciso de Um Técnico. WhatsApp 24h: WhatsApp 24h. Atendimento em Curitiba e Região Metropolitana."
+        description="Entre em contato com o Preciso de Um Técnico. WhatsApp 24h. Atendimento em Curitiba e Região Metropolitana."
         canonical="https://precisodeumtecnico.com/contato"
+        breadcrumbs={[
+          { name: "Início", url: "https://precisodeumtecnico.com/" },
+          { name: "Contato", url: "https://precisodeumtecnico.com/contato" },
+        ]}
       />
 
       {/* Hero */}

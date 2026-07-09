@@ -102,8 +102,8 @@ for (const b of BAIRROS) {
     // Sem aggregateRating/reviewCount fabricado
     expect(jsonlds.join(" ")).not.toMatch(/aggregateRating|reviewCount|ratingValue/i);
 
-    // CTA WhatsApp: atributos + texto com cidade+bairro
-    const cta = page.locator('a[href^="https://wa.me/"][data-wa-source]').first();
+    // CTA WhatsApp específico da página de bairro nacional
+    const cta = page.locator('a[href^="https://wa.me/"][data-wa-source^="bairro-nacional"]').first();
     await expect(cta).toBeVisible();
     await expect(cta).toHaveAttribute("data-service", /assistencia|assist/i);
     await expect(cta).toHaveAttribute("data-city", b.cityName);

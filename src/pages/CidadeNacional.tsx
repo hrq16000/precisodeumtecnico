@@ -181,7 +181,7 @@ const CidadeNacional = () => {
               com visita técnica a partir de <strong>R$ 99,90</strong> e garantia em todos os serviços.
             </p>
             <ul className="grid sm:grid-cols-2 gap-2 mb-6 text-sm">
-              {city.highlights.map((h) => (
+              {(city.highlights ?? []).map((h) => (
                 <li key={h} className="flex items-start gap-2">
                   <CheckCircle className="w-4 h-4 mt-0.5 text-accent shrink-0" />
                   <span>{h}</span>

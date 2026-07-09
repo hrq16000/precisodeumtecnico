@@ -1,10 +1,14 @@
 // Build-time sitemap generator. Run with: bun scripts/build-sitemap.ts
-// Produces public/sitemap.xml with all routes plus accurate lastmod dates
-// derived from source-file mtimes. Processes URLs in async batches so the
-// event loop stays responsive even with thousands of pages, and yields back
-// to the runtime between batches.
+//
+// Emite um sitemap-index em public/sitemap.xml apontando para shards:
+//   - public/sitemap-main.xml           (estáticas + serviços + blog + nacional)
+//   - public/sitemap-city-{city}.xml    (rota da cidade + service×city)
+//   - public/sitemap-bairros-{city}.xml (bairros da cidade)
+//
+// Cada URL tem canonical == loc (URL absoluta https no domínio oficial).
+// Todos os shards são deduplicados globalmente antes de escrever.
 
-import { writeFileSync, statSync, existsSync } from "node:fs";
+import { writeFileSync, statSync, existsSync, readdirSync, unlinkSync } from "node:fs";
 import { servicesData } from "../src/data/services";
 import {
   citiesData,
@@ -19,7 +23,6 @@ import { nationalCities } from "../src/data/nationalCities";
 
 const BASE = "https://precisodeumtecnico.com";
 const today = new Date().toISOString().split("T")[0];
-const BATCH_SIZE = 250; // URLs processed per microtask yield
 
 const fileDate = (path: string): string => {
   try {
@@ -44,6 +47,7 @@ const blogMtime = fileDate("src/data/blog.ts");
 const satMtime = fileDate("src/data/satellitePosts.ts");
 const indexMtime = fileDate("src/pages/Index.tsx");
 const precosMtime = fileDate("src/pages/Precos.tsx");
+const natMtime = fileDate("src/data/nationalCities.ts");
 
 interface Url {
   loc: string;
@@ -52,168 +56,134 @@ interface Url {
   priority?: number;
 }
 
-const urls: Url[] = [];
-const add = (u: Url) => urls.push(u);
+const cityBairros: Record<string, string[]> = {
+  curitiba: curitibaBairros,
+  "sao-jose-dos-pinhais": sjpBairros,
+  pinhais: pinhaiBairros,
+  colombo: colomboBairros,
+  araucaria: araucariaBairros,
+};
 
-// ---- Generators (lazy) ----
-function* staticUrls(): Generator<Url> {
-  yield { loc: `${BASE}/`, changefreq: "daily", priority: 1.0, lastmod: indexMtime };
-  yield { loc: `${BASE}/servicos`, changefreq: "weekly", priority: 0.9, lastmod: servicesMtime };
-  yield { loc: `${BASE}/regioes`, changefreq: "weekly", priority: 0.9, lastmod: regionsMtime };
-  yield { loc: `${BASE}/sobre`, changefreq: "monthly", priority: 0.6, lastmod: fileDate("src/pages/Sobre.tsx") };
-  yield { loc: `${BASE}/contato`, changefreq: "monthly", priority: 0.7, lastmod: fileDate("src/pages/Contato.tsx") };
-  yield { loc: `${BASE}/termos-orcamento-pre-aprovado`, changefreq: "yearly", priority: 0.5, lastmod: fileDate("src/pages/TermosOrcamento.tsx") };
-  yield { loc: `${BASE}/blog`, changefreq: "weekly", priority: 0.9, lastmod: blogMtime };
-  yield { loc: `${BASE}/precos`, changefreq: "weekly", priority: 0.85, lastmod: precosMtime };
-  yield {
-    loc: `${BASE}/assistencia-tecnica-curitiba`,
-    changefreq: "weekly",
-    priority: 0.95,
-    lastmod: fileDate("src/pages/AssistenciaTecnicaCuritiba.tsx"),
-  };
-  yield {
-    loc: `${BASE}/assistencia-tecnica`,
-    changefreq: "weekly",
-    priority: 0.95,
-    lastmod: fileDate("src/pages/AssistenciaTecnica.tsx"),
-  };
-  yield {
-    loc: `${BASE}/atendimento-nacional`,
-    changefreq: "weekly",
-    priority: 0.9,
-    lastmod: fileDate("src/pages/AtendimentoNacional.tsx"),
-  };
+// ---- Shards ----
+const mainUrls: Url[] = [
+  { loc: `${BASE}/`, changefreq: "daily", priority: 1.0, lastmod: indexMtime },
+  { loc: `${BASE}/servicos`, changefreq: "weekly", priority: 0.9, lastmod: servicesMtime },
+  { loc: `${BASE}/regioes`, changefreq: "weekly", priority: 0.9, lastmod: regionsMtime },
+  { loc: `${BASE}/sobre`, changefreq: "monthly", priority: 0.6, lastmod: fileDate("src/pages/Sobre.tsx") },
+  { loc: `${BASE}/contato`, changefreq: "monthly", priority: 0.7, lastmod: fileDate("src/pages/Contato.tsx") },
+  { loc: `${BASE}/termos-orcamento-pre-aprovado`, changefreq: "yearly", priority: 0.5, lastmod: fileDate("src/pages/TermosOrcamento.tsx") },
+  { loc: `${BASE}/blog`, changefreq: "weekly", priority: 0.9, lastmod: blogMtime },
+  { loc: `${BASE}/precos`, changefreq: "weekly", priority: 0.85, lastmod: precosMtime },
+  { loc: `${BASE}/assistencia-tecnica-curitiba`, changefreq: "weekly", priority: 0.95, lastmod: fileDate("src/pages/AssistenciaTecnicaCuritiba.tsx") },
+  { loc: `${BASE}/assistencia-tecnica`, changefreq: "weekly", priority: 0.95, lastmod: fileDate("src/pages/AssistenciaTecnica.tsx") },
+  { loc: `${BASE}/atendimento-nacional`, changefreq: "weekly", priority: 0.9, lastmod: fileDate("src/pages/AtendimentoNacional.tsx") },
+  { loc: `${BASE}/faq`, changefreq: "monthly", priority: 0.6, lastmod: fileDate("src/pages/Faq.tsx") },
+  { loc: `${BASE}/dados-da-empresa`, changefreq: "yearly", priority: 0.4, lastmod: fileDate("src/pages/DadosEmpresa.tsx") },
+];
+
+for (const slug of Object.keys(servicesData))
+  mainUrls.push({ loc: `${BASE}/servicos/${slug}`, changefreq: "weekly", priority: 0.85, lastmod: servicesMtime });
+
+for (const cat of blogCategories)
+  mainUrls.push({ loc: `${BASE}/blog/categoria/${cat.slug}`, changefreq: "weekly", priority: 0.7, lastmod: blogMtime });
+
+for (const post of blogPosts) {
+  const postDate = post.updatedAt ?? post.publishedAt;
+  const fileBased = post.slug.includes("-em-") ? satMtime : blogMtime;
+  const lastmod = postDate > fileBased ? postDate : fileBased;
+  mainUrls.push({ loc: `${BASE}/blog/${post.slug}`, changefreq: "monthly", priority: 0.75, lastmod });
 }
 
-function* nationalCityUrls(): Generator<Url> {
-  const lm = fileDate("src/data/nationalCities.ts");
-  for (const c of nationalCities)
-    yield { loc: `${BASE}/atendimento-nacional/${c.slug}`, changefreq: "weekly", priority: 0.8, lastmod: lm };
+for (const c of nationalCities)
+  mainUrls.push({ loc: `${BASE}/atendimento-nacional/${c.slug}`, changefreq: "weekly", priority: 0.8, lastmod: natMtime });
+
+// Por-cidade (rota + service×city)
+const cityShards: { city: string; urls: Url[] }[] = [];
+const matrixLastmod = servicesMtime > regionsMtime ? servicesMtime : regionsMtime;
+for (const cityKey of Object.keys(citiesData)) {
+  const urls: Url[] = [
+    { loc: `${BASE}/regioes/${cityKey}`, changefreq: "weekly", priority: 0.85, lastmod: regionsMtime },
+  ];
+  for (const serviceKey of Object.keys(servicesData))
+    urls.push({ loc: `${BASE}/servico-em/${cityKey}/${serviceKey}`, changefreq: "weekly", priority: 0.7, lastmod: matrixLastmod });
+  cityShards.push({ city: cityKey, urls });
 }
 
-
-
-function* serviceUrls(): Generator<Url> {
-  for (const slug of Object.keys(servicesData))
-    yield { loc: `${BASE}/servicos/${slug}`, changefreq: "weekly", priority: 0.85, lastmod: servicesMtime };
+// Por-bairros
+const bairroShards: { city: string; urls: Url[] }[] = [];
+for (const [city, bairros] of Object.entries(cityBairros)) {
+  const urls: Url[] = bairros.map((b) => ({
+    loc: `${BASE}/regioes/${city}/${slugify(b)}`,
+    changefreq: "monthly",
+    priority: 0.6,
+    lastmod: regionsMtime,
+  }));
+  bairroShards.push({ city, urls });
 }
 
-function* cityUrls(): Generator<Url> {
-  for (const slug of Object.keys(citiesData))
-    yield { loc: `${BASE}/regioes/${slug}`, changefreq: "weekly", priority: 0.85, lastmod: regionsMtime };
-}
+// ---- Dedupe global ----
+const seenGlobal = new Set<string>();
+const dedupe = (urls: Url[]): Url[] => {
+  const out: Url[] = [];
+  for (const u of urls) {
+    if (seenGlobal.has(u.loc)) continue;
+    seenGlobal.add(u.loc);
+    out.push(u);
+  }
+  return out;
+};
 
-function* matrixUrls(): Generator<Url> {
-  const lm = servicesMtime > regionsMtime ? servicesMtime : regionsMtime;
-  for (const cityKey of Object.keys(citiesData))
-    for (const serviceKey of Object.keys(servicesData))
-      yield { loc: `${BASE}/servico-em/${cityKey}/${serviceKey}`, changefreq: "weekly", priority: 0.7, lastmod: lm };
-}
+const mainDeduped = dedupe(mainUrls);
+const cityDeduped = cityShards.map((s) => ({ city: s.city, urls: dedupe(s.urls) }));
+const bairroDeduped = bairroShards.map((s) => ({ city: s.city, urls: dedupe(s.urls) }));
 
-function* neighborhoodUrls(): Generator<Url> {
-  const cityBairros: Record<string, string[]> = {
-    curitiba: curitibaBairros,
-    "sao-jose-dos-pinhais": sjpBairros,
-    pinhais: pinhaiBairros,
-    colombo: colomboBairros,
-    araucaria: araucariaBairros,
-  };
-  for (const [city, bairros] of Object.entries(cityBairros))
-    for (const b of bairros)
-      yield { loc: `${BASE}/regioes/${city}/${slugify(b)}`, changefreq: "monthly", priority: 0.6, lastmod: regionsMtime };
-}
+// ---- XML ----
+const escape = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+const urlXml = (u: Url) =>
+  `  <url>
+    <loc>${escape(u.loc)}</loc>${u.lastmod ? `\n    <lastmod>${u.lastmod}</lastmod>` : ""}${u.changefreq ? `\n    <changefreq>${u.changefreq}</changefreq>` : ""}${u.priority ? `\n    <priority>${u.priority.toFixed(2)}</priority>` : ""}
+    <xhtml:link rel="canonical" href="${escape(u.loc)}"/>
+  </url>`;
 
-function* blogUrls(): Generator<Url> {
-  for (const cat of blogCategories)
-    yield { loc: `${BASE}/blog/categoria/${cat.slug}`, changefreq: "weekly", priority: 0.7, lastmod: blogMtime };
-  for (const post of blogPosts) {
-    const postDate = post.updatedAt ?? post.publishedAt;
-    const fileBased = post.slug.includes("-em-") ? satMtime : blogMtime;
-    const lastmod = postDate > fileBased ? postDate : fileBased;
-    yield { loc: `${BASE}/blog/${post.slug}`, changefreq: "monthly", priority: 0.75, lastmod };
+const buildUrlset = (urls: Url[]) =>
+  `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+${urls.map(urlXml).join("\n")}
+</urlset>
+`;
+
+const shardLastmod = (urls: Url[]) =>
+  urls.map((u) => u.lastmod ?? today).sort().at(-1) ?? today;
+
+// Limpa shards antigos
+for (const f of readdirSync("public")) {
+  if (/^sitemap-(main|city-|bairros-).*\.xml$/.test(f)) {
+    try { unlinkSync(`public/${f}`); } catch {}
   }
 }
 
-const yieldToLoop = () => new Promise<void>((r) => setImmediate(r));
+const shardIndex: { name: string; lastmod: string }[] = [];
 
-async function consume(label: string, gen: Generator<Url>) {
-  let count = 0;
-  let batch = 0;
-  for (const u of gen) {
-    add(u);
-    count++;
-    if (++batch >= BATCH_SIZE) {
-      batch = 0;
-      await yieldToLoop();
-    }
-  }
-  console.log(`  • ${label}: ${count}`);
+writeFileSync("public/sitemap-main.xml", buildUrlset(mainDeduped));
+shardIndex.push({ name: "sitemap-main.xml", lastmod: shardLastmod(mainDeduped) });
+
+for (const s of cityDeduped) {
+  if (s.urls.length === 0) continue;
+  const name = `sitemap-city-${s.city}.xml`;
+  writeFileSync(`public/${name}`, buildUrlset(s.urls));
+  shardIndex.push({ name, lastmod: shardLastmod(s.urls) });
 }
 
-await consume("static", staticUrls());
-await consume("services", serviceUrls());
-await consume("cities", cityUrls());
-await consume("service×city matrix", matrixUrls());
-await consume("neighborhoods", neighborhoodUrls());
-await consume("blog", blogUrls());
-await consume("national cities", nationalCityUrls());
-
-// Dedupe by loc (last write wins for lastmod) — defends against satellite/blog
-// slug overlaps and any future generator collisions.
-{
-  const before = urls.length;
-  const map = new Map<string, Url>();
-  for (const u of urls) map.set(u.loc, u);
-  urls.length = 0;
-  for (const u of map.values()) urls.push(u);
-  if (urls.length !== before) console.log(`  • dedupe: removed ${before - urls.length} duplicate URLs`);
+for (const s of bairroDeduped) {
+  if (s.urls.length === 0) continue;
+  const name = `sitemap-bairros-${s.city}.xml`;
+  writeFileSync(`public/${name}`, buildUrlset(s.urls));
+  shardIndex.push({ name, lastmod: shardLastmod(s.urls) });
 }
 
-// Sitemaps protocol limits each file to 50 000 URLs / 50 MB. We stay well
-// under that. When the project grows beyond MAX_PER_FILE we automatically
-// emit a sitemap index + N child files; otherwise we keep a single file.
-const MAX_PER_FILE = 45_000;
-
-function buildUrlsetXml(slice: Url[]): string {
-  const head = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
-  const tail = `</urlset>\n`;
-  const parts: string[] = [head];
-  for (let i = 0; i < slice.length; i += BATCH_SIZE) {
-    const chunk = slice.slice(i, i + BATCH_SIZE);
-    parts.push(
-      chunk
-        .map(
-          (u) => `  <url>
-    <loc>${u.loc}</loc>${u.lastmod ? `\n    <lastmod>${u.lastmod}</lastmod>` : ""}${u.changefreq ? `\n    <changefreq>${u.changefreq}</changefreq>` : ""}${u.priority ? `\n    <priority>${u.priority.toFixed(2)}</priority>` : ""}
-  </url>`,
-        )
-        .join("\n") + "\n",
-    );
-  }
-  parts.push(tail);
-  return parts.join("");
-}
-
-if (urls.length <= MAX_PER_FILE) {
-  writeFileSync("public/sitemap.xml", buildUrlsetXml(urls));
-  console.log(`✓ sitemap.xml written with ${urls.length} URLs`);
-} else {
-  // Split into shards + index file.
-  const shards: { name: string; lastmod: string }[] = [];
-  for (let i = 0, n = 0; i < urls.length; i += MAX_PER_FILE, n++) {
-    const slice = urls.slice(i, i + MAX_PER_FILE);
-    const name = `sitemap-${String(n + 1).padStart(2, "0")}.xml`;
-    writeFileSync(`public/${name}`, buildUrlsetXml(slice));
-    const lastmod = slice
-      .map((u) => u.lastmod ?? today)
-      .sort()
-      .at(-1)!;
-    shards.push({ name, lastmod });
-    await yieldToLoop();
-  }
-  const indexXml = `<?xml version="1.0" encoding="UTF-8"?>
+const indexXml = `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${shards
+${shardIndex
   .map(
     (s) => `  <sitemap>
     <loc>${BASE}/${s.name}</loc>
@@ -223,6 +193,8 @@ ${shards
   .join("\n")}
 </sitemapindex>
 `;
-  writeFileSync("public/sitemap.xml", indexXml);
-  console.log(`✓ sitemap index written with ${shards.length} shards (${urls.length} URLs)`);
-}
+writeFileSync("public/sitemap.xml", indexXml);
+
+const total = mainDeduped.length + cityDeduped.reduce((a, s) => a + s.urls.length, 0) + bairroDeduped.reduce((a, s) => a + s.urls.length, 0);
+console.log(`✓ sitemap-index escrito com ${shardIndex.length} shards, ${total} URLs únicas`);
+for (const s of shardIndex) console.log(`  • ${s.name}`);

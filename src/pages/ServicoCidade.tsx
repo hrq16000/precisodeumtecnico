@@ -151,7 +151,15 @@ export default function ServicoCidade() {
             </p>
             <div className="flex flex-wrap gap-3">
               <Button size="lg" variant="whatsapp" asChild>
-                <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={whatsappLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-wa-source="service-city"
+                  data-service={serviceData.title}
+                  data-city={cityData.name}
+                  aria-label={`Falar com técnico — ${serviceData.title} em ${cityData.name}`}
+                >
                   <MessageCircle className="w-5 h-5" /> Chamar Técnico Agora
                 </a>
               </Button>

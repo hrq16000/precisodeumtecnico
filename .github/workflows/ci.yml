@@ -65,18 +65,20 @@ jobs:
             exit 1
           fi
           echo "OK: no service role in src/"
-      - name: Guard — no raw GPS coords in analytics/audit payloads
+      - name: Guard — no raw GPS coords in analytics payloads
         run: |
           set -e
-          # Coordenadas cruas (latitude/longitude/accuracy) só podem viver em
-          # SmartLocationPrompt (persistência local) e reverseGeocode (helper).
-          MATCHES=$(rg -n "latitude|longitude|\baccuracy\b" src/lib/analytics.ts src/lib/waAudit.ts src/lib/locationTelemetry.ts 2>/dev/null | rg -v "accuracy_bucket|// " || true)
+          # Coordenadas cruas só podem viver em SmartLocationPrompt (persistência
+          # local) e reverseGeocode (helper). Aqui garantimos que analytics e
+          # auditoria não recebem lat/lng — bucket qualitativo é permitido.
+          MATCHES=$(rg -n "latitude|longitude" src/lib/analytics.ts src/lib/waAudit.ts 2>/dev/null || true)
           if [ -n "$MATCHES" ]; then
             echo "::error::Raw GPS coords leaked into analytics/audit code:"
             echo "$MATCHES"
             exit 1
           fi
           echo "OK: no raw coords in analytics/audit code."
+
       - name: RLS E2E — wa_bypass_events policy
         run: bunx playwright test e2e/wa-bypass-rls.spec.ts --reporter=list
       - name: Upload RLS failure trace

@@ -8,6 +8,7 @@ import {
   Smartphone, Printer, Building, HardDrive, Shield, Cpu, Settings,
   ArrowRight, CheckCircle, MessageCircle
 } from "lucide-react";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 const serviceCategories = [
   {
@@ -172,9 +173,7 @@ const serviceCategories = [
     ],
   },
 ];
-
-const whatsappNumber = "5541997452053";
-const whatsappLink = `https://wa.me/${whatsappNumber}?text=Olá! Preciso de um técnico.`;
+const whatsappLink = buildWhatsAppUrl();
 
 const Servicos = () => {
   return (
@@ -183,6 +182,10 @@ const Servicos = () => {
         title="Serviços de Assistência Técnica | Preciso de Um Técnico"
         description="Conheça todos os nossos serviços de assistência técnica: informática, notebooks, CFTV, elétrica, redes, ar-condicionado e muito mais. Atendimento em Curitiba e região."
         canonical="https://precisodeumtecnico.com/servicos"
+        breadcrumbs={[
+          { name: "Início", url: "https://precisodeumtecnico.com/" },
+          { name: "Serviços", url: "https://precisodeumtecnico.com/servicos" },
+        ]}
       />
 
       {/* Hero */}

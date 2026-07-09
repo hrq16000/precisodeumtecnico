@@ -8,8 +8,7 @@ import {
   Monitor, Laptop, Camera, Zap, Wifi, Wind, Smartphone, Gamepad2,
 } from "lucide-react";
 import { getNationalCityBySlug, nationalCities } from "@/data/nationalCities";
-
-const whatsappNumber = "5541997452053";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 const services = [
   { icon: Monitor, name: "Informática", href: "/servicos/informatica" },
@@ -34,9 +33,7 @@ const CidadeNacional = () => {
   const heroWebpSrcSet = `${heroBase}-800.webp 800w, ${heroBase}-1200.webp 1200w, ${heroBase}-1600.webp 1600w`;
   const heroJpgFallback = `${heroBase}-800.jpg`;
   const heroPreload = `${heroBase}-1200.webp`;
-  const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-    `Olá! Preciso de um técnico parceiro em ${city.name} - ${city.state}.`
-  )}`;
+  const whatsappLink = buildWhatsAppUrl({ city: city.name });
 
   const title = `Técnico em ${city.name} - ${city.state} | Rede de Parceiros | Preciso de Um Técnico`;
   const description = `Precisa de um técnico em ${city.name} (${city.stateName})? Acionamos um prestador parceiro homologado para informática, redes, CFTV, elétrica, ar-condicionado e mais. Orçamento via WhatsApp 24h.`;

@@ -7,6 +7,7 @@ import {
   MessageCircle, Phone, CheckCircle, Clock, Shield, Award, 
   ArrowRight, MapPin, Star
 } from "lucide-react";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 // Service data mapping
 const servicesData: Record<string, {
@@ -171,9 +172,7 @@ const defaultServiceData = {
   ],
   category: "Serviços Gerais",
 };
-
-const whatsappNumber = "5541997452053";
-const whatsappLink = `https://wa.me/${whatsappNumber}?text=Olá! Preciso de um técnico.`;
+const whatsappLink = buildWhatsAppUrl();
 
 const ServicoDetalhe = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -190,6 +189,17 @@ const ServicoDetalhe = () => {
         title={`${displayTitle} em Curitiba | Preciso de Um Técnico`}
         description={service.description}
         canonical={`https://precisodeumtecnico.com/servicos/${slug}`}
+        breadcrumbs={[
+          { name: "Início", url: "https://precisodeumtecnico.com/" },
+          { name: "Serviços", url: "https://precisodeumtecnico.com/servicos" },
+          { name: displayTitle, url: `https://precisodeumtecnico.com/servicos/${slug}` },
+        ]}
+        service={{
+          name: displayTitle,
+          description: service.description,
+          priceMinBRL: 99.99,
+          areaServed: "Curitiba e Região Metropolitana",
+        }}
       />
 
       {/* Hero */}

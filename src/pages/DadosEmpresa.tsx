@@ -14,6 +14,15 @@ const jsonLd = {
   sameAs: [COMPANY.facebook, COMPANY.instagram],
 };
 
+const breadcrumbLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Início", item: "https://precisodeumtecnico.com/" },
+    { "@type": "ListItem", position: 2, name: "Dados da Empresa", item: "https://precisodeumtecnico.com/dados-da-empresa" },
+  ],
+};
+
 export default function DadosEmpresa() {
   return (
     <Layout>
@@ -25,6 +34,7 @@ export default function DadosEmpresa() {
         <meta property="og:url" content="https://precisodeumtecnico.com/dados-da-empresa" />
         <meta property="og:type" content="website" />
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumbLd)}</script>
       </Helmet>
       <section className="container-custom section-padding">
         <header className="mb-10 max-w-3xl">

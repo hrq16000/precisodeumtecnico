@@ -6,9 +6,8 @@ import {
   MessageCircle, Phone, MapPin, Clock, CheckCircle,
   Building, Users, Headphones
 } from "lucide-react";
-
-const whatsappNumber = "5541997452053";
-const whatsappLink = `https://wa.me/${whatsappNumber}?text=Olá! Preciso de um técnico.`;
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
+const whatsappLink = buildWhatsAppUrl();
 
 const contactInfo = [
   {
@@ -60,8 +59,12 @@ const Contato = () => {
     <Layout>
       <SEOHead
         title="Contato | Preciso de Um Técnico"
-        description="Entre em contato com o Preciso de Um Técnico. WhatsApp 24h: WhatsApp 24h. Atendimento em Curitiba e Região Metropolitana."
+        description="Entre em contato com o Preciso de Um Técnico. WhatsApp 24h. Atendimento em Curitiba e Região Metropolitana."
         canonical="https://precisodeumtecnico.com/contato"
+        breadcrumbs={[
+          { name: "Início", url: "https://precisodeumtecnico.com/" },
+          { name: "Contato", url: "https://precisodeumtecnico.com/contato" },
+        ]}
       />
 
       {/* Hero */}

@@ -16,8 +16,9 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
-const whatsappLink = "https://wa.me/5541997452053?text=Olá! Preciso de um técnico.";
+const whatsappLink = buildWhatsAppUrl();
 
 export default function ServicoCidade() {
   const { city, service } = useParams<{ city: string; service: string }>();

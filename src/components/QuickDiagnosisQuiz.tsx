@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { MessageCircle, Sparkles, ArrowRight, RotateCcw } from "lucide-react";
 import { trackQuizComplete, trackWhatsAppClick, trackEvent } from "@/lib/analytics";
 import { openTriage } from "@/lib/triageFlag";
+import { buildWhatsAppUrlFromText } from "@/lib/whatsapp";
 
 type Step = "problema" | "detalhe" | "urgencia" | "resultado";
 
@@ -144,7 +145,7 @@ function buildWhatsApp(
     `*Urgência:* ${urg}\n` +
     `*Faixa estimada:* ${p.faixaPreco}` +
     (local ? `\n*Localização:* ${local}` : "");
-  return `https://wa.me/5541997452053?text=${encodeURIComponent(msg)}`;
+  return buildWhatsAppUrlFromText(msg);
 }
 
 export function QuickDiagnosisQuiz({ city, bairro }: QuickDiagnosisQuizProps = {}) {

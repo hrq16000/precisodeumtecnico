@@ -6,6 +6,7 @@ import {
   Shield, Award, Users, Clock, CheckCircle, Target, Heart, 
   Zap, MessageCircle, Building, ThumbsUp
 } from "lucide-react";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 const stats = [
   { number: "15.000+", label: "Clientes Atendidos", icon: Users },
@@ -44,9 +45,7 @@ const differentials = [
   "Cobertura em toda a Região Metropolitana",
   "Atendimento residencial e empresarial",
 ];
-
-const whatsappNumber = "5541997452053";
-const whatsappLink = `https://wa.me/${whatsappNumber}?text=Olá! Preciso de um técnico.`;
+const whatsappLink = buildWhatsAppUrl();
 
 const Sobre = () => {
   return (
@@ -55,6 +54,10 @@ const Sobre = () => {
         title="Sobre Nós | Preciso de Um Técnico"
         description="Conheça a maior rede de técnicos especializados de Curitiba e Região Metropolitana. Nossa história, missão, valores e compromisso com a qualidade."
         canonical="https://precisodeumtecnico.com/sobre"
+        breadcrumbs={[
+          { name: "Início", url: "https://precisodeumtecnico.com/" },
+          { name: "Sobre", url: "https://precisodeumtecnico.com/sobre" },
+        ]}
       />
 
       {/* Hero */}

@@ -5,8 +5,9 @@ import { CTASection } from "@/components/home/CTASection";
 import { Button } from "@/components/ui/button";
 import { MapPin, ArrowRight, Building2, Home, Phone, MessageCircle, CheckCircle, Users, Star, Clock, Shield } from "lucide-react";
 import { getMainCities, getOtherCities, formatNeighborhoodSlug } from "@/data/regions";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
-const whatsappLink = "https://wa.me/5541997452053?text=Olá! Preciso de um técnico.";
+const whatsappLink = buildWhatsAppUrl();
 
 const Regioes = () => {
   const mainCities = getMainCities();

@@ -5,6 +5,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { MessageCircleQuestion } from "lucide-react";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 const faqs = [
   {
@@ -85,7 +86,7 @@ export function FAQSection() {
             Não encontrou sua dúvida? Fale conosco!
           </p>
           <a
-            href="https://wa.me/5541997452053?text=Olá! Tenho uma dúvida sobre os serviços."
+            href={buildWhatsAppUrl()}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-6 py-3 bg-success text-success-foreground rounded-lg font-semibold hover:bg-success/90 transition-colors"

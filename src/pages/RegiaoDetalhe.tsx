@@ -13,6 +13,7 @@ import { OfferHighlight } from "@/components/marketing/OfferHighlight";
 import { buildOfferSchema } from "@/components/seo/OfferSchema";
 import { buildReviewsSchema } from "@/data/testimonials";
 import { trackCtaClick, trackWhatsAppClick } from "@/lib/analytics";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 const services = [
   { icon: Monitor, name: "Informática", href: "/servicos/informatica", desc: "Formatação, manutenção, upgrade" },
@@ -25,15 +26,13 @@ const services = [
   { icon: Gamepad2, name: "Games", href: "/servicos/games", desc: "PS4, PS5, Xbox, Switch" },
 ];
 
-const whatsappNumber = "5541997452053";
-
 const RegiaoDetalhe = () => {
   const { city, neighborhood } = useParams<{ city: string; neighborhood?: string }>();
   const cityData = city ? getCityBySlug(city) : null;
   
   const cityName = cityData?.name || (city ? formatNameFromSlug(city) : "");
   const neighborhoodName = neighborhood ? formatNameFromSlug(neighborhood) : "";
-  const whatsappLink = `https://wa.me/${whatsappNumber}?text=Olá! Preciso de um técnico em ${neighborhoodName || cityName}.`;
+  const whatsappLink = buildWhatsAppUrl();
   
   const pageTitle = neighborhood 
     ? `Técnico em ${neighborhoodName}, ${cityName}`

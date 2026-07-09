@@ -22,6 +22,7 @@ import { buildOfferSchema } from "@/components/seo/OfferSchema";
 import { buildReviewsSchema } from "@/data/testimonials";
 import { trackWhatsAppClick, trackCtaClick } from "@/lib/analytics";
 import NotFound from "./NotFound";
+import { buildWhatsAppUrlFromText } from "@/lib/whatsapp";
 
 const serviceIcons: Record<string, any> = {
   "Informática": Monitor,
@@ -66,7 +67,7 @@ export default function BairroDetalhe() {
   const pageDescription = `Assistência técnica no bairro ${neighborhoodName}, ${cityData.name}. Informática, elétrica, CFTV, notebooks, ar-condicionado. Atendimento 24h via WhatsApp. Técnico vai até você! A partir de R$ 99,99.`;
 
   const whatsappMessage = `Olá! Preciso de um técnico no bairro ${neighborhoodName}, ${cityData.name}. Podem me ajudar?`;
-  const whatsappLink = `https://wa.me/5541997452053?text=${encodeURIComponent(whatsappMessage)}`;
+  const whatsappLink = buildWhatsAppUrlFromText(whatsappMessage);
 
   // Get nearby neighborhoods (up to 6)
   const currentIndex = formattedNeighborhoods.indexOf(neighborhood);

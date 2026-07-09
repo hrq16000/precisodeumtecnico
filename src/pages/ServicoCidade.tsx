@@ -50,16 +50,7 @@ export default function ServicoCidade() {
     ...serviceData.faqs.slice(0, 3),
   ];
 
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Início", item: "https://precisodeumtecnico.com/" },
-      { "@type": "ListItem", position: 2, name: "Serviços", item: "https://precisodeumtecnico.com/servicos" },
-      { "@type": "ListItem", position: 3, name: serviceData.title, item: `https://precisodeumtecnico.com/servicos/${serviceData.slug}` },
-      { "@type": "ListItem", position: 4, name: cityData.name, item: url },
-    ],
-  };
+  // Breadcrumb agora vem via SEOHead prop; schema abaixo removido.
 
   const faqSchema = {
     "@context": "https://schema.org",

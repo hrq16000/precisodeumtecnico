@@ -153,9 +153,9 @@ const Sobre = () => {
               <div className="space-y-4 mt-8">
                 <div className="bg-card rounded-2xl p-6 card-shadow border border-border/50">
                   <ThumbsUp className="w-10 h-10 text-success mb-4" />
-                  <h3 className="font-bold text-lg text-card-foreground mb-2">4.9/5</h3>
+                  <h3 className="font-bold text-lg text-card-foreground mb-2">Clientes satisfeitos</h3>
                   <p className="text-muted-foreground text-sm">
-                    Avaliação média dos nossos clientes
+                    Atendimento avaliado diretamente pelos nossos clientes
                   </p>
                 </div>
                 <div className="bg-card rounded-2xl p-6 card-shadow border border-border/50">

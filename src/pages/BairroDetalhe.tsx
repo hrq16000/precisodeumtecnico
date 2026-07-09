@@ -183,7 +183,7 @@ export default function BairroDetalhe() {
               </div>
               <div className="flex items-center gap-2 bg-primary-foreground/10 backdrop-blur px-4 py-2 rounded-full">
                 <Star className="h-5 w-5 text-accent" />
-                <span>4.9 ★ Avaliação</span>
+                <span>Técnicos verificados</span>
               </div>
             </div>
 

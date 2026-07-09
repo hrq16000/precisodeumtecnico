@@ -167,7 +167,7 @@ export default function ServicoCidade() {
             <div className="flex flex-wrap gap-4 mt-8 text-sm">
               <span className="flex items-center gap-2"><Clock className="w-4 h-4 text-primary" /> Atendimento 24h</span>
               <span className="flex items-center gap-2"><Shield className="w-4 h-4 text-primary" /> Garantia até 1 ano</span>
-              <span className="flex items-center gap-2"><Star className="w-4 h-4 text-primary" /> 4,9★ (523 avaliações)</span>
+              <span className="flex items-center gap-2"><Star className="w-4 h-4 text-primary" /> Atendimento local verificado</span>
             </div>
           </Reveal>
         </div>

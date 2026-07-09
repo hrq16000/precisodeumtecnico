@@ -52,7 +52,7 @@ export function TestimonialsSection() {
             }).map((_, i) => <Star key={i} className="w-5 h-5 fill-accent text-accent" />)}
             </div>
             <span className="text-card-foreground font-medium">
-              Avaliação média: <span className="text-primary font-bold">4.9/5</span> baseado em +15.000 atendimentos
+              Depoimentos reais de clientes atendidos pela nossa rede
             </span>
           </div>
         </div>

@@ -347,7 +347,7 @@ const ServicoDetalhe = () => {
                   <div className="space-y-3">
                     <div className="flex items-center gap-3">
                       <Star className="w-5 h-5 text-accent" />
-                      <span className="text-sm text-muted-foreground">Avaliação 4.9/5</span>
+                      <span className="text-sm text-muted-foreground">Técnicos verificados</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <Shield className="w-5 h-5 text-success" />

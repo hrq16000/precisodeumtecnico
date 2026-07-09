@@ -1,7 +1,8 @@
 /**
- * Schema.org Offer/Service JSON-LD para a oferta âncora R$ 99,99 (visita)
- * e R$ 90,00 (bancada). Use em páginas de cidade/bairro/serviço através
- * de <SEOHead structuredData={[..., buildOfferSchema(...)]} />.
+ * Schema.org Offer/Service JSON-LD para a oferta âncora R$ 99,99 (visita
+ * técnica ou diagnóstico em bancada) e R$ 299,99 (coleta e entrega).
+ * Use em páginas de cidade/bairro/serviço através de
+ * <SEOHead structuredData={[..., buildOfferSchema(...)]} />.
  */
 export interface OfferSchemaInput {
   serviceName: string;

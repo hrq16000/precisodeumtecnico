@@ -437,6 +437,28 @@ export default function Diagnostics() {
   const [sitemapAudits, setSitemapAudits] = useState<SitemapAudit[]>([]);
   const [sitemapLoading, setSitemapLoading] = useState(false);
 
+  // Smoke SEO — rotas críticas
+  interface SmokeRow {
+    path: string;
+    status: "pending" | "ok" | "fail" | "error";
+    canonical: string | null;
+    canonicalCount: number;
+    ogImage: string | null;
+    ogImageCount: number;
+    ogTitleCount: number;
+    fails: string[];
+  }
+  const CRITICAL_ROUTES = [
+    "/",
+    "/servicos",
+    "/precos",
+    "/assistencia-tecnica-curitiba",
+    "/termos-orcamento-pre-aprovado",
+    "/contato",
+  ];
+  const [smoke, setSmoke] = useState<SmokeRow[]>([]);
+  const [smokeRunning, setSmokeRunning] = useState(false);
+
   const collect = (doc: Document, path: string) => {
     setSchemas(readSchemasFromDoc(doc));
     setMeta({
@@ -542,6 +564,47 @@ export default function Diagnostics() {
     }
   };
 
+  const runSmoke = async () => {
+    setSmokeRunning(true);
+    const initial: SmokeRow[] = CRITICAL_ROUTES.map((p) => ({
+      path: p, status: "pending", canonical: null, canonicalCount: 0,
+      ogImage: null, ogImageCount: 0, ogTitleCount: 0, fails: [],
+    }));
+    setSmoke(initial);
+    for (let i = 0; i < CRITICAL_ROUTES.length; i++) {
+      const path = CRITICAL_ROUTES[i];
+      try {
+        const doc = await loadPathInIframe(path);
+        if (!doc) {
+          setSmoke((prev) => prev.map((r, idx) => idx === i ? { ...r, status: "error", fails: ["iframe sem document"] } : r));
+          continue;
+        }
+        const head = doc.head;
+        const canonicals = head.querySelectorAll('link[rel="canonical"]');
+        const ogImages = head.querySelectorAll('meta[property="og:image"]');
+        const ogTitles = head.querySelectorAll('meta[property="og:title"]');
+        const canonical = canonicals[0]?.getAttribute("href") ?? null;
+        const ogImage = ogImages[0]?.getAttribute("content") ?? null;
+        const fails: string[] = [];
+        if (canonicals.length !== 1) fails.push(`canonical=${canonicals.length}`);
+        if (ogImages.length !== 1) fails.push(`og:image=${ogImages.length}`);
+        if (ogTitles.length !== 1) fails.push(`og:title=${ogTitles.length}`);
+        if (!canonical || !/^https?:\/\//i.test(canonical)) fails.push("canonical não absoluto");
+        setSmoke((prev) => prev.map((r, idx) => idx === i ? {
+          ...r,
+          status: fails.length ? "fail" : "ok",
+          canonical, canonicalCount: canonicals.length,
+          ogImage, ogImageCount: ogImages.length,
+          ogTitleCount: ogTitles.length,
+          fails,
+        } : r));
+      } catch (e) {
+        setSmoke((prev) => prev.map((r, idx) => idx === i ? { ...r, status: "error", fails: [(e as Error).message] } : r));
+      }
+    }
+    setSmokeRunning(false);
+  };
+
   useEffect(() => {
     const initial = new URLSearchParams(window.location.search).get("path");
     const t = setTimeout(() => {
@@ -613,6 +676,74 @@ export default function Diagnostics() {
                 aria-hidden
                 style={{ position: "absolute", width: 1, height: 1, opacity: 0, pointerEvents: "none" }}
               />
+            )}
+          </Card>
+
+          {/* Smoke SEO — rotas críticas */}
+          <h2 className="font-display text-xl font-bold mb-3">Smoke SEO — rotas críticas</h2>
+          <Card className="p-4 mb-8">
+            <p className="text-sm text-muted-foreground mb-3">
+              Mede canonical e og:image nas 6 rotas críticas. Falha se houver duplicidade
+              (canonical ≠ 1, og:image ≠ 1, og:title ≠ 1) ou canonical não absoluto.
+            </p>
+            <div className="flex gap-2 mb-4">
+              <Button onClick={runSmoke} disabled={smokeRunning || bulkRunning}>
+                {smokeRunning ? "Medindo..." : "Rodar smoke agora"}
+              </Button>
+            </div>
+            {smoke.length > 0 && (
+              <div className="overflow-x-auto">
+                <table className="w-full text-xs">
+                  <thead>
+                    <tr className="text-left border-b border-border">
+                      <th className="py-2 pr-2">Rota</th>
+                      <th className="py-2 pr-2">Status</th>
+                      <th className="py-2 pr-2">canonical</th>
+                      <th className="py-2 pr-2">og:image</th>
+                      <th className="py-2 pr-2">og:title</th>
+                      <th className="py-2 pr-2">Falhas</th>
+                      <th className="py-2 pr-2">Evidência</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {smoke.map((r) => (
+                      <tr key={r.path} className="border-b border-border/60 align-top">
+                        <td className="py-2 pr-2 font-mono">{r.path}</td>
+                        <td className="py-2 pr-2">
+                          <Badge variant={r.status === "ok" ? "secondary" : r.status === "pending" ? "outline" : "destructive"}>
+                            {r.status}
+                          </Badge>
+                        </td>
+                        <td className="py-2 pr-2 break-all">
+                          <span className={r.canonicalCount === 1 ? "" : "text-destructive font-semibold"}>
+                            ×{r.canonicalCount}
+                          </span>
+                          {r.canonical && <div className="text-muted-foreground">{r.canonical}</div>}
+                        </td>
+                        <td className="py-2 pr-2 break-all">
+                          <span className={r.ogImageCount === 1 ? "" : "text-destructive font-semibold"}>
+                            ×{r.ogImageCount}
+                          </span>
+                          {r.ogImage && <div className="text-muted-foreground truncate max-w-[240px]">{r.ogImage}</div>}
+                        </td>
+                        <td className="py-2 pr-2">
+                          <span className={r.ogTitleCount === 1 ? "" : "text-destructive font-semibold"}>
+                            ×{r.ogTitleCount}
+                          </span>
+                        </td>
+                        <td className="py-2 pr-2 text-destructive">
+                          {r.fails.length ? r.fails.join(", ") : "—"}
+                        </td>
+                        <td className="py-2 pr-2">
+                          <a className="underline" href={r.path} target="_blank" rel="noopener noreferrer">abrir</a>
+                          {" · "}
+                          <a className="underline" href={`/diagnostics?path=${encodeURIComponent(r.path)}`} target="_blank" rel="noopener noreferrer">auditar</a>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             )}
           </Card>
 

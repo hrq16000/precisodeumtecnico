@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { Phone, Mail, MapPin, Clock, MessageCircle, Facebook, Instagram } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { trackCtaClick, trackWhatsAppClick } from "@/lib/analytics";
+import { buildWhatsAppUrl, readStoredLocation, currentSourcePage } from "@/lib/whatsapp";
+import { COMPANY } from "@/data/companyInfo";
 
 const services = [
   { name: "Informática", href: "/servicos/informatica" },
@@ -23,8 +25,7 @@ const regions = [
 ];
 
 export function Footer() {
-  const whatsappNumber = "5541997452053";
-  const whatsappLink = `https://wa.me/${whatsappNumber}?text=Olá! Preciso de um técnico.`;
+  const whatsappLink = buildWhatsAppUrl({ ...readStoredLocation(), sourcePage: currentSourcePage() });
   const currentYear = new Date().getFullYear();
 
   return (
@@ -133,10 +134,16 @@ export function Footer() {
         <div className="container-custom py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-background/60 text-sm text-center md:text-left space-y-1">
-              <p>© {currentYear} Preciso de Um Técnico. Todos os direitos reservados.</p>
-              <p>CNPJ: 41.723.708/0001-58 · Atendimento desde 2006</p>
+              <p>© {currentYear} {COMPANY.legalName}. Todos os direitos reservados.</p>
+              <p>CNPJ: {COMPANY.cnpj} · {COMPANY.experiencePhrase}</p>
             </div>
             <div className="flex flex-wrap gap-6">
+              <Link to="/faq" className="text-background/60 hover:text-background text-sm transition-colors">
+                FAQ
+              </Link>
+              <Link to="/dados-da-empresa" className="text-background/60 hover:text-background text-sm transition-colors">
+                Dados da Empresa
+              </Link>
               <Link to="/precos" className="text-background/60 hover:text-background text-sm transition-colors">
                 Preços
               </Link>

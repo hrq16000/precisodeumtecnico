@@ -31,7 +31,11 @@ import AssistenciaTecnica from "./pages/AssistenciaTecnica";
 import AtendimentoNacional from "./pages/AtendimentoNacional";
 import CidadeNacional from "./pages/CidadeNacional";
 import TriagemPreview from "./pages/TriagemPreview";
+import Faq from "./pages/Faq";
+import DadosEmpresa from "./pages/DadosEmpresa";
 import { GlobalTriageLauncher } from "@/components/triage/GlobalTriageLauncher";
+import { SmartLocationPrompt } from "@/components/layout/SmartLocationPrompt";
+
 
 const queryClient = new QueryClient();
 
@@ -46,9 +50,13 @@ const App = () => (
             <ScrollToTop />
             <GlobalReveal />
             <GlobalTriageLauncher />
+            <SmartLocationPrompt />
 
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/faq" element={<Faq />} />
+              <Route path="/dados-da-empresa" element={<DadosEmpresa />} />
+
               <Route path="/servicos" element={<Servicos />} />
               <Route path="/servicos/:slug" element={<ServicoDetalhe />} />
               <Route path="/regioes" element={<Regioes />} />

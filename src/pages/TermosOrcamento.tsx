@@ -5,6 +5,7 @@ import {
   AlertTriangle, Shield, Calendar, Package, MapPin, Phone, CreditCard, Award, Users
 } from "lucide-react";
 import { PRICING, SLA, COMMERCIAL } from "@/data/pricingPolicy";
+import { COMMERCIAL_TERMS } from "@/data/commercialTerms";
 import { Link } from "react-router-dom";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 

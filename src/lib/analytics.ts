@@ -79,6 +79,8 @@ export type CtaSurface =
   | "service_page"
   | "city_page"
   | "bairro_page"
+  | "bairro_nacional"
+  | "cidade_nacional"
   | "cta_section"
   | "blog"
   | "quiz"

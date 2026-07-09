@@ -35,6 +35,7 @@ const AssistenciaTecnicaCuritiba = lazy(() => import("./pages/AssistenciaTecnica
 const AssistenciaTecnica = lazy(() => import("./pages/AssistenciaTecnica"));
 const AtendimentoNacional = lazy(() => import("./pages/AtendimentoNacional"));
 const CidadeNacional = lazy(() => import("./pages/CidadeNacional"));
+const BairroNacional = lazy(() => import("./pages/BairroNacional"));
 const TriagemPreview = lazy(() => import("./pages/TriagemPreview"));
 const Faq = lazy(() => import("./pages/Faq"));
 const DadosEmpresa = lazy(() => import("./pages/DadosEmpresa"));
@@ -82,6 +83,7 @@ const App = () => (
                 <Route path="/assistencia-tecnica" element={<AssistenciaTecnica />} />
                 <Route path="/atendimento-nacional" element={<AtendimentoNacional />} />
                 <Route path="/atendimento-nacional/:slug" element={<CidadeNacional />} />
+                <Route path="/atendimento-nacional/:city/:bairro" element={<BairroNacional />} />
                 <Route path="/triagem-preview" element={<TriagemPreview />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />

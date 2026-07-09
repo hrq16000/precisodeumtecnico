@@ -465,9 +465,11 @@ export function TriageWizard({
                   }
                 />
                 <span>
-                  Estou ciente de que o atendimento presencial sem compromisso possui uma taxa de{" "}
-                  <strong>R$ 90 (bancada)</strong> ou <strong>R$ 99,99 (visita técnica com laudo em até 30 min)</strong>.
+                  Estou ciente de que o atendimento presencial possui taxa mínima de{" "}
+                  <strong>R$ 99,99 (bancada ou visita técnica com laudo em até 30 min)</strong>{" "}
+                  e que coleta/entrega personalizada tem mínimo pré-aprovado de <strong>R$ 299,99</strong>.
                 </span>
+
               </label>
               <label className="flex cursor-pointer items-start gap-3 rounded-lg border-2 border-border p-4 text-sm transition hover:border-primary/40 has-[:checked]:border-primary has-[:checked]:bg-primary/5">
                 <Checkbox

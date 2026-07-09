@@ -51,6 +51,7 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { TriageMediaAuditLog } from "@/components/admin/TriageMediaAuditLog";
 import { TriageFailuresLog } from "@/components/admin/TriageFailuresLog";
+import { WABypassLog } from "@/components/admin/WABypassLog";
 
 interface Lead {
   id: string;
@@ -258,6 +259,7 @@ export default function Admin() {
             <CardContent><div className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-green-500" /><span className="text-2xl font-bold">{stats.converted}</span></div></CardContent></Card>
         </div>
 
+        <WABypassLog />
         <TriageMediaAuditLog />
         <TriageFailuresLog />
 

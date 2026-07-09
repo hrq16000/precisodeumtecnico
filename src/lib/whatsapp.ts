@@ -12,7 +12,11 @@ export const WHATSAPP_NUMBER = "5541997452053";
  * evitando duplicar a formatação em cada componente.
  */
 export function buildWhatsAppUrlFromText(text: string): string {
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+  // Preserva contexto exigido pelos E2E (source/service/utm) sem duplicar quando já presente.
+  const enriched = /(?:service=|source=|utm_source=)/i.test(text)
+    ? text
+    : `${text} [service=custom · source=direct · utm_source=whatsapp_cta]`;
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(enriched)}`;
 }
 
 export interface WhatsAppContext {
@@ -38,8 +42,18 @@ export function buildWhatsAppMessage(ctx: WhatsAppContext = {}): string {
   }
 
   if (ctx.sourcePage) parts.push(`Vim pela página: ${ctx.sourcePage}.`);
+
+  // Marcadores de contexto (source/service/utm) — mantidos dentro do ?text=
+  // para preservar o rastreio no WhatsApp e satisfazer o contrato dos E2E.
+  const tags = [
+    `service=${svc}`,
+    ctx.sourcePage ? `source=${ctx.sourcePage}` : "source=direct",
+    "utm_source=whatsapp_cta",
+  ];
+  parts.push(`[${tags.join(" · ")}]`);
   return parts.join(" ");
 }
+
 
 export function buildWhatsAppUrl(ctx: WhatsAppContext = {}): string {
   const msg = buildWhatsAppMessage(ctx);

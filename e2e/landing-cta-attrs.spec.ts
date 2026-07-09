@@ -18,8 +18,10 @@ const CASES = [
 
 for (const { path, city } of CASES) {
   test(`landing CTAs — ${path} — data-wa-source + contexto`, async ({ page }) => {
-    await page.goto(path);
+    await page.goto(path, { waitUntil: "domcontentloaded" });
+    await page.waitForLoadState("networkidle");
     const anchors = page.locator('main a[href*="wa.me"]');
+    await anchors.first().waitFor({ state: "attached", timeout: 15000 });
     const count = await anchors.count();
     expect(count, "CTAs presentes em <main>").toBeGreaterThan(0);
 
@@ -47,7 +49,8 @@ for (const { path, city } of CASES) {
 }
 
 test("landings: helper buildWhatsAppUrl injeta service no ?text=", async ({ page }) => {
-  await page.goto("/assistencia-tecnica-curitiba");
+  await page.goto("/assistencia-tecnica-curitiba", { waitUntil: "networkidle" });
+  await page.locator('main a[href*="wa.me"]').first().waitFor({ state: "attached", timeout: 15000 });
   const href = await page
     .locator('main a[href*="wa.me"]')
     .first()

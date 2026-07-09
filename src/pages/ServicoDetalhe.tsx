@@ -189,6 +189,17 @@ const ServicoDetalhe = () => {
         title={`${displayTitle} em Curitiba | Preciso de Um Técnico`}
         description={service.description}
         canonical={`https://precisodeumtecnico.com/servicos/${slug}`}
+        breadcrumbs={[
+          { name: "Início", url: "https://precisodeumtecnico.com/" },
+          { name: "Serviços", url: "https://precisodeumtecnico.com/servicos" },
+          { name: displayTitle, url: `https://precisodeumtecnico.com/servicos/${slug}` },
+        ]}
+        service={{
+          name: displayTitle,
+          description: service.description,
+          priceMinBRL: 99.99,
+          areaServed: "Curitiba e Região Metropolitana",
+        }}
       />
 
       {/* Hero */}

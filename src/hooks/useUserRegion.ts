@@ -4,10 +4,14 @@ export type UserRegion = {
   city: string;
   region?: string; // estado (UF)
   country?: string;
-  source: "ip" | "manual" | "default";
+  neighborhood?: string;
+  source: "gps" | "ip" | "manual" | "default";
 };
 
 const STORAGE_KEY = "user_region_v1";
+const FULL_KEY = "user_location_full_v1";
+export const LOCATION_UPDATED_EVENT = "user-location-updated";
+
 const DEFAULT_REGION: UserRegion = {
   city: "Curitiba",
   region: "PR",
@@ -15,24 +19,42 @@ const DEFAULT_REGION: UserRegion = {
   source: "default",
 };
 
+// Prioridade: GPS > manual (full) > manual (region) > IP > default.
+// Lê tanto `user_location_full_v1` (SmartLocationPrompt/GPS) quanto
+// `user_region_v1` (fallback legado). O primeiro vence quando presente.
 function readStored(): UserRegion | null {
+  try {
+    const raw = localStorage.getItem(FULL_KEY);
+    if (raw) {
+      const p = JSON.parse(raw) as {
+        city?: string; uf?: string; neighborhood?: string; source?: string;
+      };
+      if (p?.city) {
+        return {
+          city: p.city,
+          region: p.uf,
+          neighborhood: p.neighborhood,
+          country: "BR",
+          source: (p.source === "gps" || p.source === "manual" || p.source === "ip")
+            ? p.source
+            : "manual",
+        };
+      }
+    }
+  } catch { /* noop */ }
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
     const parsed = JSON.parse(raw) as UserRegion;
     if (parsed && typeof parsed.city === "string" && parsed.city.length > 0) return parsed;
-  } catch {
-    /* noop */
-  }
+  } catch { /* noop */ }
   return null;
 }
 
 function writeStored(region: UserRegion) {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(region));
-  } catch {
-    /* noop */
-  }
+  } catch { /* noop */ }
 }
 
 async function fetchByIp(): Promise<UserRegion | null> {

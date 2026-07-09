@@ -686,10 +686,97 @@ export default function Diagnostics() {
               Mede canonical e og:image nas 6 rotas críticas. Falha se houver duplicidade
               (canonical ≠ 1, og:image ≠ 1, og:title ≠ 1) ou canonical não absoluto.
             </p>
-            <div className="flex gap-2 mb-4">
+            <div className="flex flex-wrap gap-2 mb-4">
               <Button onClick={runSmoke} disabled={smokeRunning || bulkRunning}>
                 {smokeRunning ? "Medindo..." : "Rodar smoke agora"}
               </Button>
+              <Button
+                variant="outline"
+                disabled={smoke.length === 0 || smokeRunning}
+                onClick={() => {
+                  const report = {
+                    generated_at: new Date().toISOString(),
+                    origin: window.location.origin,
+                    routes: smoke.map((r) => ({
+                      path: r.path,
+                      absolute_url: `${window.location.origin}${r.path}`,
+                      status: r.status,
+                      canonical: r.canonical,
+                      canonical_count: r.canonicalCount,
+                      og_image: r.ogImage,
+                      og_image_count: r.ogImageCount,
+                      og_title_count: r.ogTitleCount,
+                      fails: r.fails,
+                      evidence: {
+                        open: `${window.location.origin}${r.path}`,
+                        audit: `${window.location.origin}/diagnostics?path=${encodeURIComponent(r.path)}`,
+                      },
+                    })),
+                  };
+                  const blob = new Blob([JSON.stringify(report, null, 2)], { type: "application/json" });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement("a");
+                  a.href = url;
+                  a.download = `smoke-seo-${Date.now()}.json`;
+                  a.click();
+                  URL.revokeObjectURL(url);
+                }}
+              >
+                Exportar JSON
+              </Button>
+              <Button
+                variant="outline"
+                disabled={smoke.length === 0 || smokeRunning}
+                onClick={() => {
+                  const header = [
+                    "path",
+                    "status",
+                    "canonical",
+                    "canonical_count",
+                    "og_image",
+                    "og_image_count",
+                    "og_title_count",
+                    "fails",
+                    "evidence_open",
+                    "evidence_audit",
+                  ];
+                  const esc = (v: unknown) => {
+                    const s = v == null ? "" : String(v);
+                    return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+                  };
+                  const rows = smoke.map((r) =>
+                    [
+                      r.path,
+                      r.status,
+                      r.canonical ?? "",
+                      r.canonicalCount,
+                      r.ogImage ?? "",
+                      r.ogImageCount,
+                      r.ogTitleCount,
+                      r.fails.join("|"),
+                      `${window.location.origin}${r.path}`,
+                      `${window.location.origin}/diagnostics?path=${encodeURIComponent(r.path)}`,
+                    ]
+                      .map(esc)
+                      .join(","),
+                  );
+                  const csv = [header.join(","), ...rows].join("\n");
+                  const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement("a");
+                  a.href = url;
+                  a.download = `smoke-seo-${Date.now()}.csv`;
+                  a.click();
+                  URL.revokeObjectURL(url);
+                }}
+              >
+                Exportar CSV
+              </Button>
+              {smoke.some((r) => r.status === "fail") && (
+                <Badge variant="destructive" className="self-center">
+                  {smoke.filter((r) => r.status === "fail").length} rota(s) com falha
+                </Badge>
+              )}
             </div>
             {smoke.length > 0 && (
               <div className="overflow-x-auto">

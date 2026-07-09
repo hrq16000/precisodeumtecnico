@@ -132,40 +132,46 @@ test("D: permissão negada mantém manual e não grava GPS falso", async ({ cont
 });
 
 // ─── E ── WhatsApp: só coordenadas (sem endereço) não injeta cidade fabricada ─
-test("E: WhatsApp float usa cidade/bairro quando existem; sem endereço, não inventa", async ({ context, page }) => {
+test("E1: WhatsApp float com cidade/bairro no storage inclui ambos no link", async ({ browser }) => {
+  const context = await browser.newContext();
   await disableTriage(context);
-
-  // Caso 1: storage completo → link contém cidade e bairro.
-  await page.addInitScript(() => {
+  await context.addInitScript(() => {
     localStorage.setItem("user_location_full_v1", JSON.stringify({
       city: "Pinhais", uf: "PR", neighborhood: "Centro",
       latitude: -25.44, longitude: -49.19, accuracy: 30,
       source: "gps", savedAt: new Date().toISOString(),
     }));
   });
+  const page = await context.newPage();
   await page.goto("/", { waitUntil: "networkidle" });
-  const float1 = page.locator('a[data-wa-source="float"]').first();
-  await expect(float1).toBeVisible();
-  const h1 = decodeURIComponent((await float1.getAttribute("href"))!).toLowerCase();
-  expect(h1).toContain("pinhais");
-  expect(h1).toContain("centro");
+  const href = decodeURIComponent(
+    (await page.locator('a[data-wa-source="float"]').first().getAttribute("href"))!,
+  ).toLowerCase();
+  expect(href).toContain("pinhais");
+  expect(href).toContain("centro");
+  await context.close();
+});
 
-  // Caso 2: só coordenadas → nenhum nome de cidade fabricado no link.
-  await page.evaluate(() => {
+test("E2: WhatsApp float sem cidade/bairro não fabrica localização", async ({ browser }) => {
+  const context = await browser.newContext();
+  await disableTriage(context);
+  await context.route("**/ipwho.is/**", (r) => r.abort());
+  await context.route("**/ipapi.co/**", (r) => r.abort());
+  await context.addInitScript(() => {
     localStorage.setItem("user_location_full_v1", JSON.stringify({
       latitude: -25.44, longitude: -49.19, accuracy: 30,
       source: "gps", savedAt: new Date().toISOString(),
     }));
   });
-  await page.reload({ waitUntil: "networkidle" });
-  const float2 = page.locator('a[data-wa-source="float"]').first();
-  await expect(float2).toBeVisible();
-  const h2 = decodeURIComponent((await float2.getAttribute("href"))!).toLowerCase();
-  // Sem cidade/bairro no storage, o link não deve conter esses tokens específicos.
-  expect(h2).not.toContain("batel");
-  expect(h2).not.toContain("pinhais");
-  // E não deve inventar "curitiba" a partir de fallback default.
-  expect(h2).not.toContain("região aproximada: curitiba");
+  const page = await context.newPage();
+  await page.goto("/", { waitUntil: "networkidle" });
+  const href = decodeURIComponent(
+    (await page.locator('a[data-wa-source="float"]').first().getAttribute("href"))!,
+  ).toLowerCase();
+  expect(href).not.toContain("batel");
+  expect(href).not.toContain("pinhais");
+  expect(href).not.toContain("região aproximada");
+  await context.close();
 });
 
 // ─── F ── Reset limpa storage e dispara evento ────────────────────────────────

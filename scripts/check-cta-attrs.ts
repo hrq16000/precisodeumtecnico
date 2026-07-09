@@ -22,17 +22,25 @@ function walk(dir: string) {
   }
 }
 
+function stripComments(src: string): string {
+  return src
+    .replace(/\/\*[\s\S]*?\*\//g, "")
+    .replace(/^\s*\/\/.*$/gm, "");
+}
+
 function inspect(file: string) {
-  const src = readFileSync(file, "utf8");
-  // Split JSX into element chunks starting at each `<Tag ...>` that contains data-wa-source.
-  // Match from `<` to the next `>` allowing multi-line attribute lists.
-  const re = /<[A-Za-z][^<]*?data-wa-source[^<]*?>/gs;
+  const src = stripComments(readFileSync(file, "utf8"));
+  // Só JSX real: tag começa com `<` seguido de letra e contém data-wa-source.
+  const re = /<[A-Za-z][A-Za-z0-9]*\b[^<>]*?data-wa-source[^<>]*?>/gs;
   let m: RegExpExecArray | null;
   while ((m = re.exec(src))) {
     const chunk = m[0];
     const missing: string[] = [];
-    if (!/data-service\s*=/.test(chunk)) missing.push("data-service");
-    if (!/aria-label\s*=/.test(chunk)) missing.push("aria-label");
+    // Aceita atributo direto (attr=) ou spread com chave literal ('attr':).
+    const hasService = /data-service\s*=/.test(chunk) || /['"]data-service['"]\s*:/.test(chunk);
+    const hasAria = /aria-label\s*=/.test(chunk) || /['"]aria-label['"]\s*:/.test(chunk);
+    if (!hasService) missing.push("data-service");
+    if (!hasAria) missing.push("aria-label");
     if (missing.length) {
       const line = src.slice(0, m.index).split("\n").length;
       problems.push({

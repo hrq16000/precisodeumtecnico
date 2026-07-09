@@ -19,11 +19,13 @@ const ANON =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZxcXVmc3B4d3VqdXR0aHBqeW1oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ4MDA5NjcsImV4cCI6MjA4MDM3Njk2N30.9hz5oXC2w9nJ5k3_BJ_xH4IuEkdDTUbqv2Cn9Ggi-Sg";
 
 const REST = `${SUPABASE_URL}/rest/v1/wa_bypass_events`;
+// NOTA: NÃO enviar `Prefer: return=representation` no INSERT — isso exigiria
+// SELECT sobre a linha inserida, e a policy de leitura é restrita a admins.
+// Ao pedir representação, um insert válido retorna 42501 (falso positivo).
 const headers = {
   apikey: ANON,
   Authorization: `Bearer ${ANON}`,
   "Content-Type": "application/json",
-  Prefer: "return=representation",
 };
 
 test.describe("wa_bypass_events — RLS policy", () => {

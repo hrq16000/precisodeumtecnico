@@ -32,6 +32,15 @@ const jsonLd = {
   })),
 };
 
+const breadcrumbLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Início", item: "https://precisodeumtecnico.com/" },
+    { "@type": "ListItem", position: 2, name: "FAQ", item: "https://precisodeumtecnico.com/faq" },
+  ],
+};
+
 export default function Faq() {
   return (
     <Layout>

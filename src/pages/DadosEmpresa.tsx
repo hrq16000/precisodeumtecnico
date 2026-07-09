@@ -34,6 +34,7 @@ export default function DadosEmpresa() {
         <meta property="og:url" content="https://precisodeumtecnico.com/dados-da-empresa" />
         <meta property="og:type" content="website" />
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumbLd)}</script>
       </Helmet>
       <section className="container-custom section-padding">
         <header className="mb-10 max-w-3xl">

@@ -38,8 +38,18 @@ export function buildWhatsAppMessage(ctx: WhatsAppContext = {}): string {
   }
 
   if (ctx.sourcePage) parts.push(`Vim pela página: ${ctx.sourcePage}.`);
+
+  // Marcadores de contexto (source/service/utm) — mantidos dentro do ?text=
+  // para preservar o rastreio no WhatsApp e satisfazer o contrato dos E2E.
+  const tags = [
+    `service=${svc}`,
+    ctx.sourcePage ? `source=${ctx.sourcePage}` : "source=direct",
+    "utm_source=whatsapp_cta",
+  ];
+  parts.push(`[${tags.join(" · ")}]`);
   return parts.join(" ");
 }
+
 
 export function buildWhatsAppUrl(ctx: WhatsAppContext = {}): string {
   const msg = buildWhatsAppMessage(ctx);

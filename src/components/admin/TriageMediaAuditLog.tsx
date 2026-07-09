@@ -285,6 +285,20 @@ export function TriageMediaAuditLog() {
           </div>
         )}
 
+        <div className="flex items-center justify-between pt-3 text-xs text-muted-foreground">
+          <span>Página {page + 1} de {Math.max(1, Math.ceil(total / PAGE_SIZE))} · {total} registros</span>
+          <div className="flex gap-1">
+            <Button size="sm" variant="outline" disabled={page === 0 || loading} onClick={() => setPage((p) => p - 1)}>
+              <ChevronLeft className="h-3 w-3" />
+            </Button>
+            <Button size="sm" variant="outline"
+              disabled={loading || (page + 1) * PAGE_SIZE >= total}
+              onClick={() => setPage((p) => p + 1)}>
+              <ChevronRight className="h-3 w-3" />
+            </Button>
+          </div>
+        </div>
+
         {previewUrl && (
           <div
             className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"

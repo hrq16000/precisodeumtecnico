@@ -17,7 +17,7 @@ const IGNORED_FILES = new Set(["scripts/check-no-bancada-legacy.ts"]);
 const problems: { file: string; line: number; snippet: string }[] = [];
 
 // Bancada seguida de 90 sem casas; ou "R$ 90" isolado (não R$ 90,00+ e não R$ 900).
-const LEGACY = /(bancada[^\n]{0,40}R\$\s?90(?!\d|,\d)|R\$\s?90(?!\d|,\d))/i;
+const LEGACY = /(bancada[^\n]{0,40}R\$\s?90(?![\d.,]?\d)|R\$\s?90(?![\d.,]?\d))/i;
 
 function walk(dir: string) {
   for (const name of readdirSync(dir)) {

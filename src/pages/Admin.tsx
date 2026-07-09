@@ -424,7 +424,7 @@ export default function Admin() {
                     <div><div className="text-muted-foreground text-xs">Categoria</div><div>{selected.category || "-"}</div></div>
                     <div><div className="text-muted-foreground text-xs">Marca / Modelo</div><div>{[selected.brand, selected.model].filter(Boolean).join(" ") || "-"}</div></div>
                     <div className="col-span-2"><div className="text-muted-foreground text-xs">Sintoma</div><div>{selected.symptom || selected.symptom_slug || "-"}</div></div>
-                    <div><div className="text-muted-foreground text-xs">Modo</div><div>{selected.service_mode === "visit" ? "Visita técnica (R$ 99,99)" : selected.service_mode === "bench" ? "Bancada (R$ 90)" : "-"}</div></div>
+                    <div><div className="text-muted-foreground text-xs">Modo</div><div>{selected.service_mode === "visit" ? "Visita técnica (R$ 99,99)" : selected.service_mode === "bench" ? "Bancada (R$ 99,99)" : "-"}</div></div>
                     <div><div className="text-muted-foreground text-xs">Ticket estimado</div><div>{formatTicket(selected.estimated_ticket_min, selected.estimated_ticket_max) || "-"}</div></div>
                     <div><div className="text-muted-foreground text-xs">SLA</div><div>{formatSla(selected.sla_days_min, selected.sla_days_max) || "-"}</div></div>
                     <div><div className="text-muted-foreground text-xs">Origem</div><div>{selected.source || "-"}</div></div>

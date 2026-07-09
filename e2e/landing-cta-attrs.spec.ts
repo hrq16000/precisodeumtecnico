@@ -49,7 +49,8 @@ for (const { path, city } of CASES) {
 }
 
 test("landings: helper buildWhatsAppUrl injeta service no ?text=", async ({ page }) => {
-  await page.goto("/assistencia-tecnica-curitiba");
+  await page.goto("/assistencia-tecnica-curitiba", { waitUntil: "networkidle" });
+  await page.locator('main a[href*="wa.me"]').first().waitFor({ state: "attached", timeout: 15000 });
   const href = await page
     .locator('main a[href*="wa.me"]')
     .first()

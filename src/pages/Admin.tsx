@@ -348,7 +348,7 @@ export default function Admin() {
                           <TableCell onClick={() => openLead(lead)}>
                             {lead.service_mode ? (
                               <Badge variant={lead.service_mode === "visit" ? "default" : "secondary"} className="text-xs">
-                                {lead.service_mode === "visit" ? "Visita R$99,99" : "Bancada R$90"}
+                                {lead.service_mode === "visit" ? "Visita R$ 99,99" : "Bancada R$ 99,99"}
                               </Badge>
                             ) : "-"}
                           </TableCell>

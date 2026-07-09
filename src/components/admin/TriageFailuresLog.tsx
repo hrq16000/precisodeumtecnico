@@ -142,7 +142,7 @@ export function TriageFailuresLog() {
           <CardTitle className="flex items-center gap-2 text-base">
             <AlertTriangle className="h-4 w-4 text-amber-500" />
             Falhas de upload (triagem)
-            <Badge variant="outline" className="ml-2">{stats.total}</Badge>
+            <Badge variant="outline" className="ml-2">{total} total</Badge>
             {Object.entries(stats.byReason).slice(0, 3).map(([k, v]) => (
               <Badge key={k} variant="secondary" className="text-[10px]">{k}: {v}</Badge>
             ))}
@@ -187,7 +187,7 @@ export function TriageFailuresLog() {
           </div>
         </div>
         <div className="flex gap-2">
-          <Button size="sm" onClick={load} disabled={loading}>Aplicar filtros</Button>
+          <Button size="sm" onClick={applyFilters} disabled={loading}>Aplicar filtros</Button>
           <Button size="sm" variant="ghost" onClick={clearFilters}>
             <X className="h-3 w-3 mr-1" /> Limpar
           </Button>
@@ -238,6 +238,20 @@ export function TriageFailuresLog() {
             </Table>
           </div>
         )}
+
+        <div className="flex items-center justify-between pt-3 text-xs text-muted-foreground">
+          <span>Página {page + 1} de {Math.max(1, Math.ceil(total / PAGE_SIZE))} · {total} registros</span>
+          <div className="flex gap-1">
+            <Button size="sm" variant="outline" disabled={page === 0 || loading} onClick={() => setPage((p) => p - 1)}>
+              <ChevronLeft className="h-3 w-3" />
+            </Button>
+            <Button size="sm" variant="outline"
+              disabled={loading || (page + 1) * PAGE_SIZE >= total}
+              onClick={() => setPage((p) => p + 1)}>
+              <ChevronRight className="h-3 w-3" />
+            </Button>
+          </div>
+        </div>
       </CardContent>
     </Card>
   );

@@ -213,6 +213,8 @@ export function advanceHint(state: TriageState): string | null {
     default:
       return null;
   }
+}
+
 
 export function reducer(state: TriageState, action: Action): TriageState {
   switch (action.type) {

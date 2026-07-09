@@ -185,7 +185,17 @@ const RegiaoDetalhe = () => {
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4">
-                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" onClick={() => trackWhatsAppClick({ source: neighborhood ? "bairro_cta" : "city_cta", city: city!, bairro: neighborhood })}>
+                <a
+                  href={whatsappLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-wa-source={neighborhood ? "neighborhood-detail" : "region-detail"}
+                  data-service="assistência técnica"
+                  data-city={cityName}
+                  {...(neighborhood ? { "data-neighborhood": neighborhoodName } : {})}
+                  aria-label={`Falar com técnico em ${neighborhood ? `${neighborhoodName}, ${cityName}` : cityName}`}
+                  onClick={() => trackWhatsAppClick({ source: neighborhood ? "neighborhood-detail" : "region-detail", city: cityName, bairro: neighborhoodName || undefined })}
+                >
                   <Button size="lg" className="w-full sm:w-auto text-lg px-8 py-6 bg-success hover:bg-success/90 cta-glow gap-3">
                     <MessageCircle className="w-6 h-6" />
                     Chamar Técnico Agora

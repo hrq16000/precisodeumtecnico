@@ -7,7 +7,7 @@ import {
   Building, Users, Headphones
 } from "lucide-react";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
-const whatsappLink = buildWhatsAppUrl();
+const whatsappLink = buildWhatsAppUrl({ service: "contato técnico", sourcePage: "/contato" });
 
 const contactInfo = [
   {
@@ -80,7 +80,7 @@ const Contato = () => {
               Atendimento imediato 24 horas via WhatsApp.
             </p>
             <Button variant="whatsapp" size="xl" asChild>
-              <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+              <a href={whatsappLink} target="_blank" rel="noopener noreferrer" data-wa-source="contact" data-service="contato técnico" aria-label="Falar com técnico pelo WhatsApp">
                 <MessageCircle className="w-6 h-6" />
                 Chamar no WhatsApp
               </a>

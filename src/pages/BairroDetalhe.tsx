@@ -127,6 +127,17 @@ export default function BairroDetalhe() {
         title={`${pageTitle} | Assistência Técnica 24h`}
         description={pageDescription}
         canonical={pageUrl}
+        breadcrumbs={[
+          { name: "Início", url: "https://precisodeumtecnico.com/" },
+          { name: "Regiões", url: "https://precisodeumtecnico.com/regioes" },
+          { name: cityData.name, url: `https://precisodeumtecnico.com/regioes/${city}` },
+          { name: neighborhoodName, url: pageUrl },
+        ]}
+        service={{
+          name: `Assistência técnica em ${neighborhoodName}, ${cityData.name}`,
+          description: pageDescription,
+          areaServed: `${neighborhoodName}, ${cityData.name}`,
+        }}
         structuredData={[localBusinessSchema, faqSchema, offerSchema, reviewsSchema].filter(Boolean) as object[]}
       />
 
@@ -182,7 +193,7 @@ export default function BairroDetalhe() {
                 size="lg"
                 className="bg-[#25D366] hover:bg-[#20BD5A] text-white text-lg h-14 px-8"
               >
-                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" onClick={() => trackWhatsAppClick({ source: "bairro_cta", city: city!, bairro: neighborhood })}>
+                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" data-wa-source="neighborhood-detail" data-service="assistência técnica" data-city={cityData.name} data-neighborhood={neighborhoodName} aria-label={`Chamar técnico em ${neighborhoodName} pelo WhatsApp`} onClick={() => trackWhatsAppClick({ source: "bairro_cta", city: city!, bairro: neighborhood })}>
                   <MessageCircle className="mr-2 h-6 w-6" />
                   Chamar Técnico Agora
                 </a>

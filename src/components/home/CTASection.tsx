@@ -3,7 +3,7 @@ import { MessageCircle, Phone, ArrowRight } from "lucide-react";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 export function CTASection() {
-  const whatsappLink = buildWhatsAppUrl();
+  const whatsappLink = buildWhatsAppUrl({ service: "assistência técnica" });
 
   return (
     <section className="relative py-20 md:py-28 overflow-hidden">
@@ -47,7 +47,7 @@ export function CTASection() {
           {/* CTA Buttons */}
           <div className="flex justify-center">
             <Button variant="whatsapp" size="xl" className="text-lg" asChild>
-              <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+              <a href={whatsappLink} target="_blank" rel="noopener noreferrer" data-wa-source="cta-section" data-service="assistência técnica" aria-label="Falar com técnico pelo WhatsApp">
                 <MessageCircle className="w-6 h-6" />
                 WhatsApp WhatsApp 24h
                 <ArrowRight className="w-5 h-5" />

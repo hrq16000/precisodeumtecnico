@@ -17,7 +17,7 @@ import { citiesData } from "@/data/regions";
 import { Calendar, Clock, MessageCircle, ArrowRight } from "lucide-react";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
-const whatsappLink = buildWhatsAppUrl();
+
 
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
@@ -28,6 +28,7 @@ export default function BlogPost() {
   const category = blogCategories.find((c) => c.slug === post.category);
   const url = `https://precisodeumtecnico.com/blog/${post.slug}`;
   const ogImage = `https://precisodeumtecnico.com/og/${post.category}.jpg`;
+  const whatsappLink = buildWhatsAppUrl({ service: "assistência técnica", sourcePage: `/blog/${post.slug}` });
 
   const articleSchema = {
     "@context": "https://schema.org",
@@ -160,7 +161,7 @@ export default function BlogPost() {
               <h3 className="font-display text-xl font-bold mb-2">Precisa de um técnico em Curitiba e região?</h3>
               <p className="text-muted-foreground mb-4">Atendimento 24h via WhatsApp. Visita técnica + diagnóstico a partir de R$ 99,99.</p>
               <Button variant="whatsapp" asChild>
-                <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" data-wa-source="blog-post" data-service="assistência técnica" aria-label="Falar com técnico pelo WhatsApp">
                   <MessageCircle className="w-4 h-4" /> Falar no WhatsApp
                 </a>
               </Button>

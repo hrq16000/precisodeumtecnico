@@ -67,7 +67,7 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
-  const whatsappLink = buildWhatsAppUrl();
+  const whatsappLink = buildWhatsAppUrl({ service: "assistência técnica", sourcePage: typeof window !== "undefined" ? window.location.pathname : "" });
 
   useEffect(() => {
     let ticking = false;
@@ -268,7 +268,7 @@ export function Header() {
           {/* CTA Buttons */}
           <div className="hidden xl:flex items-center gap-3">
             <Button variant="whatsapp" size="sm" asChild className="relative overflow-hidden group/cta">
-              <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+              <a href={whatsappLink} target="_blank" rel="noopener noreferrer" data-wa-source="header" data-service="assistência técnica" aria-label="Falar com técnico pelo WhatsApp">
                 <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover/cta:translate-x-full transition-transform duration-700" />
                 <MessageCircle className="w-4 h-4 transition-transform duration-300 group-hover/cta:rotate-12" />
                 <span className="hidden sm:inline">WhatsApp WhatsApp 24h</span>

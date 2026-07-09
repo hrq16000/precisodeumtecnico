@@ -383,9 +383,12 @@ const TermosOrcamento = () => {
           <div className="text-center py-8">
             <p className="text-muted-foreground mb-4">Tem dúvidas sobre nossos termos?</p>
             <a
-              href={buildWhatsAppUrl()}
+              href={buildWhatsAppUrl({ service: "assistência técnica", sourcePage: "/termos-orcamento" })}
               target="_blank"
               rel="noopener noreferrer"
+              data-wa-source="terms"
+              data-service="assistência técnica"
+              aria-label="Tirar dúvida sobre termos pelo WhatsApp"
               className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold px-6 py-3 rounded-xl transition-colors"
             >
               <Phone className="h-5 w-5" />

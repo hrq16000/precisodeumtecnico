@@ -7,7 +7,7 @@ import { MapPin, ArrowRight, Building2, Home, Phone, MessageCircle, CheckCircle,
 import { getMainCities, getOtherCities, formatNeighborhoodSlug } from "@/data/regions";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
-const whatsappLink = buildWhatsAppUrl();
+const whatsappLink = buildWhatsAppUrl({ service: "assistência técnica", sourcePage: "/regioes" });
 
 const Regioes = () => {
   const mainCities = getMainCities();

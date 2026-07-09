@@ -16,7 +16,7 @@ import { citiesData, curitibaBairros } from "@/data/regions";
 import { MessageCircle, Check } from "lucide-react";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
-const whatsappLink = buildWhatsAppUrl();
+const whatsappLink = buildWhatsAppUrl({ service: "preços e condições de assistência técnica", sourcePage: "/precos" });
 
 interface Row {
   service: string;
@@ -235,7 +235,7 @@ export default function Precos() {
               <h3 className="font-display text-xl md:text-2xl font-bold mb-2">Quer um orçamento sob medida?</h3>
               <p className="text-muted-foreground mb-4">Mande seu cenário no WhatsApp e respondemos em minutos com a faixa real para o seu caso.</p>
               <Button variant="whatsapp" asChild>
-                <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" data-wa-source="pricing" data-service="preços e condições de assistência técnica" aria-label="Tirar dúvida sobre preços pelo WhatsApp">
                   <MessageCircle className="w-4 h-4" /> Falar no WhatsApp
                 </a>
               </Button>

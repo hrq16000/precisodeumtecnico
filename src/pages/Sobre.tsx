@@ -45,7 +45,7 @@ const differentials = [
   "Cobertura em toda a Região Metropolitana",
   "Atendimento residencial e empresarial",
 ];
-const whatsappLink = buildWhatsAppUrl();
+const whatsappLink = buildWhatsAppUrl({ service: "assistência técnica", sourcePage: "/sobre" });
 
 const Sobre = () => {
   return (
@@ -126,7 +126,7 @@ const Sobre = () => {
                 </p>
               </div>
               <Button variant="whatsapp" size="lg" className="mt-8" asChild>
-                <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" data-wa-source="about" data-service="assistência técnica" aria-label="Falar com técnico pelo WhatsApp">
                   <MessageCircle className="w-5 h-5" />
                   Fale Conosco
                 </a>

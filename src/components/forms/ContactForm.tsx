@@ -191,7 +191,7 @@ export function ContactForm() {
       setIsSubmitting(false);
     }
   };
-  const whatsappLink = buildWhatsAppUrl();
+  const whatsappLink = buildWhatsAppUrl({ service: "contato técnico" });
 
   if (isSuccess) {
     return (
@@ -205,7 +205,7 @@ export function ContactForm() {
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button variant="whatsapp" asChild>
-            <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+            <a href={whatsappLink} target="_blank" rel="noopener noreferrer" data-wa-source="contact-form" data-service="contato técnico" aria-label="Falar com técnico pelo WhatsApp">
               <MessageCircle className="w-4 h-4" />
               Atendimento Imediato via WhatsApp
             </a>
@@ -403,7 +403,7 @@ export function ContactForm() {
             </div>
 
             <Button variant="whatsapp" size="lg" className="w-full" asChild>
-              <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+              <a href={whatsappLink} target="_blank" rel="noopener noreferrer" data-wa-source="contact-form" data-service="contato técnico" aria-label="Falar com técnico pelo WhatsApp">
                 <MessageCircle className="w-4 h-4" />
                 Atendimento Imediato via WhatsApp
               </a>

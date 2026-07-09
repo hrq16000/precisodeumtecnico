@@ -255,7 +255,6 @@ export default function AssistenciaTecnicaCuritiba() {
     ],
     serviceArea: { "@type": "AdministrativeArea", name: "Curitiba - PR" },
     priceRange: "$$",
-    aggregateRating: { "@type": "AggregateRating", ratingValue: "4.9", reviewCount: "523" },
     sameAs: [
       "https://www.facebook.com/precisodeumtecnico/",
       "https://www.instagram.com/PrecisoDeUmTecnico",

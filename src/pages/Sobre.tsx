@@ -3,10 +3,10 @@ import { SEOHead } from "@/components/seo/SEOHead";
 import { Button } from "@/components/ui/button";
 import { CTASection } from "@/components/home/CTASection";
 import { 
-import { buildWhatsAppUrl } from "@/lib/whatsapp";
   Shield, Award, Users, Clock, CheckCircle, Target, Heart, 
   Zap, MessageCircle, Building, ThumbsUp
 } from "lucide-react";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 const stats = [
   { number: "15.000+", label: "Clientes Atendidos", icon: Users },

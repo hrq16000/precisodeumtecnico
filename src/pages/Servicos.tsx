@@ -4,11 +4,11 @@ import { SEOHead } from "@/components/seo/SEOHead";
 import { Button } from "@/components/ui/button";
 import { CTASection } from "@/components/home/CTASection";
 import { 
-import { buildWhatsAppUrl } from "@/lib/whatsapp";
   Monitor, Laptop, Camera, Zap, Wifi, Wind, Wrench, Tv, Server, 
   Smartphone, Printer, Building, HardDrive, Shield, Cpu, Settings,
   ArrowRight, CheckCircle, MessageCircle
 } from "lucide-react";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 const serviceCategories = [
   {

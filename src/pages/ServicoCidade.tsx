@@ -11,12 +11,12 @@ import { buildOfferSchema } from "@/components/seo/OfferSchema";
 import { buildReviewsSchema } from "@/data/testimonials";
 import { CheckCircle2, MapPin, Phone, MessageCircle, Clock, Shield, Star, ArrowRight } from "lucide-react";
 import {
-import { buildWhatsAppUrl } from "@/lib/whatsapp";
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 const whatsappLink = buildWhatsAppUrl();
 

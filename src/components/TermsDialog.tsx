@@ -8,6 +8,7 @@ import {
   DialogTrigger,
   DialogClose,
 } from "@/components/ui/dialog";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   FileText,
@@ -24,7 +25,6 @@ import {
   Shield,
 } from "lucide-react";
 import {
-import { buildWhatsAppUrl } from "@/lib/whatsapp";
   trackEvent,
   trackTermsOpen,
   trackTermsAccept,

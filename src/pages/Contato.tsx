@@ -3,10 +3,10 @@ import { SEOHead } from "@/components/seo/SEOHead";
 import { Button } from "@/components/ui/button";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { 
-import { buildWhatsAppUrl } from "@/lib/whatsapp";
   MessageCircle, Phone, MapPin, Clock, CheckCircle,
   Building, Users, Headphones
 } from "lucide-react";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
 const whatsappLink = buildWhatsAppUrl();
 
 const contactInfo = [

@@ -4,10 +4,10 @@ import { SEOHead } from "@/components/seo/SEOHead";
 import { Button } from "@/components/ui/button";
 import { CTASection } from "@/components/home/CTASection";
 import { 
-import { buildWhatsAppUrl } from "@/lib/whatsapp";
   MessageCircle, Phone, CheckCircle, Clock, Shield, Award, 
   ArrowRight, MapPin, Star
 } from "lucide-react";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 // Service data mapping
 const servicesData: Record<string, {

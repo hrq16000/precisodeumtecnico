@@ -58,14 +58,14 @@ interface SEOHeadProps {
   };
 }
 
-const DEFAULT_OG_IMAGE =
-  "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/a4f40b05-3cb8-4916-b079-009d5f3cc0ff";
-
 export function SEOHead({
   title,
   description,
   canonical = "https://precisodeumtecnico.com",
-  ogImage,
+  // ogImage é ignorado no Helmet: a hospedagem Lovable injeta og:image /
+  // twitter:image server-side (fallback ou imagem do projeto). Emitir aqui
+  // duplicaria a tag no <head>. Mantido no tipo para compat com callers.
+  ogImage: _ogImage,
   type = "website",
   schema,
   structuredData,
@@ -74,7 +74,6 @@ export function SEOHead({
   service,
   article,
 }: SEOHeadProps) {
-  const resolvedOgImage = ogImage ?? DEFAULT_OG_IMAGE;
   const fullTitle = title.includes("Preciso de Um Técnico")
     ? title
     : `${title} | Preciso de Um Técnico`;
@@ -162,14 +161,14 @@ export function SEOHead({
       <meta property="og:description" content={description} />
       <meta property="og:type" content={type} />
       <meta property="og:url" content={canonical} />
-      <meta property="og:image" content={resolvedOgImage} />
+      {/* og:image / twitter:image são injetados pela hospedagem — não emitir aqui. */}
       <meta property="og:locale" content="pt_BR" />
       <meta property="og:site_name" content="Preciso de Um Técnico" />
 
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={resolvedOgImage} />
+
 
 
       {article?.publishedTime && <meta property="article:published_time" content={article.publishedTime} />}

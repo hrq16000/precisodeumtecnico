@@ -169,14 +169,12 @@ export default function AssistenciaTecnica() {
           content="Reparo de consoles, GPUs, PCs, notebooks, TVs e som. Central em Curitiba, parceiros em todos os estados do Brasil."
         />
         <meta property="og:url" content={pageUrl} />
-        <meta property="og:image" content={ogImage} />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
+        {/* og:image / twitter:image ficam a cargo da hospedagem (evita duplicidade). */}
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Assistência Técnica Nacional — Preciso de um Técnico" />
         <meta name="twitter:description" content="Reparo de eletrônicos com envio rastreado para todo o Brasil." />
-        <meta name="twitter:image" content={ogImage} />
+
 
         <script type="application/ld+json">{JSON.stringify(localBusinessSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>

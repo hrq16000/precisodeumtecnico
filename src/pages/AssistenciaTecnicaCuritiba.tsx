@@ -384,9 +384,7 @@ export default function AssistenciaTecnicaCuritiba() {
           content="Reparo de PS5, Xbox, Nintendo, placas de vídeo, PCs e notebooks em Curitiba. Atendimento via WhatsApp."
         />
         <meta property="og:url" content={pageUrl} />
-        <meta property="og:image" content={ogImage} />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
+        {/* og:image / twitter:image ficam a cargo da hospedagem (evita duplicidade). */}
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Assistência Técnica de Consoles em Curitiba" />
@@ -394,7 +392,7 @@ export default function AssistenciaTecnicaCuritiba() {
           name="twitter:description"
           content="Reparo de consoles, GPUs, PCs e notebooks em Curitiba. Atendimento via WhatsApp."
         />
-        <meta name="twitter:image" content={ogImage} />
+
 
         <script type="application/ld+json">{JSON.stringify(localBusinessSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>

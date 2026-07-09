@@ -161,7 +161,7 @@ export default function BlogPost() {
               <h3 className="font-display text-xl font-bold mb-2">Precisa de um técnico em Curitiba e região?</h3>
               <p className="text-muted-foreground mb-4">Atendimento 24h via WhatsApp. Visita técnica + diagnóstico a partir de R$ 99,99.</p>
               <Button variant="whatsapp" asChild>
-                <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" data-wa-source="blog-post" data-service="assistência técnica" aria-label="Falar com técnico pelo WhatsApp">
                   <MessageCircle className="w-4 h-4" /> Falar no WhatsApp
                 </a>
               </Button>

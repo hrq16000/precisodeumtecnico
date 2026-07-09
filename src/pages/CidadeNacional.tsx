@@ -192,7 +192,7 @@ const CidadeNacional = () => {
             </ul>
             <div className="flex flex-wrap gap-3">
               <Button variant="whatsapp" size="lg" asChild>
-                <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" data-wa-source="national-city" data-service="assistência técnica" data-city={city.name} aria-label={`Solicitar técnico em ${city.name} pelo WhatsApp`}>
                   <MessageCircle className="w-5 h-5" />
                   Solicitar técnico em {city.name}
                 </a>
@@ -347,7 +347,7 @@ const CidadeNacional = () => {
             Acione nossa central no WhatsApp. Resposta em minutos, 24 horas por dia.
           </p>
           <Button variant="whatsapp" size="lg" asChild>
-            <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+            <a href={whatsappLink} target="_blank" rel="noopener noreferrer" data-wa-source="national-city" data-service="assistência técnica" data-city={city.name} aria-label={`Falar com técnico em ${city.name} pelo WhatsApp`}>
               <MessageCircle className="w-5 h-5" />
               Chamar agora pelo WhatsApp
             </a>

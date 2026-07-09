@@ -55,7 +55,7 @@ const AtendimentoNacional = () => {
             </p>
             <div className="flex flex-wrap gap-3">
               <Button variant="whatsapp" size="lg" asChild>
-                <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" data-wa-source="national-service" data-service="atendimento técnico nacional" aria-label="Solicitar atendimento pelo WhatsApp">
                   <MessageCircle className="w-5 h-5" />
                   Solicitar atendimento na minha cidade
                 </a>
@@ -157,7 +157,7 @@ const AtendimentoNacional = () => {
           </ol>
           <div className="text-center mt-10">
             <Button variant="whatsapp" size="lg" asChild>
-              <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+              <a href={whatsappLink} target="_blank" rel="noopener noreferrer" data-wa-source="national-service" data-service="atendimento técnico nacional" aria-label="Falar com a central pelo WhatsApp">
                 <MessageCircle className="w-5 h-5" />
                 Falar com a central agora
               </a>

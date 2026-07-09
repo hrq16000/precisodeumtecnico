@@ -51,7 +51,7 @@ const NotFound = () => {
                 </Link>
               </Button>
               <Button variant="whatsapp" size="lg" asChild>
-                <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" data-wa-source="not-found" data-service="assistência técnica" aria-label="Falar com técnico pelo WhatsApp">
                   <MessageCircle className="w-5 h-5" />
                   Falar Conosco
                 </a>

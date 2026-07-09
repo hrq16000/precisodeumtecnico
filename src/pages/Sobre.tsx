@@ -126,7 +126,7 @@ const Sobre = () => {
                 </p>
               </div>
               <Button variant="whatsapp" size="lg" className="mt-8" asChild>
-                <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" data-wa-source="about" data-service="assistência técnica" aria-label="Falar com técnico pelo WhatsApp">
                   <MessageCircle className="w-5 h-5" />
                   Fale Conosco
                 </a>

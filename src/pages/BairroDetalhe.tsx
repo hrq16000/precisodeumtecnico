@@ -193,7 +193,7 @@ export default function BairroDetalhe() {
                 size="lg"
                 className="bg-[#25D366] hover:bg-[#20BD5A] text-white text-lg h-14 px-8"
               >
-                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" onClick={() => trackWhatsAppClick({ source: "bairro_cta", city: city!, bairro: neighborhood })}>
+                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" data-wa-source="neighborhood-detail" data-service="assistência técnica" data-city={cityData.name} data-neighborhood={neighborhoodName} aria-label={`Chamar técnico em ${neighborhoodName} pelo WhatsApp`} onClick={() => trackWhatsAppClick({ source: "bairro_cta", city: city!, bairro: neighborhood })}>
                   <MessageCircle className="mr-2 h-6 w-6" />
                   Chamar Técnico Agora
                 </a>

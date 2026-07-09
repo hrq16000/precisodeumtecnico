@@ -242,7 +242,7 @@ const ServicoDetalhe = () => {
 
             <div className="flex flex-col sm:flex-row gap-4">
               <Button variant="whatsapp" size="xl" asChild>
-                <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" data-wa-source="service-detail" data-service={displayTitle} aria-label={`Solicitar orçamento de ${displayTitle} pelo WhatsApp`}>
                   <MessageCircle className="w-5 h-5" />
                   Solicitar Orçamento
                 </a>
@@ -334,7 +334,7 @@ const ServicoDetalhe = () => {
                     Orçamento gratuito e sem compromisso. Atendimento rápido!
                   </p>
                   <Button variant="heroSolid" size="lg" className="w-full" asChild>
-                    <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+                    <a href={whatsappLink} target="_blank" rel="noopener noreferrer" data-wa-source="service-detail" data-service={displayTitle} aria-label={`Solicitar ${displayTitle} pelo WhatsApp`}>
                       <MessageCircle className="w-5 h-5" />
                       WhatsApp
                     </a>

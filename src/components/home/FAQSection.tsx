@@ -89,6 +89,9 @@ export function FAQSection() {
             href={buildWhatsAppUrl({ service: "dúvidas sobre assistência técnica" })}
             target="_blank"
             rel="noopener noreferrer"
+            data-wa-source="faq-section"
+            data-service="dúvidas sobre assistência técnica"
+            aria-label="Tirar dúvida pelo WhatsApp"
             className="inline-flex items-center gap-2 px-6 py-3 bg-success text-success-foreground rounded-lg font-semibold hover:bg-success/90 transition-colors"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">

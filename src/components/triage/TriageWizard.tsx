@@ -76,12 +76,20 @@ export function TriageWizard({
     dispatch({ type: "START_SUBMIT" });
     const payload = buildPayload(state, source);
 
-    // Guarda dupla: valor mínimo R$ 99,99 obrigatório em visita (o trigger no BD reforça).
-    if (payload.service_mode === "visita") {
-      if (!payload.estimated_ticket_min || payload.estimated_ticket_min < 99) {
-        payload.estimated_ticket_min = 99;
+    // Guarda dupla: valor mínimo R$ 99,99 obrigatório em visita/bancada; R$ 299,99 em coleta.
+    // O trigger no BD reforça. Fonte única: src/data/pricingPolicy.ts.
+    const mode = payload.service_mode;
+    if (mode === "visita" || mode === "bancada" || mode === "diagnostico") {
+      if (!payload.estimated_ticket_min || payload.estimated_ticket_min < 99.99) {
+        payload.estimated_ticket_min = 99.99;
       }
     }
+    if (mode === "coleta" || mode === "coleta-entrega") {
+      if (!payload.estimated_ticket_min || payload.estimated_ticket_min < 299.99) {
+        payload.estimated_ticket_min = 299.99;
+      }
+    }
+
     setLastPayload(payload);
     try {
       const enriched = {

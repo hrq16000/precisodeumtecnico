@@ -13,14 +13,18 @@ export const PRICING = {
     description:
       "Diagnóstico em bancada, até 30 minutos, no nosso endereço. Valor abatido em caso de fechamento.",
   },
-  /** Visita técnica até 30 min */
+  /** Visita técnica — cobrança por bloco de 30 min, limitada a 2h */
   technicalVisit: {
-    label: "Visita técnica (até 30 min)",
+    label: "Visita técnica (bloco de até 30 min)",
     priceBRL: 99.99,
     priceLabel: "R$ 99,99",
     minPriceBRL: 99.99,
-    description: "Visita técnica no endereço do cliente, até 30 minutos.",
+    /** Máximo de blocos cobráveis em visita presencial */
+    maxBlocks: 4,
+    description:
+      "Visita técnica no endereço do cliente: R$ 99,99 por bloco de até 30 minutos, limitado a 2 horas (4 blocos). Além disso, apenas mediante aprovação específica.",
   },
+
   /** Coleta e entrega personalizada até 2h no endereço — valor mínimo pré-aprovado */
   pickupDelivery: {
     label: "Coleta e entrega personalizada",

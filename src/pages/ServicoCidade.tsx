@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/accordion";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
-const whatsappLink = buildWhatsAppUrl();
+// whatsappLink personalizado por rota dentro do componente
 
 export default function ServicoCidade() {
   const { city, service } = useParams<{ city: string; service: string }>();

@@ -18,8 +18,10 @@ const CASES = [
 
 for (const { path, city } of CASES) {
   test(`landing CTAs — ${path} — data-wa-source + contexto`, async ({ page }) => {
-    await page.goto(path);
+    await page.goto(path, { waitUntil: "domcontentloaded" });
+    await page.waitForLoadState("networkidle");
     const anchors = page.locator('main a[href*="wa.me"]');
+    await anchors.first().waitFor({ state: "attached", timeout: 15000 });
     const count = await anchors.count();
     expect(count, "CTAs presentes em <main>").toBeGreaterThan(0);
 

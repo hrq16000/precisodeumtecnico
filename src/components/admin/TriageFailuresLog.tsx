@@ -102,6 +102,7 @@ export function TriageFailuresLog() {
 
   const clearFilters = () => {
     setReasonFilter("all"); setSessionFilter(""); setFromDate(""); setToDate("");
+    setPage(0);
     setTimeout(load, 0);
   };
 

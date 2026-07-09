@@ -58,13 +58,13 @@ interface SEOHeadProps {
   };
 }
 
+const DEFAULT_OG_IMAGE =
+  "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/a4f40b05-3cb8-4916-b079-009d5f3cc0ff";
+
 export function SEOHead({
   title,
   description,
   canonical = "https://precisodeumtecnico.com",
-  // ogImage é opcional. Quando não informado, mantemos apenas o og:image
-  // estático do index.html (evita duplicação de meta og:image / twitter:image
-  // que o react-helmet-async NÃO deduplicava contra tags pré-existentes).
   ogImage,
   type = "website",
   schema,
@@ -74,6 +74,7 @@ export function SEOHead({
   service,
   article,
 }: SEOHeadProps) {
+  const resolvedOgImage = ogImage ?? DEFAULT_OG_IMAGE;
   const fullTitle = title.includes("Preciso de Um Técnico")
     ? title
     : `${title} | Preciso de Um Técnico`;
@@ -161,15 +162,15 @@ export function SEOHead({
       <meta property="og:description" content={description} />
       <meta property="og:type" content={type} />
       <meta property="og:url" content={canonical} />
-      {/* og:image / twitter:image ficam APENAS no index.html estático (fallback
-          crawler + evita duplicidade). Overrides por rota devem editar o índice
-          ou usar SSR — mudança tratada pelo scripts/check-seo-dedup.ts. */}
+      <meta property="og:image" content={resolvedOgImage} />
       <meta property="og:locale" content="pt_BR" />
       <meta property="og:site_name" content="Preciso de Um Técnico" />
 
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
+      <meta name="twitter:image" content={resolvedOgImage} />
+
 
       {article?.publishedTime && <meta property="article:published_time" content={article.publishedTime} />}
       {article?.modifiedTime && <meta property="article:modified_time" content={article.modifiedTime} />}

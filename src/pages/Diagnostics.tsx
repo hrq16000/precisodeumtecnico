@@ -679,6 +679,74 @@ export default function Diagnostics() {
             )}
           </Card>
 
+          {/* Smoke SEO — rotas críticas */}
+          <h2 className="font-display text-xl font-bold mb-3">Smoke SEO — rotas críticas</h2>
+          <Card className="p-4 mb-8">
+            <p className="text-sm text-muted-foreground mb-3">
+              Mede canonical e og:image nas 6 rotas críticas. Falha se houver duplicidade
+              (canonical ≠ 1, og:image ≠ 1, og:title ≠ 1) ou canonical não absoluto.
+            </p>
+            <div className="flex gap-2 mb-4">
+              <Button onClick={runSmoke} disabled={smokeRunning || bulkRunning}>
+                {smokeRunning ? "Medindo..." : "Rodar smoke agora"}
+              </Button>
+            </div>
+            {smoke.length > 0 && (
+              <div className="overflow-x-auto">
+                <table className="w-full text-xs">
+                  <thead>
+                    <tr className="text-left border-b border-border">
+                      <th className="py-2 pr-2">Rota</th>
+                      <th className="py-2 pr-2">Status</th>
+                      <th className="py-2 pr-2">canonical</th>
+                      <th className="py-2 pr-2">og:image</th>
+                      <th className="py-2 pr-2">og:title</th>
+                      <th className="py-2 pr-2">Falhas</th>
+                      <th className="py-2 pr-2">Evidência</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {smoke.map((r) => (
+                      <tr key={r.path} className="border-b border-border/60 align-top">
+                        <td className="py-2 pr-2 font-mono">{r.path}</td>
+                        <td className="py-2 pr-2">
+                          <Badge variant={r.status === "ok" ? "secondary" : r.status === "pending" ? "outline" : "destructive"}>
+                            {r.status}
+                          </Badge>
+                        </td>
+                        <td className="py-2 pr-2 break-all">
+                          <span className={r.canonicalCount === 1 ? "" : "text-destructive font-semibold"}>
+                            ×{r.canonicalCount}
+                          </span>
+                          {r.canonical && <div className="text-muted-foreground">{r.canonical}</div>}
+                        </td>
+                        <td className="py-2 pr-2 break-all">
+                          <span className={r.ogImageCount === 1 ? "" : "text-destructive font-semibold"}>
+                            ×{r.ogImageCount}
+                          </span>
+                          {r.ogImage && <div className="text-muted-foreground truncate max-w-[240px]">{r.ogImage}</div>}
+                        </td>
+                        <td className="py-2 pr-2">
+                          <span className={r.ogTitleCount === 1 ? "" : "text-destructive font-semibold"}>
+                            ×{r.ogTitleCount}
+                          </span>
+                        </td>
+                        <td className="py-2 pr-2 text-destructive">
+                          {r.fails.length ? r.fails.join(", ") : "—"}
+                        </td>
+                        <td className="py-2 pr-2">
+                          <a className="underline" href={r.path} target="_blank" rel="noopener noreferrer">abrir</a>
+                          {" · "}
+                          <a className="underline" href={`/diagnostics?path=${encodeURIComponent(r.path)}`} target="_blank" rel="noopener noreferrer">auditar</a>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </Card>
+
           {/* Bulk audit */}
           <h2 className="font-display text-xl font-bold mb-3">Auditoria em lote</h2>
           <Card className="p-4 mb-8">

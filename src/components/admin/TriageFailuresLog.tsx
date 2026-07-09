@@ -96,7 +96,9 @@ export function TriageFailuresLog() {
     setLoading(false);
   };
 
-  useEffect(() => { load(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, []);
+  useEffect(() => { load(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [page]);
+
+  const applyFilters = () => { setPage(0); setTimeout(load, 0); };
 
   const clearFilters = () => {
     setReasonFilter("all"); setSessionFilter(""); setFromDate(""); setToDate("");

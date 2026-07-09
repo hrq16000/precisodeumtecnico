@@ -437,6 +437,28 @@ export default function Diagnostics() {
   const [sitemapAudits, setSitemapAudits] = useState<SitemapAudit[]>([]);
   const [sitemapLoading, setSitemapLoading] = useState(false);
 
+  // Smoke SEO — rotas críticas
+  interface SmokeRow {
+    path: string;
+    status: "pending" | "ok" | "fail" | "error";
+    canonical: string | null;
+    canonicalCount: number;
+    ogImage: string | null;
+    ogImageCount: number;
+    ogTitleCount: number;
+    fails: string[];
+  }
+  const CRITICAL_ROUTES = [
+    "/",
+    "/servicos",
+    "/precos",
+    "/assistencia-tecnica-curitiba",
+    "/termos-orcamento-pre-aprovado",
+    "/contato",
+  ];
+  const [smoke, setSmoke] = useState<SmokeRow[]>([]);
+  const [smokeRunning, setSmokeRunning] = useState(false);
+
   const collect = (doc: Document, path: string) => {
     setSchemas(readSchemasFromDoc(doc));
     setMeta({

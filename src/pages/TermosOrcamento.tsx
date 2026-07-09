@@ -103,8 +103,57 @@ const TermosOrcamento = () => {
                   da visita/bancada. Tempo adicional é acordado por escrito antes da execução.
                 </p>
               </div>
+
+              {/* Escopo do Orçamento Pré-Aprovado — fonte única */}
+              <div className="mt-6 border-2 border-primary/20 rounded-xl p-5 bg-primary/5" id="escopo-pre-aprovado">
+                <h3 className="text-lg font-semibold text-foreground mb-3">
+                  Escopo do Orçamento Pré-Aprovado ({COMMERCIAL_TERMS.preApprovedBudget.minLabel})
+                </h3>
+                <p className="text-sm mb-4">{COMMERCIAL_TERMS.preApprovedPolicyText}</p>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm font-semibold text-foreground mb-2">Está incluso:</p>
+                    <ul className="space-y-1.5 text-sm">
+                      {COMMERCIAL_TERMS.preApprovedBudget.includes.map((item) => (
+                        <li key={item} className="flex items-start gap-2">
+                          <CheckCircle className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-foreground mb-2">Não está incluso:</p>
+                    <ul className="space-y-1.5 text-sm">
+                      {COMMERCIAL_TERMS.preApprovedBudget.excludes.map((item) => (
+                        <li key={item} className="flex items-start gap-2">
+                          <XCircle className="h-4 w-4 text-destructive shrink-0 mt-0.5" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground mt-4">
+                  Caso seja necessária alguma peça, componente, material ou item adicional, o valor será
+                  cobrado à parte mediante aprovação prévia do cliente.
+                </p>
+              </div>
+
+              {/* Fila mínima operacional — fonte única */}
+              <div className="mt-4 border border-border rounded-xl p-5 bg-accent/40" id="fila-minima">
+                <div className="flex items-center gap-2 mb-2">
+                  <Clock className="h-5 w-5 text-primary" />
+                  <h3 className="text-lg font-semibold text-foreground">Fila mínima operacional</h3>
+                </div>
+                <p className="text-sm">{COMMERCIAL_TERMS.minimumQueueText}</p>
+                <p className="text-xs text-muted-foreground mt-2">
+                  Prazo mínimo: <strong className="text-foreground">{COMMERCIAL_TERMS.minimumQueue.label}</strong>.
+                </p>
+              </div>
             </div>
           </div>
+
 
           {/* 2 – Logística */}
           <div className="bg-card border border-border rounded-2xl p-6 md:p-10 shadow-sm">

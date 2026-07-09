@@ -98,6 +98,7 @@ test.describe("Triage WhatsApp flow", () => {
     expect(text).toContain("Serviço: Assistência técnica");
     expect(text).toContain("Problema: PS5 ejetando o disco sozinho");
     expect(text).toContain("source=triage");
+    expect(text).toContain("service=assistencia-tecnica");
     expect(text).toContain("utm_source=whatsapp_cta");
     expect(text).not.toContain("Cidade: Curitiba");
   });

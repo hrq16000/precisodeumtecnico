@@ -111,7 +111,6 @@ export default function AssistenciaTecnica() {
     areaServed: { "@type": "Country", name: "Brasil" },
     serviceArea: { "@type": "Country", name: "BR" },
     priceRange: "$$",
-    aggregateRating: { "@type": "AggregateRating", ratingValue: "4.9", reviewCount: "523" },
   };
 
   const breadcrumbSchema = {

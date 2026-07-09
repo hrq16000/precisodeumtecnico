@@ -218,8 +218,8 @@ const RegiaoDetalhe = () => {
               </div>
               <div className="stat-card bg-white/10 backdrop-blur-md border-white/20 text-center">
                 <Star className="w-10 h-10 text-success mx-auto mb-3" />
-                <div className="text-3xl font-bold text-white mb-1">4.9</div>
-                <div className="text-white/70 text-sm">Avaliação</div>
+                <div className="text-3xl font-bold text-white mb-1">NF</div>
+                <div className="text-white/70 text-sm">Nota Fiscal</div>
               </div>
               <div className="stat-card bg-white/10 backdrop-blur-md border-white/20 text-center">
                 <FileText className="w-10 h-10 text-success mx-auto mb-3" />

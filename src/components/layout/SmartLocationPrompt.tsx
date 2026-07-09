@@ -1,18 +1,21 @@
 import { useEffect, useState } from "react";
-import { CheckCircle2, Loader2, MapPin } from "lucide-react";
+import { AlertTriangle, CheckCircle2, Loader2, MapPin } from "lucide-react";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { LOCATION_UPDATED_EVENT, useUserRegion } from "@/hooks/useUserRegion";
+import { reverseGeocode } from "@/lib/reverseGeocode";
+import { trackLocationEvent } from "@/lib/locationTelemetry";
 
 /**
  * Prompt não-agressivo de localização.
  * - Aparece após 5s de navegação (uma vez por sessão).
  * - Não abre em rotas admin/quiz.
- * - Salva em `user_location_full_v1` (usado por buildWhatsAppUrl).
- * - Se negado, mantém apenas cidade/bairro aproximados por IP.
+ * - Salva em `user_location_full_v1` com lat/lng/accuracy quando via GPS.
+ * - Reverse geocode via helper com cache local; falha não descarta as coordenadas.
+ * - Permite edição manual mesmo após o GPS preencher.
  */
 const KEY = "user_location_full_v1";
 const PROMPTED = "user_location_prompted_v2";
@@ -25,8 +28,16 @@ interface StoredLocation {
   number?: string;
   complement?: string;
   uf?: string;
+  state?: string;
+  postalCode?: string;
+  country?: string;
+  latitude?: number;
+  longitude?: number;
+  accuracy?: number;
   source?: "manual" | "gps" | "ip";
   savedAt?: string;
+  detectedAt?: string;
+  reverseGeocodedAt?: string;
 }
 
 function readStored(): StoredLocation | null {
@@ -41,17 +52,17 @@ export function SmartLocationPrompt() {
   const [open, setOpen] = useState(false);
   const [gpsLoading, setGpsLoading] = useState(false);
   const [gpsError, setGpsError] = useState<string | null>(null);
+  const [gpsWarning, setGpsWarning] = useState<string | null>(null);
   const [gpsSuccess, setGpsSuccess] = useState(false);
   const [form, setForm] = useState<StoredLocation>({});
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (readStored()) return; // já respondeu
+    if (readStored()) return;
     try { if (sessionStorage.getItem(PROMPTED)) return; } catch { /* noop */ }
     if (BLOCKED_PATHS.some((p) => window.location.pathname.startsWith(p))) return;
 
     const t = setTimeout(() => {
-      // não interromper se o quiz estiver aberto
       if (document.querySelector('[role="dialog"]')) return;
       setForm({
         city: region.city,
@@ -62,83 +73,138 @@ export function SmartLocationPrompt() {
         source: "ip",
       });
       setOpen(true);
+      trackLocationEvent("prompt_shown", { source: region.source });
       try { sessionStorage.setItem(PROMPTED, "1"); } catch { /* noop */ }
     }, 5000);
     return () => clearTimeout(t);
-  }, [region.city, region.region]);
+  }, [region.city, region.region, region.source]);
 
-  // Persiste + notifica consumidores (useUserRegion, WhatsApp helpers).
   const persist = (payload: StoredLocation) => {
     try { localStorage.setItem(KEY, JSON.stringify(payload)); } catch { /* noop */ }
     try { window.dispatchEvent(new Event(LOCATION_UPDATED_EVENT)); } catch { /* noop */ }
+    trackLocationEvent("location_persisted", {
+      source: payload.source,
+      has_city: !!payload.city,
+      has_neighborhood: !!payload.neighborhood,
+      has_address: !!payload.street,
+      has_coords: payload.latitude != null && payload.longitude != null,
+      accuracy: payload.accuracy,
+    });
   };
 
   const save = (source: StoredLocation["source"] = "manual") => {
-    if (!form.city) return;
+    if (!form.city && source !== "gps") return;
     persist({ ...form, source, savedAt: new Date().toISOString() });
+    trackLocationEvent("manual_save", { source, has_city: !!form.city });
     setOpen(false);
   };
 
   const useGps = () => {
     setGpsError(null);
+    setGpsWarning(null);
     setGpsSuccess(false);
     if (!("geolocation" in navigator)) {
       setGpsError("Geolocalização indisponível neste navegador. Preencha manualmente.");
+      trackLocationEvent("gps_error", { error: "unavailable" });
       return;
     }
+    trackLocationEvent("gps_request");
     setGpsLoading(true);
     navigator.geolocation.getCurrentPosition(
       async (pos) => {
-        try {
-          const r = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&zoom=18&addressdetails=1`,
-            { headers: { "Accept-Language": "pt-BR" } },
-          );
-          const j = await r.json();
-          const a = j.address ?? {};
+        const { latitude, longitude, accuracy } = pos.coords;
+        const detectedAt = new Date().toISOString();
+        trackLocationEvent("gps_success", { accuracy });
+
+        // Base: sempre grava coordenadas, mesmo se reverse geocode falhar.
+        const base: StoredLocation = {
+          ...form,
+          latitude,
+          longitude,
+          accuracy,
+          source: "gps",
+          detectedAt,
+          savedAt: detectedAt,
+        };
+
+        const rg = await reverseGeocode(latitude, longitude);
+        if (rg.ok && rg.data) {
+          const a = rg.data;
           const next: StoredLocation = {
-            city: a.city || a.town || a.village || a.municipality || form.city,
-            uf: a.state_code || a.state || form.uf,
-            neighborhood: a.suburb || a.neighbourhood || a.city_district || form.neighborhood,
-            street: a.road || form.street,
-            number: a.house_number || form.number,
-            complement: form.complement,
-            source: "gps",
+            ...base,
+            city: a.city || base.city,
+            uf: a.uf || base.uf,
+            state: a.state || base.state,
+            neighborhood: a.neighborhood || base.neighborhood,
+            street: a.street || base.street,
+            number: a.number || base.number,
+            postalCode: a.postalCode || base.postalCode,
+            country: a.country || base.country || "BR",
+            reverseGeocodedAt: new Date().toISOString(),
             savedAt: new Date().toISOString(),
           };
           setForm(next);
-          // Persistência automática — GPS aceito não pode ficar dependendo
-          // do usuário clicar "Confirmar" para atualizar cidade/bairro.
-          if (next.city) {
-            persist(next);
-            setGpsSuccess(true);
-          } else {
-            setGpsError("Não foi possível identificar sua cidade. Confirme manualmente.");
+          persist(next);
+          setGpsSuccess(true);
+          trackLocationEvent("reverse_geocode_ok", {
+            from_cache: rg.fromCache,
+            duration_ms: rg.durationMs,
+            has_city: !!next.city,
+            has_neighborhood: !!next.neighborhood,
+          });
+          if (!next.city) {
+            setGpsWarning("Localização aproximada detectada. Confirme a cidade abaixo.");
           }
-        } catch {
-          setGpsError("Falha ao obter endereço. Confirme manualmente.");
+        } else {
+          // Falha do reverse geocode: NÃO descarta as coordenadas nem volta ao IP.
+          setForm(base);
+          persist(base);
+          setGpsSuccess(true);
+          setGpsWarning("Localização aproximada detectada, mas não foi possível obter o endereço. Ajuste manualmente se preferir.");
+          trackLocationEvent("reverse_geocode_fail", {
+            duration_ms: rg.durationMs,
+            error: rg.error,
+          });
         }
         setGpsLoading(false);
       },
       (err) => {
         setGpsLoading(false);
+        const denied = err.code === err.PERMISSION_DENIED;
         setGpsError(
-          err.code === err.PERMISSION_DENIED
+          denied
             ? "Permissão negada. Preencha manualmente sua cidade e bairro."
             : "Não foi possível obter sua localização. Preencha manualmente.",
         );
+        trackLocationEvent(denied ? "gps_denied" : "gps_error", { error: String(err.code) });
       },
       { enableHighAccuracy: true, timeout: 8000 },
     );
   };
 
+  // Edição manual pós-GPS: persiste imediatamente mantendo coordenadas e source=gps
+  // se elas existirem, ou source=manual caso contrário.
+  const updateField = (patch: Partial<StoredLocation>) => {
+    const next = { ...form, ...patch };
+    setForm(next);
+    if (gpsSuccess) {
+      const payload: StoredLocation = {
+        ...next,
+        source: next.latitude != null ? "gps" : "manual",
+        savedAt: new Date().toISOString(),
+      };
+      persist(payload);
+      trackLocationEvent("manual_edit", { source: payload.source });
+    }
+  };
+
   const dismiss = () => {
-    // salva o que já temos por IP para uso no WhatsApp
-    if (form.city && !gpsSuccess) {
+    if (form.city && !gpsSuccess && !readStored()) {
       persist({
         city: form.city, uf: form.uf, source: "ip",
         savedAt: new Date().toISOString(),
       });
+      trackLocationEvent("ip_fallback", { has_city: !!form.city });
     }
     setOpen(false);
   };
@@ -180,6 +246,15 @@ export function SmartLocationPrompt() {
               <CheckCircle2 className="w-4 h-4" /> Localização detectada e salva.
             </p>
           )}
+          {gpsWarning && (
+            <p
+              className="col-span-2 flex items-center gap-2 text-xs text-amber-600"
+              data-testid="smart-location-warning"
+              role="status"
+            >
+              <AlertTriangle className="w-4 h-4" /> {gpsWarning}
+            </p>
+          )}
           {gpsError && (
             <p
               className="col-span-2 text-xs text-destructive"
@@ -190,17 +265,17 @@ export function SmartLocationPrompt() {
             </p>
           )}
           <label className="col-span-2 text-xs text-muted-foreground">Cidade</label>
-          <Input data-testid="smart-location-city" className="col-span-2" value={form.city ?? ""} onChange={(e) => setForm({ ...form, city: e.target.value })} placeholder="Cidade" />
-          <Input value={form.uf ?? ""} onChange={(e) => setForm({ ...form, uf: e.target.value.toUpperCase().slice(0, 2) })} placeholder="UF" maxLength={2} />
-          <Input data-testid="smart-location-neighborhood" value={form.neighborhood ?? ""} onChange={(e) => setForm({ ...form, neighborhood: e.target.value })} placeholder="Bairro" />
-          <Input className="col-span-2" value={form.street ?? ""} onChange={(e) => setForm({ ...form, street: e.target.value })} placeholder="Rua (opcional)" />
-          <Input value={form.number ?? ""} onChange={(e) => setForm({ ...form, number: e.target.value })} placeholder="Número" />
-          <Input value={form.complement ?? ""} onChange={(e) => setForm({ ...form, complement: e.target.value })} placeholder="Complemento" />
+          <Input data-testid="smart-location-city" className="col-span-2" value={form.city ?? ""} onChange={(e) => updateField({ city: e.target.value })} placeholder="Cidade" />
+          <Input value={form.uf ?? ""} onChange={(e) => updateField({ uf: e.target.value.toUpperCase().slice(0, 2) })} placeholder="UF" maxLength={2} />
+          <Input data-testid="smart-location-neighborhood" value={form.neighborhood ?? ""} onChange={(e) => updateField({ neighborhood: e.target.value })} placeholder="Bairro" />
+          <Input className="col-span-2" data-testid="smart-location-street" value={form.street ?? ""} onChange={(e) => updateField({ street: e.target.value })} placeholder="Rua (opcional)" />
+          <Input value={form.number ?? ""} onChange={(e) => updateField({ number: e.target.value })} placeholder="Número" />
+          <Input value={form.complement ?? ""} onChange={(e) => updateField({ complement: e.target.value })} placeholder="Complemento" />
         </div>
 
         <DialogFooter className="gap-2">
           <Button variant="ghost" onClick={dismiss}>Agora não</Button>
-          <Button onClick={() => save(form.source ?? "manual")} disabled={!form.city}>
+          <Button onClick={() => save(form.latitude != null ? "gps" : "manual")} disabled={!form.city && form.latitude == null}>
             {gpsSuccess ? "Fechar" : "Confirmar"}
           </Button>
         </DialogFooter>

@@ -6,8 +6,6 @@ import { MessageCircle, MapPin, ShieldCheck, Clock, Users, ArrowRight, Globe2 } 
 import { nationalCities, groupedByRegion } from "@/data/nationalCities";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
-const whatsappNumber = "5541997452053";
-
 const regionOrder: Array<keyof ReturnType<typeof groupedByRegion>> = [
   "Sudeste",
   "Sul",

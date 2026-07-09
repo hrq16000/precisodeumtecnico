@@ -191,8 +191,6 @@ export function ContactForm() {
       setIsSubmitting(false);
     }
   };
-
-  const whatsappNumber = "5541997452053";
   const whatsappLink = buildWhatsAppUrl();
 
   if (isSuccess) {

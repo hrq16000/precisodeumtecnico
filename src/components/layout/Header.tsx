@@ -67,7 +67,6 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
-  const whatsappNumber = "5541997452053";
   const whatsappLink = buildWhatsAppUrl();
 
   useEffect(() => {

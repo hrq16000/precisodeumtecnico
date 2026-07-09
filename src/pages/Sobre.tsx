@@ -45,8 +45,6 @@ const differentials = [
   "Cobertura em toda a Região Metropolitana",
   "Atendimento residencial e empresarial",
 ];
-
-const whatsappNumber = "5541997452053";
 const whatsappLink = buildWhatsAppUrl();
 
 const Sobre = () => {

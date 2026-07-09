@@ -12,8 +12,6 @@ const NotFound = () => {
   useEffect(() => {
     console.error("404 Error: User attempted to access non-existent route:", location.pathname);
   }, [location.pathname]);
-
-  const whatsappNumber = "5541997452053";
   const whatsappLink = buildWhatsAppUrl();
 
   return (

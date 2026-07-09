@@ -7,8 +7,6 @@ import { buildWhatsAppUrl } from "@/lib/whatsapp";
   MessageCircle, Phone, MapPin, Clock, CheckCircle,
   Building, Users, Headphones
 } from "lucide-react";
-
-const whatsappNumber = "5541997452053";
 const whatsappLink = buildWhatsAppUrl();
 
 const contactInfo = [

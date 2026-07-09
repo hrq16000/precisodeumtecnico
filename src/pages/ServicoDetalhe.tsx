@@ -172,8 +172,6 @@ const defaultServiceData = {
   ],
   category: "Serviços Gerais",
 };
-
-const whatsappNumber = "5541997452053";
 const whatsappLink = buildWhatsAppUrl();
 
 const ServicoDetalhe = () => {

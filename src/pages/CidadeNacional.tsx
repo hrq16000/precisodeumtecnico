@@ -10,8 +10,6 @@ import {
 import { getNationalCityBySlug, nationalCities } from "@/data/nationalCities";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
-const whatsappNumber = "5541997452053";
-
 const services = [
   { icon: Monitor, name: "Informática", href: "/servicos/informatica" },
   { icon: Laptop, name: "Notebooks", href: "/servicos/notebooks" },

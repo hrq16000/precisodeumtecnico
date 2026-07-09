@@ -173,8 +173,6 @@ const serviceCategories = [
     ],
   },
 ];
-
-const whatsappNumber = "5541997452053";
 const whatsappLink = buildWhatsAppUrl();
 
 const Servicos = () => {

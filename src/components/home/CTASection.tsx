@@ -3,7 +3,6 @@ import { MessageCircle, Phone, ArrowRight } from "lucide-react";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 export function CTASection() {
-  const whatsappNumber = "5541997452053";
   const whatsappLink = buildWhatsAppUrl();
 
   return (

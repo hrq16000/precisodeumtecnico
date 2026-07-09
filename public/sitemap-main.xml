@@ -827,6 +827,13 @@
     <xhtml:link rel="canonical" href="https://precisodeumtecnico.com/atendimento-nacional/belo-horizonte"/>
   </url>
   <url>
+    <loc>https://precisodeumtecnico.com/atendimento-nacional/vitoria</loc>
+    <lastmod>2026-07-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="canonical" href="https://precisodeumtecnico.com/atendimento-nacional/vitoria"/>
+  </url>
+  <url>
     <loc>https://precisodeumtecnico.com/atendimento-nacional/campinas</loc>
     <lastmod>2026-07-09</lastmod>
     <changefreq>weekly</changefreq>
@@ -860,13 +867,6 @@
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
     <xhtml:link rel="canonical" href="https://precisodeumtecnico.com/atendimento-nacional/niteroi"/>
-  </url>
-  <url>
-    <loc>https://precisodeumtecnico.com/atendimento-nacional/vitoria</loc>
-    <lastmod>2026-07-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.80</priority>
-    <xhtml:link rel="canonical" href="https://precisodeumtecnico.com/atendimento-nacional/vitoria"/>
   </url>
   <url>
     <loc>https://precisodeumtecnico.com/atendimento-nacional/porto-alegre</loc>
@@ -1014,5 +1014,40 @@
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
     <xhtml:link rel="canonical" href="https://precisodeumtecnico.com/atendimento-nacional/belem"/>
+  </url>
+  <url>
+    <loc>https://precisodeumtecnico.com/atendimento-nacional/porto-velho</loc>
+    <lastmod>2026-07-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="canonical" href="https://precisodeumtecnico.com/atendimento-nacional/porto-velho"/>
+  </url>
+  <url>
+    <loc>https://precisodeumtecnico.com/atendimento-nacional/rio-branco</loc>
+    <lastmod>2026-07-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="canonical" href="https://precisodeumtecnico.com/atendimento-nacional/rio-branco"/>
+  </url>
+  <url>
+    <loc>https://precisodeumtecnico.com/atendimento-nacional/boa-vista</loc>
+    <lastmod>2026-07-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="canonical" href="https://precisodeumtecnico.com/atendimento-nacional/boa-vista"/>
+  </url>
+  <url>
+    <loc>https://precisodeumtecnico.com/atendimento-nacional/palmas</loc>
+    <lastmod>2026-07-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="canonical" href="https://precisodeumtecnico.com/atendimento-nacional/palmas"/>
+  </url>
+  <url>
+    <loc>https://precisodeumtecnico.com/atendimento-nacional/macapa</loc>
+    <lastmod>2026-07-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="canonical" href="https://precisodeumtecnico.com/atendimento-nacional/macapa"/>
   </url>
 </urlset>

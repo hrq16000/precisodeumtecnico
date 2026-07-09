@@ -2,7 +2,7 @@
  * Build-time guard: todo elemento com data-wa-source deve declarar
  * data-service e aria-label na mesma tag JSX. Falha o build se faltar.
  *
- * Escopo: src/**/*.tsx. Regex simples, cobre JSX estático — atributos dinâmicos
+ * Escopo: arquivos .tsx sob src/. Regex simples, cobre JSX estático — atributos dinâmicos
  * (spread props) são ignorados intencionalmente para evitar falso positivo.
  *
  * Uso: encadeado no `postbuild` do package.json.

@@ -145,7 +145,7 @@ export function SmartLocationPrompt() {
 
   return (
     <Dialog open={open} onOpenChange={(v) => (v ? setOpen(v) : dismiss())}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md" data-testid="smart-location-dialog">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <MapPin className="w-5 h-5 text-primary" />
@@ -159,15 +159,40 @@ export function SmartLocationPrompt() {
 
         <div className="grid grid-cols-2 gap-3">
           <div className="col-span-2">
-            <Button type="button" variant="outline" onClick={useGps} disabled={gpsLoading} className="w-full">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={useGps}
+              disabled={gpsLoading}
+              className="w-full"
+              data-testid="smart-location-gps"
+            >
               {gpsLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <MapPin className="w-4 h-4 mr-2" />}
-              Usar minha localização (GPS)
+              {gpsLoading ? "Detectando..." : "Usar minha localização (GPS)"}
             </Button>
           </div>
+          {gpsSuccess && (
+            <p
+              className="col-span-2 flex items-center gap-2 text-xs text-green-600"
+              data-testid="smart-location-success"
+              role="status"
+            >
+              <CheckCircle2 className="w-4 h-4" /> Localização detectada e salva.
+            </p>
+          )}
+          {gpsError && (
+            <p
+              className="col-span-2 text-xs text-destructive"
+              data-testid="smart-location-error"
+              role="alert"
+            >
+              {gpsError}
+            </p>
+          )}
           <label className="col-span-2 text-xs text-muted-foreground">Cidade</label>
-          <Input className="col-span-2" value={form.city ?? ""} onChange={(e) => setForm({ ...form, city: e.target.value })} placeholder="Cidade" />
+          <Input data-testid="smart-location-city" className="col-span-2" value={form.city ?? ""} onChange={(e) => setForm({ ...form, city: e.target.value })} placeholder="Cidade" />
           <Input value={form.uf ?? ""} onChange={(e) => setForm({ ...form, uf: e.target.value.toUpperCase().slice(0, 2) })} placeholder="UF" maxLength={2} />
-          <Input value={form.neighborhood ?? ""} onChange={(e) => setForm({ ...form, neighborhood: e.target.value })} placeholder="Bairro" />
+          <Input data-testid="smart-location-neighborhood" value={form.neighborhood ?? ""} onChange={(e) => setForm({ ...form, neighborhood: e.target.value })} placeholder="Bairro" />
           <Input className="col-span-2" value={form.street ?? ""} onChange={(e) => setForm({ ...form, street: e.target.value })} placeholder="Rua (opcional)" />
           <Input value={form.number ?? ""} onChange={(e) => setForm({ ...form, number: e.target.value })} placeholder="Número" />
           <Input value={form.complement ?? ""} onChange={(e) => setForm({ ...form, complement: e.target.value })} placeholder="Complemento" />
@@ -176,7 +201,7 @@ export function SmartLocationPrompt() {
         <DialogFooter className="gap-2">
           <Button variant="ghost" onClick={dismiss}>Agora não</Button>
           <Button onClick={() => save(form.source ?? "manual")} disabled={!form.city}>
-            Confirmar
+            {gpsSuccess ? "Fechar" : "Confirmar"}
           </Button>
         </DialogFooter>
       </DialogContent>

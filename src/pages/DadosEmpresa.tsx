@@ -14,6 +14,15 @@ const jsonLd = {
   sameAs: [COMPANY.facebook, COMPANY.instagram],
 };
 
+const breadcrumbLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Início", item: "https://precisodeumtecnico.com/" },
+    { "@type": "ListItem", position: 2, name: "Dados da Empresa", item: "https://precisodeumtecnico.com/dados-da-empresa" },
+  ],
+};
+
 export default function DadosEmpresa() {
   return (
     <Layout>

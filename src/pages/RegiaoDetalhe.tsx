@@ -85,6 +85,18 @@ const RegiaoDetalhe = () => {
         title={`${pageTitle} | Assistência Técnica 24h | Preciso de Um Técnico`}
         description={pageDescription}
         canonical={pageUrl}
+        breadcrumbs={[
+          { name: "Início", url: "https://precisodeumtecnico.com/" },
+          { name: "Regiões", url: "https://precisodeumtecnico.com/regioes" },
+          { name: cityName, url: `https://precisodeumtecnico.com/regioes/${city}` },
+          ...(neighborhood ? [{ name: neighborhoodName, url: pageUrl }] : []),
+        ]}
+        service={{
+          name: `Assistência técnica em ${neighborhood ? `${neighborhoodName}, ${cityName}` : cityName}`,
+          description: pageDescription,
+          priceMinBRL: 99.99,
+          areaServed: neighborhood ? `${neighborhoodName}, ${cityName}` : cityName,
+        }}
         structuredData={[localSchema, offerSchema, reviewsSchema].filter(Boolean) as object[]}
       />
       

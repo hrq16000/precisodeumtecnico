@@ -121,9 +121,14 @@ export function ScrollToTop() {
       }
     }
 
-    // 3) Normal navigation — scroll to top (smooth unless reduced motion).
-    window.scrollTo({ top: 0, left: 0, behavior });
+    // 3) Normal navigation — scroll to top imediatamente (auto) e reforça
+    //    no próximo frame para cobrir layout shifts pós-mount.
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    const raf = requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, left: 0, behavior });
+    });
     prevKey.current = currentKey;
+    return () => cancelAnimationFrame(raf);
   }, [location, navType]);
 
   return null;

@@ -39,11 +39,13 @@ export const PRICING = {
 export const SLA = {
   /** Prazo mínimo em horas úteis para conclusão do atendimento */
   minBusinessHours: 72,
-  minLabel: "72 horas úteis",
-  /** Prazo máximo estimado */
-  maxLabel: "3 semanas",
+  minLabel: "3 dias úteis ou 72 horas úteis",
+  /** Prazo mínimo quando há necessidade de encomenda de peças */
+  minWithPartsLabel: "15 dias úteis",
+  /** Prazo máximo estimado (faixa) */
+  maxLabel: "3 semanas a 60 dias",
   disclaimer:
-    "Prazos variam conforme equipamento, disponibilidade de peças e complexidade da situação.",
+    "Termos, condições, valores e prazos são 4 parâmetros que variam conforme a situação: fila técnica, encomenda de peças, triagem interna do equipamento, complexidade e logística.",
 } as const;
 
 export const COMMERCIAL = {

@@ -242,30 +242,51 @@ const TermosOrcamento = () => {
               <h3 className="text-lg font-semibold text-foreground mb-4">Prazos praticados:</h3>
 
               <div className="space-y-3">
-                <div className="flex items-center justify-between bg-accent/50 rounded-xl p-4 border border-border">
+                <div className="flex items-center justify-between gap-3 bg-accent/50 rounded-xl p-4 border border-border">
                   <div className="flex items-center gap-3">
                     <Calendar className="h-5 w-5 text-primary shrink-0" />
                     <span className="font-medium text-foreground">Prazo mínimo de conclusão</span>
                   </div>
-                  <span className="font-bold text-primary text-sm md:text-base">{SLA.minLabel}</span>
+                  <span className="font-bold text-primary text-sm md:text-base text-right">{SLA.minLabel}</span>
                 </div>
-                <div className="flex items-center justify-between bg-accent/50 rounded-xl p-4 border border-border">
+                <div className="flex items-center justify-between gap-3 bg-accent/50 rounded-xl p-4 border border-border">
+                  <div className="flex items-center gap-3">
+                    <Package className="h-5 w-5 text-primary shrink-0" />
+                    <span className="font-medium text-foreground">Prazo mínimo com encomenda de peças</span>
+                  </div>
+                  <span className="font-bold text-primary text-sm md:text-base text-right">{SLA.minWithPartsLabel}</span>
+                </div>
+                <div className="flex items-center justify-between gap-3 bg-accent/50 rounded-xl p-4 border border-border">
                   <div className="flex items-center gap-3">
                     <Wrench className="h-5 w-5 text-primary shrink-0" />
                     <span className="font-medium text-foreground">Prazo máximo estimado</span>
                   </div>
-                  <span className="font-bold text-primary text-sm md:text-base">Até {SLA.maxLabel}</span>
+                  <span className="font-bold text-primary text-sm md:text-base text-right">{SLA.maxLabel}</span>
                 </div>
-                <div className="flex items-center justify-between bg-accent/50 rounded-xl p-4 border border-border">
+                <div className="flex items-center justify-between gap-3 bg-accent/50 rounded-xl p-4 border border-border">
                   <div className="flex items-center gap-3">
                     <Clock className="h-5 w-5 text-primary shrink-0" />
                     <span className="font-medium text-foreground">Exceção — atendimento expresso</span>
                   </div>
-                  <span className="font-bold text-primary text-sm md:text-base">Intervalos de até 30 min</span>
+                  <span className="font-bold text-primary text-sm md:text-base text-right">Intervalos de até 30 min</span>
                 </div>
               </div>
 
+              <div className="mt-6 rounded-xl border border-primary/20 bg-primary/5 p-4 text-sm text-foreground">
+                <p className="font-semibold mb-1">Como os prazos são definidos</p>
+                <p className="text-muted-foreground">
+                  O prazo máximo pode variar entre <strong className="text-foreground">3 semanas e 60 dias</strong> dependendo da
+                  fila técnica, da encomenda de peças e da triagem interna do equipamento. Quando não há necessidade de peças,
+                  o prazo mínimo é de <strong className="text-foreground">3 dias úteis ou 72 horas úteis</strong>. Havendo
+                  encomenda de peças, o prazo mínimo passa para <strong className="text-foreground">15 dias úteis</strong>.
+                </p>
+              </div>
+
               <p className="text-sm mt-4 italic">{SLA.disclaimer}</p>
+              <p className="text-xs mt-2 text-muted-foreground">
+                <strong className="text-foreground">Importante:</strong> termos, condições, valores e prazos são 4 parâmetros
+                independentes e possuem variáveis específicas conforme cada situação de atendimento.
+              </p>
             </div>
           </div>
 

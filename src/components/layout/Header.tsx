@@ -41,6 +41,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import { Logo } from "@/components/Logo";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 const services = [
   { name: "Informática", href: "/servicos/informatica", description: "Manutenção e suporte em computadores", icon: Monitor },
@@ -67,7 +68,7 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const whatsappNumber = "5541997452053";
-  const whatsappLink = `https://wa.me/${whatsappNumber}?text=Olá! Preciso de um técnico.`;
+  const whatsappLink = buildWhatsAppUrl();
 
   useEffect(() => {
     let ticking = false;

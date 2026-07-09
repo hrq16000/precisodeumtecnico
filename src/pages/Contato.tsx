@@ -3,12 +3,13 @@ import { SEOHead } from "@/components/seo/SEOHead";
 import { Button } from "@/components/ui/button";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { 
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
   MessageCircle, Phone, MapPin, Clock, CheckCircle,
   Building, Users, Headphones
 } from "lucide-react";
 
 const whatsappNumber = "5541997452053";
-const whatsappLink = `https://wa.me/${whatsappNumber}?text=Olá! Preciso de um técnico.`;
+const whatsappLink = buildWhatsAppUrl();
 
 const contactInfo = [
   {

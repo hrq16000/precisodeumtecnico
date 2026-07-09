@@ -27,6 +27,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { Loader2, CheckCircle, MessageCircle } from "lucide-react";
 import { getStoredTermsAcceptance } from "@/lib/analytics";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 const phoneRegex = /^\(?[1-9]{2}\)?\s?[9]?\d{4}[-\s]?\d{4}$/;
 
@@ -192,7 +193,7 @@ export function ContactForm() {
   };
 
   const whatsappNumber = "5541997452053";
-  const whatsappLink = `https://wa.me/${whatsappNumber}?text=Olá! Preciso de um técnico.`;
+  const whatsappLink = buildWhatsAppUrl();
 
   if (isSuccess) {
     return (

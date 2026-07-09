@@ -4,6 +4,7 @@ import { SEOHead } from "@/components/seo/SEOHead";
 import { Button } from "@/components/ui/button";
 import { CTASection } from "@/components/home/CTASection";
 import { 
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
   MessageCircle, Phone, CheckCircle, Clock, Shield, Award, 
   ArrowRight, MapPin, Star
 } from "lucide-react";
@@ -173,7 +174,7 @@ const defaultServiceData = {
 };
 
 const whatsappNumber = "5541997452053";
-const whatsappLink = `https://wa.me/${whatsappNumber}?text=Olá! Preciso de um técnico.`;
+const whatsappLink = buildWhatsAppUrl();
 
 const ServicoDetalhe = () => {
   const { slug } = useParams<{ slug: string }>();

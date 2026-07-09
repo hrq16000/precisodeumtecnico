@@ -4,6 +4,7 @@ import { Layout } from "@/components/layout/Layout";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { Button } from "@/components/ui/button";
 import { Home, ArrowLeft, MessageCircle, Search } from "lucide-react";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 const NotFound = () => {
   const location = useLocation();
@@ -13,7 +14,7 @@ const NotFound = () => {
   }, [location.pathname]);
 
   const whatsappNumber = "5541997452053";
-  const whatsappLink = `https://wa.me/${whatsappNumber}?text=Olá! Preciso de ajuda.`;
+  const whatsappLink = buildWhatsAppUrl();
 
   return (
     <Layout>

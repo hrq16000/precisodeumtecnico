@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { MessageCircle, Phone, ArrowRight } from "lucide-react";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 export function CTASection() {
   const whatsappNumber = "5541997452053";
-  const whatsappLink = `https://wa.me/${whatsappNumber}?text=Olá! Preciso de um técnico.`;
+  const whatsappLink = buildWhatsAppUrl();
 
   return (
     <section className="relative py-20 md:py-28 overflow-hidden">

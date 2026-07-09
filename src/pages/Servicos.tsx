@@ -4,6 +4,7 @@ import { SEOHead } from "@/components/seo/SEOHead";
 import { Button } from "@/components/ui/button";
 import { CTASection } from "@/components/home/CTASection";
 import { 
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
   Monitor, Laptop, Camera, Zap, Wifi, Wind, Wrench, Tv, Server, 
   Smartphone, Printer, Building, HardDrive, Shield, Cpu, Settings,
   ArrowRight, CheckCircle, MessageCircle
@@ -174,7 +175,7 @@ const serviceCategories = [
 ];
 
 const whatsappNumber = "5541997452053";
-const whatsappLink = `https://wa.me/${whatsappNumber}?text=Olá! Preciso de um técnico.`;
+const whatsappLink = buildWhatsAppUrl();
 
 const Servicos = () => {
   return (

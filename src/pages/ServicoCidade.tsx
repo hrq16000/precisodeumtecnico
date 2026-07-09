@@ -11,13 +11,14 @@ import { buildOfferSchema } from "@/components/seo/OfferSchema";
 import { buildReviewsSchema } from "@/data/testimonials";
 import { CheckCircle2, MapPin, Phone, MessageCircle, Clock, Shield, Star, ArrowRight } from "lucide-react";
 import {
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-const whatsappLink = "https://wa.me/5541997452053?text=Olá! Preciso de um técnico.";
+const whatsappLink = buildWhatsAppUrl();
 
 export default function ServicoCidade() {
   const { city, service } = useParams<{ city: string; service: string }>();

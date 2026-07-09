@@ -4,6 +4,7 @@ import { SEOHead } from "@/components/seo/SEOHead";
 import { Button } from "@/components/ui/button";
 import { MessageCircle, MapPin, ShieldCheck, Clock, Users, ArrowRight, Globe2 } from "lucide-react";
 import { nationalCities, groupedByRegion } from "@/data/nationalCities";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 const whatsappNumber = "5541997452053";
 
@@ -17,7 +18,7 @@ const regionOrder: Array<keyof ReturnType<typeof groupedByRegion>> = [
 
 const AtendimentoNacional = () => {
   const grouped = groupedByRegion();
-  const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Olá! Preciso de um técnico parceiro na minha cidade.")}`;
+  const whatsappLink = buildWhatsAppUrl();
 
   const breadcrumb = {
     "@context": "https://schema.org",

@@ -24,6 +24,7 @@ import {
   Shield,
 } from "lucide-react";
 import {
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
   trackEvent,
   trackTermsOpen,
   trackTermsAccept,
@@ -321,7 +322,7 @@ export function TermsDialog({
                   Abrir página completa
                 </a>
                 <a
-                  href="https://wa.me/5541997452053?text=Olá! Tenho dúvidas sobre os termos de orçamento pré-aprovado."
+                  href=buildWhatsAppUrl()
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() =>

@@ -3,6 +3,7 @@ import { SEOHead } from "@/components/seo/SEOHead";
 import { Button } from "@/components/ui/button";
 import { CTASection } from "@/components/home/CTASection";
 import { 
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
   Shield, Award, Users, Clock, CheckCircle, Target, Heart, 
   Zap, MessageCircle, Building, ThumbsUp
 } from "lucide-react";
@@ -46,7 +47,7 @@ const differentials = [
 ];
 
 const whatsappNumber = "5541997452053";
-const whatsappLink = `https://wa.me/${whatsappNumber}?text=Olá! Preciso de um técnico.`;
+const whatsappLink = buildWhatsAppUrl();
 
 const Sobre = () => {
   return (

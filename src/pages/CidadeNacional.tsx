@@ -8,6 +8,7 @@ import {
   Monitor, Laptop, Camera, Zap, Wifi, Wind, Smartphone, Gamepad2,
 } from "lucide-react";
 import { getNationalCityBySlug, nationalCities } from "@/data/nationalCities";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 const whatsappNumber = "5541997452053";
 
@@ -34,8 +35,7 @@ const CidadeNacional = () => {
   const heroWebpSrcSet = `${heroBase}-800.webp 800w, ${heroBase}-1200.webp 1200w, ${heroBase}-1600.webp 1600w`;
   const heroJpgFallback = `${heroBase}-800.jpg`;
   const heroPreload = `${heroBase}-1200.webp`;
-  const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-    `Olá! Preciso de um técnico parceiro em ${city.name} - ${city.state}.`
+  const whatsappLink = buildWhatsAppUrl()Olá! Preciso de um técnico parceiro em ${city.name} - ${city.state}.`
   )}`;
 
   const title = `Técnico em ${city.name} - ${city.state} | Rede de Parceiros | Preciso de Um Técnico`;

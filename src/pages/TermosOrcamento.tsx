@@ -27,7 +27,11 @@ const TermosOrcamento = () => {
       <SEOHead
         title="Termos de Orçamento Pré-Aprovado – Serviços Técnicos"
         description="Conheça os termos de diagnóstico, orçamento pré-aprovado, prazos de reparo, logística de coleta e política de cancelamento dos serviços técnicos."
-        canonical="https://precisodeumtecnico.com/termos-orcamento-pre-aprovado"
+        canonical={
+          typeof window !== "undefined" && window.location.pathname === "/termos-orcamento"
+            ? "https://precisodeumtecnico.com/termos-orcamento"
+            : "https://precisodeumtecnico.com/termos-orcamento-pre-aprovado"
+        }
         schema={schema}
       />
 

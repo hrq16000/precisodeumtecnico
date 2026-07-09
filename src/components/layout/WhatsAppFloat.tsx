@@ -28,8 +28,11 @@ export function WhatsAppFloat() {
       target="_blank"
       rel="noopener noreferrer"
       className="whatsapp-float"
-      aria-label="Chamar no WhatsApp"
+      aria-label="Chamar no WhatsApp (botão flutuante)"
       data-wa-source="float"
+      data-service="assistência técnica"
+      {...(loc.city ? { "data-city": loc.city } : {})}
+      {...(loc.neighborhood ? { "data-neighborhood": loc.neighborhood } : {})}
       data-wa-keep="footer"
     >
       <MessageCircle className="w-6 h-6" />

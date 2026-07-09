@@ -111,10 +111,17 @@ const Contato = () => {
                   {info.title}
                 </h3>
                 {info.href ? (
-                  <a 
-                    href={info.href} 
+                  <a
+                    href={info.href}
                     target={info.href.startsWith('http') ? '_blank' : undefined}
                     rel={info.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                    {...(info.href.includes('wa.me')
+                      ? {
+                          'data-wa-source': 'contact-card',
+                          'data-service': 'contato técnico',
+                          'aria-label': 'Falar com técnico pelo WhatsApp (card de contato)',
+                        }
+                      : {})}
                     className={`font-bold text-xl block mb-2 hover:underline ${
                       info.highlight ? 'text-success' : 'text-primary'
                     }`}

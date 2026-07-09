@@ -183,6 +183,8 @@ const ServicoDetalhe = () => {
     ? slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
     : service.title;
 
+  const whatsappLink = buildWhatsAppUrl({ service: displayTitle, sourcePage: `/servicos/${slug ?? ""}` });
+
   return (
     <Layout>
       <SEOHead

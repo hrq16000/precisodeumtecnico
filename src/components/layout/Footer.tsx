@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { Phone, Mail, MapPin, Clock, MessageCircle, Facebook, Instagram } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { trackCtaClick, trackWhatsAppClick } from "@/lib/analytics";
+import { buildWhatsAppUrl, readStoredLocation, currentSourcePage } from "@/lib/whatsapp";
+import { COMPANY } from "@/data/companyInfo";
 
 const services = [
   { name: "Informática", href: "/servicos/informatica" },
@@ -23,8 +25,7 @@ const regions = [
 ];
 
 export function Footer() {
-  const whatsappNumber = "5541997452053";
-  const whatsappLink = `https://wa.me/${whatsappNumber}?text=Olá! Preciso de um técnico.`;
+  const whatsappLink = buildWhatsAppUrl({ ...readStoredLocation(), sourcePage: currentSourcePage() });
   const currentYear = new Date().getFullYear();
 
   return (

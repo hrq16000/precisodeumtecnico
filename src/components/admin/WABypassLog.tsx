@@ -14,7 +14,7 @@ import {
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
 import {
-  AlertTriangle, ChevronLeft, ChevronRight, Loader2, RefreshCw, ShieldAlert, X,
+  AlertTriangle, ChevronLeft, ChevronRight, Download, Loader2, RefreshCw, ShieldAlert, X,
 } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -66,6 +66,49 @@ export function WABypassLog() {
     setLoading(false);
   };
 
+  // Exporta os eventos filtrados (todos, não só a página atual) em CSV
+  // com linha final "TOTAL,<n>". Limite defensivo de 10.000 linhas.
+  const exportCsv = async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let q: any = (supabase.from as any)("wa_bypass_events")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(10000);
+    if (bypassOnly === "bypass") q = q.eq("bypass", true);
+    if (bypassOnly === "captured") q = q.eq("bypass", false);
+    if (search.trim()) q = q.or(`source.ilike.%${search.trim()}%,page_path.ilike.%${search.trim()}%,href.ilike.%${search.trim()}%`);
+
+    const { data, error } = await q;
+    if (error) {
+      toast({ variant: "destructive", title: "Falha no export", description: error.message });
+      return;
+    }
+    const list = (data || []) as Row[];
+    const esc = (v: unknown) => {
+      const s = v == null ? "" : String(v);
+      return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+    };
+    const header = ["created_at", "bypass", "kind", "source", "page_path", "href", "category", "session_id", "user_agent"];
+    const lines = [header.join(",")];
+    for (const r of list) {
+      lines.push([
+        r.created_at, r.bypass ? "true" : "false", r.kind, r.source ?? "", r.page_path ?? "",
+        r.href ?? "", r.category ?? "", r.session_id ?? "", r.user_agent ?? "",
+      ].map(esc).join(","));
+    }
+    lines.push(`TOTAL,${list.length}`);
+    const blob = new Blob(["\uFEFF" + lines.join("\n")], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `wa-bypass-${new Date().toISOString().slice(0, 19).replace(/[:T]/g, "-")}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast({ title: "Export concluído", description: `${list.length} registros exportados.` });
+  };
+
   // Alerta: quantos bypass reais nas últimas 24h
   const loadAlert = async () => {
     const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
@@ -98,6 +141,9 @@ export function WABypassLog() {
           </CardTitle>
           <Button size="sm" variant="outline" onClick={() => { setPage(0); load(); loadAlert(); }} disabled={loading}>
             {loading ? <Loader2 className="h-3 w-3 animate-spin" /> : <RefreshCw className="h-3 w-3" />}
+          </Button>
+          <Button size="sm" variant="outline" onClick={exportCsv} disabled={loading} className="ml-2">
+            <Download className="h-3 w-3 mr-1" /> CSV
           </Button>
         </div>
 

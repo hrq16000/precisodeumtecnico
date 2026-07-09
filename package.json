@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "predev": "bun scripts/build-sitemap.ts",
     "dev": "vite",
     "prebuild": "bun scripts/build-sitemap.ts && bun scripts/build-og-preview.ts",
     "build": "vite build",

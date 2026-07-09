@@ -62,7 +62,10 @@ export function SEOHead({
   title,
   description,
   canonical = "https://precisodeumtecnico.com",
-  ogImage = "https://precisodeumtecnico.com/og-image.jpg",
+  // ogImage é opcional. Quando não informado, mantemos apenas o og:image
+  // estático do index.html (evita duplicação de meta og:image / twitter:image
+  // que o react-helmet-async NÃO deduplicava contra tags pré-existentes).
+  ogImage,
   type = "website",
   schema,
   structuredData,
@@ -158,16 +161,15 @@ export function SEOHead({
       <meta property="og:description" content={description} />
       <meta property="og:type" content={type} />
       <meta property="og:url" content={canonical} />
-      <meta property="og:image" content={ogImage} />
-      <meta property="og:image:width" content="1200" />
-      <meta property="og:image:height" content="630" />
+      {/* og:image / twitter:image ficam APENAS no index.html estático (fallback
+          crawler + evita duplicidade). Overrides por rota devem editar o índice
+          ou usar SSR — mudança tratada pelo scripts/check-seo-dedup.ts. */}
       <meta property="og:locale" content="pt_BR" />
       <meta property="og:site_name" content="Preciso de Um Técnico" />
 
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={ogImage} />
 
       {article?.publishedTime && <meta property="article:published_time" content={article.publishedTime} />}
       {article?.modifiedTime && <meta property="article:modified_time" content={article.modifiedTime} />}

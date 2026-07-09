@@ -13,8 +13,8 @@ import {
 } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
 import {
-  Download, ExternalLink, Eye, FileVideo, Filter, Image as ImageIcon, Loader2,
-  RefreshCw, ShieldCheck, X,
+  ChevronLeft, ChevronRight, Download, ExternalLink, Eye, FileVideo, Filter,
+  Image as ImageIcon, Loader2, RefreshCw, ShieldCheck, X,
 } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -58,8 +58,12 @@ function toCsv(rows: AuditRow[]): string {
   return lines.join("\n");
 }
 
+const PAGE_SIZE = 25;
+
 export function TriageMediaAuditLog() {
   const [rows, setRows] = useState<AuditRow[]>([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(true);
   const [previewUrl, setPreviewUrl] = useState<{ url: string; isVideo: boolean } | null>(null);
   const { toast } = useToast();
@@ -75,9 +79,9 @@ export function TriageMediaAuditLog() {
     setLoading(true);
     let q = supabase
       .from("triage_media_uploads")
-      .select("*")
+      .select("*", { count: "exact" })
       .order("created_at", { ascending: false })
-      .limit(1000);
+      .range(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE - 1);
 
     if (leadFilter.trim()) q = q.ilike("lead_id", `${leadFilter.trim()}%`);
     if (sessionFilter.trim()) q = q.ilike("session_id", `${sessionFilter.trim()}%`);
@@ -90,20 +94,23 @@ export function TriageMediaAuditLog() {
       q = q.lte("created_at", end.toISOString());
     }
 
-    const { data, error } = await q;
+    const { data, error, count } = await q;
     if (error) {
       toast({ variant: "destructive", title: "Falha ao carregar auditoria", description: error.message });
     } else {
       setRows((data || []) as AuditRow[]);
+      setTotal(count ?? 0);
     }
     setLoading(false);
   };
 
-  useEffect(() => { load(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, []);
+  useEffect(() => { load(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [page]);
+
+  const applyFilters = () => { setPage(0); setTimeout(load, 0); };
 
   const clearFilters = () => {
     setLeadFilter(""); setSessionFilter(""); setTypeFilter("all");
-    setFromDate(""); setToDate("");
+    setFromDate(""); setToDate(""); setPage(0);
     setTimeout(load, 0);
   };
 
@@ -147,9 +154,9 @@ export function TriageMediaAuditLog() {
           <CardTitle className="flex items-center gap-2 text-base">
             <ShieldCheck className="h-4 w-4 text-emerald-500" />
             Auditoria de mídias de triagem
-            <Badge variant="outline" className="ml-2">{stats.total}</Badge>
+            <Badge variant="outline" className="ml-2">{total} total</Badge>
             <span className="text-xs text-muted-foreground font-normal ml-1">
-              ({humanSize(stats.totalSize)})
+              (página: {humanSize(stats.totalSize)})
             </span>
           </CardTitle>
           <div className="flex gap-2">
@@ -203,7 +210,7 @@ export function TriageMediaAuditLog() {
           </div>
         </div>
         <div className="flex gap-2">
-          <Button size="sm" onClick={load} disabled={loading}>Aplicar filtros</Button>
+          <Button size="sm" onClick={applyFilters} disabled={loading}>Aplicar filtros</Button>
           <Button size="sm" variant="ghost" onClick={clearFilters}>
             <X className="h-3 w-3 mr-1" /> Limpar
           </Button>
@@ -277,6 +284,20 @@ export function TriageMediaAuditLog() {
             </Table>
           </div>
         )}
+
+        <div className="flex items-center justify-between pt-3 text-xs text-muted-foreground">
+          <span>Página {page + 1} de {Math.max(1, Math.ceil(total / PAGE_SIZE))} · {total} registros</span>
+          <div className="flex gap-1">
+            <Button size="sm" variant="outline" disabled={page === 0 || loading} onClick={() => setPage((p) => p - 1)}>
+              <ChevronLeft className="h-3 w-3" />
+            </Button>
+            <Button size="sm" variant="outline"
+              disabled={loading || (page + 1) * PAGE_SIZE >= total}
+              onClick={() => setPage((p) => p + 1)}>
+              <ChevronRight className="h-3 w-3" />
+            </Button>
+          </div>
+        </div>
 
         {previewUrl && (
           <div

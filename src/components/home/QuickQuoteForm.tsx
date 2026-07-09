@@ -49,11 +49,19 @@ export function QuickQuoteForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.name || !formData.phone || !formData.service) {
-      toast.error("Por favor, preencha nome, telefone e serviço.");
+    // Validação com mensagem por CAMPO específico.
+    if (!formData.name.trim()) {
+      toast.error("Falta preencher: Nome completo.");
       return;
     }
-
+    if (formData.phone.replace(/\D/g, "").length < 10) {
+      toast.error("Falta preencher: WhatsApp com DDD (mín. 10 dígitos).");
+      return;
+    }
+    if (!formData.service) {
+      toast.error("Falta preencher: selecione o serviço.");
+      return;
+    }
     if (!acceptedTerms) {
       toast.error("Você precisa aceitar os Termos de Orçamento Pré-Aprovado.");
       return;
@@ -68,7 +76,7 @@ export function QuickQuoteForm() {
         phone: formData.phone,
         service: formData.service,
       });
-    } catch (e) {
+    } catch {
       // non-blocking
     }
 
@@ -78,7 +86,7 @@ export function QuickQuoteForm() {
       category: SERVICE_TO_CATEGORY[formData.service],
     });
 
-    toast.success("Abrindo triagem técnica para captar os detalhes…");
+    toast.success("Abrindo triagem técnica — valor mínimo confirmado: R$ 99,99.");
     setIsLoading(false);
     setAcceptedTerms(false);
     setFormData({ name: "", phone: "", service: "", description: "" });

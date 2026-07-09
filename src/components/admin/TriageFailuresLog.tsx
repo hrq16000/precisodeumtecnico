@@ -13,7 +13,8 @@ import {
 } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
 import {
-  AlertTriangle, Download, ExternalLink, Filter, Loader2, RefreshCw, X,
+  AlertTriangle, ChevronLeft, ChevronRight, Download, ExternalLink, Filter,
+  Loader2, RefreshCw, X,
 } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -53,8 +54,12 @@ function toCsv(rows: FailureRow[]): string {
   return lines.join("\n");
 }
 
+const PAGE_SIZE = 25;
+
 export function TriageFailuresLog() {
   const [rows, setRows] = useState<FailureRow[]>([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
@@ -68,9 +73,9 @@ export function TriageFailuresLog() {
     setLoading(true);
     let q = supabase
       .from("triage_media_failures")
-      .select("*")
+      .select("*", { count: "exact" })
       .order("created_at", { ascending: false })
-      .limit(1000);
+      .range(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE - 1);
 
     if (reasonFilter !== "all") q = q.eq("reason", reasonFilter);
     if (sessionFilter.trim()) q = q.ilike("session_id", `${sessionFilter.trim()}%`);
@@ -81,19 +86,23 @@ export function TriageFailuresLog() {
       q = q.lte("created_at", end.toISOString());
     }
 
-    const { data, error } = await q;
+    const { data, error, count } = await q;
     if (error) {
       toast({ variant: "destructive", title: "Falha ao carregar falhas", description: error.message });
     } else {
       setRows((data || []) as FailureRow[]);
+      setTotal(count ?? 0);
     }
     setLoading(false);
   };
 
-  useEffect(() => { load(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, []);
+  useEffect(() => { load(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [page]);
+
+  const applyFilters = () => { setPage(0); setTimeout(load, 0); };
 
   const clearFilters = () => {
     setReasonFilter("all"); setSessionFilter(""); setFromDate(""); setToDate("");
+    setPage(0);
     setTimeout(load, 0);
   };
 
@@ -133,7 +142,7 @@ export function TriageFailuresLog() {
           <CardTitle className="flex items-center gap-2 text-base">
             <AlertTriangle className="h-4 w-4 text-amber-500" />
             Falhas de upload (triagem)
-            <Badge variant="outline" className="ml-2">{stats.total}</Badge>
+            <Badge variant="outline" className="ml-2">{total} total</Badge>
             {Object.entries(stats.byReason).slice(0, 3).map(([k, v]) => (
               <Badge key={k} variant="secondary" className="text-[10px]">{k}: {v}</Badge>
             ))}
@@ -178,7 +187,7 @@ export function TriageFailuresLog() {
           </div>
         </div>
         <div className="flex gap-2">
-          <Button size="sm" onClick={load} disabled={loading}>Aplicar filtros</Button>
+          <Button size="sm" onClick={applyFilters} disabled={loading}>Aplicar filtros</Button>
           <Button size="sm" variant="ghost" onClick={clearFilters}>
             <X className="h-3 w-3 mr-1" /> Limpar
           </Button>
@@ -229,6 +238,20 @@ export function TriageFailuresLog() {
             </Table>
           </div>
         )}
+
+        <div className="flex items-center justify-between pt-3 text-xs text-muted-foreground">
+          <span>Página {page + 1} de {Math.max(1, Math.ceil(total / PAGE_SIZE))} · {total} registros</span>
+          <div className="flex gap-1">
+            <Button size="sm" variant="outline" disabled={page === 0 || loading} onClick={() => setPage((p) => p - 1)}>
+              <ChevronLeft className="h-3 w-3" />
+            </Button>
+            <Button size="sm" variant="outline"
+              disabled={loading || (page + 1) * PAGE_SIZE >= total}
+              onClick={() => setPage((p) => p + 1)}>
+              <ChevronRight className="h-3 w-3" />
+            </Button>
+          </div>
+        </div>
       </CardContent>
     </Card>
   );

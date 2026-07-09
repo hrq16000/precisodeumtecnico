@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { Loader2, MapPin } from "lucide-react";
+import { CheckCircle2, Loader2, MapPin } from "lucide-react";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useUserRegion } from "@/hooks/useUserRegion";
+import { LOCATION_UPDATED_EVENT, useUserRegion } from "@/hooks/useUserRegion";
 
 /**
  * Prompt não-agressivo de localização.

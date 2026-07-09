@@ -157,15 +157,24 @@ export function trackWhatsAppClick(opts: {
   service?: string;
   city?: string;
   bairro?: string;
+  /** true se o usuário compartilhou endereço completo (rua/nº). Nunca envia o endereço em si. */
+  has_full_address?: boolean;
+  source_component?: string;
+  cta_label?: string;
 }) {
   trackEvent("whatsapp_click", {
     source: opts.source,
     service: opts.service,
     city: opts.city,
     bairro: opts.bairro,
+    has_full_address: opts.has_full_address ?? false,
+    source_component: opts.source_component,
+    cta_label: opts.cta_label,
+    pathname: typeof window !== "undefined" ? window.location.pathname : undefined,
     ...getAttributionParams(),
   });
 }
+
 
 
 export function trackQuizComplete(opts: {

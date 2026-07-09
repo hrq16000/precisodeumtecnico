@@ -5,12 +5,13 @@
  */
 
 export const PRICING = {
-  /** Diagnóstico em bancada / sem compromisso — sem visita */
+  /** Diagnóstico em bancada — cliente entrega/retira em nosso endereço */
   benchDiagnosis: {
-    label: "Diagnóstico em bancada",
-    priceBRL: 90,
-    priceLabel: "R$ 90,00",
-    description: "Diagnóstico sem compromisso em bancada.",
+    label: "Diagnóstico em bancada (até 30 min)",
+    priceBRL: 99.99,
+    priceLabel: "R$ 99,99",
+    description:
+      "Diagnóstico em bancada, até 30 minutos, no nosso endereço. Valor abatido em caso de fechamento.",
   },
   /** Visita técnica até 30 min */
   technicalVisit: {
@@ -20,13 +21,14 @@ export const PRICING = {
     minPriceBRL: 99.99,
     description: "Visita técnica no endereço do cliente, até 30 minutos.",
   },
-  /** Coleta e entrega personalizada até 2h no endereço */
+  /** Coleta e entrega personalizada até 2h no endereço — valor mínimo pré-aprovado */
   pickupDelivery: {
     label: "Coleta e entrega personalizada",
     priceBRL: 299.99,
-    priceLabel: "R$ 299,99",
+    minPriceBRL: 299.99,
+    priceLabel: "A partir de R$ 299,99",
     description:
-      "Atendimento personalizado com coleta e entrega no endereço (até 2h), ou o cliente pode deixar/retirar no nosso endereço. Valor pré-aprovado.",
+      "Atendimento personalizado com coleta e entrega no endereço (até 2h). Valor mínimo pré-aprovado de R$ 299,99 — pode variar conforme distância, equipamento e complexidade.",
   },
 } as const;
 

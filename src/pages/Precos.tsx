@@ -24,7 +24,9 @@ interface Row {
 }
 
 const priceTable: Row[] = [
-  { service: "Visita técnica + diagnóstico", example: "Avaliação no local, abatida do orçamento", price: "R$ 99,99" },
+  { service: "Visita técnica + diagnóstico (até 30 min)", example: "Avaliação no local, abatida do orçamento", price: "R$ 99,99" },
+  { service: "Diagnóstico em bancada (até 30 min)", example: "No nosso endereço, abatido em caso de fechamento", price: "R$ 99,99" },
+  { service: "Coleta e entrega personalizada (até 2h)", example: "Valor mínimo pré-aprovado; varia por distância", price: "A partir de R$ 299,99" },
   { service: "Formatação de PC/Notebook", example: "Windows 11 com backup e drivers", price: "R$ 150 a R$ 250" },
   { service: "Remoção de vírus", example: "Sem formatar, com varredura completa", price: "R$ 120 a R$ 200" },
   { service: "Upgrade SSD 480GB", example: "SSD + clonagem do sistema", price: "R$ 350 a R$ 450" },
@@ -53,7 +55,7 @@ const faqs = [
   { question: "A visita técnica é cobrada mesmo se eu não aprovar?", answer: "A visita é R$ 99,99 e cobre deslocamento + diagnóstico. Se o serviço for aprovado, esse valor é abatido do orçamento final." },
   { question: "Vocês emitem nota fiscal?", answer: "Sim. Emitimos nota fiscal eletrônica em todos os atendimentos, com garantia mínima de 90 dias em mão de obra." },
   { question: "Atendem aos finais de semana?", answer: "Sim, com agendamento 24 horas via WhatsApp. Atendimento presencial 8h às 22h, com chamados emergenciais 24h." },
-  { question: "Trabalham com cartão e PIX?", answer: "Sim. Aceitamos PIX, cartão de débito, crédito (parcelamento em até 6x) e dinheiro." },
+  { question: "Como funciona o parcelamento?", answer: "Aceitamos PIX, cartão de débito, crédito em até 12x sem juros e dinheiro. Prazos de conclusão vão de 72h úteis a até 3 semanas, conforme peças e complexidade." },
 ];
 
 export default function Precos() {
@@ -149,7 +151,7 @@ export default function Precos() {
               {[
                 "Visita abatida no orçamento",
                 "Nota fiscal e garantia de 90 dias",
-                "PIX, cartão e parcelamento em até 6x",
+                "PIX, cartão e parcelamento em até 12x sem juros",
               ].map((b) => (
                 <div key={b} className="flex items-start gap-2 p-4 rounded-lg bg-secondary/40">
                   <Check className="w-5 h-5 text-primary mt-0.5" /> <span>{b}</span>

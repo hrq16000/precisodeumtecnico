@@ -80,7 +80,7 @@ export function HeroSection() {
           {/* CTA Buttons */}
           <div className="flex flex-col gap-3 px-4 mb-6 animate-fade-up">
             <Button size="lg" className="w-full bg-[#22C55E] hover:bg-[#16A34A] text-white font-bold text-lg py-6 rounded-xl shadow-lg shadow-green-500/30 transition-all hover:scale-[1.02]" asChild>
-              <a href={whatsappLink} target="_blank" rel="noopener noreferrer" data-wa-source="hero" data-cta-label="hero_whatsapp">
+              <a href={whatsappLink} target="_blank" rel="noopener noreferrer" data-wa-source="hero" data-service="assistência técnica" data-cta-label="hero_whatsapp" aria-label="Falar com técnico pelo WhatsApp (hero)">
                 <MessageCircle className="w-5 h-5 mr-2" />
                 Falar com técnico agora
               </a>

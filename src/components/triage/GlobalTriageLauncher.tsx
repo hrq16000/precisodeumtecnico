@@ -7,28 +7,37 @@ import type { Category } from "@/components/triage/triageMachine";
 import { logWaEvent } from "@/lib/waAudit";
 
 /**
- * Global TriageWizard launcher:
- *  - Um único Dialog na raiz.
- *  - Escuta `triage:open` com detail { source, category, symptomSlug }.
- *  - Intercepta cliques em `a[href*="wa.me"]`/`tel:` EXCETO os marcados com
- *    `data-wa-keep="footer"` (kill-switch legítimo do rodapé).
- *  - Auditoria: TODO clique é logado em `wa_bypass_events`.
- *      * bypass=false → interceptado e funil aberto.
- *      * bypass=true  → escapou (whitelist do rodapé) — dispara alerta no /admin.
+ * Global TriageWizard launcher.
+ *
+ * IMPORTANTE: cada abertura força REMOUNT do <TriageWizard> via `key={openCount}`
+ * — resolve o bug em que o quiz reabria no passo final (state stale) e garante
+ * que todo CTA principal sempre inicia do passo 1.
+ *
+ * No mobile o Dialog vira full-screen (100dvh) para foco total e sem overflow.
  */
 export function GlobalTriageLauncher() {
   const [open, setOpen] = useState(false);
+  const [openCount, setOpenCount] = useState(0);
   const [detail, setDetail] = useState<{ source?: string; category?: Category; symptomSlug?: string }>({});
   const location = useLocation();
   const enabled = isTriageEnabled();
+
+  const openFresh = (
+    d: { source?: string; category?: Category; symptomSlug?: string },
+    href?: string,
+    kind: "whatsapp" | "tel" = "whatsapp",
+  ) => {
+    setDetail(d ?? {});
+    setOpenCount((n) => n + 1); // força remount → estado zerado
+    setOpen(true);
+    logWaEvent({ source: d?.source, href: href ?? null, kind, category: d?.category ?? null, bypass: false });
+  };
 
   useEffect(() => {
     if (!enabled) return;
     const onOpen = (e: Event) => {
       const ce = e as CustomEvent<{ source?: string; category?: Category; symptomSlug?: string }>;
-      setDetail(ce.detail ?? {});
-      setOpen(true);
-      logWaEvent({ source: ce.detail?.source, bypass: false, kind: "whatsapp" });
+      openFresh(ce.detail ?? {});
     };
     window.addEventListener("triage:open", onOpen);
     return () => window.removeEventListener("triage:open", onOpen);
@@ -37,6 +46,8 @@ export function GlobalTriageLauncher() {
   // Interceptor global (kill-switch p/ CTAs WhatsApp/telefone).
   useEffect(() => {
     if (!enabled) return;
+    // Guarda anti-duplo-clique: bloqueia cliques em < 400ms.
+    let lastClick = 0;
     const handler = (e: MouseEvent) => {
       const target = (e.target as HTMLElement | null)?.closest?.("a") as HTMLAnchorElement | null;
       if (!target) return;
@@ -49,7 +60,6 @@ export function GlobalTriageLauncher() {
       const category = (target.dataset.triageCategory as Category | undefined) ?? undefined;
       const kind: "whatsapp" | "tel" = isTel ? "tel" : "whatsapp";
 
-      // Exceção do rodapé — clique passa direto, mas registra como BYPASS.
       if (target.dataset.waKeep === "footer") {
         logWaEvent({ source: source || "footer-keep", href, kind, bypass: true });
         return;
@@ -57,9 +67,10 @@ export function GlobalTriageLauncher() {
 
       e.preventDefault();
       e.stopPropagation();
-      setDetail({ source, category });
-      setOpen(true);
-      logWaEvent({ source, href, kind, category, bypass: false });
+      const now = Date.now();
+      if (now - lastClick < 400) return; // dedupe
+      lastClick = now;
+      openFresh({ source, category }, href, kind);
     };
     document.addEventListener("click", handler, true);
     return () => document.removeEventListener("click", handler, true);
@@ -72,8 +83,18 @@ export function GlobalTriageLauncher() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="max-w-2xl p-0 gap-0 border-0 bg-transparent shadow-none">
+      <DialogContent
+        className="
+          p-0 gap-0 border-0 bg-transparent shadow-none
+          w-screen max-w-full h-[100dvh] rounded-none
+          translate-x-0 translate-y-0 left-0 top-0
+          sm:left-[50%] sm:top-[50%] sm:translate-x-[-50%] sm:translate-y-[-50%]
+          sm:w-full sm:max-w-2xl sm:h-auto sm:rounded-lg
+          overflow-y-auto
+        "
+      >
         <TriageWizard
+          key={openCount}
           source={detail.source || "global-launcher"}
           initialCategory={detail.category}
           initialSymptomSlug={detail.symptomSlug}

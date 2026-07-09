@@ -32,7 +32,11 @@ const RegiaoDetalhe = () => {
   
   const cityName = cityData?.name || (city ? formatNameFromSlug(city) : "");
   const neighborhoodName = neighborhood ? formatNameFromSlug(neighborhood) : "";
-  const whatsappLink = buildWhatsAppUrl();
+  const whatsappLink = buildWhatsAppUrl({
+    service: "assistência técnica",
+    city: cityName || undefined,
+    neighborhood: neighborhoodName || undefined,
+  });
   
   const pageTitle = neighborhood 
     ? `Técnico em ${neighborhoodName}, ${cityName}`
@@ -64,11 +68,6 @@ const RegiaoDetalhe = () => {
       "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
       "opens": "08:00",
       "closes": "22:00"
-    },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "reviewCount": "15000"
     }
   };
 
@@ -86,6 +85,18 @@ const RegiaoDetalhe = () => {
         title={`${pageTitle} | Assistência Técnica 24h | Preciso de Um Técnico`}
         description={pageDescription}
         canonical={pageUrl}
+        breadcrumbs={[
+          { name: "Início", url: "https://precisodeumtecnico.com/" },
+          { name: "Regiões", url: "https://precisodeumtecnico.com/regioes" },
+          { name: cityName, url: `https://precisodeumtecnico.com/regioes/${city}` },
+          ...(neighborhood ? [{ name: neighborhoodName, url: pageUrl }] : []),
+        ]}
+        service={{
+          name: `Assistência técnica em ${neighborhood ? `${neighborhoodName}, ${cityName}` : cityName}`,
+          description: pageDescription,
+          priceMinBRL: 99.99,
+          areaServed: neighborhood ? `${neighborhoodName}, ${cityName}` : cityName,
+        }}
         structuredData={[localSchema, offerSchema, reviewsSchema].filter(Boolean) as object[]}
       />
       
@@ -174,7 +185,17 @@ const RegiaoDetalhe = () => {
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4">
-                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" onClick={() => trackWhatsAppClick({ source: neighborhood ? "bairro_cta" : "city_cta", city: city!, bairro: neighborhood })}>
+                <a
+                  href={whatsappLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-wa-source={neighborhood ? "neighborhood-detail" : "region-detail"}
+                  data-service="assistência técnica"
+                  data-city={cityName}
+                  {...(neighborhood ? { "data-neighborhood": neighborhoodName } : {})}
+                  aria-label={`Falar com técnico em ${neighborhood ? `${neighborhoodName}, ${cityName}` : cityName}`}
+                  onClick={() => trackWhatsAppClick({ source: neighborhood ? "neighborhood-detail" : "region-detail", city: cityName, bairro: neighborhoodName || undefined })}
+                >
                   <Button size="lg" className="w-full sm:w-auto text-lg px-8 py-6 bg-success hover:bg-success/90 cta-glow gap-3">
                     <MessageCircle className="w-6 h-6" />
                     Chamar Técnico Agora

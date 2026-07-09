@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/accordion";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
-const whatsappLink = buildWhatsAppUrl();
+// whatsappLink personalizado por rota dentro do componente
 
 export default function ServicoCidade() {
   const { city, service } = useParams<{ city: string; service: string }>();
@@ -50,16 +50,7 @@ export default function ServicoCidade() {
     ...serviceData.faqs.slice(0, 3),
   ];
 
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Início", item: "https://precisodeumtecnico.com/" },
-      { "@type": "ListItem", position: 2, name: "Serviços", item: "https://precisodeumtecnico.com/servicos" },
-      { "@type": "ListItem", position: 3, name: serviceData.title, item: `https://precisodeumtecnico.com/servicos/${serviceData.slug}` },
-      { "@type": "ListItem", position: 4, name: cityData.name, item: url },
-    ],
-  };
+  // Breadcrumb agora vem via SEOHead prop; schema abaixo removido.
 
   const faqSchema = {
     "@context": "https://schema.org",
@@ -88,7 +79,6 @@ export default function ServicoCidade() {
       priceCurrency: "BRL",
       url,
     },
-    aggregateRating: { "@type": "AggregateRating", ratingValue: "4.9", reviewCount: "523" },
   };
 
   const offerSchema = buildOfferSchema({
@@ -106,6 +96,11 @@ export default function ServicoCidade() {
     .filter((c) => c.slug !== cityData.slug)
     .slice(0, 8);
 
+  const whatsappLink = buildWhatsAppUrl({
+    service: serviceData.title,
+    city: cityData.name,
+  });
+
   return (
     <Layout>
       <SEOHead
@@ -118,7 +113,19 @@ export default function ServicoCidade() {
           `técnico ${cityData.name.toLowerCase()}`,
           `assistência técnica ${cityData.name.toLowerCase()}`,
         ].join(", ")}
-        structuredData={[breadcrumbSchema, faqSchema, localServiceSchema, offerSchema, reviewsSchema].filter(Boolean) as object[]}
+        breadcrumbs={[
+          { name: "Início", url: "https://precisodeumtecnico.com/" },
+          { name: "Serviços", url: "https://precisodeumtecnico.com/servicos" },
+          { name: serviceData.title, url: `https://precisodeumtecnico.com/servicos/${serviceData.slug}` },
+          { name: cityData.name, url },
+        ]}
+        service={{
+          name: `${serviceData.title} em ${cityData.name}`,
+          description,
+          priceMinBRL: 99.99,
+          areaServed: `${cityData.name}, ${cityData.state}`,
+        }}
+        structuredData={[faqSchema, localServiceSchema, offerSchema, reviewsSchema].filter(Boolean) as object[]}
       />
 
       {/* Hero */}
@@ -144,7 +151,15 @@ export default function ServicoCidade() {
             </p>
             <div className="flex flex-wrap gap-3">
               <Button size="lg" variant="whatsapp" asChild>
-                <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={whatsappLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-wa-source="service-city"
+                  data-service={serviceData.title}
+                  data-city={cityData.name}
+                  aria-label={`Falar com técnico — ${serviceData.title} em ${cityData.name}`}
+                >
                   <MessageCircle className="w-5 h-5" /> Chamar Técnico Agora
                 </a>
               </Button>

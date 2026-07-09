@@ -7,7 +7,7 @@ import {
   Building, Users, Headphones
 } from "lucide-react";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
-const whatsappLink = buildWhatsAppUrl();
+const whatsappLink = buildWhatsAppUrl({ service: "contato técnico", sourcePage: "/contato" });
 
 const contactInfo = [
   {

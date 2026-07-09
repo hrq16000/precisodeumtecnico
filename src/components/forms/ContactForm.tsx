@@ -191,7 +191,7 @@ export function ContactForm() {
       setIsSubmitting(false);
     }
   };
-  const whatsappLink = buildWhatsAppUrl();
+  const whatsappLink = buildWhatsAppUrl({ service: "contato técnico" });
 
   if (isSuccess) {
     return (

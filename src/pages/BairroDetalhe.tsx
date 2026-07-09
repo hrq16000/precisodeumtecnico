@@ -127,6 +127,17 @@ export default function BairroDetalhe() {
         title={`${pageTitle} | Assistência Técnica 24h`}
         description={pageDescription}
         canonical={pageUrl}
+        breadcrumbs={[
+          { name: "Início", url: "https://precisodeumtecnico.com/" },
+          { name: "Regiões", url: "https://precisodeumtecnico.com/regioes" },
+          { name: cityData.name, url: `https://precisodeumtecnico.com/regioes/${city}` },
+          { name: neighborhoodName, url: pageUrl },
+        ]}
+        service={{
+          name: `Assistência técnica em ${neighborhoodName}, ${cityData.name}`,
+          description: pageDescription,
+          areaServed: `${neighborhoodName}, ${cityData.name}`,
+        }}
         structuredData={[localBusinessSchema, faqSchema, offerSchema, reviewsSchema].filter(Boolean) as object[]}
       />
 

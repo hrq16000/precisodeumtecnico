@@ -17,7 +17,7 @@ import { citiesData } from "@/data/regions";
 import { Calendar, Clock, MessageCircle, ArrowRight } from "lucide-react";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
-const whatsappLink = buildWhatsAppUrl();
+
 
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();

@@ -3,7 +3,7 @@ import { MessageCircle, Phone, ArrowRight } from "lucide-react";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 export function CTASection() {
-  const whatsappLink = buildWhatsAppUrl();
+  const whatsappLink = buildWhatsAppUrl({ service: "assistência técnica" });
 
   return (
     <section className="relative py-20 md:py-28 overflow-hidden">

@@ -16,7 +16,7 @@ const regionOrder: Array<keyof ReturnType<typeof groupedByRegion>> = [
 
 const AtendimentoNacional = () => {
   const grouped = groupedByRegion();
-  const whatsappLink = buildWhatsAppUrl();
+  const whatsappLink = buildWhatsAppUrl({ service: "atendimento técnico nacional", sourcePage: "/atendimento-nacional" });
 
   const breadcrumb = {
     "@context": "https://schema.org",

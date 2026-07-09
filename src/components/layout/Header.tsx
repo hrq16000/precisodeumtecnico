@@ -67,7 +67,7 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
-  const whatsappLink = buildWhatsAppUrl();
+  const whatsappLink = buildWhatsAppUrl({ service: "assistência técnica", sourcePage: typeof window !== "undefined" ? window.location.pathname : "" });
 
   useEffect(() => {
     let ticking = false;

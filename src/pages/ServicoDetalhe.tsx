@@ -172,7 +172,7 @@ const defaultServiceData = {
   ],
   category: "Serviços Gerais",
 };
-const whatsappLink = buildWhatsAppUrl();
+
 
 const ServicoDetalhe = () => {
   const { slug } = useParams<{ slug: string }>();

@@ -16,7 +16,7 @@ import { citiesData, curitibaBairros } from "@/data/regions";
 import { MessageCircle, Check } from "lucide-react";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
-const whatsappLink = buildWhatsAppUrl();
+const whatsappLink = buildWhatsAppUrl({ service: "preços e condições de assistência técnica", sourcePage: "/precos" });
 
 interface Row {
   service: string;

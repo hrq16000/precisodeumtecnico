@@ -173,7 +173,7 @@ const serviceCategories = [
     ],
   },
 ];
-const whatsappLink = buildWhatsAppUrl();
+const whatsappLink = buildWhatsAppUrl({ service: "assistência técnica", sourcePage: "/servicos" });
 
 const Servicos = () => {
   return (

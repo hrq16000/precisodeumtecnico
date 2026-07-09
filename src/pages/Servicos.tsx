@@ -182,6 +182,10 @@ const Servicos = () => {
         title="Serviços de Assistência Técnica | Preciso de Um Técnico"
         description="Conheça todos os nossos serviços de assistência técnica: informática, notebooks, CFTV, elétrica, redes, ar-condicionado e muito mais. Atendimento em Curitiba e região."
         canonical="https://precisodeumtecnico.com/servicos"
+        breadcrumbs={[
+          { name: "Início", url: "https://precisodeumtecnico.com/" },
+          { name: "Serviços", url: "https://precisodeumtecnico.com/servicos" },
+        ]}
       />
 
       {/* Hero */}

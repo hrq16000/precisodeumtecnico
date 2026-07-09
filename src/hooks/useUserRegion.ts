@@ -4,10 +4,14 @@ export type UserRegion = {
   city: string;
   region?: string; // estado (UF)
   country?: string;
-  source: "ip" | "manual" | "default";
+  neighborhood?: string;
+  source: "gps" | "ip" | "manual" | "default";
 };
 
 const STORAGE_KEY = "user_region_v1";
+const FULL_KEY = "user_location_full_v1";
+export const LOCATION_UPDATED_EVENT = "user-location-updated";
+
 const DEFAULT_REGION: UserRegion = {
   city: "Curitiba",
   region: "PR",
@@ -15,24 +19,42 @@ const DEFAULT_REGION: UserRegion = {
   source: "default",
 };
 
+// Prioridade: GPS > manual (full) > manual (region) > IP > default.
+// Lê tanto `user_location_full_v1` (SmartLocationPrompt/GPS) quanto
+// `user_region_v1` (fallback legado). O primeiro vence quando presente.
 function readStored(): UserRegion | null {
+  try {
+    const raw = localStorage.getItem(FULL_KEY);
+    if (raw) {
+      const p = JSON.parse(raw) as {
+        city?: string; uf?: string; neighborhood?: string; source?: string;
+      };
+      if (p?.city) {
+        return {
+          city: p.city,
+          region: p.uf,
+          neighborhood: p.neighborhood,
+          country: "BR",
+          source: (p.source === "gps" || p.source === "manual" || p.source === "ip")
+            ? p.source
+            : "manual",
+        };
+      }
+    }
+  } catch { /* noop */ }
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
     const parsed = JSON.parse(raw) as UserRegion;
     if (parsed && typeof parsed.city === "string" && parsed.city.length > 0) return parsed;
-  } catch {
-    /* noop */
-  }
+  } catch { /* noop */ }
   return null;
 }
 
 function writeStored(region: UserRegion) {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(region));
-  } catch {
-    /* noop */
-  }
+  } catch { /* noop */ }
 }
 
 async function fetchByIp(): Promise<UserRegion | null> {
@@ -84,34 +106,45 @@ export function useUserRegion() {
   const [loading, setLoading] = useState(false);
   const [askPrompt, setAskPrompt] = useState(false);
 
+  // Escuta atualizações do SmartLocationPrompt (mesma aba) e de outras abas.
+  useEffect(() => {
+    const refresh = () => {
+      const s = readStored();
+      if (s) setRegion(s);
+    };
+    window.addEventListener(LOCATION_UPDATED_EVENT, refresh);
+    window.addEventListener("storage", refresh);
+    return () => {
+      window.removeEventListener(LOCATION_UPDATED_EVENT, refresh);
+      window.removeEventListener("storage", refresh);
+    };
+  }, []);
+
   useEffect(() => {
     const stored = readStored();
-    // If user already set manually, respect it.
-    if (stored && stored.source === "manual") return;
+    // GPS / manual têm prioridade absoluta sobre IP.
+    if (stored && (stored.source === "gps" || stored.source === "manual")) return;
     let cancelled = false;
     setLoading(true);
     fetchByIp()
       .then((r) => {
         if (cancelled) return;
         if (r) {
-          setRegion(r);
+          setRegion((cur) =>
+            cur.source === "gps" || cur.source === "manual" ? cur : r,
+          );
           writeStored(r);
         }
-        // After detection (or failure), prompt user once to confirm
         const promptedKey = "user_region_prompted_v1";
         try {
           if (!localStorage.getItem(promptedKey)) {
             setAskPrompt(true);
             localStorage.setItem(promptedKey, "1");
           }
-        } catch {
-          /* noop */
-        }
+        } catch { /* noop */ }
       })
       .finally(() => !cancelled && setLoading(false));
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
   }, []);
 
   const setManualRegion = useCallback((city: string, uf?: string) => {

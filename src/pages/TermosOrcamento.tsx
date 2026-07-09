@@ -188,36 +188,33 @@ const TermosOrcamento = () => {
                 </li>
               </ul>
 
-              <h3 className="text-lg font-semibold text-foreground mb-4">Prazos médios:</h3>
+              <h3 className="text-lg font-semibold text-foreground mb-4">Prazos praticados:</h3>
 
               <div className="space-y-3">
                 <div className="flex items-center justify-between bg-accent/50 rounded-xl p-4 border border-border">
                   <div className="flex items-center gap-3">
                     <Calendar className="h-5 w-5 text-primary shrink-0" />
-                    <span className="font-medium text-foreground">Diagnóstico técnico</span>
+                    <span className="font-medium text-foreground">Prazo mínimo de conclusão</span>
                   </div>
-                  <span className="font-bold text-primary text-sm md:text-base">7 a 15 dias</span>
+                  <span className="font-bold text-primary text-sm md:text-base">{SLA.minLabel}</span>
                 </div>
                 <div className="flex items-center justify-between bg-accent/50 rounded-xl p-4 border border-border">
                   <div className="flex items-center gap-3">
                     <Wrench className="h-5 w-5 text-primary shrink-0" />
-                    <span className="font-medium text-foreground">Reparo ou manutenção</span>
+                    <span className="font-medium text-foreground">Prazo máximo estimado</span>
                   </div>
-                  <span className="font-bold text-primary text-sm md:text-base">20 a 60 dias úteis</span>
+                  <span className="font-bold text-primary text-sm md:text-base">Até {SLA.maxLabel}</span>
                 </div>
                 <div className="flex items-center justify-between bg-accent/50 rounded-xl p-4 border border-border">
                   <div className="flex items-center gap-3">
-                    <Truck className="h-5 w-5 text-primary shrink-0" />
-                    <span className="font-medium text-foreground">Entrega após conclusão</span>
+                    <Clock className="h-5 w-5 text-primary shrink-0" />
+                    <span className="font-medium text-foreground">Exceção — atendimento expresso</span>
                   </div>
-                  <span className="font-bold text-primary text-sm md:text-base">5 a 7 dias úteis</span>
+                  <span className="font-bold text-primary text-sm md:text-base">Intervalos de até 30 min</span>
                 </div>
               </div>
 
-              <p className="text-sm mt-4 italic">
-                Os prazos informados são estimativas médias e podem sofrer variações dependendo do tipo de equipamento 
-                ou complexidade do reparo.
-              </p>
+              <p className="text-sm mt-4 italic">{SLA.disclaimer}</p>
             </div>
           </div>
 
@@ -280,8 +277,8 @@ const TermosOrcamento = () => {
               </p>
 
               <div className="bg-destructive/5 border-2 border-destructive/20 rounded-xl p-6 text-center my-6">
-                <p className="text-sm text-muted-foreground mb-1">Taxa de diagnóstico</p>
-                <p className="text-4xl md:text-5xl font-bold text-destructive">R$ 90,00</p>
+                <p className="text-sm text-muted-foreground mb-1">Taxa de diagnóstico (visita ou bancada)</p>
+                <p className="text-4xl md:text-5xl font-bold text-destructive">{PRICING.technicalVisit.priceLabel}</p>
               </div>
 
               <p>Essa taxa cobre os custos técnicos envolvidos em:</p>

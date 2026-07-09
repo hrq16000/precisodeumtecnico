@@ -44,6 +44,51 @@ jobs:
         env:
           PAGE_BASE_URL: http://localhost:4173
 
+  security:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: verify
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+      - name: Install Playwright (chromium)
+        run: bun run e2e:install
+      - name: Guard — no service role in frontend
+        run: |
+          set -e
+          if rg -n "SUPABASE_SERVICE_ROLE_KEY|service_role|serviceRole" src/ 2>&1 | rg -v "supabase/functions/"; then
+            echo "::error::Service role reference found in frontend code — must live only in edge functions."
+            exit 1
+          fi
+          echo "OK: no service role in src/"
+      - name: Guard — no raw GPS coords in analytics/audit payloads
+        run: |
+          set -e
+          # Coordenadas cruas (latitude/longitude/accuracy) só podem viver em
+          # SmartLocationPrompt (persistência local) e reverseGeocode (helper).
+          MATCHES=$(rg -n "latitude|longitude|\baccuracy\b" src/lib/analytics.ts src/lib/waAudit.ts src/lib/locationTelemetry.ts 2>/dev/null | rg -v "accuracy_bucket|// " || true)
+          if [ -n "$MATCHES" ]; then
+            echo "::error::Raw GPS coords leaked into analytics/audit code:"
+            echo "$MATCHES"
+            exit 1
+          fi
+          echo "OK: no raw coords in analytics/audit code."
+      - name: RLS E2E — wa_bypass_events policy
+        run: bunx playwright test e2e/wa-bypass-rls.spec.ts --reporter=list
+      - name: Upload RLS failure trace
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rls-e2e-trace
+          path: test-results/
+          if-no-files-found: ignore
+          retention-days: 7
+
+
   lighthouse:
     runs-on: ubuntu-latest
     timeout-minutes: 15

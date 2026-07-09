@@ -26,8 +26,8 @@ describe("Fase A — JSON-LD Offer", () => {
     expect(spec.referenceQuantity.unitCode).toBe("MIN");
   });
 
-  it("inclui bancada R$ 90 como segunda oferta", () => {
-    expect(schema.offers[1].price).toBe("90.00");
+  it("inclui bancada R$ 99,99 como segunda oferta (taxa oficial única)", () => {
+    expect(schema.offers[1].price).toBe("99.99");
   });
 });
 

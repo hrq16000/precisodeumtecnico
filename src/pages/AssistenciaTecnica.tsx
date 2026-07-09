@@ -30,13 +30,13 @@ import {
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { trackWhatsAppClick } from "@/lib/analytics";
+import { buildWhatsAppUrl, buildWhatsAppUrlFromText } from "@/lib/whatsapp";
 
-const WHATSAPP_NUMBER = "5541997452053";
 const WHATSAPP_DISPLAY = "WhatsApp 24h";
-const DEFAULT_WA_TEXT =
-  "Olá, preciso de um orçamento de assistência técnica. Atendem em todo o Brasil?";
-const waLink = (text = DEFAULT_WA_TEXT) =>
-  `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+const waLink = (text?: string) =>
+  text
+    ? buildWhatsAppUrlFromText(text)
+    : buildWhatsAppUrl({ service: "assistência técnica nacional", sourcePage: "/assistencia-tecnica" });
 const waClick = (source: string, service?: string) => () =>
   trackWhatsAppClick({ source: `brasil_lp_${source}`, service });
 
@@ -229,7 +229,7 @@ export default function AssistenciaTecnica() {
               className="mt-8 flex flex-wrap gap-3"
             >
               <Button variant="whatsapp" size="lg" asChild>
-                <a href={waLink()} onClick={waClick("hero")} target="_blank" rel="noopener noreferrer">
+                <a href={waLink()} onClick={waClick("hero")} target="_blank" rel="noopener noreferrer" data-wa-source="landing-brasil" data-service="assistência técnica nacional" aria-label="Solicitar orçamento pelo WhatsApp">
                   <MessageCircle className="w-5 h-5" />
                   Solicitar Orçamento no WhatsApp
                   <ArrowRight className="w-4 h-4" />
@@ -492,7 +492,7 @@ export default function AssistenciaTecnica() {
             </p>
             <div className="mt-8">
               <Button variant="whatsapp" size="lg" asChild>
-                <a href={waLink()} onClick={waClick("final_cta")} target="_blank" rel="noopener noreferrer">
+                <a href={waLink()} onClick={waClick("final_cta")} target="_blank" rel="noopener noreferrer" data-wa-source="landing-brasil" data-service="assistência técnica nacional" aria-label="Chamar técnico pelo WhatsApp">
                   <MessageCircle className="w-5 h-5" />
                   Chamar no WhatsApp — {WHATSAPP_DISPLAY}
                 </a>

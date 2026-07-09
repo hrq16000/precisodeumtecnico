@@ -42,14 +42,14 @@ import { OfferHighlight } from "@/components/marketing/OfferHighlight";
 import { buildOfferSchema } from "@/components/seo/OfferSchema";
 import { buildReviewsSchema } from "@/data/testimonials";
 import { trackWhatsAppClick } from "@/lib/analytics";
+import { buildWhatsAppUrl, buildWhatsAppUrlFromText } from "@/lib/whatsapp";
 
 
-const WHATSAPP_NUMBER = "5541997452053";
 const WHATSAPP_DISPLAY = "WhatsApp 24h";
-const DEFAULT_WA_TEXT =
-  "Olá, preciso de um orçamento de assistência técnica em Curitiba.";
-const waLink = (text = DEFAULT_WA_TEXT) =>
-  `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+const waLink = (text?: string) =>
+  text
+    ? buildWhatsAppUrlFromText(text)
+    : buildWhatsAppUrl({ service: "assistência técnica", city: "Curitiba", sourcePage: "/assistencia-tecnica-curitiba" });
 const waClick = (source: string, service?: string) => () =>
   trackWhatsAppClick({
     source: `curitiba_lp_${source}`,
@@ -461,6 +461,10 @@ export default function AssistenciaTecnicaCuritiba() {
                   onClick={waClick("hero")}
                   target="_blank"
                   rel="noopener noreferrer"
+                  data-wa-source="landing-curitiba"
+                  data-service="assistência técnica"
+                  data-city="Curitiba"
+                  aria-label="Chamar técnico em Curitiba pelo WhatsApp"
                 >
                   <MessageCircle className="w-5 h-5" />
                   Chamar no WhatsApp
@@ -655,10 +659,14 @@ export default function AssistenciaTecnicaCuritiba() {
                   <div className="mt-6">
                     <Button variant="whatsapp" size="sm" asChild>
                       <a
-                        href={waLink(`Olá! Quero agendar reparo de ${b.title}.`)}
+                        href={waLink(`Olá! Quero agendar reparo de ${b.title} em Curitiba.`)}
                         onClick={waClick("brand_card", b.title)}
                         target="_blank"
                         rel="noopener noreferrer"
+                        data-wa-source="landing-curitiba"
+                        data-service={b.title}
+                        data-city="Curitiba"
+                        aria-label={`Agendar reparo de ${b.title} pelo WhatsApp`}
                       >
                         <MessageCircle className="w-4 h-4" /> Agendar Reparo
                       </a>
@@ -819,6 +827,10 @@ export default function AssistenciaTecnicaCuritiba() {
                   onClick={waClick("final_cta")}
                   target="_blank"
                   rel="noopener noreferrer"
+                  data-wa-source="landing-curitiba"
+                  data-service="assistência técnica"
+                  data-city="Curitiba"
+                  aria-label="Chamar técnico em Curitiba pelo WhatsApp"
                 >
                   <MessageCircle className="w-5 h-5" />
                   Chamar no WhatsApp — {WHATSAPP_DISPLAY}

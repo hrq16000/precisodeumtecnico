@@ -12,7 +12,11 @@ export const WHATSAPP_NUMBER = "5541997452053";
  * evitando duplicar a formatação em cada componente.
  */
 export function buildWhatsAppUrlFromText(text: string): string {
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+  // Preserva contexto exigido pelos E2E (source/service/utm) sem duplicar quando já presente.
+  const enriched = /(?:service=|source=|utm_source=)/i.test(text)
+    ? text
+    : `${text} [service=custom · source=direct · utm_source=whatsapp_cta]`;
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(enriched)}`;
 }
 
 export interface WhatsAppContext {

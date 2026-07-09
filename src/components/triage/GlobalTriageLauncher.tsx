@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { TriageWizard } from "@/components/triage/TriageWizard";
 import { isTriageEnabled } from "@/lib/triageFlag";
 import type { Category } from "@/components/triage/triageMachine";

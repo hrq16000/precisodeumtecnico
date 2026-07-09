@@ -154,9 +154,9 @@ export function TriageMediaAuditLog() {
           <CardTitle className="flex items-center gap-2 text-base">
             <ShieldCheck className="h-4 w-4 text-emerald-500" />
             Auditoria de mídias de triagem
-            <Badge variant="outline" className="ml-2">{stats.total}</Badge>
+            <Badge variant="outline" className="ml-2">{total} total</Badge>
             <span className="text-xs text-muted-foreground font-normal ml-1">
-              ({humanSize(stats.totalSize)})
+              (página: {humanSize(stats.totalSize)})
             </span>
           </CardTitle>
           <div className="flex gap-2">
@@ -210,7 +210,7 @@ export function TriageMediaAuditLog() {
           </div>
         </div>
         <div className="flex gap-2">
-          <Button size="sm" onClick={load} disabled={loading}>Aplicar filtros</Button>
+          <Button size="sm" onClick={applyFilters} disabled={loading}>Aplicar filtros</Button>
           <Button size="sm" variant="ghost" onClick={clearFilters}>
             <X className="h-3 w-3 mr-1" /> Limpar
           </Button>

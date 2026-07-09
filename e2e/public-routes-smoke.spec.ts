@@ -23,9 +23,12 @@ const PUBLIC_ROUTES = [
   "/regioes/curitiba",
   "/servico-em/curitiba/informatica",
   "/regioes/curitiba/batel",
+  "/termos-orcamento",
+  "/termos-orcamento-pre-aprovado",
 ];
 
 const FABRICATED = /523\s*avalia|15\.000\+\s*clientes|500\+\s*técnicos cadastrados|★★★★★/i;
+const WHITE_SCREEN = /Cannot read properties of undefined|createContext.*undefined/i;
 
 const isCriticalError = (msg: string) =>
   /ChunkLoadError|Loading chunk \d+ failed|Failed to fetch dynamically imported module|Minified React error/i.test(

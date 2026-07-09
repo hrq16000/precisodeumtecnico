@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -7,35 +8,36 @@ import { ScrollToTop } from "@/components/ScrollToTop";
 import { GlobalReveal } from "@/components/GlobalReveal";
 import { HelmetProvider } from "react-helmet-async";
 import { AuthProvider } from "@/hooks/useAuth";
-// WhatsAppFunnelProvider removed — replaced by GlobalTriageLauncher (single source of truth)
+// Keep Index and NotFound eager: Index is the LCP page; NotFound is trivial.
 import Index from "./pages/Index";
-import Servicos from "./pages/Servicos";
-import ServicoDetalhe from "./pages/ServicoDetalhe";
-import Regioes from "./pages/Regioes";
-import RegiaoDetalhe from "./pages/RegiaoDetalhe";
-import BairroDetalhe from "./pages/BairroDetalhe";
-import Sobre from "./pages/Sobre";
-import Contato from "./pages/Contato";
-import Auth from "./pages/Auth";
-import Admin from "./pages/Admin";
-import TermosOrcamento from "./pages/TermosOrcamento";
-import ServicoCidade from "./pages/ServicoCidade";
-import Precos from "./pages/Precos";
-import Blog from "./pages/Blog";
-import BlogPost from "./pages/BlogPost";
-import BlogCategory from "./pages/BlogCategory";
-import Diagnostics from "./pages/Diagnostics";
 import NotFound from "./pages/NotFound";
-import AssistenciaTecnicaCuritiba from "./pages/AssistenciaTecnicaCuritiba";
-import AssistenciaTecnica from "./pages/AssistenciaTecnica";
-import AtendimentoNacional from "./pages/AtendimentoNacional";
-import CidadeNacional from "./pages/CidadeNacional";
-import TriagemPreview from "./pages/TriagemPreview";
-import Faq from "./pages/Faq";
-import DadosEmpresa from "./pages/DadosEmpresa";
 import { GlobalTriageLauncher } from "@/components/triage/GlobalTriageLauncher";
 import { SmartLocationPrompt } from "@/components/layout/SmartLocationPrompt";
 
+// Lazy-load every non-critical route to shrink the initial bundle.
+const Servicos = lazy(() => import("./pages/Servicos"));
+const ServicoDetalhe = lazy(() => import("./pages/ServicoDetalhe"));
+const Regioes = lazy(() => import("./pages/Regioes"));
+const RegiaoDetalhe = lazy(() => import("./pages/RegiaoDetalhe"));
+const BairroDetalhe = lazy(() => import("./pages/BairroDetalhe"));
+const Sobre = lazy(() => import("./pages/Sobre"));
+const Contato = lazy(() => import("./pages/Contato"));
+const Auth = lazy(() => import("./pages/Auth"));
+const Admin = lazy(() => import("./pages/Admin"));
+const TermosOrcamento = lazy(() => import("./pages/TermosOrcamento"));
+const ServicoCidade = lazy(() => import("./pages/ServicoCidade"));
+const Precos = lazy(() => import("./pages/Precos"));
+const Blog = lazy(() => import("./pages/Blog"));
+const BlogPost = lazy(() => import("./pages/BlogPost"));
+const BlogCategory = lazy(() => import("./pages/BlogCategory"));
+const Diagnostics = lazy(() => import("./pages/Diagnostics"));
+const AssistenciaTecnicaCuritiba = lazy(() => import("./pages/AssistenciaTecnicaCuritiba"));
+const AssistenciaTecnica = lazy(() => import("./pages/AssistenciaTecnica"));
+const AtendimentoNacional = lazy(() => import("./pages/AtendimentoNacional"));
+const CidadeNacional = lazy(() => import("./pages/CidadeNacional"));
+const TriagemPreview = lazy(() => import("./pages/TriagemPreview"));
+const Faq = lazy(() => import("./pages/Faq"));
+const DadosEmpresa = lazy(() => import("./pages/DadosEmpresa"));
 
 const queryClient = new QueryClient();
 
@@ -52,37 +54,39 @@ const App = () => (
             <GlobalTriageLauncher />
             <SmartLocationPrompt />
 
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/faq" element={<Faq />} />
-              <Route path="/dados-da-empresa" element={<DadosEmpresa />} />
+            <Suspense fallback={null}>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/faq" element={<Faq />} />
+                <Route path="/dados-da-empresa" element={<DadosEmpresa />} />
 
-              <Route path="/servicos" element={<Servicos />} />
-              <Route path="/servicos/:slug" element={<ServicoDetalhe />} />
-              <Route path="/regioes" element={<Regioes />} />
-              <Route path="/regioes/:city" element={<RegiaoDetalhe />} />
-              <Route path="/regioes/:city/:neighborhood" element={<BairroDetalhe />} />
-              <Route path="/sobre" element={<Sobre />} />
-              <Route path="/contato" element={<Contato />} />
-              <Route path="/auth" element={<Auth />} />
-              <Route path="/admin" element={<Admin />} />
-              <Route path="/termos-orcamento-pre-aprovado" element={<TermosOrcamento />} />
-              <Route path="/termos-orcamento" element={<TermosOrcamento />} />
-              <Route path="/servico-em/:city/:service" element={<ServicoCidade />} />
-              <Route path="/precos" element={<Precos />} />
-              <Route path="/blog" element={<Blog />} />
-              <Route path="/blog/categoria/:slug" element={<BlogCategory />} />
-              <Route path="/blog/:slug" element={<BlogPost />} />
-              <Route path="/diagnostics" element={<Diagnostics />} />
-              <Route path="/diagnostico" element={<Diagnostics />} />
-              <Route path="/assistencia-tecnica-curitiba" element={<AssistenciaTecnicaCuritiba />} />
-              <Route path="/assistencia-tecnica" element={<AssistenciaTecnica />} />
-              <Route path="/atendimento-nacional" element={<AtendimentoNacional />} />
-              <Route path="/atendimento-nacional/:slug" element={<CidadeNacional />} />
-              <Route path="/triagem-preview" element={<TriagemPreview />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+                <Route path="/servicos" element={<Servicos />} />
+                <Route path="/servicos/:slug" element={<ServicoDetalhe />} />
+                <Route path="/regioes" element={<Regioes />} />
+                <Route path="/regioes/:city" element={<RegiaoDetalhe />} />
+                <Route path="/regioes/:city/:neighborhood" element={<BairroDetalhe />} />
+                <Route path="/sobre" element={<Sobre />} />
+                <Route path="/contato" element={<Contato />} />
+                <Route path="/auth" element={<Auth />} />
+                <Route path="/admin" element={<Admin />} />
+                <Route path="/termos-orcamento-pre-aprovado" element={<TermosOrcamento />} />
+                <Route path="/termos-orcamento" element={<TermosOrcamento />} />
+                <Route path="/servico-em/:city/:service" element={<ServicoCidade />} />
+                <Route path="/precos" element={<Precos />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/blog/categoria/:slug" element={<BlogCategory />} />
+                <Route path="/blog/:slug" element={<BlogPost />} />
+                <Route path="/diagnostics" element={<Diagnostics />} />
+                <Route path="/diagnostico" element={<Diagnostics />} />
+                <Route path="/assistencia-tecnica-curitiba" element={<AssistenciaTecnicaCuritiba />} />
+                <Route path="/assistencia-tecnica" element={<AssistenciaTecnica />} />
+                <Route path="/atendimento-nacional" element={<AtendimentoNacional />} />
+                <Route path="/atendimento-nacional/:slug" element={<CidadeNacional />} />
+                <Route path="/triagem-preview" element={<TriagemPreview />} />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
 
           </BrowserRouter>
         </TooltipProvider>

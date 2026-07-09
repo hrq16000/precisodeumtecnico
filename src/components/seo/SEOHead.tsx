@@ -143,7 +143,8 @@ export function SEOHead({
     });
   }
 
-  const schemas = structuredData ?? (schema ? [schema, ...extra] : [localBusinessSchema, ...extra]);
+  const baseSchemas = structuredData ?? (schema ? [schema] : [localBusinessSchema]);
+  const schemas = [...baseSchemas, ...extra];
 
 
   return (

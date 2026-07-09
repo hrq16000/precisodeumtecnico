@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { MessageCircle, Phone, Zap, CheckCircle, FileText, Award, Clock, Shield, MapPin, Users } from "lucide-react";
+import { MessageCircle, Phone, Zap, CheckCircle, FileText, Award, Clock, Shield, MapPin, Users, CreditCard } from "lucide-react";
 import { TermsDialog } from "@/components/TermsDialog";
 import { TERMS_SOURCE } from "@/lib/termsSource";
 import { OfferHighlight } from "@/components/marketing/OfferHighlight";
+import { COMMERCIAL, SLA } from "@/data/pricingPolicy";
 export function HeroSection() {
   const whatsappNumber = "5541997452053";
   const whatsappLink = `https://wa.me/${whatsappNumber}?text=Olá! Preciso de um técnico.`;
@@ -40,7 +41,7 @@ export function HeroSection() {
           </div>
 
           {/* Trust Badges */}
-          <div className="flex flex-wrap justify-center gap-4 md:gap-6 mb-8 animate-fade-up px-4">
+          <div className="flex flex-wrap justify-center gap-4 md:gap-6 mb-6 animate-fade-up px-4">
             <div className="flex items-center gap-2 text-white/90">
               <CheckCircle className="w-5 h-5 text-[#22C55E]" />
               <span className="text-sm">Garantia de 90 dias a 1 ano</span>
@@ -54,6 +55,23 @@ export function HeroSection() {
               <span className="text-sm">Técnicos certificados</span>
             </div>
           </div>
+
+          {/* Condições comerciais */}
+          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs md:text-sm text-white/80 mb-8 animate-fade-up px-4">
+            <span className="inline-flex items-center gap-1.5">
+              <CreditCard className="w-4 h-4 text-[#F59E0B]" /> {COMMERCIAL.installments}
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <Award className="w-4 h-4 text-[#F59E0B]" /> {COMMERCIAL.experienceLabel}
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <Users className="w-4 h-4 text-[#F59E0B]" /> {COMMERCIAL.partnersLabel}
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <Clock className="w-4 h-4 text-[#F59E0B]" /> Prazo: {SLA.minLabel} a {SLA.maxLabel}
+            </span>
+          </div>
+
 
           {/* CTA Buttons */}
           <div className="flex flex-col gap-3 px-4 mb-6 animate-fade-up">

@@ -54,6 +54,10 @@ const Sobre = () => {
         title="Sobre Nós | Preciso de Um Técnico"
         description="Conheça a maior rede de técnicos especializados de Curitiba e Região Metropolitana. Nossa história, missão, valores e compromisso com a qualidade."
         canonical="https://precisodeumtecnico.com/sobre"
+        breadcrumbs={[
+          { name: "Início", url: "https://precisodeumtecnico.com/" },
+          { name: "Sobre", url: "https://precisodeumtecnico.com/sobre" },
+        ]}
       />
 
       {/* Hero */}

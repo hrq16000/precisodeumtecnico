@@ -135,9 +135,7 @@ const CidadeNacional = () => {
           type="image/webp"
           fetchPriority="high"
         />
-        <meta property="og:image:secure_url" content={ogImage} />
-        <meta property="og:image:type" content="image/jpeg" />
-        <meta property="og:image:alt" content={`Técnico em ${city.name} - ${city.state}`} />
+        {/* og:image tags são injetadas pela hospedagem — não emitir here para evitar duplicidade. */}
       </Helmet>
 
       {/* Hero */}

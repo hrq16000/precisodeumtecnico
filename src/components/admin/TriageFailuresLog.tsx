@@ -13,7 +13,8 @@ import {
 } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
 import {
-  AlertTriangle, Download, ExternalLink, Filter, Loader2, RefreshCw, X,
+  AlertTriangle, ChevronLeft, ChevronRight, Download, ExternalLink, Filter,
+  Loader2, RefreshCw, X,
 } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -53,8 +54,12 @@ function toCsv(rows: FailureRow[]): string {
   return lines.join("\n");
 }
 
+const PAGE_SIZE = 25;
+
 export function TriageFailuresLog() {
   const [rows, setRows] = useState<FailureRow[]>([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
@@ -68,9 +73,9 @@ export function TriageFailuresLog() {
     setLoading(true);
     let q = supabase
       .from("triage_media_failures")
-      .select("*")
+      .select("*", { count: "exact" })
       .order("created_at", { ascending: false })
-      .limit(1000);
+      .range(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE - 1);
 
     if (reasonFilter !== "all") q = q.eq("reason", reasonFilter);
     if (sessionFilter.trim()) q = q.ilike("session_id", `${sessionFilter.trim()}%`);
@@ -81,11 +86,12 @@ export function TriageFailuresLog() {
       q = q.lte("created_at", end.toISOString());
     }
 
-    const { data, error } = await q;
+    const { data, error, count } = await q;
     if (error) {
       toast({ variant: "destructive", title: "Falha ao carregar falhas", description: error.message });
     } else {
       setRows((data || []) as FailureRow[]);
+      setTotal(count ?? 0);
     }
     setLoading(false);
   };

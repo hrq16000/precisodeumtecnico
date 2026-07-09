@@ -1,9 +1,10 @@
 import { Layout } from "@/components/layout/Layout";
 import { SEOHead } from "@/components/seo/SEOHead";
-import { 
-  FileText, Truck, Clock, Wrench, XCircle, CheckCircle, 
-  AlertTriangle, Shield, Calendar, Package, MapPin, Phone
+import {
+  FileText, Truck, Clock, Wrench, XCircle, CheckCircle,
+  AlertTriangle, Shield, Calendar, Package, MapPin, Phone, CreditCard, Award, Users
 } from "lucide-react";
+import { PRICING, SLA, COMMERCIAL } from "@/data/pricingPolicy";
 import { Link } from "react-router-dom";
 
 const TermosOrcamento = () => {
@@ -64,28 +65,40 @@ const TermosOrcamento = () => {
 
             <div className="space-y-4 text-muted-foreground leading-relaxed">
               <p>
-                Para agilizar o atendimento e evitar atrasos no processo de diagnóstico técnico, os equipamentos 
-                enviados para análise são cadastrados com orçamento pré-aprovado mínimo no valor de:
+                Para agilizar o atendimento e evitar atrasos no diagnóstico técnico, todos os serviços iniciam
+                com valores mínimos pré-aprovados, conforme a modalidade:
               </p>
 
-              <div className="bg-primary/5 border-2 border-primary/20 rounded-xl p-6 text-center my-6">
-                <p className="text-sm text-muted-foreground mb-1">Orçamento pré-aprovado mínimo</p>
-                <p className="text-4xl md:text-5xl font-bold text-primary">R$ 300,00</p>
+              <div className="grid md:grid-cols-3 gap-4 my-6" id="visita-99">
+                <div className="bg-primary/5 border-2 border-primary/20 rounded-xl p-5 text-center">
+                  <p className="text-xs text-muted-foreground mb-1">Visita técnica (até 30 min)</p>
+                  <p className="text-3xl font-bold text-primary">{PRICING.technicalVisit.priceLabel}</p>
+                  <p className="text-xs text-muted-foreground mt-1">no endereço do cliente</p>
+                </div>
+                <div className="bg-primary/5 border-2 border-primary/20 rounded-xl p-5 text-center">
+                  <p className="text-xs text-muted-foreground mb-1">Diagnóstico em bancada (até 30 min)</p>
+                  <p className="text-3xl font-bold text-primary">{PRICING.benchDiagnosis.priceLabel}</p>
+                  <p className="text-xs text-muted-foreground mt-1">no nosso endereço</p>
+                </div>
+                <div className="bg-primary/5 border-2 border-primary/20 rounded-xl p-5 text-center" id="coleta-299">
+                  <p className="text-xs text-muted-foreground mb-1">Coleta e entrega personalizada</p>
+                  <p className="text-2xl font-bold text-primary">{PRICING.pickupDelivery.priceLabel}</p>
+                  <p className="text-xs text-muted-foreground mt-1">mínimo pré-aprovado</p>
+                </div>
               </div>
 
               <p>
-                Esse valor representa uma <strong className="text-foreground">autorização inicial</strong> para diagnóstico técnico 
-                e possível reparo do equipamento.
-              </p>
-              <p>
-                Caso o valor final do reparo seja superior ao orçamento pré-aprovado mínimo, o cliente será 
-                <strong className="text-foreground"> informado previamente</strong> para aprovação antes da execução do serviço.
+                Esses valores representam uma <strong className="text-foreground">autorização inicial</strong> para
+                diagnóstico técnico e possível reparo. Se o valor final do reparo for superior ao pré-aprovado,
+                o cliente é <strong className="text-foreground">informado previamente</strong> e nenhum reparo
+                adicional é executado sem confirmação.
               </p>
 
               <div className="flex items-start gap-3 bg-accent/50 rounded-lg p-4 mt-4">
                 <AlertTriangle className="h-5 w-5 text-primary mt-0.5 shrink-0" />
                 <p className="text-sm text-foreground">
-                  <strong>Nenhum reparo adicional será realizado sem confirmação do cliente.</strong>
+                  <strong>Exceção:</strong> intervalos de até 30 minutos de atendimento estão inclusos no valor
+                  da visita/bancada. Tempo adicional é acordado por escrito antes da execução.
                 </p>
               </div>
             </div>

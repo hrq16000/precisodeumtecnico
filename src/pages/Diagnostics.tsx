@@ -564,6 +564,47 @@ export default function Diagnostics() {
     }
   };
 
+  const runSmoke = async () => {
+    setSmokeRunning(true);
+    const initial: SmokeRow[] = CRITICAL_ROUTES.map((p) => ({
+      path: p, status: "pending", canonical: null, canonicalCount: 0,
+      ogImage: null, ogImageCount: 0, ogTitleCount: 0, fails: [],
+    }));
+    setSmoke(initial);
+    for (let i = 0; i < CRITICAL_ROUTES.length; i++) {
+      const path = CRITICAL_ROUTES[i];
+      try {
+        const doc = await loadPathInIframe(path);
+        if (!doc) {
+          setSmoke((prev) => prev.map((r, idx) => idx === i ? { ...r, status: "error", fails: ["iframe sem document"] } : r));
+          continue;
+        }
+        const head = doc.head;
+        const canonicals = head.querySelectorAll('link[rel="canonical"]');
+        const ogImages = head.querySelectorAll('meta[property="og:image"]');
+        const ogTitles = head.querySelectorAll('meta[property="og:title"]');
+        const canonical = canonicals[0]?.getAttribute("href") ?? null;
+        const ogImage = ogImages[0]?.getAttribute("content") ?? null;
+        const fails: string[] = [];
+        if (canonicals.length !== 1) fails.push(`canonical=${canonicals.length}`);
+        if (ogImages.length !== 1) fails.push(`og:image=${ogImages.length}`);
+        if (ogTitles.length !== 1) fails.push(`og:title=${ogTitles.length}`);
+        if (!canonical || !/^https?:\/\//i.test(canonical)) fails.push("canonical não absoluto");
+        setSmoke((prev) => prev.map((r, idx) => idx === i ? {
+          ...r,
+          status: fails.length ? "fail" : "ok",
+          canonical, canonicalCount: canonicals.length,
+          ogImage, ogImageCount: ogImages.length,
+          ogTitleCount: ogTitles.length,
+          fails,
+        } : r));
+      } catch (e) {
+        setSmoke((prev) => prev.map((r, idx) => idx === i ? { ...r, status: "error", fails: [(e as Error).message] } : r));
+      }
+    }
+    setSmokeRunning(false);
+  };
+
   useEffect(() => {
     const initial = new URLSearchParams(window.location.search).get("path");
     const t = setTimeout(() => {

@@ -92,8 +92,15 @@ export function GlobalTriageLauncher() {
           sm:left-[50%] sm:top-[50%] sm:translate-x-[-50%] sm:translate-y-[-50%]
           sm:w-full sm:max-w-2xl sm:h-auto sm:rounded-lg
           overflow-y-auto
+          [&>button.absolute]:hidden
         "
       >
+        <VisuallyHidden>
+          <DialogTitle>Triagem técnica</DialogTitle>
+          <DialogDescription>
+            Assistente guiado para diagnóstico do seu equipamento em 6 etapas.
+          </DialogDescription>
+        </VisuallyHidden>
         <TriageWizard
           key={openCount}
           source={detail.source || "global-launcher"}

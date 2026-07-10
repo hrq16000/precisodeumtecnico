@@ -18,6 +18,9 @@ const problems: { file: string; line: number; snippet: string }[] = [];
 
 // Bancada seguida de 90 sem casas; ou "R$ 90" isolado (não R$ 90,00+ e não R$ 900).
 const LEGACY = /(bancada[^\n]{0,40}R\$\s?90(?![\d.,]?\d)|R\$\s?90(?![\d.,]?\d))/i;
+// Adicional (Rodada 22.2.2): "R$ 90,00" nunca é preço legítimo aqui — a taxa
+// oficial de diagnóstico/desistência é R$ 99,99. Bloqueia em qualquer arquivo público.
+const LEGACY_9000 = /R\$\s?90,00/;
 
 function walk(dir: string) {
   for (const name of readdirSync(dir)) {
@@ -32,7 +35,9 @@ function walk(dir: string) {
 function inspect(file: string) {
   const lines = readFileSync(file, "utf8").split("\n");
   lines.forEach((raw, i) => {
-    if (!LEGACY.test(raw)) return;
+    const hitLegacy = LEGACY.test(raw);
+    const hit9000 = LEGACY_9000.test(raw);
+    if (!hitLegacy && !hit9000) return;
     // Tolerância: mesma linha cita R$ 99,99 explicitamente (fonte oficial).
     if (/R\$\s?99,99/.test(raw)) return;
     problems.push({ file, line: i + 1, snippet: raw.trim().slice(0, 200) });

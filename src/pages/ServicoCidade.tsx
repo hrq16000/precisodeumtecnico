@@ -224,7 +224,7 @@ export default function ServicoCidade() {
               ))}
             </div>
             <p className="text-xs text-muted-foreground mt-4">
-              * Valores de referência sujeitos a diagnóstico. Visita técnica + diagnóstico R$ 99,99. Orçamento pré-aprovado a partir de R$ 300,00.{" "}
+              * Valores de referência sujeitos a diagnóstico. Visita técnica + diagnóstico R$ 99,99. Orçamento Pré-Aprovado a partir de R$ 299,99 (não inclui peças, componentes, materiais ou itens adicionais).{" "}
               <Link to="/termos-orcamento-pre-aprovado" className="underline hover:text-primary">Ver termos</Link>.
             </p>
           </Reveal>

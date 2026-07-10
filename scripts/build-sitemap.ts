@@ -20,6 +20,8 @@ import {
 } from "../src/data/regions";
 import { allBlogPosts as blogPosts, blogCategories } from "../src/data/blog";
 import { nationalCities } from "../src/data/nationalCities";
+import { enumeratePilotCombinations, NATIONAL_MATRIX_MAX } from "../src/data/nationalServiceCoverage";
+
 
 const BASE = "https://precisodeumtecnico.com";
 const today = new Date().toISOString().split("T")[0];

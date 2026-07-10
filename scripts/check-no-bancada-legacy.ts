@@ -18,6 +18,9 @@ const problems: { file: string; line: number; snippet: string }[] = [];
 
 // Bancada seguida de 90 sem casas; ou "R$ 90" isolado (não R$ 90,00+ e não R$ 900).
 const LEGACY = /(bancada[^\n]{0,40}R\$\s?90(?![\d.,]?\d)|R\$\s?90(?![\d.,]?\d))/i;
+// Adicional (Rodada 22.2.2): "R$ 90,00" nunca é preço legítimo aqui — a taxa
+// oficial de diagnóstico/desistência é R$ 99,99. Bloqueia em qualquer arquivo público.
+const LEGACY_9000 = /R\$\s?90,00/;
 
 function walk(dir: string) {
   for (const name of readdirSync(dir)) {

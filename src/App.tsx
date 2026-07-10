@@ -36,6 +36,8 @@ const AssistenciaTecnica = lazy(() => import("./pages/AssistenciaTecnica"));
 const AtendimentoNacional = lazy(() => import("./pages/AtendimentoNacional"));
 const CidadeNacional = lazy(() => import("./pages/CidadeNacional"));
 const BairroNacional = lazy(() => import("./pages/BairroNacional"));
+const ServicoBairroNacional = lazy(() => import("./pages/ServicoBairroNacional"));
+
 const TriagemPreview = lazy(() => import("./pages/TriagemPreview"));
 const Faq = lazy(() => import("./pages/Faq"));
 const DadosEmpresa = lazy(() => import("./pages/DadosEmpresa"));

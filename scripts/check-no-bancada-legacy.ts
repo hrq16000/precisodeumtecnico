@@ -21,6 +21,9 @@ const LEGACY = /(bancada[^\n]{0,40}R\$\s?90(?![\d.,]?\d)|R\$\s?90(?![\d.,]?\d))/
 // Adicional (Rodada 22.2.2): "R$ 90,00" nunca é preço legítimo aqui — a taxa
 // oficial de diagnóstico/desistência é R$ 99,99. Bloqueia em qualquer arquivo público.
 const LEGACY_9000 = /R\$\s?90,00/;
+// Rodada 22.2.3: marcadores internos com semântica antiga "bancada/diagnóstico
+// /taxa/visita = 90" não podem reaparecer nem em telemetria.
+const LEGACY_MARKER = /(bancada-90|diagnostico-90|diagnóstico-90|taxa-90|taxa-bancada-90|visita-90)/i;
 
 function walk(dir: string) {
   for (const name of readdirSync(dir)) {

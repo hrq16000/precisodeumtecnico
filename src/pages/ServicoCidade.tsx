@@ -41,7 +41,7 @@ export default function ServicoCidade() {
     },
     {
       question: `Quanto custa ${serviceData.title.toLowerCase()} em ${cityData.name}?`,
-      answer: `A visita técnica + diagnóstico em ${cityData.name} parte de R$ 99,99. O orçamento do reparo só é fechado após o diagnóstico no local, sem compromisso. Para serviços com peças, o orçamento mínimo pré-aprovado é de R$ 300,00.`,
+      answer: `A visita técnica + diagnóstico em ${cityData.name} parte de R$ 99,99. O orçamento do reparo só é fechado após o diagnóstico no local, sem compromisso. O valor mínimo de Orçamento Pré-Aprovado é de R$ 299,99 e não inclui peças, componentes, materiais ou itens adicionais.`,
     },
     {
       question: `Quanto tempo demora o atendimento em ${cityData.name}?`,
@@ -224,7 +224,7 @@ export default function ServicoCidade() {
               ))}
             </div>
             <p className="text-xs text-muted-foreground mt-4">
-              * Valores de referência sujeitos a diagnóstico. Visita técnica + diagnóstico R$ 99,99. Orçamento pré-aprovado a partir de R$ 300,00.{" "}
+              * Valores de referência sujeitos a diagnóstico. Visita técnica + diagnóstico R$ 99,99. Orçamento Pré-Aprovado a partir de R$ 299,99 (não inclui peças, componentes, materiais ou itens adicionais).{" "}
               <Link to="/termos-orcamento-pre-aprovado" className="underline hover:text-primary">Ver termos</Link>.
             </p>
           </Reveal>

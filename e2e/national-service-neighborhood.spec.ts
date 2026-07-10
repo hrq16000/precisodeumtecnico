@@ -104,17 +104,29 @@ test.describe("Matriz nacional serviço × cidade × bairro — piloto 24.1", ()
       const h1 = (await page.locator("h1").first().textContent()) ?? "";
       expect(h1).not.toMatch(/Informática em Pinheiros, São Paulo|Notebooks em Copacabana/);
 
-      // Se a página renderizar fallback, deve carregar noindex em alguma das metas robots
-      // após hydration do Helmet. (Redirect também é aceitável.)
+      // Rodada 24.2: TODA combinação inválida (incluindo cidade inexistente)
+      // deve renderizar fallback com noindex — nunca cair em página indexável
+      // nem emitir canonical self da URL inválida.
       const robotsAll = await page.locator('meta[name="robots"]').evaluateAll(
         (els) => els.map((e) => e.getAttribute("content") ?? ""),
       );
-      const url = page.url();
-      const acceptable =
-        robotsAll.some((r) => r.toLowerCase().includes("noindex")) ||
-        url.endsWith("/atendimento-nacional") ||
-        url.endsWith("/atendimento-nacional/");
-      expect(acceptable, `rota inválida deve ser noindex OU redirecionar: robots=${JSON.stringify(robotsAll)} url=${url}`).toBe(true);
+      expect(
+        robotsAll.some((r) => r.toLowerCase().includes("noindex")),
+        `rota inválida deve emitir noindex: robots=${JSON.stringify(robotsAll)}`,
+      ).toBe(true);
+
+      // Canonical não pode apontar para a URL inválida (self-canonical proibido).
+      const canonicals = await page.locator('link[rel="canonical"]').evaluateAll(
+        (els) => els.map((e) => e.getAttribute("href") ?? ""),
+      );
+      for (const c2 of canonicals) {
+        expect(c2, `canonical não pode ser self da URL inválida`).not.toContain(c.path);
+      }
+
+      // Nenhum Service schema pode ser emitido no fallback.
+      const ld = await jsonLd(page);
+      const services = ld.filter((o) => (o as { "@type"?: string })["@type"] === "Service");
+      expect(services.length, "fallback não deve emitir Service schema").toBe(0);
 
       expect(pageErrors).toEqual([]);
     });

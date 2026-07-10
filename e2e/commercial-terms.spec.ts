@@ -41,4 +41,21 @@ test.describe("Termos comerciais — alinhamento global", () => {
       expect(body).not.toContain("conserto garantido por r$");
     }
   });
+
+  test("RMC /servico-em/curitiba/informatica usa R$ 299,99 no pré-aprovado (sem R$ 300,00 legado)", async ({ page }) => {
+    await page.goto(`${BASE}/servico-em/curitiba/informatica`, { waitUntil: "networkidle" });
+    const body = await page.locator("body").innerText();
+    expect(body).toContain("R$ 299,99");
+    // Contexto pré-aprovado nunca pode reaparecer com o valor legado.
+    expect(body).not.toMatch(/pr[ée]-aprovado[^R]*R\$ ?300,00/i);
+    expect(body).not.toMatch(/or[çc]amento[^R]*R\$ ?300,00/i);
+  });
+
+  test("home / não emite aggregateRating ou reviewCount globais", async ({ page }) => {
+    await page.goto(`${BASE}/`, { waitUntil: "networkidle" });
+    const scripts = await page.locator('script[type="application/ld+json"]').allInnerTexts();
+    const dumped = scripts.join("\n");
+    expect(dumped.includes('"aggregateRating"')).toBe(false);
+    expect(dumped.includes('"reviewCount"')).toBe(false);
+  });
 });

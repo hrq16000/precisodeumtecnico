@@ -76,7 +76,9 @@ export function SEOHead({
   breadcrumbs,
   service,
   article,
+  noindex = false,
 }: SEOHeadProps) {
+
   const fullTitle = title.includes("Preciso de Um Técnico")
     ? title
     : `${title} | Preciso de Um Técnico`;

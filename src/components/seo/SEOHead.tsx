@@ -184,7 +184,7 @@ export function SEOHead({
         <meta key={tag} property="article:tag" content={tag} />
       ))}
 
-      <meta name="robots" content="index, follow, max-image-preview:large" />
+      <meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large"} />
       <meta name="author" content="Preciso de Um Técnico" />
       <meta name="geo.region" content="BR-PR" />
       <meta name="geo.placename" content="Curitiba" />

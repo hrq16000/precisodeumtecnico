@@ -157,12 +157,24 @@ ${urls.map(urlXml).join("\n")}
 const shardLastmod = (urls: Url[]) =>
   urls.map((u) => u.lastmod ?? today).sort().at(-1) ?? today;
 
-// Limpa shards antigos
+// Limpa shards antigos (inclui shard piloto nacional serviços)
 for (const f of readdirSync("public")) {
-  if (/^sitemap-(main|city-|bairros-).*\.xml$/.test(f)) {
+  if (/^sitemap-(main|city-|bairros-|nacional-servicos-piloto).*\.xml$/.test(f)) {
     try { unlinkSync(`public/${f}`); } catch {}
   }
 }
+
+// Shard piloto — matriz nacional serviço × cidade × bairro (Rodada 24.1).
+const matrixCombos = enumeratePilotCombinations();
+const matrixMtime = fileDate("src/data/nationalServiceCoverage.ts");
+const matrixUrls: Url[] = matrixCombos.slice(0, NATIONAL_MATRIX_MAX).map((c) => ({
+  loc: c.url,
+  lastmod: matrixMtime,
+  changefreq: "weekly",
+  priority: 0.65,
+}));
+const matrixDeduped = dedupe(matrixUrls);
+
 
 const shardIndex: { name: string; lastmod: string }[] = [];
 

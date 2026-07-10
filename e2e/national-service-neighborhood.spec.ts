@@ -104,15 +104,18 @@ test.describe("Matriz nacional serviço × cidade × bairro — piloto 24.1", ()
       const h1 = (await page.locator("h1").first().textContent()) ?? "";
       expect(h1).not.toMatch(/Informática em Pinheiros, São Paulo|Notebooks em Copacabana/);
 
-      // Se a página renderizar fallback, deve carregar noindex.
-      // (Alguns casos redirect para /atendimento-nacional; então robots pode ser index — aceitamos ambos.)
-      const robots = await page.locator('meta[name="robots"]').first().getAttribute("content");
+      // Se a página renderizar fallback, deve carregar noindex em alguma das metas robots
+      // após hydration do Helmet. (Redirect também é aceitável.)
+      const robotsAll = await page.locator('meta[name="robots"]').evaluateAll(
+        (els) => els.map((e) => e.getAttribute("content") ?? ""),
+      );
       const url = page.url();
       const acceptable =
-        (robots ?? "").toLowerCase().includes("noindex") ||
+        robotsAll.some((r) => r.toLowerCase().includes("noindex")) ||
         url.endsWith("/atendimento-nacional") ||
         url.endsWith("/atendimento-nacional/");
-      expect(acceptable, `rota inválida deve ser noindex OU redirecionar: robots=${robots} url=${url}`).toBe(true);
+      expect(acceptable, `rota inválida deve ser noindex OU redirecionar: robots=${JSON.stringify(robotsAll)} url=${url}`).toBe(true);
+
       expect(pageErrors).toEqual([]);
     });
   }

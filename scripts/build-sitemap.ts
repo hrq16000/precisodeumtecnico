@@ -195,6 +195,14 @@ for (const s of bairroDeduped) {
   shardIndex.push({ name, lastmod: shardLastmod(s.urls) });
 }
 
+// Shard piloto — matriz nacional serviços.
+if (matrixDeduped.length > 0) {
+  const name = "sitemap-nacional-servicos-piloto.xml";
+  writeFileSync(`public/${name}`, buildUrlset(matrixDeduped));
+  shardIndex.push({ name, lastmod: shardLastmod(matrixDeduped) });
+}
+
+
 const indexXml = `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${shardIndex

@@ -68,6 +68,11 @@ CITIES = [
     ("Cuiabá", "cuiaba", "MT", "Mato Grosso", "Centro-Oeste"),
     ("Manaus", "manaus", "AM", "Amazonas", "Norte"),
     ("Belém", "belem", "PA", "Pará", "Norte"),
+    ("Porto Velho", "porto-velho", "RO", "Rondônia", "Norte"),
+    ("Palmas", "palmas", "TO", "Tocantins", "Norte"),
+    ("Rio Branco", "rio-branco", "AC", "Acre", "Norte"),
+    ("Boa Vista", "boa-vista", "RR", "Roraima", "Norte"),
+    ("Macapá", "macapa", "AP", "Amapá", "Norte"),
 ]
 
 

@@ -21,29 +21,19 @@ export const testimonials: Testimonial[] = [
   { name: "Juliana Ferreira", location: "Curitiba - Portão", service: "Configuração de Rede", rating: 5, text: "O técnico configurou toda a rede Wi-Fi da minha casa. Agora tenho internet em todos os cômodos. Muito satisfeita!", date: "2026-02-19" },
 ];
 
-export function getAggregateRating() {
-  if (!testimonials.length) return null;
-  const total = testimonials.reduce((sum, t) => sum + t.rating, 0);
-  const avg = total / testimonials.length;
-  return {
-    "@type": "AggregateRating",
-    ratingValue: avg.toFixed(1),
-    reviewCount: testimonials.length,
-    bestRating: "5",
-    worstRating: "1",
-  };
-}
-
+/**
+ * Rodada 23: nenhum aggregateRating/ratingValue/reviewCount é publicado em
+ * schemas públicos. Prova social não é derivada de estatística global.
+ * Cada Review é emitido individualmente e mapeia 1:1 para o array acima —
+ * contexto explícito, sem médias fabricadas nem contagens globais.
+ */
 export function buildReviewsSchema() {
-  // Returns a schema.org graph including individual reviews. Safe fallback:
-  // returns null if there are no testimonials so we don't emit empty schema.
   if (!testimonials.length) return null;
   return {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     name: "Preciso de Um Técnico",
     url: "https://precisodeumtecnico.com",
-    aggregateRating: getAggregateRating(),
     review: testimonials.map((t) => ({
       "@type": "Review",
       reviewRating: { "@type": "Rating", ratingValue: t.rating, bestRating: "5", worstRating: "1" },

@@ -212,6 +212,13 @@ export function TermsDialog({
                 <h3 className="text-lg font-bold text-foreground">3 – Prazos de Serviço</h3>
               </div>
               <div className="space-y-2 text-sm text-muted-foreground">
+                <div className="flex items-center justify-between bg-primary/5 rounded-lg p-3 border-2 border-primary/20">
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-4 w-4 text-primary" />
+                    <span className="font-medium text-foreground">Fila mínima operacional</span>
+                  </div>
+                  <span className="font-bold text-primary">{COMMERCIAL_TERMS.minimumQueue.label}</span>
+                </div>
                 <div className="flex items-center justify-between bg-accent/40 rounded-lg p-3 border border-border">
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4 text-primary" />
@@ -234,7 +241,7 @@ export function TermsDialog({
                   <span className="font-bold text-primary">5 a 7 dias úteis</span>
                 </div>
                 <p className="text-xs italic pt-1">
-                  Estimativas médias, podem variar conforme equipamento e complexidade.
+                  {COMMERCIAL_TERMS.minimumQueue.description}
                 </p>
               </div>
             </section>

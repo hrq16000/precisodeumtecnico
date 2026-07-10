@@ -1,25 +1,19 @@
 import { test, expect } from "@playwright/test";
 
 /**
- * Guardrail de dados estruturados (Rodada 22.2.3+).
+ * Guardrail de dados estruturados (Rodada 23).
  *
  * Requisitos oficiais:
  *  - Toda página deve emitir BreadcrumbList quando cabível.
- *  - Nenhum schema Service pode conter aggregateRating, reviewCount
- *    ou ratingValue fabricados (regra de prova social honesta).
- *  - LocalBusiness em rotas legadas (/, /assistencia-tecnica-curitiba)
- *    é tolerado com aggregateRating vindo de coleta real — documentado
- *    aqui como exceção enquanto o legado não migra.
+ *  - Nenhum schema Service ou LocalBusiness público pode conter
+ *    aggregateRating, reviewCount ou ratingValue de nível global —
+ *    prova social só é aceita como Review individual derivado 1:1 de
+ *    testimonials.ts (contexto explícito, sem médias fabricadas).
  *
  * Roda localmente contra o build atual; em produção contra a URL definida
  * por E2E_BASE_URL.
  */
 const BASE = process.env.E2E_BASE_URL || "http://localhost:8080";
-
-const LEGACY_LOCALBUSINESS_ROUTES = new Set<string>([
-  "/",
-  "/assistencia-tecnica-curitiba",
-]);
 
 const ROUTES_WITH_BREADCRUMB = [
   "/assistencia-tecnica",

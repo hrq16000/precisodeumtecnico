@@ -269,11 +269,12 @@ export function TermsDialog({
               <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
                 <p>
                   Caso o cliente opte por cancelar o serviço ou desistir do reparo após o
-                  diagnóstico, será cobrada uma taxa de:
+                  diagnóstico — seja em bancada, após a coleta ou após levar o equipamento
+                  a um dos nossos parceiros — será cobrada taxa de diagnóstico no valor de:
                 </p>
                 <div className="bg-destructive/5 border-2 border-destructive/20 rounded-xl p-4 text-center">
                   <p className="text-xs text-muted-foreground mb-1">Taxa de diagnóstico</p>
-                  <p className="text-3xl font-bold text-destructive">R$ 90,00</p>
+                  <p className="text-3xl font-bold text-destructive">{COMMERCIAL_TERMS.diagnosisFee.priceLabel}</p>
                 </div>
                 <p>
                   Cobre análise técnica, testes, tempo de diagnóstico e manipulação do

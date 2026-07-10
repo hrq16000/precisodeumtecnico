@@ -157,7 +157,7 @@ export function TriageWizard({
       // Não bloqueia o sucesso do funil se este registro falhar — apenas loga.
       try {
         const acceptedSummary = [
-          state.accepts.bancada && "taxa-bancada-90-visita-99",
+          state.accepts.bancada && "taxa-diagnostico-99-pre-aprovado-299",
           state.accepts.visita && "prazos-celular-1a3d-tvplaca-15a60d",
           state.accepts.sla && "termos-condicoes-garantia",
         ].filter(Boolean).join("|");

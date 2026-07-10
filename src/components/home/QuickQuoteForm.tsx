@@ -192,8 +192,8 @@ export function QuickQuoteForm() {
               <Button
                 type="submit"
                 size="lg"
-                disabled={isLoading}
-                aria-disabled={isLoading}
+                disabled={isLoading || !acceptedTerms}
+                aria-disabled={isLoading || !acceptedTerms}
                 className="w-full h-14 text-lg font-semibold bg-[#25D366] hover:bg-[#20BD5A] text-white gap-2"
               >
                 <Send className="h-5 w-5" />

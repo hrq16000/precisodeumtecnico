@@ -9,6 +9,7 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
+import { COMMERCIAL_TERMS } from "@/data/commercialTerms";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   FileText,

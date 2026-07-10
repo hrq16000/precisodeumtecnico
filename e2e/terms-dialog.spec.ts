@@ -18,7 +18,7 @@ test.describe("TermsDialog – flow + a11y", () => {
     await page.goto("/");
 
     // Submit atual do QuickQuoteForm.
-    const submit = page.getByRole("button", { name: /Iniciar Triagem Técnica/i });
+    const submit = page.getByRole("button", { name: "Iniciar Triagem Técnica", exact: true });
     await submit.scrollIntoViewIfNeeded();
 
     // Preenche campos obrigatórios.

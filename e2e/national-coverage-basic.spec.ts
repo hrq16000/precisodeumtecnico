@@ -29,6 +29,13 @@ const BAIRROS = [
   { city: "sao-paulo", cityName: "São Paulo", bairro: "pinheiros", bairroName: "Pinheiros" },
   { city: "rio-de-janeiro", cityName: "Rio de Janeiro", bairro: "copacabana", bairroName: "Copacabana" },
   { city: "brasilia", cityName: "Brasília", bairro: "asa-sul", bairroName: "Asa Sul" },
+  // Rodada 22.2.1 — novos bairros preenchendo os gaps.
+  { city: "campinas", cityName: "Campinas", bairro: "cambui", bairroName: "Cambuí" },
+  { city: "niteroi", cityName: "Niterói", bairro: "icarai", bairroName: "Icaraí" },
+  { city: "joinville", cityName: "Joinville", bairro: "america", bairroName: "América" },
+  { city: "natal", cityName: "Natal", bairro: "ponta-negra", bairroName: "Ponta Negra" },
+  { city: "porto-velho", cityName: "Porto Velho", bairro: "centro", bairroName: "Centro" },
+  { city: "palmas", cityName: "Palmas", bairro: "plano-diretor-sul", bairroName: "Plano Diretor Sul" },
 ];
 
 async function collectErrors(page: Page): Promise<string[]> {

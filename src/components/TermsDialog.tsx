@@ -153,6 +153,11 @@ export function TermsDialog({
                   <strong className="text-foreground">informado previamente</strong> para
                   aprovação antes da execução do serviço.
                 </p>
+                <div className="bg-accent/30 rounded-lg p-3 border border-border">
+                  <p className="text-foreground/90 text-xs">
+                    O valor <strong className="text-foreground">não inclui {COMMERCIAL_TERMS.preApprovedBudget.excludes.join(", ").toLowerCase()}</strong>. Contempla logística com seguro, diagnóstico técnico e tentativa de reparos compatíveis com a situação do equipamento. Qualquer adicional será informado separadamente e somente executado mediante aprovação do cliente.
+                  </p>
+                </div>
                 <div className="flex items-start gap-2 bg-accent/40 rounded-lg p-3">
                   <AlertTriangle className="h-4 w-4 text-primary mt-0.5 shrink-0" />
                   <p className="text-foreground">
@@ -163,6 +168,7 @@ export function TermsDialog({
                 </div>
               </div>
             </section>
+
 
             {/* 2 */}
             <section>

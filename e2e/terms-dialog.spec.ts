@@ -56,13 +56,24 @@ test.describe("TermsDialog – flow + a11y", () => {
     // Nenhuma variação legada.
     expect(body).not.toMatch(/R\$\s?90,00/);
     expect(body).not.toMatch(/R\$\s?90(?!\d)/);
+    expect(body).not.toMatch(/R\$\s?300,00/);
 
     // Cancelamento cobre bancada/coleta/parceiros.
-    expect(body.toLowerCase()).toContain("parceiros");
+    const lower = body.toLowerCase();
+    expect(lower).toContain("parceiros");
+    expect(lower).toContain("bancada");
+    expect(lower).toContain("coleta");
 
-    // Pré-aprovado exclui peças/componentes/materiais.
-    expect(body.toLowerCase()).toMatch(/peças|componentes|materiais/);
+    // Pré-aprovado exclui peças, componentes e materiais (literal).
+    expect(lower).toContain("peças");
+    expect(lower).toContain("componentes");
+    expect(lower).toContain("materiais");
+
+    // Fila mínima operacional.
+    expect(lower).toContain("fila mínima");
+    expect(body).toMatch(/3 dias úteis|72 horas úteis/);
   });
+
 
   test("ESC closes the dialog and focus is trapped inside", async ({ page }) => {
     await page.goto("/");

@@ -56,7 +56,10 @@ interface SEOHeadProps {
     section?: string;
     tags?: string[];
   };
+  /** Se true, emite `<meta name="robots" content="noindex, nofollow">`. */
+  noindex?: boolean;
 }
+
 
 export function SEOHead({
   title,
@@ -73,7 +76,9 @@ export function SEOHead({
   breadcrumbs,
   service,
   article,
+  noindex = false,
 }: SEOHeadProps) {
+
   const fullTitle = title.includes("Preciso de Um Técnico")
     ? title
     : `${title} | Preciso de Um Técnico`;
@@ -179,7 +184,7 @@ export function SEOHead({
         <meta key={tag} property="article:tag" content={tag} />
       ))}
 
-      <meta name="robots" content="index, follow, max-image-preview:large" />
+      <meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large"} />
       <meta name="author" content="Preciso de Um Técnico" />
       <meta name="geo.region" content="BR-PR" />
       <meta name="geo.placename" content="Curitiba" />

@@ -81,11 +81,13 @@ export type CtaSurface =
   | "bairro_page"
   | "bairro_nacional"
   | "cidade_nacional"
+  | "matrix_nacional"
   | "cta_section"
   | "blog"
   | "quiz"
   | "quick_form"
   | "contact_form";
+
 
 export function trackCtaClick(opts: {
   surface: CtaSurface;

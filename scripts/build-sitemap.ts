@@ -20,6 +20,8 @@ import {
 } from "../src/data/regions";
 import { allBlogPosts as blogPosts, blogCategories } from "../src/data/blog";
 import { nationalCities } from "../src/data/nationalCities";
+import { enumeratePilotCombinations, NATIONAL_MATRIX_MAX } from "../src/data/nationalServiceCoverage";
+
 
 const BASE = "https://precisodeumtecnico.com";
 const today = new Date().toISOString().split("T")[0];
@@ -155,12 +157,24 @@ ${urls.map(urlXml).join("\n")}
 const shardLastmod = (urls: Url[]) =>
   urls.map((u) => u.lastmod ?? today).sort().at(-1) ?? today;
 
-// Limpa shards antigos
+// Limpa shards antigos (inclui shard piloto nacional serviços)
 for (const f of readdirSync("public")) {
-  if (/^sitemap-(main|city-|bairros-).*\.xml$/.test(f)) {
+  if (/^sitemap-(main|city-|bairros-|nacional-servicos-piloto).*\.xml$/.test(f)) {
     try { unlinkSync(`public/${f}`); } catch {}
   }
 }
+
+// Shard piloto — matriz nacional serviço × cidade × bairro (Rodada 24.1).
+const matrixCombos = enumeratePilotCombinations();
+const matrixMtime = fileDate("src/data/nationalServiceCoverage.ts");
+const matrixUrls: Url[] = matrixCombos.slice(0, NATIONAL_MATRIX_MAX).map((c) => ({
+  loc: c.url,
+  lastmod: matrixMtime,
+  changefreq: "weekly",
+  priority: 0.65,
+}));
+const matrixDeduped = dedupe(matrixUrls);
+
 
 const shardIndex: { name: string; lastmod: string }[] = [];
 
@@ -181,6 +195,14 @@ for (const s of bairroDeduped) {
   shardIndex.push({ name, lastmod: shardLastmod(s.urls) });
 }
 
+// Shard piloto — matriz nacional serviços.
+if (matrixDeduped.length > 0) {
+  const name = "sitemap-nacional-servicos-piloto.xml";
+  writeFileSync(`public/${name}`, buildUrlset(matrixDeduped));
+  shardIndex.push({ name, lastmod: shardLastmod(matrixDeduped) });
+}
+
+
 const indexXml = `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${shardIndex
@@ -195,6 +217,6 @@ ${shardIndex
 `;
 writeFileSync("public/sitemap.xml", indexXml);
 
-const total = mainDeduped.length + cityDeduped.reduce((a, s) => a + s.urls.length, 0) + bairroDeduped.reduce((a, s) => a + s.urls.length, 0);
+const total = mainDeduped.length + cityDeduped.reduce((a, s) => a + s.urls.length, 0) + bairroDeduped.reduce((a, s) => a + s.urls.length, 0) + matrixDeduped.length;
 console.log(`✓ sitemap-index escrito com ${shardIndex.length} shards, ${total} URLs únicas`);
 for (const s of shardIndex) console.log(`  • ${s.name}`);

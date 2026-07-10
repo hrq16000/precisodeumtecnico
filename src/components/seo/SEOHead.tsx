@@ -56,7 +56,10 @@ interface SEOHeadProps {
     section?: string;
     tags?: string[];
   };
+  /** Se true, emite `<meta name="robots" content="noindex, nofollow">`. */
+  noindex?: boolean;
 }
+
 
 export function SEOHead({
   title,

@@ -82,7 +82,7 @@ test.describe("Structured data — schemas oficiais", () => {
     test(`Service schema em ${path} não carrega rating fabricado`, async ({
       page,
     }) => {
-      await page.goto(`${BASE}${path}`, { waitUntil: "domcontentloaded" });
+      await page.goto(`${BASE}${path}`, { waitUntil: "networkidle" });
       const blocks = await readJsonLdBlocks(page);
 
       const offenders = blocks
@@ -115,7 +115,7 @@ test.describe("Structured data — schemas oficiais", () => {
 
   for (const path of ROUTES_WITH_BREADCRUMB) {
     test(`BreadcrumbList presente em ${path}`, async ({ page }) => {
-      await page.goto(`${BASE}${path}`, { waitUntil: "domcontentloaded" });
+      await page.goto(`${BASE}${path}`, { waitUntil: "networkidle" });
       const blocks = await readJsonLdBlocks(page);
       const crumbs = blocks.filter((n) => n["@type"] === "BreadcrumbList");
       expect(crumbs.length, `BreadcrumbList ausente em ${path}`).toBeGreaterThan(0);

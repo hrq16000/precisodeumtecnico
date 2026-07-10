@@ -217,6 +217,6 @@ ${shardIndex
 `;
 writeFileSync("public/sitemap.xml", indexXml);
 
-const total = mainDeduped.length + cityDeduped.reduce((a, s) => a + s.urls.length, 0) + bairroDeduped.reduce((a, s) => a + s.urls.length, 0);
+const total = mainDeduped.length + cityDeduped.reduce((a, s) => a + s.urls.length, 0) + bairroDeduped.reduce((a, s) => a + s.urls.length, 0) + matrixDeduped.length;
 console.log(`✓ sitemap-index escrito com ${shardIndex.length} shards, ${total} URLs únicas`);
 for (const s of shardIndex) console.log(`  • ${s.name}`);

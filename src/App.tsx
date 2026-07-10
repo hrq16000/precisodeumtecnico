@@ -86,7 +86,9 @@ const App = () => (
                 <Route path="/atendimento-nacional" element={<AtendimentoNacional />} />
                 <Route path="/atendimento-nacional/:slug" element={<CidadeNacional />} />
                 <Route path="/atendimento-nacional/:city/:bairro" element={<BairroNacional />} />
+                <Route path="/servico-em-nacional/:city/:bairro/:service" element={<ServicoBairroNacional />} />
                 <Route path="/triagem-preview" element={<TriagemPreview />} />
+
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

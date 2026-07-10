@@ -88,22 +88,20 @@ test.describe("Structured data — schemas oficiais", () => {
         `Service schema com rating fabricado em ${path}: ${JSON.stringify(offenders).slice(0, 400)}`,
       ).toEqual([]);
 
-      // Exceção documentada: LocalBusiness legado permanece autorizado a
-      // publicar aggregateRating apenas nestas rotas específicas.
-      if (!LEGACY_LOCALBUSINESS_ROUTES.has(path)) {
-        const localBiz = blocks.filter((n) => {
-          const t = n["@type"];
-          const types = Array.isArray(t) ? t : [t];
-          return types.some(
-            (x) => typeof x === "string" && /LocalBusiness/i.test(x),
-          );
-        });
-        const withRating = localBiz.filter(hasFabricatedRating);
-        expect(
-          withRating,
-          `LocalBusiness com rating fora do escopo legado em ${path}`,
-        ).toEqual([]);
-      }
+      // Rodada 23: sem whitelist. LocalBusiness público nunca pode publicar
+      // aggregateRating/reviewCount/ratingValue de nível global.
+      const localBiz = blocks.filter((n) => {
+        const t = n["@type"];
+        const types = Array.isArray(t) ? t : [t];
+        return types.some(
+          (x) => typeof x === "string" && /LocalBusiness/i.test(x),
+        );
+      });
+      const withRating = localBiz.filter(hasFabricatedRating);
+      expect(
+        withRating,
+        `LocalBusiness com rating fabricado em ${path}: ${JSON.stringify(withRating).slice(0, 400)}`,
+      ).toEqual([]);
     });
   }
 

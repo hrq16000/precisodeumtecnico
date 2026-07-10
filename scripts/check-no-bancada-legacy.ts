@@ -40,9 +40,10 @@ function inspect(file: string) {
   lines.forEach((raw, i) => {
     const hitLegacy = LEGACY.test(raw);
     const hit9000 = LEGACY_9000.test(raw);
-    if (!hitLegacy && !hit9000) return;
+    const hitMarker = LEGACY_MARKER.test(raw);
+    if (!hitLegacy && !hit9000 && !hitMarker) return;
     // Tolerância: mesma linha cita R$ 99,99 explicitamente (fonte oficial).
-    if (/R\$\s?99,99/.test(raw)) return;
+    if (!hitMarker && /R\$\s?99,99/.test(raw)) return;
     problems.push({ file, line: i + 1, snippet: raw.trim().slice(0, 200) });
   });
 }

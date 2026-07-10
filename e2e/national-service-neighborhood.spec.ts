@@ -62,10 +62,12 @@ test.describe("Matriz nacional serviço × cidade × bairro — piloto 24.1", ()
       await expect(wa).toBeVisible();
       const href = await wa.getAttribute("href");
       expect(href).toBeTruthy();
-      expect(href!).toMatch(/wa\.me/);
-      expect(href!).toMatch(/service=/);
-      expect(href!).toMatch(/source=/);
-      expect(href!).toMatch(/utm_source=whatsapp_cta/);
+      const decoded = decodeURIComponent(href!);
+      expect(decoded).toMatch(/wa\.me/);
+      expect(decoded).toMatch(/service=/);
+      expect(decoded).toMatch(/source=/);
+      expect(decoded).toMatch(/utm_source=whatsapp_cta/);
+
       await expect(wa).toHaveAttribute("data-service", /.+/);
       await expect(wa).toHaveAttribute("data-city", /.+/);
       await expect(wa).toHaveAttribute("data-neighborhood", /.+/);

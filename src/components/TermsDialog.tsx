@@ -130,7 +130,7 @@ export function TermsDialog({
                   1 – Política de Orçamento Pré-Aprovado
                 </h3>
               </div>
-              <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
+              <div className="space-y-3 text-sm text-foreground/85 leading-relaxed">
                 <p>
                   Para agilizar o atendimento e evitar atrasos no processo de diagnóstico
                   técnico, os equipamentos enviados para análise são cadastrados com
@@ -172,7 +172,7 @@ export function TermsDialog({
                   2 – Logística de Coleta e Entrega
                 </h3>
               </div>
-              <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
+              <div className="space-y-3 text-sm text-foreground/85 leading-relaxed">
                 <p>
                   Para garantir organização e eficiência operacional, os atendimentos
                   seguem um sistema de{" "}
@@ -247,7 +247,7 @@ export function TermsDialog({
                   4 – Compromisso com o Serviço
                 </h3>
               </div>
-              <div className="space-y-2 text-sm text-muted-foreground leading-relaxed">
+              <div className="space-y-2 text-sm text-foreground/85 leading-relaxed">
                 <p>
                   Os equipamentos enviados para análise devem ser encaminhados com{" "}
                   <strong className="text-foreground">real intenção de reparo</strong>.
@@ -266,7 +266,7 @@ export function TermsDialog({
                   5 – Cancelamento ou Desistência
                 </h3>
               </div>
-              <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
+              <div className="space-y-3 text-sm text-foreground/85 leading-relaxed">
                 <p>
                   Caso o cliente opte por cancelar o serviço ou desistir do reparo após o
                   diagnóstico — seja em bancada, após a coleta ou após levar o equipamento
@@ -291,7 +291,7 @@ export function TermsDialog({
                   6 – Aceitação dos Termos
                 </h3>
               </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <p className="text-sm text-foreground/85 leading-relaxed">
                 Ao solicitar coleta, diagnóstico, envio para análise, orçamento ou reparo,
                 o cliente declara estar{" "}
                 <strong className="text-foreground">ciente e de acordo</strong> com estes

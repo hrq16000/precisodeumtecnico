@@ -35,7 +35,9 @@ function walk(dir: string) {
 function inspect(file: string) {
   const lines = readFileSync(file, "utf8").split("\n");
   lines.forEach((raw, i) => {
-    if (!LEGACY.test(raw)) return;
+    const hitLegacy = LEGACY.test(raw);
+    const hit9000 = LEGACY_9000.test(raw);
+    if (!hitLegacy && !hit9000) return;
     // Tolerância: mesma linha cita R$ 99,99 explicitamente (fonte oficial).
     if (/R\$\s?99,99/.test(raw)) return;
     problems.push({ file, line: i + 1, snippet: raw.trim().slice(0, 200) });

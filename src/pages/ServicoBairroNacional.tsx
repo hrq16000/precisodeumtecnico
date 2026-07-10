@@ -37,11 +37,13 @@ export default function ServicoBairroNacional() {
   const combo = resolvePilotCombination(citySlug, bairroSlug, serviceSlug);
 
   // Combinação inválida ou não habilitada — fallback com noindex efetivo.
+  // Cobre: cidade inexistente, bairro fora da cidade, serviço inexistente e
+  // combinação existente porém não habilitada no piloto. NUNCA emite Service
+  // schema nem canonical self da URL inválida.
   if (!combo) {
     const cityCfg = getPilotCityConfig(citySlug ?? "");
-    const suggestions = citySlug ? getPilotBairrosForCity(citySlug).slice(0, 4) : [];
-    // Se nem a cidade está no piloto, devolve NotFound genérico.
-    if (!cityCfg) return <Navigate to="/atendimento-nacional" replace />;
+    const suggestions = cityCfg ? getPilotBairrosForCity(citySlug ?? "").slice(0, 4) : [];
+    const availableCities = cityCfg ? [] : ["sao-paulo", "rio-de-janeiro", "brasilia", "salvador", "campinas"];
 
     return (
       <Layout>
@@ -54,9 +56,9 @@ export default function ServicoBairroNacional() {
         <section className="container mx-auto px-4 py-16 max-w-3xl">
           <h1 className="text-3xl font-bold mb-4">Combinação ainda não publicada</h1>
           <p className="text-muted-foreground mb-8">
-            Ainda não temos uma página dedicada para essa combinação de bairro
-            e serviço. Nossa rede nacional pode indicar um técnico verificado —
-            fale com a central para triagem imediata.
+            Ainda não temos uma página dedicada para essa combinação de cidade,
+            bairro e serviço. Nossa rede nacional pode indicar um técnico
+            verificado — fale com a central para triagem imediata.
           </p>
           {suggestions.length > 0 && (
             <>
@@ -69,6 +71,22 @@ export default function ServicoBairroNacional() {
                     className="px-4 py-2 rounded-full bg-muted hover:bg-primary/10 text-sm"
                   >
                     {b.name}
+                  </Link>
+                ))}
+              </div>
+            </>
+          )}
+          {availableCities.length > 0 && (
+            <>
+              <h2 className="text-xl font-semibold mb-3">Cidades habilitadas no piloto:</h2>
+              <div className="flex flex-wrap gap-2 mb-8">
+                {availableCities.map((c) => (
+                  <Link
+                    key={c}
+                    to={`/atendimento-nacional/${c}`}
+                    className="px-4 py-2 rounded-full bg-muted hover:bg-primary/10 text-sm capitalize"
+                  >
+                    {c.replace(/-/g, " ")}
                   </Link>
                 ))}
               </div>

@@ -74,44 +74,9 @@ const CidadeNacional = () => {
     },
   };
 
-  const faq = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: [
-      {
-        "@type": "Question",
-        name: `Vocês atendem em ${city.name}?`,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: `Sim. Contamos com prestadores parceiros homologados em ${city.name} (${city.stateName}) para informática, redes, CFTV, elétrica, ar-condicionado e mais. Acione pelo WhatsApp e indicamos o técnico mais próximo.`,
-        },
-      },
-      {
-        "@type": "Question",
-        name: `Quanto custa uma visita técnica em ${city.name}?`,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "A visita técnica com diagnóstico parte de R$ 99,99. Após o diagnóstico, formalizamos um orçamento por escrito antes de iniciar qualquer serviço — sem surpresas.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "Como funciona o atendimento via parceiros?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: `Você fala com a nossa central pelo WhatsApp, descreve o problema e a região em ${city.name}. Acionamos um técnico parceiro próximo, que entra em contato para agendar a visita, executar o orçamento e o serviço com garantia.`,
-        },
-      },
-      {
-        "@type": "Question",
-        name: "Tem garantia?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Sim. Todos os serviços executados pela rede de parceiros possuem garantia formal — o prazo é definido em orçamento conforme o tipo de serviço.",
-        },
-      },
-    ],
-  };
+  // Rodada 25.1 — Bloco 0: FAQ removida (template puro com troca de tokens).
+  // Curadoria por cidade voltará em Bloco D.
+
 
   return (
     <Layout>

@@ -79,13 +79,10 @@ const RegiaoDetalhe = () => {
   });
   const reviewsSchema = buildReviewsSchema();
 
-  const regionFaqs = [
-    { question: `Quanto custa uma visita técnica em ${neighborhood ? neighborhoodName : cityName}?`, answer: `Nossas visitas técnicas em ${neighborhood ? neighborhoodName : cityName} custam a partir de R$ 99,99 para até 30 minutos de serviço. Para serviços mais complexos, fazemos orçamento personalizado sem compromisso via WhatsApp.` },
-    { question: `Qual o horário de atendimento em ${neighborhood ? neighborhoodName : cityName}?`, answer: `O agendamento via WhatsApp funciona 24 horas por dia, 7 dias por semana. As visitas técnicas presenciais são realizadas das 8h às 22h, incluindo sábados, domingos e feriados.` },
-    { question: `Vocês emitem nota fiscal em ${neighborhood ? neighborhoodName : cityName}?`, answer: `Sim! Emitimos nota fiscal para todos os serviços realizados em ${neighborhood ? neighborhoodName : cityName}, garantindo total transparência e profissionalismo.` },
-    { question: `Qual a garantia dos serviços em ${neighborhood ? neighborhoodName : cityName}?`, answer: `Oferecemos garantia de 90 dias a 1 ano, dependendo do tipo de serviço realizado. Todos os detalhes são informados no orçamento antes do início do trabalho.` },
-    { question: `Vocês fazem atendimento remoto em ${neighborhood ? neighborhoodName : cityName}?`, answer: `Sim! Além do atendimento presencial, oferecemos suporte remoto 24 horas para problemas que podem ser resolvidos à distância, como configuração de software, remoção de vírus e suporte técnico geral.` },
-  ];
+  // Rodada 25.1 — Bloco 0: FAQ regional removida.
+  // Era template que só trocava nome de bairro/cidade em 200+ páginas.
+  // FAQPage só será reemitido em páginas com curadoria real.
+
 
   return (
     <Layout>
@@ -106,7 +103,7 @@ const RegiaoDetalhe = () => {
           areaServed: neighborhood ? `${neighborhoodName}, ${cityName}` : cityName,
         }}
         structuredData={[localSchema, offerSchema, reviewsSchema].filter(Boolean) as object[]}
-        faq={regionFaqs}
+
       />
       
       {/* Hero Section */}

@@ -104,8 +104,10 @@ export default function ServicoCidade() {
           priceMinBRL: 99.99,
           areaServed: `${cityData.name}, ${cityData.state}`,
         }}
-        structuredData={[faqSchema, localServiceSchema, offerSchema, reviewsSchema].filter(Boolean) as object[]}
+        structuredData={[localServiceSchema, offerSchema, reviewsSchema].filter(Boolean) as object[]}
+        faq={serviceFaqs}
       />
+
 
       {/* Hero */}
       <section className="relative bg-gradient-to-br from-foreground via-foreground to-primary/20 text-background py-16 md:py-24">
@@ -211,7 +213,7 @@ export default function ServicoCidade() {
           <Reveal>
             <h2 className="font-display text-2xl md:text-3xl font-bold mb-6 mt-12">Perguntas frequentes — {serviceData.title} em {cityData.name}</h2>
             <Accordion type="single" collapsible>
-              {localFaqs.map((faq, i) => (
+              {serviceFaqs.map((faq, i) => (
                 <AccordionItem key={i} value={`item-${i}`}>
                   <AccordionTrigger className="text-left">{faq.question}</AccordionTrigger>
                   <AccordionContent>{faq.answer}</AccordionContent>

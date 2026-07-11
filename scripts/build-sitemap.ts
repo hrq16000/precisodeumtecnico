@@ -160,7 +160,7 @@ ${urls.map(urlXml).join("\n")}
 `;
 
 const shardLastmod = (urls: Url[]) =>
-  urls.map((u) => u.lastmod ?? today).sort().at(-1) ?? today;
+  clampLastmod(urls.map((u) => u.lastmod ?? today).sort().at(-1) ?? today);
 
 // Limpa shards antigos (inclui shard piloto nacional serviços)
 for (const f of readdirSync("public")) {

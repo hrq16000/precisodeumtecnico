@@ -367,6 +367,15 @@ export default function BairroNacional() {
           </div>
         </section>
       )}
+
+      <FAQSection
+        faqs={faqs}
+        title={`Perguntas frequentes — ${bairro.name}`}
+        whatsappHref={whatsappLink}
+        waSource="bairro-nacional-faq"
+        city={city.name}
+        neighborhood={bairro.name}
+      />
     </Layout>
   );
 }

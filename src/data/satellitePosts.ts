@@ -161,7 +161,7 @@ for (const svc of services) {
     const title = `${capitalize(svc.long)} em ${place}: como funciona e preços`;
     const metaTitle = `${capitalize(svc.short)} em ${b.bairro} ${b.cityLabel} | 24h`;
     const metaDescription = `${capitalize(svc.long)} em ${place}. Atendimento rápido, técnico ${b.bairro}, garantia, nota fiscal. Visita a partir de R$ 99,99 — chame no WhatsApp.`;
-    const date = new Date(baseDate + counter * 3 * dayMs).toISOString().split("T")[0];
+    const date = new Date(baseDate + counter * SATELLITE_STEP_DAYS * dayMs).toISOString().split("T")[0];
     counter++;
 
     satellitePosts.push({

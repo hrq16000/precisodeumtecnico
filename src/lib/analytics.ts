@@ -98,6 +98,7 @@ export function trackCtaClick(opts: {
   city?: string;
   bairro?: string;
 }) {
+  // Legado (dataLayer + gtag → Google Ads preservado)
   trackEvent("cta_click", {
     surface: opts.surface,
     cta_id: opts.cta_id,
@@ -107,6 +108,24 @@ export function trackCtaClick(opts: {
     city: opts.city,
     bairro: opts.bairro,
   });
+  // Fila local isolada (sem PII, sem label/text livre)
+  try {
+    // Import lazy para evitar dependência circular com testes vitest.
+    void import("@/lib/localAnalytics").then(({ pushLocalAnalyticsEvent }) => {
+      pushLocalAnalyticsEvent({
+        event: "cta_click",
+        page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+        surface: opts.surface,
+        cta_id: opts.cta_id,
+        destination: opts.destination,
+        service: opts.service,
+        city: opts.city,
+        neighborhood: opts.bairro,
+      });
+    });
+  } catch {
+    /* noop */
+  }
 }
 
 // --- Core Web Vitals tracking ---

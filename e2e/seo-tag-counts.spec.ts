@@ -23,6 +23,7 @@ for (const route of ROUTES) {
 
     const counts = await page.evaluate(() => {
       const q = (sel: string) => document.head.querySelectorAll(sel).length;
+      const descEl = document.head.querySelector('meta[name="description"]');
       return {
         canonical: q('link[rel="canonical"]'),
         ogTitle: q('meta[property="og:title"]'),
@@ -34,6 +35,8 @@ for (const route of ROUTES) {
         twitterDescription: q('meta[name="twitter:description"]'),
         twitterCard: q('meta[name="twitter:card"]'),
         robots: q('meta[name="robots"]'),
+        description: q('meta[name="description"]'),
+        descriptionContent: (descEl?.getAttribute("content") ?? "").trim(),
       };
     });
 

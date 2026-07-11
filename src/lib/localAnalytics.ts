@@ -167,7 +167,7 @@ export function pushLocalAnalyticsEvent(payload: LocalAnalyticsEvent): void {
     semanticSeen.set(key, now);
 
     const q = getQueue();
-    q.push(clean as LocalAnalyticsEvent);
+    q.push(clean as unknown as LocalAnalyticsEvent);
     while (q.length > MAX_QUEUE) q.shift();
   } catch {
     /* analytics nunca quebra UX */

@@ -20,7 +20,7 @@ import { MediaUploader } from "./MediaUploader";
 import { buildTriageWhatsAppUrl, currentSourcePage, readStoredLocation, type TriageWhatsAppResult } from "@/lib/whatsapp";
 import { trackWhatsAppClick } from "@/lib/analytics";
 import { logWaEvent } from "@/lib/waAudit";
-import { pushDataLayerEvent } from "@/lib/dataLayer";
+import { pushLocalAnalyticsEvent } from "@/lib/localAnalytics";
 
 interface TriageWizardProps {
   /** Categoria pré-selecionada (vinda do CTA da página). */
@@ -70,7 +70,7 @@ export function TriageWizard({
     lastStepRef.current = state.step;
     const idx = STEP_ORDER.indexOf(state.step);
     if (state.step === "done") {
-      pushDataLayerEvent({
+      pushLocalAnalyticsEvent({
         event: "triage_complete",
         source,
         completion_status: "completed",
@@ -80,7 +80,7 @@ export function TriageWizard({
     }
     if (state.step === "submitting" || state.step === "error") return;
     if (idx < 0) return;
-    pushDataLayerEvent({
+    pushLocalAnalyticsEvent({
       event: "triage_step",
       source,
       step_id: state.step,

@@ -6,7 +6,7 @@ import { TriageWizard } from "@/components/triage/TriageWizard";
 import { isTriageEnabled } from "@/lib/triageFlag";
 import type { Category } from "@/components/triage/triageMachine";
 import { logWaEvent } from "@/lib/waAudit";
-import { pushDataLayerEvent } from "@/lib/dataLayer";
+import { pushLocalAnalyticsEvent } from "@/lib/localAnalytics";
 
 /**
  * Global TriageWizard launcher.
@@ -33,7 +33,7 @@ export function GlobalTriageLauncher() {
     setOpenCount((n) => n + 1); // força remount → estado zerado
     setOpen(true);
     logWaEvent({ source: d?.source, href: href ?? null, kind, category: d?.category ?? null, bypass: false });
-    pushDataLayerEvent({
+    pushLocalAnalyticsEvent({
       event: "triage_open",
       source: d?.source,
       surface: kind === "tel" ? "cta_tel" : "cta_whatsapp",

@@ -43,8 +43,8 @@ const RegiaoDetalhe = () => {
     : `Técnico em ${cityName}`;
     
   const pageDescription = neighborhood
-    ? `Assistência técnica especializada no bairro ${neighborhoodName} em ${cityName} - PR. Informática, elétrica, CFTV, ar-condicionado, notebooks. Atendimento 24h via WhatsApp. Visita técnica a partir de R$ 99,90.`
-    : cityData?.seoDescription || `Assistência técnica em ${cityName} - PR. Técnicos especializados em informática, elétrica, CFTV, ar-condicionado. Atendimento 24h via WhatsApp. A partir de R$ 99,90.`;
+    ? `Assistência técnica especializada no bairro ${neighborhoodName} em ${cityName} - PR. Informática, elétrica, CFTV, ar-condicionado, notebooks. Atendimento 24h via WhatsApp. Visita técnica a partir de R$ 99,99.`
+    : cityData?.seoDescription || `Assistência técnica em ${cityName} - PR. Técnicos especializados em informática, elétrica, CFTV, ar-condicionado. Atendimento 24h via WhatsApp. A partir de R$ 99,99.`;
 
   const localSchema = {
     "@context": "https://schema.org",
@@ -80,7 +80,7 @@ const RegiaoDetalhe = () => {
   const reviewsSchema = buildReviewsSchema();
 
   const regionFaqs = [
-    { question: `Quanto custa uma visita técnica em ${neighborhood ? neighborhoodName : cityName}?`, answer: `Nossas visitas técnicas em ${neighborhood ? neighborhoodName : cityName} custam a partir de R$ 99,90 para até 30 minutos de serviço. Para serviços mais complexos, fazemos orçamento personalizado sem compromisso via WhatsApp.` },
+    { question: `Quanto custa uma visita técnica em ${neighborhood ? neighborhoodName : cityName}?`, answer: `Nossas visitas técnicas em ${neighborhood ? neighborhoodName : cityName} custam a partir de R$ 99,99 para até 30 minutos de serviço. Para serviços mais complexos, fazemos orçamento personalizado sem compromisso via WhatsApp.` },
     { question: `Qual o horário de atendimento em ${neighborhood ? neighborhoodName : cityName}?`, answer: `O agendamento via WhatsApp funciona 24 horas por dia, 7 dias por semana. As visitas técnicas presenciais são realizadas das 8h às 22h, incluindo sábados, domingos e feriados.` },
     { question: `Vocês emitem nota fiscal em ${neighborhood ? neighborhoodName : cityName}?`, answer: `Sim! Emitimos nota fiscal para todos os serviços realizados em ${neighborhood ? neighborhoodName : cityName}, garantindo total transparência e profissionalismo.` },
     { question: `Qual a garantia dos serviços em ${neighborhood ? neighborhoodName : cityName}?`, answer: `Oferecemos garantia de 90 dias a 1 ano, dependendo do tipo de serviço realizado. Todos os detalhes são informados no orçamento antes do início do trabalho.` },
@@ -171,7 +171,7 @@ const RegiaoDetalhe = () => {
               {/* Price Badge */}
               <div className="flex flex-wrap items-center gap-4">
                 <div className="price-tag">
-                  A partir de R$ 99,90
+                  A partir de R$ 99,99
                 </div>
                 <span className="text-white/70 text-sm">até 30 min de serviço</span>
               </div>
@@ -366,7 +366,7 @@ const RegiaoDetalhe = () => {
                     </li>
                     <li className="flex items-start gap-3">
                       <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-1" />
-                      <span><strong>Preço justo:</strong> Visitas a partir de R$ 99,90 até 30 minutos</span>
+                      <span><strong>Preço justo:</strong> Visitas a partir de R$ 99,99 até 30 minutos</span>
                     </li>
                     <li className="flex items-start gap-3">
                       <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-1" />

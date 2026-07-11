@@ -91,7 +91,7 @@ const CidadeNacional = () => {
         name: `Quanto custa uma visita técnica em ${city.name}?`,
         acceptedAnswer: {
           "@type": "Answer",
-          text: "A visita técnica com diagnóstico parte de R$ 99,90. Após o diagnóstico, formalizamos um orçamento por escrito antes de iniciar qualquer serviço — sem surpresas.",
+          text: "A visita técnica com diagnóstico parte de R$ 99,99. Após o diagnóstico, formalizamos um orçamento por escrito antes de iniciar qualquer serviço — sem surpresas.",
         },
       },
       {
@@ -178,7 +178,7 @@ const CidadeNacional = () => {
             <p className="text-lg md:text-xl text-primary-foreground/90 mb-6 leading-relaxed">
               Atendimento em {city.name} ({city.stateName}) via nossa <strong>rede de prestadores parceiros</strong>{" "}
               homologados. Informática, redes, CFTV, elétrica, ar-condicionado e mais —
-              com visita técnica a partir de <strong>R$ 99,90</strong> e garantia em todos os serviços.
+              com visita técnica a partir de <strong>R$ 99,99</strong> e garantia em todos os serviços.
             </p>
             <ul className="grid sm:grid-cols-2 gap-2 mb-6 text-sm">
               {(city.highlights ?? []).map((h) => (
@@ -200,7 +200,7 @@ const CidadeNacional = () => {
               </Button>
             </div>
             <p className="mt-3 text-xs text-primary-foreground/70">
-              Visita técnica a partir de R$ 99,90.{" "}
+              Visita técnica a partir de R$ 99,99.{" "}
               <Link to="/termos-orcamento-pre-aprovado" className="underline hover:text-accent">
                 Termos do orçamento pré-aprovado
               </Link>
@@ -276,7 +276,7 @@ const CidadeNacional = () => {
               </p>
               <p>
                 Todo serviço começa por um <strong>orçamento por escrito</strong> antes da execução. A visita
-                técnica com diagnóstico parte de <strong>R$ 99,90</strong> e, caso o serviço seja aprovado,
+                técnica com diagnóstico parte de <strong>R$ 99,99</strong> e, caso o serviço seja aprovado,
                 o valor pode ser descontado conforme as condições do{" "}
                 <Link to="/termos-orcamento-pre-aprovado" className="text-primary underline">
                   orçamento pré-aprovado

@@ -26,7 +26,7 @@ for (const city of nationalCities) {
   const ogImage = `${BASE}/og/cidade/${city.slug}.jpg`;
   const ogImageWebp = `${BASE}/og/cidade/${city.slug}.webp`;
   const title = `Assistência Técnica em ${city.name} – ${city.state} | Preciso de um Técnico`;
-  const description = `Atendimento técnico em ${city.name}/${city.state} via nossa rede de prestadores parceiros. Suporte residencial e empresarial a partir de R$ 99,90.`;
+  const description = `Atendimento técnico em ${city.name}/${city.state} via nossa rede de prestadores parceiros. Suporte residencial e empresarial a partir de R$ 99,99.`;
 
   const html = `<!doctype html>
 <html lang="pt-BR">

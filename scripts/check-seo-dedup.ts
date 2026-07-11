@@ -19,6 +19,7 @@ const CRITICAL: Rule[] = [
   { property: 'name="twitter:image"', label: "twitter:image" },
   { property: 'name="twitter:title"', label: "twitter:title" },
   { property: 'name="twitter:description"', label: "twitter:description" },
+  { property: 'name="twitter:card"', label: "twitter:card" },
   { property: 'rel="canonical"', label: "canonical" },
 ];
 

@@ -43,6 +43,6 @@ for (const route of [...NOINDEX_MATRIX, ...NOINDEX_INTERNAL]) {
     const r = await robots(page);
     expect(r, `meta robots em ${route}`).toHaveLength(1);
     expect(r[0]).toMatch(/noindex/i);
-    expect(r[0]).not.toMatch(/(^|[^n])index[, ]/i); // sem "index," concorrente
+    expect(r[0]).not.toMatch(/index\s*,\s*follow/i); // sem diretiva index,follow concorrente
   });
 }

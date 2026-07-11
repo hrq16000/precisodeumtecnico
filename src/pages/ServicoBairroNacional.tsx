@@ -15,8 +15,8 @@ import {
 } from "@/data/nationalServiceCoverage";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { trackWhatsAppClick, trackCtaClick } from "@/lib/analytics";
-import { buildNationalNeighborhoodFAQ } from "@/lib/faqBuilders";
-import { FAQSection } from "@/components/seo/FAQSection";
+// FAQ removida (Rodada 25.1 — Bloco 0): builder era template puro.
+// FAQPage voltará por combinação apenas com curadoria (Bloco D).
 
 /**
  * Rodada 24.1 — Página nacional serviço × cidade × bairro.
@@ -149,13 +149,8 @@ export default function ServicoBairroNacional() {
   const otherServices = getOtherPilotServices(service.slug, 5);
   const otherBairros = getPilotBairrosForCity(city.slug).filter((b) => b.slug !== bairro.slug).slice(0, 5);
 
-  const faqs = buildNationalNeighborhoodFAQ({
-    serviceLabel: service.label,
-    serviceNoun: service.seoNoun,
-    bairroName: bairro.name,
-    cityName: city.name,
-    stateName: city.stateName,
-  });
+  // Sem FAQ template — schema FAQPage suspenso até haver curadoria por combinação.
+
 
   const openTriage = () => {
     trackCtaClick({
@@ -185,7 +180,7 @@ export default function ServicoBairroNacional() {
         canonical={url}
         breadcrumbs={breadcrumbs}
         structuredData={[serviceSchema]}
-        faq={faqs}
+
       />
 
       {/* Hero */}

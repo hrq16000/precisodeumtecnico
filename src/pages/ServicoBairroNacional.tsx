@@ -426,15 +426,8 @@ export default function ServicoBairroNacional() {
         </Card>
       </section>
 
-      <FAQSection
-        faqs={faqs}
-        title={`Perguntas frequentes — ${service.label} em ${bairro.name}`}
-        whatsappHref={whatsappLink}
-        waSource="matrix-nacional-faq"
-        service={service.label}
-        city={city.name}
-        neighborhood={bairro.name}
-      />
+      {/* FAQ removida (Rodada 25.1). Voltará com curadoria por combinação (Bloco D). */}
+
     </Layout>
   );
 }

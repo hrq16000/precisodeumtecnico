@@ -33,6 +33,7 @@ interface ServiceInfo {
   priceMinBRL?: number;
   areaServed?: string;
 }
+interface FAQItem { question: string; answer: string; }
 
 interface SEOHeadProps {
   title: string;
@@ -48,6 +49,8 @@ interface SEOHeadProps {
   breadcrumbs?: Breadcrumb[];
   /** Se presente, emite Service schema (páginas de serviço). */
   service?: ServiceInfo;
+  /** Se presente, emite FAQPage schema. Deve corresponder às FAQs visíveis. */
+  faq?: FAQItem[];
   /** Article publication metadata for blog posts */
   article?: {
     publishedTime?: string;

@@ -92,6 +92,12 @@ export function GlobalTriageLauncher() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent
+        // Preserva ESC/botão X como únicos meios de fechar. Bloqueia click
+        // fora / pointerdown fora — evita o "duplo clique" fechar o modal
+        // que acabou de abrir (o segundo clique caía no overlay do Radix
+        // e disparava close, deixando dialogs=0). Rodada 25.1 · B.3.a.
+        onPointerDownOutside={(e) => e.preventDefault()}
+        onInteractOutside={(e) => e.preventDefault()}
         className="
           p-0 gap-0 border-0 bg-transparent shadow-none
           w-screen max-w-full h-[100dvh] rounded-none

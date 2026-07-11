@@ -33,6 +33,7 @@ interface ServiceInfo {
   priceMinBRL?: number;
   areaServed?: string;
 }
+interface FAQItem { question: string; answer: string; }
 
 interface SEOHeadProps {
   title: string;
@@ -48,6 +49,8 @@ interface SEOHeadProps {
   breadcrumbs?: Breadcrumb[];
   /** Se presente, emite Service schema (páginas de serviço). */
   service?: ServiceInfo;
+  /** Se presente, emite FAQPage schema. Deve corresponder às FAQs visíveis. */
+  faq?: FAQItem[];
   /** Article publication metadata for blog posts */
   article?: {
     publishedTime?: string;
@@ -75,6 +78,7 @@ export function SEOHead({
   keywords,
   breadcrumbs,
   service,
+  faq,
   article,
   noindex = false,
 }: SEOHeadProps) {
@@ -148,6 +152,17 @@ export function SEOHead({
             },
           }
         : {}),
+    });
+  }
+  if (faq && faq.length > 0) {
+    extra.push({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faq.map((f) => ({
+        "@type": "Question",
+        name: f.question,
+        acceptedAnswer: { "@type": "Answer", text: f.answer },
+      })),
     });
   }
 

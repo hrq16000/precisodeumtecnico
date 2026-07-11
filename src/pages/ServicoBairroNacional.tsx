@@ -15,6 +15,8 @@ import {
 } from "@/data/nationalServiceCoverage";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { trackWhatsAppClick, trackCtaClick } from "@/lib/analytics";
+import { buildNationalNeighborhoodFAQ } from "@/lib/faqBuilders";
+import { FAQSection } from "@/components/seo/FAQSection";
 
 /**
  * Rodada 24.1 — Página nacional serviço × cidade × bairro.
@@ -147,6 +149,14 @@ export default function ServicoBairroNacional() {
   const otherServices = getOtherPilotServices(service.slug, 5);
   const otherBairros = getPilotBairrosForCity(city.slug).filter((b) => b.slug !== bairro.slug).slice(0, 5);
 
+  const faqs = buildNationalNeighborhoodFAQ({
+    serviceLabel: service.label,
+    serviceNoun: service.seoNoun,
+    bairroName: bairro.name,
+    cityName: city.name,
+    stateName: city.stateName,
+  });
+
   const openTriage = () => {
     trackCtaClick({
       surface: "matrix_nacional",
@@ -175,6 +185,7 @@ export default function ServicoBairroNacional() {
         canonical={url}
         breadcrumbs={breadcrumbs}
         structuredData={[serviceSchema]}
+        faq={faqs}
       />
 
       {/* Hero */}
@@ -419,6 +430,16 @@ export default function ServicoBairroNacional() {
           </CardContent>
         </Card>
       </section>
+
+      <FAQSection
+        faqs={faqs}
+        title={`Perguntas frequentes — ${service.label} em ${bairro.name}`}
+        whatsappHref={whatsappLink}
+        waSource="matrix-nacional-faq"
+        service={service.label}
+        city={city.name}
+        neighborhood={bairro.name}
+      />
     </Layout>
   );
 }

@@ -202,6 +202,7 @@ const ServicoDetalhe = () => {
           priceMinBRL: 99.99,
           areaServed: "Curitiba e Região Metropolitana",
         }}
+        faq={service.faqs}
       />
 
       {/* Hero */}

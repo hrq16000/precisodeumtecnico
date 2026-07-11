@@ -15,6 +15,8 @@ import {
 } from "@/data/nationalBairros";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { trackWhatsAppClick, trackCtaClick } from "@/lib/analytics";
+import { buildNeighborhoodFAQ } from "@/lib/faqBuilders";
+import { FAQSection } from "@/components/seo/FAQSection";
 
 const services = [
   { icon: Monitor, name: "Informática", href: "/servicos/informatica" },
@@ -147,6 +149,12 @@ export default function BairroNacional() {
   // Bairros vizinhos (mesma cidade), exceto o atual.
   const nearby = getBairrosForCity(city.slug).filter((b) => b.slug !== bairro.slug).slice(0, 6);
 
+  const faqs = buildNeighborhoodFAQ({
+    bairroName: bairro.name,
+    cityName: city.name,
+    stateName: city.stateName,
+  });
+
   return (
     <Layout>
       <SEOHead
@@ -155,6 +163,7 @@ export default function BairroNacional() {
         canonical={url}
         breadcrumbs={breadcrumbs}
         structuredData={[serviceSchema]}
+        faq={faqs}
       />
 
       {/* Hero */}
@@ -358,6 +367,15 @@ export default function BairroNacional() {
           </div>
         </section>
       )}
+
+      <FAQSection
+        faqs={faqs}
+        title={`Perguntas frequentes — ${bairro.name}`}
+        whatsappHref={whatsappLink}
+        waSource="bairro-nacional-faq"
+        city={city.name}
+        neighborhood={bairro.name}
+      />
     </Layout>
   );
 }

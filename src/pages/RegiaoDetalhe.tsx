@@ -79,6 +79,14 @@ const RegiaoDetalhe = () => {
   });
   const reviewsSchema = buildReviewsSchema();
 
+  const regionFaqs = [
+    { question: `Quanto custa uma visita técnica em ${neighborhood ? neighborhoodName : cityName}?`, answer: `Nossas visitas técnicas em ${neighborhood ? neighborhoodName : cityName} custam a partir de R$ 99,90 para até 30 minutos de serviço. Para serviços mais complexos, fazemos orçamento personalizado sem compromisso via WhatsApp.` },
+    { question: `Qual o horário de atendimento em ${neighborhood ? neighborhoodName : cityName}?`, answer: `O agendamento via WhatsApp funciona 24 horas por dia, 7 dias por semana. As visitas técnicas presenciais são realizadas das 8h às 22h, incluindo sábados, domingos e feriados.` },
+    { question: `Vocês emitem nota fiscal em ${neighborhood ? neighborhoodName : cityName}?`, answer: `Sim! Emitimos nota fiscal para todos os serviços realizados em ${neighborhood ? neighborhoodName : cityName}, garantindo total transparência e profissionalismo.` },
+    { question: `Qual a garantia dos serviços em ${neighborhood ? neighborhoodName : cityName}?`, answer: `Oferecemos garantia de 90 dias a 1 ano, dependendo do tipo de serviço realizado. Todos os detalhes são informados no orçamento antes do início do trabalho.` },
+    { question: `Vocês fazem atendimento remoto em ${neighborhood ? neighborhoodName : cityName}?`, answer: `Sim! Além do atendimento presencial, oferecemos suporte remoto 24 horas para problemas que podem ser resolvidos à distância, como configuração de software, remoção de vírus e suporte técnico geral.` },
+  ];
+
   return (
     <Layout>
       <SEOHead
@@ -98,6 +106,7 @@ const RegiaoDetalhe = () => {
           areaServed: neighborhood ? `${neighborhoodName}, ${cityName}` : cityName,
         }}
         structuredData={[localSchema, offerSchema, reviewsSchema].filter(Boolean) as object[]}
+        faq={regionFaqs}
       />
       
       {/* Hero Section */}
@@ -439,31 +448,10 @@ const RegiaoDetalhe = () => {
             </h2>
 
             <div className="space-y-4">
-              {[
-                {
-                  q: `Quanto custa uma visita técnica em ${neighborhood ? neighborhoodName : cityName}?`,
-                  a: `Nossas visitas técnicas em ${neighborhood ? neighborhoodName : cityName} custam a partir de R$ 99,90 para até 30 minutos de serviço. Para serviços mais complexos, fazemos orçamento personalizado sem compromisso via WhatsApp.`
-                },
-                {
-                  q: `Qual o horário de atendimento em ${neighborhood ? neighborhoodName : cityName}?`,
-                  a: `O agendamento via WhatsApp funciona 24 horas por dia, 7 dias por semana. As visitas técnicas presenciais são realizadas das 8h às 22h, incluindo sábados, domingos e feriados.`
-                },
-                {
-                  q: `Vocês emitem nota fiscal em ${neighborhood ? neighborhoodName : cityName}?`,
-                  a: `Sim! Emitimos nota fiscal para todos os serviços realizados em ${neighborhood ? neighborhoodName : cityName}, garantindo total transparência e profissionalismo.`
-                },
-                {
-                  q: `Qual a garantia dos serviços em ${neighborhood ? neighborhoodName : cityName}?`,
-                  a: `Oferecemos garantia de 90 dias a 1 ano, dependendo do tipo de serviço realizado. Todos os detalhes são informados no orçamento antes do início do trabalho.`
-                },
-                {
-                  q: `Vocês fazem atendimento remoto em ${neighborhood ? neighborhoodName : cityName}?`,
-                  a: `Sim! Além do atendimento presencial, oferecemos suporte remoto 24 horas para problemas que podem ser resolvidos à distância, como configuração de software, remoção de vírus e suporte técnico geral.`
-                }
-              ].map((faq, index) => (
+              {regionFaqs.map((faq, index) => (
                 <div key={index} className="region-card">
-                  <h3 className="font-bold text-foreground mb-2">{faq.q}</h3>
-                  <p className="text-muted-foreground">{faq.a}</p>
+                  <h3 className="font-bold text-foreground mb-2">{faq.question}</h3>
+                  <p className="text-muted-foreground">{faq.answer}</p>
                 </div>
               ))}
             </div>

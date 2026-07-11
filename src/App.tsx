@@ -13,6 +13,12 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import { GlobalTriageLauncher } from "@/components/triage/GlobalTriageLauncher";
 import { SmartLocationPrompt } from "@/components/layout/SmartLocationPrompt";
+import { useRoutePageview } from "@/hooks/useRoutePageview";
+
+function RoutePageviewTracker() {
+  useRoutePageview();
+  return null;
+}
 
 // Lazy-load every non-critical route to shrink the initial bundle.
 const Servicos = lazy(() => import("./pages/Servicos"));
@@ -56,6 +62,7 @@ const App = () => (
             <GlobalReveal />
             <GlobalTriageLauncher />
             <SmartLocationPrompt />
+            <RoutePageviewTracker />
 
             <Suspense fallback={null}>
               <Routes>

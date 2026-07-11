@@ -1,4 +1,4 @@
-import { useMemo, useReducer, useState } from "react";
+import { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowLeft, ArrowRight, CheckCircle2, ChevronRight, Loader2,
@@ -20,6 +20,7 @@ import { MediaUploader } from "./MediaUploader";
 import { buildTriageWhatsAppUrl, currentSourcePage, readStoredLocation, type TriageWhatsAppResult } from "@/lib/whatsapp";
 import { trackWhatsAppClick } from "@/lib/analytics";
 import { logWaEvent } from "@/lib/waAudit";
+import { pushDataLayerEvent } from "@/lib/dataLayer";
 
 interface TriageWizardProps {
   /** Categoria pré-selecionada (vinda do CTA da página). */
@@ -62,6 +63,33 @@ export function TriageWizard({
   const [lastPayload, setLastPayload] = useState<TriagePayload | null>(null);
   const [triageWhatsApp, setTriageWhatsApp] = useState<TriageWhatsAppResult | null>(null);
   const [exited, setExited] = useState(false);
+  const lastStepRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (lastStepRef.current === state.step) return;
+    lastStepRef.current = state.step;
+    const idx = STEP_ORDER.indexOf(state.step);
+    if (state.step === "done") {
+      pushDataLayerEvent({
+        event: "triage_complete",
+        source,
+        completion_status: "completed",
+        page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+      });
+      return;
+    }
+    if (state.step === "submitting" || state.step === "error") return;
+    if (idx < 0) return;
+    pushDataLayerEvent({
+      event: "triage_step",
+      source,
+      step_id: state.step,
+      step_index: idx,
+      completion_status: idx === 0 ? "started" : "in_progress",
+      page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+    });
+  }, [state.step, source]);
+
 
   const stepIdx = Math.max(0, STEP_ORDER.indexOf(state.step));
   const progressPct = state.step === "done"

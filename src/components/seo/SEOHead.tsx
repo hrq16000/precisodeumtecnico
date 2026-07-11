@@ -78,6 +78,7 @@ export function SEOHead({
   keywords,
   breadcrumbs,
   service,
+  faq,
   article,
   noindex = false,
 }: SEOHeadProps) {

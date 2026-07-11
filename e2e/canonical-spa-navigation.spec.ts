@@ -46,8 +46,8 @@ test.describe("Canonical SPA navigation", () => {
     await expectSingleCanonical(page, `${BASE}/sobre`);
   });
 
-  test("Combinação inválida de /atendimento-nacional aponta para /atendimento-nacional", async ({ page }) => {
-    await page.goto("/atendimento-nacional/xxx-invalido/yyy-invalido/informatica");
+  test("Combinação inválida de /servico-em-nacional aponta para /atendimento-nacional", async ({ page }) => {
+    await page.goto("/servico-em-nacional/xxx-invalido/yyy-invalido/informatica");
     // fallback deve emitir canonical apontando para o hub
     await expectSingleCanonical(page, `${BASE}/atendimento-nacional`);
     // e não deve manter canonical de outra rota

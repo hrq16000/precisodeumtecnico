@@ -34,33 +34,12 @@ export default function ServicoCidade() {
   const description = `${serviceData.title} em ${cityData.name}/${cityData.state}. Técnicos certificados, visita a partir de R$ 99,99, garantia, nota fiscal. Atendimento 24h via WhatsApp em todos os bairros de ${cityData.name}.`;
   const url = `https://precisodeumtecnico.com/servico-em/${cityData.slug}/${serviceData.slug}`;
 
-  const localFaqs = [
-    {
-      question: `Vocês atendem em ${cityData.name}?`,
-      answer: `Sim! Atendemos toda ${cityData.name} e região, incluindo todos os bairros principais. Nossa equipe se desloca até o seu endereço com agilidade — agendamento 24h via WhatsApp e visita técnica das 8h às 22h, todos os dias.`,
-    },
-    {
-      question: `Quanto custa ${serviceData.title.toLowerCase()} em ${cityData.name}?`,
-      answer: `A visita técnica + diagnóstico em ${cityData.name} parte de R$ 99,99. O orçamento do reparo só é fechado após o diagnóstico no local, sem compromisso. O valor mínimo de Orçamento Pré-Aprovado é de R$ 299,99 e não inclui peças, componentes, materiais ou itens adicionais.`,
-    },
-    {
-      question: `Quanto tempo demora o atendimento em ${cityData.name}?`,
-      answer: `Para chamados em ${cityData.name}, o tempo médio de resposta é de 1 a 4 horas, dependendo da disponibilidade do técnico mais próximo do seu bairro. Em emergências, priorizamos a rota mais rápida.`,
-    },
-    ...serviceData.faqs.slice(0, 3),
-  ];
+  // Rodada 25.1 — Bloco 0: as 3 perguntas templatizadas por cidade foram
+  // removidas (só trocavam o nome). Mantemos apenas as FAQs curadas do
+  // serviço (fonte: servicesData) via SEOHead.faq — sem faqSchema manual
+  // paralelo, sem duplicidade contra o Helmet.
+  const serviceFaqs = serviceData.faqs;
 
-  // Breadcrumb agora vem via SEOHead prop; schema abaixo removido.
-
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: localFaqs.map((f) => ({
-      "@type": "Question",
-      name: f.question,
-      acceptedAnswer: { "@type": "Answer", text: f.answer },
-    })),
-  };
 
   const localServiceSchema = {
     "@context": "https://schema.org",
@@ -125,8 +104,10 @@ export default function ServicoCidade() {
           priceMinBRL: 99.99,
           areaServed: `${cityData.name}, ${cityData.state}`,
         }}
-        structuredData={[faqSchema, localServiceSchema, offerSchema, reviewsSchema].filter(Boolean) as object[]}
+        structuredData={[localServiceSchema, offerSchema, reviewsSchema].filter(Boolean) as object[]}
+        faq={serviceFaqs}
       />
+
 
       {/* Hero */}
       <section className="relative bg-gradient-to-br from-foreground via-foreground to-primary/20 text-background py-16 md:py-24">
@@ -232,7 +213,7 @@ export default function ServicoCidade() {
           <Reveal>
             <h2 className="font-display text-2xl md:text-3xl font-bold mb-6 mt-12">Perguntas frequentes — {serviceData.title} em {cityData.name}</h2>
             <Accordion type="single" collapsible>
-              {localFaqs.map((faq, i) => (
+              {serviceFaqs.map((faq, i) => (
                 <AccordionItem key={i} value={`item-${i}`}>
                   <AccordionTrigger className="text-left">{faq.question}</AccordionTrigger>
                   <AccordionContent>{faq.answer}</AccordionContent>

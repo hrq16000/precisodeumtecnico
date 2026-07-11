@@ -30,7 +30,7 @@ const Regioes = () => {
     <Layout>
       <SEOHead
         title="Técnico em Curitiba e Região Metropolitana | Preciso de Um Técnico"
-        description="Assistência técnica em Curitiba, São José dos Pinhais, Pinhais, Colombo, Araucária e toda região metropolitana. 18+ cidades, 200+ bairros. Técnicos especializados. WhatsApp 24h. A partir de R$ 99,90."
+        description="Assistência técnica em Curitiba, São José dos Pinhais, Pinhais, Colombo, Araucária e toda região metropolitana. 18+ cidades, 200+ bairros. Técnicos especializados. WhatsApp 24h. A partir de R$ 99,99."
         canonical="https://precisodeumtecnico.com/regioes"
         schema={regionSchema}
       />
@@ -82,7 +82,7 @@ const Regioes = () => {
             <div className="flex flex-wrap justify-center gap-6 mb-10 text-white/80">
               <div className="flex items-center gap-2">
                 <CheckCircle className="w-5 h-5 text-success" />
-                <span>A partir de R$ 99,90</span>
+                <span>A partir de R$ 99,99</span>
               </div>
               <div className="flex items-center gap-2">
                 <Shield className="w-5 h-5 text-success" />
@@ -291,7 +291,7 @@ const Regioes = () => {
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-0.5" />
-                  <span><strong>Preço justo:</strong> A partir de R$ 99,90 até 30 minutos de serviço</span>
+                  <span><strong>Preço justo:</strong> A partir de R$ 99,99 até 30 minutos de serviço</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-0.5" />

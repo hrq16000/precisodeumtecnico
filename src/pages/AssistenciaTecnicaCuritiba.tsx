@@ -306,56 +306,11 @@ export default function AssistenciaTecnicaCuritiba() {
     },
   }));
 
-  // Dev-time schema + tracking validation. Logs structured data and verifies
-  // that whatsapp_click events fire with utm_*/gclid payload. Surfaces a
-  // warning in the console if tracking breaks (e.g. dataLayer never receives
-  // the event after a CTA click).
-  useEffect(() => {
-    if (!import.meta.env.DEV) return;
-    // eslint-disable-next-line no-console
-    console.groupCollapsed("[SEO] /assistencia-tecnica-curitiba JSON-LD");
-    // eslint-disable-next-line no-console
-    console.log("LocalBusiness", localBusinessSchema);
-    // eslint-disable-next-line no-console
-    console.log("BreadcrumbList", breadcrumbSchema);
-    // eslint-disable-next-line no-console
-    console.log("FAQPage", faqSchema);
-    // eslint-disable-next-line no-console
-    console.groupEnd();
+  // Rodada 25.1 — Bloco 0: bloco de instrumentação dev removido
+  // (console.log de FAQPage + watchdog de whatsapp_click). O evento
+  // whatsapp_click é validado por spec e a integridade dos JSON-LD é
+  // coberta por scripts/validate-jsonld.ts.
 
-    // Tracking watchdog: warns if no whatsapp_click events show up in
-    // dataLayer 8s after any wa.me anchor is clicked.
-    const w = window as unknown as { dataLayer?: Array<Record<string, unknown>> };
-    let clicked = false;
-    const onClick = (e: MouseEvent) => {
-      const a = (e.target as HTMLElement | null)?.closest?.("a[href*='wa.me']");
-      if (!a) return;
-      clicked = true;
-      const before = w.dataLayer?.length ?? 0;
-      setTimeout(() => {
-        const events = (w.dataLayer ?? []).slice(before);
-        const wa = events.find((ev) => ev.event === "whatsapp_click");
-        if (!wa) {
-          // eslint-disable-next-line no-console
-          console.warn("[tracking] whatsapp_click did NOT fire after CTA click — check analytics wiring");
-        } else {
-          // eslint-disable-next-line no-console
-          console.info("[tracking] whatsapp_click OK", wa);
-        }
-      }, 250);
-    };
-    document.addEventListener("click", onClick);
-    const timer = setTimeout(() => {
-      if (!clicked) {
-        // eslint-disable-next-line no-console
-        console.info("[tracking] watchdog armed — click any WhatsApp CTA to validate utm_*/gclid payload");
-      }
-    }, 1000);
-    return () => {
-      document.removeEventListener("click", onClick);
-      clearTimeout(timer);
-    };
-  }, [localBusinessSchema, breadcrumbSchema, faqSchema]);
 
 
   return (

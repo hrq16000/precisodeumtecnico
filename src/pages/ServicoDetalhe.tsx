@@ -176,10 +176,11 @@ const defaultServiceData = {
 
 const ServicoDetalhe = () => {
   const { slug } = useParams<{ slug: string }>();
-  const service = slug && servicesData[slug] ? servicesData[slug] : defaultServiceData;
-  
+  const hasCuratedEntry = !!(slug && servicesData[slug]);
+  const service = hasCuratedEntry ? servicesData[slug!] : defaultServiceData;
+
   // Generate title from slug if not in database
-  const displayTitle = slug && !servicesData[slug] 
+  const displayTitle = slug && !servicesData[slug]
     ? slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
     : service.title;
 
@@ -202,8 +203,12 @@ const ServicoDetalhe = () => {
           priceMinBRL: 99.99,
           areaServed: "Curitiba e Região Metropolitana",
         }}
-        faq={service.faqs}
+        // Só emite FAQPage quando o serviço tem FAQ curada em servicesData —
+        // evita compartilhar as 3 perguntas do fallback entre dezenas de rotas.
+        faq={hasCuratedEntry ? service.faqs : undefined}
+
       />
+
 
       {/* Hero */}
       <section className="relative py-16 md:py-24 hero-gradient overflow-hidden">

@@ -43,8 +43,8 @@ const RegiaoDetalhe = () => {
     : `Técnico em ${cityName}`;
     
   const pageDescription = neighborhood
-    ? `Assistência técnica especializada no bairro ${neighborhoodName} em ${cityName} - PR. Informática, elétrica, CFTV, ar-condicionado, notebooks. Atendimento 24h via WhatsApp. Visita técnica a partir de R$ 99,90.`
-    : cityData?.seoDescription || `Assistência técnica em ${cityName} - PR. Técnicos especializados em informática, elétrica, CFTV, ar-condicionado. Atendimento 24h via WhatsApp. A partir de R$ 99,90.`;
+    ? `Assistência técnica especializada no bairro ${neighborhoodName} em ${cityName} - PR. Informática, elétrica, CFTV, ar-condicionado, notebooks. Atendimento 24h via WhatsApp. Visita técnica a partir de R$ 99,99.`
+    : cityData?.seoDescription || `Assistência técnica em ${cityName} - PR. Técnicos especializados em informática, elétrica, CFTV, ar-condicionado. Atendimento 24h via WhatsApp. A partir de R$ 99,99.`;
 
   const localSchema = {
     "@context": "https://schema.org",
@@ -79,13 +79,10 @@ const RegiaoDetalhe = () => {
   });
   const reviewsSchema = buildReviewsSchema();
 
-  const regionFaqs = [
-    { question: `Quanto custa uma visita técnica em ${neighborhood ? neighborhoodName : cityName}?`, answer: `Nossas visitas técnicas em ${neighborhood ? neighborhoodName : cityName} custam a partir de R$ 99,90 para até 30 minutos de serviço. Para serviços mais complexos, fazemos orçamento personalizado sem compromisso via WhatsApp.` },
-    { question: `Qual o horário de atendimento em ${neighborhood ? neighborhoodName : cityName}?`, answer: `O agendamento via WhatsApp funciona 24 horas por dia, 7 dias por semana. As visitas técnicas presenciais são realizadas das 8h às 22h, incluindo sábados, domingos e feriados.` },
-    { question: `Vocês emitem nota fiscal em ${neighborhood ? neighborhoodName : cityName}?`, answer: `Sim! Emitimos nota fiscal para todos os serviços realizados em ${neighborhood ? neighborhoodName : cityName}, garantindo total transparência e profissionalismo.` },
-    { question: `Qual a garantia dos serviços em ${neighborhood ? neighborhoodName : cityName}?`, answer: `Oferecemos garantia de 90 dias a 1 ano, dependendo do tipo de serviço realizado. Todos os detalhes são informados no orçamento antes do início do trabalho.` },
-    { question: `Vocês fazem atendimento remoto em ${neighborhood ? neighborhoodName : cityName}?`, answer: `Sim! Além do atendimento presencial, oferecemos suporte remoto 24 horas para problemas que podem ser resolvidos à distância, como configuração de software, remoção de vírus e suporte técnico geral.` },
-  ];
+  // Rodada 25.1 — Bloco 0: FAQ regional removida.
+  // Era template que só trocava nome de bairro/cidade em 200+ páginas.
+  // FAQPage só será reemitido em páginas com curadoria real.
+
 
   return (
     <Layout>
@@ -106,7 +103,7 @@ const RegiaoDetalhe = () => {
           areaServed: neighborhood ? `${neighborhoodName}, ${cityName}` : cityName,
         }}
         structuredData={[localSchema, offerSchema, reviewsSchema].filter(Boolean) as object[]}
-        faq={regionFaqs}
+
       />
       
       {/* Hero Section */}
@@ -171,7 +168,7 @@ const RegiaoDetalhe = () => {
               {/* Price Badge */}
               <div className="flex flex-wrap items-center gap-4">
                 <div className="price-tag">
-                  A partir de R$ 99,90
+                  A partir de R$ 99,99
                 </div>
                 <span className="text-white/70 text-sm">até 30 min de serviço</span>
               </div>
@@ -366,7 +363,7 @@ const RegiaoDetalhe = () => {
                     </li>
                     <li className="flex items-start gap-3">
                       <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-1" />
-                      <span><strong>Preço justo:</strong> Visitas a partir de R$ 99,90 até 30 minutos</span>
+                      <span><strong>Preço justo:</strong> Visitas a partir de R$ 99,99 até 30 minutos</span>
                     </li>
                     <li className="flex items-start gap-3">
                       <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-1" />
@@ -440,24 +437,8 @@ const RegiaoDetalhe = () => {
       </section>
 
       {/* FAQ Section */}
-      <section className="section-padding bg-secondary/30">
-        <div className="container-custom">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-foreground mb-8 text-center">
-              Perguntas Frequentes - {neighborhood ? neighborhoodName : cityName}
-            </h2>
+      {/* FAQ regional removida (Rodada 25.1 — Bloco 0): era template puro. */}
 
-            <div className="space-y-4">
-              {regionFaqs.map((faq, index) => (
-                <div key={index} className="region-card">
-                  <h3 className="font-bold text-foreground mb-2">{faq.question}</h3>
-                  <p className="text-muted-foreground">{faq.answer}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       <CTASection />
     </Layout>

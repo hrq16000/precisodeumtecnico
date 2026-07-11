@@ -74,44 +74,9 @@ const CidadeNacional = () => {
     },
   };
 
-  const faq = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: [
-      {
-        "@type": "Question",
-        name: `Vocês atendem em ${city.name}?`,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: `Sim. Contamos com prestadores parceiros homologados em ${city.name} (${city.stateName}) para informática, redes, CFTV, elétrica, ar-condicionado e mais. Acione pelo WhatsApp e indicamos o técnico mais próximo.`,
-        },
-      },
-      {
-        "@type": "Question",
-        name: `Quanto custa uma visita técnica em ${city.name}?`,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "A visita técnica com diagnóstico parte de R$ 99,90. Após o diagnóstico, formalizamos um orçamento por escrito antes de iniciar qualquer serviço — sem surpresas.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "Como funciona o atendimento via parceiros?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: `Você fala com a nossa central pelo WhatsApp, descreve o problema e a região em ${city.name}. Acionamos um técnico parceiro próximo, que entra em contato para agendar a visita, executar o orçamento e o serviço com garantia.`,
-        },
-      },
-      {
-        "@type": "Question",
-        name: "Tem garantia?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Sim. Todos os serviços executados pela rede de parceiros possuem garantia formal — o prazo é definido em orçamento conforme o tipo de serviço.",
-        },
-      },
-    ],
-  };
+  // Rodada 25.1 — Bloco 0: FAQ removida (template puro com troca de tokens).
+  // Curadoria por cidade voltará em Bloco D.
+
 
   return (
     <Layout>
@@ -122,7 +87,7 @@ const CidadeNacional = () => {
         ogImage={ogImage}
         type="service"
         keywords={`técnico em ${city.name}, assistência técnica ${city.name}, técnico informática ${city.name} ${city.state}, suporte ti ${city.name}`}
-        structuredData={[breadcrumb, service, faq]}
+        structuredData={[breadcrumb, service]}
       />
       <Helmet>
         {/* Preload the LCP hero in modern format with responsive srcset */}
@@ -178,7 +143,7 @@ const CidadeNacional = () => {
             <p className="text-lg md:text-xl text-primary-foreground/90 mb-6 leading-relaxed">
               Atendimento em {city.name} ({city.stateName}) via nossa <strong>rede de prestadores parceiros</strong>{" "}
               homologados. Informática, redes, CFTV, elétrica, ar-condicionado e mais —
-              com visita técnica a partir de <strong>R$ 99,90</strong> e garantia em todos os serviços.
+              com visita técnica a partir de <strong>R$ 99,99</strong> e garantia em todos os serviços.
             </p>
             <ul className="grid sm:grid-cols-2 gap-2 mb-6 text-sm">
               {(city.highlights ?? []).map((h) => (
@@ -200,7 +165,7 @@ const CidadeNacional = () => {
               </Button>
             </div>
             <p className="mt-3 text-xs text-primary-foreground/70">
-              Visita técnica a partir de R$ 99,90.{" "}
+              Visita técnica a partir de R$ 99,99.{" "}
               <Link to="/termos-orcamento-pre-aprovado" className="underline hover:text-accent">
                 Termos do orçamento pré-aprovado
               </Link>
@@ -276,7 +241,7 @@ const CidadeNacional = () => {
               </p>
               <p>
                 Todo serviço começa por um <strong>orçamento por escrito</strong> antes da execução. A visita
-                técnica com diagnóstico parte de <strong>R$ 99,90</strong> e, caso o serviço seja aprovado,
+                técnica com diagnóstico parte de <strong>R$ 99,99</strong> e, caso o serviço seja aprovado,
                 o valor pode ser descontado conforme as condições do{" "}
                 <Link to="/termos-orcamento-pre-aprovado" className="text-primary underline">
                   orçamento pré-aprovado
@@ -285,24 +250,8 @@ const CidadeNacional = () => {
             </div>
           </div>
 
-          <div>
-            <h2 className="font-display text-2xl md:text-3xl font-bold mb-4">
-              Perguntas frequentes — {city.name}
-            </h2>
-            <div className="space-y-3">
-              {faq.mainEntity.map((q, i) => (
-                <details key={i} className="group bg-card rounded-lg border border-border/60 p-4">
-                  <summary className="cursor-pointer font-semibold text-foreground list-none flex items-start justify-between gap-3">
-                    <span>{q.name}</span>
-                    <span className="text-primary transition-transform group-open:rotate-45 text-xl leading-none">+</span>
-                  </summary>
-                  <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-                    {q.acceptedAnswer.text}
-                  </p>
-                </details>
-              ))}
-            </div>
-          </div>
+          {/* FAQ removida (Rodada 25.1 — Bloco 0). Voltará quando houver curadoria por cidade. */}
+
         </div>
       </section>
 

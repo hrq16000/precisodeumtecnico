@@ -77,6 +77,23 @@ if (helmetTwCard < 1) {
     `SEOHead.tsx não emite <meta name="twitter:card"> — deveria ser a fonte única (Rodada 24.4).`,
   );
 }
+
+// Regra dedicada Rodada 25.1: meta description é fonte única no SEOHead (Helmet).
+// index.html NÃO pode conter <meta name="description"> — evita a mesma
+// description genérica em todas as 100 URLs da matriz nacional.
+const staticDescription = (indexHtml.match(/<meta[^>]+name=["']description["']/gi) || []).length;
+const helmetDescription = (seoHead.match(/name="description"/g) || []).length;
+if (staticDescription > 0) {
+  errors.push(
+    `meta description estática em index.html (${staticDescription}x) — remover. ` +
+    `Fonte única é SEOHead.tsx (Helmet) por rota (Rodada 25.1).`,
+  );
+}
+if (helmetDescription < 1) {
+  errors.push(
+    `SEOHead.tsx não emite <meta name="description"> — deveria ser a fonte única (Rodada 25.1).`,
+  );
+}
 if (warnings.length) {
   console.warn("[seo-dedup] avisos:");
   for (const w of warnings) console.warn("  ⚠ " + w);

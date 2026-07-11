@@ -33,6 +33,12 @@ export function GlobalTriageLauncher() {
     setOpenCount((n) => n + 1); // força remount → estado zerado
     setOpen(true);
     logWaEvent({ source: d?.source, href: href ?? null, kind, category: d?.category ?? null, bypass: false });
+    pushDataLayerEvent({
+      event: "triage_open",
+      source: d?.source,
+      surface: kind === "tel" ? "cta_tel" : "cta_whatsapp",
+      page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+    });
   };
 
   useEffect(() => {

@@ -26,10 +26,15 @@ import { enumeratePilotCombinations, NATIONAL_MATRIX_MAX } from "../src/data/nat
 const BASE = "https://precisodeumtecnico.com";
 const today = new Date().toISOString().split("T")[0];
 
+// Clamp any candidate lastmod (YYYY-MM-DD) so we never emit a date in the
+// future — sitemaps with future <lastmod> are treated as invalid by crawlers
+// and the guard `check-sitemap-dates.ts` fails the build.
+const clampLastmod = (d: string): string => (d > today ? today : d);
+
 const fileDate = (path: string): string => {
   try {
     if (!existsSync(path)) return today;
-    return statSync(path).mtime.toISOString().split("T")[0];
+    return clampLastmod(statSync(path).mtime.toISOString().split("T")[0]);
   } catch {
     return today;
   }
@@ -92,7 +97,7 @@ for (const cat of blogCategories)
 for (const post of blogPosts) {
   const postDate = post.updatedAt ?? post.publishedAt;
   const fileBased = post.slug.includes("-em-") ? satMtime : blogMtime;
-  const lastmod = postDate > fileBased ? postDate : fileBased;
+  const lastmod = clampLastmod(postDate > fileBased ? postDate : fileBased);
   mainUrls.push({ loc: `${BASE}/blog/${post.slug}`, changefreq: "monthly", priority: 0.75, lastmod });
 }
 
@@ -155,7 +160,7 @@ ${urls.map(urlXml).join("\n")}
 `;
 
 const shardLastmod = (urls: Url[]) =>
-  urls.map((u) => u.lastmod ?? today).sort().at(-1) ?? today;
+  clampLastmod(urls.map((u) => u.lastmod ?? today).sort().at(-1) ?? today);
 
 // Limpa shards antigos (inclui shard piloto nacional serviços)
 for (const f of readdirSync("public")) {

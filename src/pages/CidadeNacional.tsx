@@ -87,7 +87,7 @@ const CidadeNacional = () => {
         ogImage={ogImage}
         type="service"
         keywords={`técnico em ${city.name}, assistência técnica ${city.name}, técnico informática ${city.name} ${city.state}, suporte ti ${city.name}`}
-        structuredData={[breadcrumb, service, faq]}
+        structuredData={[breadcrumb, service]}
       />
       <Helmet>
         {/* Preload the LCP hero in modern format with responsive srcset */}
@@ -250,24 +250,8 @@ const CidadeNacional = () => {
             </div>
           </div>
 
-          <div>
-            <h2 className="font-display text-2xl md:text-3xl font-bold mb-4">
-              Perguntas frequentes — {city.name}
-            </h2>
-            <div className="space-y-3">
-              {faq.mainEntity.map((q, i) => (
-                <details key={i} className="group bg-card rounded-lg border border-border/60 p-4">
-                  <summary className="cursor-pointer font-semibold text-foreground list-none flex items-start justify-between gap-3">
-                    <span>{q.name}</span>
-                    <span className="text-primary transition-transform group-open:rotate-45 text-xl leading-none">+</span>
-                  </summary>
-                  <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-                    {q.acceptedAnswer.text}
-                  </p>
-                </details>
-              ))}
-            </div>
-          </div>
+          {/* FAQ removida (Rodada 25.1 — Bloco 0). Voltará quando houver curadoria por cidade. */}
+
         </div>
       </section>
 

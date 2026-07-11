@@ -437,24 +437,8 @@ const RegiaoDetalhe = () => {
       </section>
 
       {/* FAQ Section */}
-      <section className="section-padding bg-secondary/30">
-        <div className="container-custom">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-foreground mb-8 text-center">
-              Perguntas Frequentes - {neighborhood ? neighborhoodName : cityName}
-            </h2>
+      {/* FAQ regional removida (Rodada 25.1 — Bloco 0): era template puro. */}
 
-            <div className="space-y-4">
-              {regionFaqs.map((faq, index) => (
-                <div key={index} className="region-card">
-                  <h3 className="font-bold text-foreground mb-2">{faq.question}</h3>
-                  <p className="text-muted-foreground">{faq.answer}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       <CTASection />
     </Layout>

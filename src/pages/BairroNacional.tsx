@@ -15,6 +15,8 @@ import {
 } from "@/data/nationalBairros";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { trackWhatsAppClick, trackCtaClick } from "@/lib/analytics";
+import { buildNeighborhoodFAQ } from "@/lib/faqBuilders";
+import { FAQSection } from "@/components/seo/FAQSection";
 
 const services = [
   { icon: Monitor, name: "Informática", href: "/servicos/informatica" },

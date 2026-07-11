@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useLocation, matchPath } from "react-router-dom";
-import { pushDataLayerEvent, type RouteType } from "@/lib/dataLayer";
+import { pushLocalAnalyticsEvent, type RouteType } from "@/lib/localAnalytics";
 
 /**
  * useRoutePageview — Rodada 25.1 Bloco B.
@@ -105,7 +105,7 @@ export function useRoutePageview(): void {
     const ctx = resolveRouteContext(path);
     // Aguarda microtask para capturar título atualizado por Helmet.
     const rafId = window.requestAnimationFrame(() => {
-      pushDataLayerEvent({
+      pushLocalAnalyticsEvent({
         event: "virtual_page_view",
         page_path: path,
         page_title: typeof document !== "undefined" ? document.title : undefined,

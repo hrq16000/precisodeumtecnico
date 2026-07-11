@@ -158,7 +158,6 @@ export function QuickDiagnosisQuiz({ city, bairro }: QuickDiagnosisQuizProps = {
   useEffect(() => {
     if (step === "resultado" && problema) {
       trackQuizComplete({
-        problema: problema.id,
         service: problema.servicoSlug,
         urgencia,
         city,

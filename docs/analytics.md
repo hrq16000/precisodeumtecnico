@@ -1,67 +1,105 @@
-# Analytics — Rodada 25.1 Bloco B (Modo Desativado / Opção C)
+# Analytics — Rodada 25.1 Bloco B.1 (Modo Desativado / Opção C)
 
 ## Status atual
 
-- **Infraestrutura:** camada local em `src/lib/dataLayer.ts` + hook `src/hooks/useRoutePageview.ts`.
-- **GTM:** desativado. `analyticsConfig.gtmEnabled = false`, `gtmId = undefined`. Nenhum loader externo é injetado.
+- **GTM:** desativado. Nenhum loader carregado, nenhum ID configurado.
 - **GA4:** não configurado. Nenhum stream, nenhum measurement ID.
-- **Consentimento:** não aplicado — nenhuma CMP nem banner nesta rodada.
-- **Google Ads (`AW-16491950534`):** preservado, permanece no `index.html` sem alterações. É independente desta camada.
-- **Transmissão externa dos NOVOS eventos:** zero. `pushDataLayerEvent` grava apenas em `window.dataLayer` do navegador. Não chama `gtag("event", …)`, não faz fetch/XHR, não conecta a `googletagmanager.com` / `google-analytics.com`.
-- **Presença de `window.dataLayer`** não implica coleta GA4/GTM. É apenas o buffer local usado pela tag Ads preexistente e por esta camada de desenvolvimento.
+- **Google Ads (`AW-16491950534`):** preservado, permanece no `index.html`. É o único consumidor legítimo de `window.dataLayer` neste projeto.
+- **Fila local nova:** `window.__PDT_ANALYTICS_QUEUE__` — **isolada** de `window.dataLayer`. Somente memória do tab; reiniciada em cada reload; capacidade máxima de 200 eventos (descarta os mais antigos).
+- **Consentimento / CMP:** não implementado nesta rodada.
+- **Transmissão externa dos eventos NOVOS:** zero. `pushLocalAnalyticsEvent` não chama `gtag`, não faz fetch/XHR, não conecta a `googletagmanager.com` / `google-analytics.com` / `analytics.google.com`.
 
-## Eventos canônicos
+> **Aviso importante:** a presença de `window.dataLayer` no site é uma consequência do script gtag.js do Google Ads. **Nossos eventos locais não vivem lá.** A fila local vive em `window.__PDT_ANALYTICS_QUEUE__`.
 
-| Evento              | Emissor                                        | Quando dispara                                       |
-| ------------------- | ---------------------------------------------- | ---------------------------------------------------- |
-| `virtual_page_view` | `useRoutePageview`                             | Refresh inicial + cada mudança de pathname SPA       |
-| `cta_click`         | (legado `trackCtaClick`; contrato reservado)   | Cliques em CTAs                                      |
-| `whatsapp_click`    | (legado `trackWhatsAppClick`; contrato reservado) | Cliques em CTAs WhatsApp                          |
-| `triage_open`       | `GlobalTriageLauncher`                         | Abertura do wizard de triagem                        |
-| `triage_step`       | `TriageWizard`                                 | Cada mudança de passo (exclui `submitting`/`error`)  |
-| `triage_complete`   | `TriageWizard`                                 | Passo `done` após envio bem-sucedido                 |
+## Eventos locais canônicos
 
-## Allowlist de campos (`src/lib/dataLayer.ts`)
+| Evento              | Emissor                                                       | Quando dispara                                       |
+| ------------------- | ------------------------------------------------------------- | ---------------------------------------------------- |
+| `virtual_page_view` | `useRoutePageview`                                            | Refresh inicial + cada mudança de pathname SPA       |
+| `cta_click`         | `trackCtaClick` (bridge local) + delegator                    | Cliques em CTAs (surface + cta_id)                   |
+| `whatsapp_click`    | Delegator em `src/main.tsx`                                   | Cliques em `[data-wa-source]`                        |
+| `triage_open`       | `GlobalTriageLauncher`                                        | Cada abertura do wizard                              |
+| `triage_step`       | `TriageWizard`                                                | Cada mudança de passo (exceto `submitting`/`error`)  |
+| `triage_complete`   | `TriageWizard`                                                | Passo `done` após envio bem-sucedido                 |
 
-`event`, `page_path`, `page_title`, `route_type`, `surface`, `cta_id`, `source`, `service`, `city`, `neighborhood`, `step_id`, `step_index`, `completion_status`, `destination`.
+## Eventos legados (Google Ads / `window.dataLayer`)
 
-Qualquer chave fora dessa lista é descartada pelo sanitizador. Chaves em `FORBIDDEN_FIELDS` (nome, telefone, e-mail, endereço, CEP, coordenadas, marca/modelo digitados, mensagens, mídia, `lead_id`, `user_agent`, `referrer` etc.) são explicitamente bloqueadas mesmo se aparecerem por engano.
+Preservados nesta rodada, sem migração:
 
-Sempre usar `neighborhood` — nunca `bairro`, `district`, `neighbourhood`.
+- `whatsapp_click`, `cta_click`, `quiz_complete`, `quiz_reset`, `terms_open`,
+  `terms_accept`, `terms_full_page_click`, `web_vital`, `location_flow`.
+
+Estes fluem via `trackEvent` (`analytics.ts`) → `window.dataLayer.push` + `gtag('event', …)`. **Não** consome nem alimenta a fila local nova.
+
+## `trackQuizComplete` saneado (B.1)
+
+Antes: enviava `problema` (identificador de problema livre) como parâmetro.
+Depois: campo `problema` **removido** do payload. Somente `service`, `urgencia`, `city`, `bairro` (categóricos). Nome, telefone, e-mail, descrição, marca, modelo, mensagem — nunca entraram e continuam fora. Regressão coberta por `e2e/local-analytics.spec.ts` (teste "não transmite 'problema'").
+
+## Allowlist (arquivo `src/lib/localAnalytics.ts`)
+
+Chaves aceitas: `event`, `page_path`, `page_title`, `route_type`, `surface`, `cta_id`, `source`, `service`, `city`, `neighborhood`, `step_id`, `step_index`, `completion_status`, `destination`.
+
+Sempre usar `neighborhood` — nunca `bairro` na fila local.
+
+Chaves explicitamente bloqueadas (mesmo se o caller enviar): `problema`/`problem`, `descricao`/`description`, `message`/`mensagem`, `text`/`texto`, `phone`/`telefone`, `email`, `address`/`endereco`, `cep`, `latitude`/`longitude`/`accuracy`, `brand`/`marca`, `model`/`modelo`, `name`/`nome`, `cpf`, `cnpj`, `lead_id`, `user_id`, `photo`/`foto`, `attachment`, `media`, `whatsapp_url`/`wa_url`, `user_agent`, `referrer`.
 
 ## Route types
 
 `home`, `service`, `service_city`, `matrix_nacional`, `matrix_fallback`, `national_city`, `national_neighborhood`, `region`, `institutional`, `internal`, `not_found`.
 
-O resolver (`resolveRouteContext`) reconhece o formato do pathname. A validação de cobertura real da matriz permanece na página correspondente (fonte de verdade). Se a página julgar a combinação inválida, o `route_type` continuará `matrix_nacional` no evento — mas o próprio `SEOHead` da página emitirá `noindex` e canônica não-self, de modo que o comportamento de indexação é preservado.
+Resolver leve (`resolveRouteContext`) baseado em `matchPath`. Não importa dataset nacional. Validação real de cobertura permanece na página (`SEOHead` emite `noindex` para combinações inválidas).
 
-## Rotas internas excluídas
+## Rotas internas excluídas do pageview
 
-`/admin`, `/auth`, `/diagnostics`, `/diagnostico`, `/triagem-preview` — não geram `virtual_page_view`.
+`/admin`, `/auth`, `/diagnostics`, `/diagnostico`, `/triagem-preview`.
 
-## Prevenção de duplicidade
+## Política de dedupe
 
-- Dedupe interno (400ms) em `pushDataLayerEvent` por chave estável (evento + params ordenados).
-- `useRoutePageview` guarda `lastPathRef` para não repetir por mudança de query/hash.
-- StrictMode-safe: montagem dupla em dev não gera evento extra (dedupe + guarda).
+Dedupe primário é **semântico**, não puramente temporal:
 
-## PII — proibido incluir
+- `virtual_page_view`: `pv|<page_path>`.
+- `triage_step`: `ts|<step_id>|<step_index>|<source>` — voltar a passo anterior emite novo evento legítimo.
+- `triage_open`/`triage_complete`: `<event>|<page_path>|<source>` — segunda abertura real após ~400 ms fecha ok.
+- `cta_click`/`whatsapp_click`: `<event>|<page_path>|<cta_id>|<surface>|<source>|<destination>` — bloqueia delegator + handler dupliando no mesmo tick, mas permite cliques distintos.
 
-Nome, telefone, e-mail, CPF/CNPJ, endereço, número, complemento, CEP, latitude, longitude, precisão GPS, mensagem WhatsApp, URL completa do WhatsApp, texto livre, problema descrito, marca/modelo digitados, fotos, anexos, `lead_id`, conteúdo de formulário. A sanitização por allowlist é a barreira final — o caller nunca deve confiar apenas em si mesmo.
+Um limite temporal de **400 ms** age apenas como proteção secundária contra re-render/StrictMode.
 
-## Pré-requisitos para ativação futura (fora do escopo desta rodada)
+## Contrato CTA / WhatsApp
 
-1. GTM Container ID real (`GTM-XXXXXXX`) fornecido pelo dono do projeto.
-2. Decisão formal sobre consentimento (CMP/banner se aplicável).
-3. Revisão da política de privacidade e atualização do texto de cookies.
-4. Definição de fonte única de pageview (SPA vs. GTM auto-pageview) para evitar duplicidade.
-5. Configuração das tags no GTM (GA4, conversões etc.).
-6. Validação via **Tag Assistant** e **GA4 DebugView**.
-7. Publicação explícita do container.
-8. Aprovação nova antes de qualquer alteração no `index.html` ou variável de build.
+- Contextual (com `service`/`city`/`neighborhood`): valores factuais, nunca inferidos por GPS ou localStorage.
+- Global (sem contexto factual): contexto ausente. Não inventar.
+- WhatsApp: `destination=whatsapp` quando o alvo é `wa.me`. Nunca registra número, `?text=`, URL completa ou texto da mensagem.
 
-Esta rodada **não declara conformidade automática com LGPD/GDPR**. Ativação exigirá revisão jurídica.
+## Contrato Triagem
+
+- `triage_open` no launcher, ao (re)abrir o wizard.
+- `triage_step` no `TriageWizard` via `useEffect(state.step)` — `submitting`/`error` não emitem.
+- `triage_complete` uma vez em `done`.
+- Nenhuma resposta do usuário (marca, modelo, texto, endereço, telefone, e-mail, mídias) entra em qualquer evento local.
 
 ## Comportamento em Strict Mode
 
-Todos os efeitos que emitem eventos são idempotentes por chave (`lastPathRef`, `lastStepRef`, dedupe do dataLayer). Montagem dupla em desenvolvimento não gera evento extra.
+Efeitos são idempotentes por chave semântica + dedupe temporal. Montagem dupla em dev não gera evento extra. Não há `<StrictMode>` no `main.tsx` atualmente; ativação futura permanecerá segura.
+
+## Persistência
+
+Nenhuma. Fila somente em memória do tab. Sem `localStorage`, `sessionStorage`, `cookie` ou backend. Reload zera o buffer.
+
+## Bridge futuro (não implementado)
+
+Ativação de coleta externa exigirá uma rodada dedicada:
+
+`fila local` → **consentimento (CMP/banner)** → `window.dataLayer` / GTM tags.
+
+Pré-requisitos formais:
+
+1. GTM Container ID real (`GTM-XXXXXXX`) fornecido pelo dono do projeto.
+2. Decisão formal sobre consentimento e escopo LGPD/GDPR.
+3. Revisão da política de privacidade e atualização de texto de cookies.
+4. Definição de fonte única de pageview (SPA vs. auto-pageview do GTM).
+5. Configuração de tags GA4 no GTM.
+6. Validação via **Tag Assistant** e **GA4 DebugView**.
+7. Publicação explícita do container.
+
+Esta rodada **não declara conformidade automática com LGPD/GDPR**, **não afirma** GA4 ou GTM ativos, **não** garante conversão mensurável em painel externo.

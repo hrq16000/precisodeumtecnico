@@ -48,6 +48,8 @@ for (const route of ROUTES) {
     expect(counts.twitterDescription, `twitter:description em ${route}`).toBe(1);
     expect(counts.twitterCard, `twitter:card em ${route} (fonte única — Rodada 24.4)`).toBe(1);
     expect(counts.robots, `meta robots em ${route} (fonte única — Rodada 24.3)`).toBe(1);
+    expect(counts.description, `meta description em ${route} (fonte única — Rodada 25.1)`).toBe(1);
+    expect(counts.descriptionContent.length, `description não vazia em ${route}`).toBeGreaterThan(20);
     // og:image / twitter:image: em dev sem injeção da hospedagem podem ser 0;
     // em produção devem ser exatamente 1. Este spec aceita <=1 para não
     // quebrar preview local; produção é coberta pelo smoke pós-deploy.

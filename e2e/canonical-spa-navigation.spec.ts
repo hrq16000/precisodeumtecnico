@@ -30,10 +30,7 @@ test.describe("Canonical SPA navigation", () => {
   test("SPA: home → /servicos substitui canonical", async ({ page }) => {
     await page.goto("/");
     await expectSingleCanonical(page, `${BASE}/`);
-    await page.evaluate(() => window.history.pushState({}, "", "/servicos"));
-    // Navegação real via link — clique interno
-    await page.goto("/");
-    await page.getByRole("link", { name: /Serviços/i }).first().click();
+    await page.locator('a[href="/servicos"]').first().click();
     await page.waitForURL("**/servicos");
     await expectSingleCanonical(page, `${BASE}/servicos`);
   });
@@ -41,7 +38,7 @@ test.describe("Canonical SPA navigation", () => {
   test("SPA: /servicos → /sobre substitui canonical", async ({ page }) => {
     await page.goto("/servicos");
     await expectSingleCanonical(page, `${BASE}/servicos`);
-    await page.getByRole("link", { name: /^Sobre$/i }).first().click();
+    await page.locator('a[href="/sobre"]').first().click();
     await page.waitForURL("**/sobre");
     await expectSingleCanonical(page, `${BASE}/sobre`);
   });

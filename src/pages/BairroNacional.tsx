@@ -149,6 +149,12 @@ export default function BairroNacional() {
   // Bairros vizinhos (mesma cidade), exceto o atual.
   const nearby = getBairrosForCity(city.slug).filter((b) => b.slug !== bairro.slug).slice(0, 6);
 
+  const faqs = buildNeighborhoodFAQ({
+    bairroName: bairro.name,
+    cityName: city.name,
+    stateName: city.stateName,
+  });
+
   return (
     <Layout>
       <SEOHead
@@ -157,6 +163,7 @@ export default function BairroNacional() {
         canonical={url}
         breadcrumbs={breadcrumbs}
         structuredData={[serviceSchema]}
+        faq={faqs}
       />
 
       {/* Hero */}

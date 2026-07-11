@@ -15,6 +15,8 @@ import {
 } from "@/data/nationalServiceCoverage";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { trackWhatsAppClick, trackCtaClick } from "@/lib/analytics";
+import { buildNationalNeighborhoodFAQ } from "@/lib/faqBuilders";
+import { FAQSection } from "@/components/seo/FAQSection";
 
 /**
  * Rodada 24.1 — Página nacional serviço × cidade × bairro.

@@ -149,6 +149,14 @@ export default function ServicoBairroNacional() {
   const otherServices = getOtherPilotServices(service.slug, 5);
   const otherBairros = getPilotBairrosForCity(city.slug).filter((b) => b.slug !== bairro.slug).slice(0, 5);
 
+  const faqs = buildNationalNeighborhoodFAQ({
+    serviceLabel: service.label,
+    serviceNoun: service.seoNoun,
+    bairroName: bairro.name,
+    cityName: city.name,
+    stateName: city.stateName,
+  });
+
   const openTriage = () => {
     trackCtaClick({
       surface: "matrix_nacional",
@@ -177,6 +185,7 @@ export default function ServicoBairroNacional() {
         canonical={url}
         breadcrumbs={breadcrumbs}
         structuredData={[serviceSchema]}
+        faq={faqs}
       />
 
       {/* Hero */}

@@ -61,6 +61,22 @@ if (helmetRobots < 1) {
   );
 }
 
+// Regra dedicada Rodada 24.4: twitter:card é fonte única no SEOHead (Helmet).
+// index.html NÃO pode conter <meta name="twitter:card"> — evita duplicidade
+// contra o Helmet (react-helmet-async não deduplica contra tags estáticas).
+const staticTwCard = (indexHtml.match(/<meta[^>]+name=["']twitter:card["']/gi) || []).length;
+const helmetTwCard = (seoHead.match(/name="twitter:card"/g) || []).length;
+if (staticTwCard > 0) {
+  errors.push(
+    `meta twitter:card estática em index.html (${staticTwCard}x) — remover. ` +
+    `Fonte única é SEOHead.tsx (Helmet) por rota (Rodada 24.4).`,
+  );
+}
+if (helmetTwCard < 1) {
+  errors.push(
+    `SEOHead.tsx não emite <meta name="twitter:card"> — deveria ser a fonte única (Rodada 24.4).`,
+  );
+}
 if (warnings.length) {
   console.warn("[seo-dedup] avisos:");
   for (const w of warnings) console.warn("  ⚠ " + w);

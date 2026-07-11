@@ -32,6 +32,7 @@ for (const route of ROUTES) {
         twitterImage: q('meta[name="twitter:image"]'),
         twitterTitle: q('meta[name="twitter:title"]'),
         twitterDescription: q('meta[name="twitter:description"]'),
+        twitterCard: q('meta[name="twitter:card"]'),
         robots: q('meta[name="robots"]'),
       };
     });
@@ -42,6 +43,7 @@ for (const route of ROUTES) {
     expect(counts.ogUrl, `og:url em ${route}`).toBe(1);
     expect(counts.twitterTitle, `twitter:title em ${route}`).toBe(1);
     expect(counts.twitterDescription, `twitter:description em ${route}`).toBe(1);
+    expect(counts.twitterCard, `twitter:card em ${route} (fonte única — Rodada 24.4)`).toBe(1);
     expect(counts.robots, `meta robots em ${route} (fonte única — Rodada 24.3)`).toBe(1);
     // og:image / twitter:image: em dev sem injeção da hospedagem podem ser 0;
     // em produção devem ser exatamente 1. Este spec aceita <=1 para não

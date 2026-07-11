@@ -51,36 +51,40 @@ export function resolveRouteContext(pathname: string): Resolved {
   // Blog posts / categorias.
   if (pathname.startsWith("/blog/")) return { route_type: "institutional" };
 
-  // Serviço detalhe: /servicos/:slug
-  let m = matchPath({ path: "/servicos/:slug", end: true }, pathname);
-  if (m) return { route_type: "service", service: m.params.slug };
+  const match = <T extends string>(pattern: string) =>
+    matchPath<T, string>({ path: pattern, end: true }, pathname);
 
-  // Serviço em cidade: /servico-em/:city/:service
-  m = matchPath({ path: "/servico-em/:city/:service", end: true }, pathname);
-  if (m) return { route_type: "service_city", city: m.params.city, service: m.params.service };
+  const mServico = match<"slug">("/servicos/:slug");
+  if (mServico) return { route_type: "service", service: mServico.params.slug };
 
-  // Matriz nacional (serviço em bairro): /servico-em-nacional/:city/:bairro/:service
-  m = matchPath({ path: "/servico-em-nacional/:city/:bairro/:service", end: true }, pathname);
-  if (m) {
+  const mServCity = match<"city" | "service">("/servico-em/:city/:service");
+  if (mServCity) {
+    return { route_type: "service_city", city: mServCity.params.city, service: mServCity.params.service };
+  }
+
+  const mMatrix = match<"city" | "bairro" | "service">("/servico-em-nacional/:city/:bairro/:service");
+  if (mMatrix) {
     return {
       route_type: "matrix_nacional",
-      city: m.params.city,
-      neighborhood: m.params.bairro,
-      service: m.params.service,
+      city: mMatrix.params.city,
+      neighborhood: mMatrix.params.bairro,
+      service: mMatrix.params.service,
     };
   }
 
-  // Atendimento nacional cidade/bairro.
-  m = matchPath({ path: "/atendimento-nacional/:city/:bairro", end: true }, pathname);
-  if (m) return { route_type: "national_neighborhood", city: m.params.city, neighborhood: m.params.bairro };
-  m = matchPath({ path: "/atendimento-nacional/:slug", end: true }, pathname);
-  if (m) return { route_type: "national_city", city: m.params.slug };
+  const mNatNb = match<"city" | "bairro">("/atendimento-nacional/:city/:bairro");
+  if (mNatNb) {
+    return { route_type: "national_neighborhood", city: mNatNb.params.city, neighborhood: mNatNb.params.bairro };
+  }
+  const mNatCity = match<"slug">("/atendimento-nacional/:slug");
+  if (mNatCity) return { route_type: "national_city", city: mNatCity.params.slug };
 
-  // Região / bairro Curitiba.
-  m = matchPath({ path: "/regioes/:city/:neighborhood", end: true }, pathname);
-  if (m) return { route_type: "region", city: m.params.city, neighborhood: m.params.neighborhood };
-  m = matchPath({ path: "/regioes/:city", end: true }, pathname);
-  if (m) return { route_type: "region", city: m.params.city };
+  const mRegNb = match<"city" | "neighborhood">("/regioes/:city/:neighborhood");
+  if (mRegNb) {
+    return { route_type: "region", city: mRegNb.params.city, neighborhood: mRegNb.params.neighborhood };
+  }
+  const mReg = match<"city">("/regioes/:city");
+  if (mReg) return { route_type: "region", city: mReg.params.city };
 
   return { route_type: "not_found" };
 }

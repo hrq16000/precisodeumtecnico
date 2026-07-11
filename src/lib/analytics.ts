@@ -181,15 +181,18 @@ export function trackWhatsAppClick(opts: {
 
 
 
+/**
+ * B.1: `problema` (texto livre potencial) removido do payload legado.
+ * Somente campos categóricos normalizados permanecem — service, urgencia
+ * (enum curto), city/bairro. Nenhuma descrição, marca, modelo ou mensagem.
+ */
 export function trackQuizComplete(opts: {
-  problema: string;
   service: string;
   urgencia: string;
   city?: string;
   bairro?: string;
 }) {
   trackEvent("quiz_complete", {
-    problema: opts.problema,
     service: opts.service,
     urgencia: opts.urgencia,
     city: opts.city,

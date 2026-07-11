@@ -97,7 +97,7 @@ for (const cat of blogCategories)
 for (const post of blogPosts) {
   const postDate = post.updatedAt ?? post.publishedAt;
   const fileBased = post.slug.includes("-em-") ? satMtime : blogMtime;
-  const lastmod = postDate > fileBased ? postDate : fileBased;
+  const lastmod = clampLastmod(postDate > fileBased ? postDate : fileBased);
   mainUrls.push({ loc: `${BASE}/blog/${post.slug}`, changefreq: "monthly", priority: 0.75, lastmod });
 }
 

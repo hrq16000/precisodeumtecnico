@@ -15,14 +15,11 @@ test.describe("Triage funnel guards", () => {
     await trigger.waitFor({ state: "visible", timeout: 10_000 });
     await trigger.click();
 
-    // Aguarda o wizard aparecer
-    await expect(page.getByText(/Triagem técnica/i).first()).toBeVisible({ timeout: 5000 });
-
-    // Garante que só há UMA instância aberta (nenhum "duplo quiz")
-    const wizardCount = await page.getByText(/Triagem técnica/i).count();
-    expect(wizardCount).toBeLessThanOrEqual(2); // header + progress badge no mesmo modal
-    const dialogs = await page.locator('[role="dialog"]').count();
-    expect(dialogs).toBe(1);
+    // Contrato (Rodada 25.1 · B.3.a): primeiro clique = exatamente 1 dialog.
+    // A contagem de nós de texto "Triagem técnica" varia com a montagem
+    // (VisuallyHidden + progress badge + step title) e não é contrato — só o
+    // número de `[role="dialog"]` importa.
+    await expect(page.locator('[role="dialog"]')).toHaveCount(1, { timeout: 5000 });
   });
 
   test("wizard mostra hint de campo faltante", async ({ page }) => {

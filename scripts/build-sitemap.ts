@@ -26,10 +26,15 @@ import { enumeratePilotCombinations, NATIONAL_MATRIX_MAX } from "../src/data/nat
 const BASE = "https://precisodeumtecnico.com";
 const today = new Date().toISOString().split("T")[0];
 
+// Clamp any candidate lastmod (YYYY-MM-DD) so we never emit a date in the
+// future — sitemaps with future <lastmod> are treated as invalid by crawlers
+// and the guard `check-sitemap-dates.ts` fails the build.
+const clampLastmod = (d: string): string => (d > today ? today : d);
+
 const fileDate = (path: string): string => {
   try {
     if (!existsSync(path)) return today;
-    return statSync(path).mtime.toISOString().split("T")[0];
+    return clampLastmod(statSync(path).mtime.toISOString().split("T")[0]);
   } catch {
     return today;
   }

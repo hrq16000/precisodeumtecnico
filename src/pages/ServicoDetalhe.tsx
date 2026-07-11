@@ -203,10 +203,10 @@ const ServicoDetalhe = () => {
           priceMinBRL: 99.99,
           areaServed: "Curitiba e Região Metropolitana",
         }}
-        {/* Só emite FAQPage quando o serviço tem FAQ curada em servicesData
-            — evita compartilhar as 3 perguntas genéricas do fallback entre
-            dezenas de rotas. */}
+        // Só emite FAQPage quando o serviço tem FAQ curada em servicesData —
+        // evita compartilhar as 3 perguntas do fallback entre dezenas de rotas.
         faq={hasCuratedEntry ? service.faqs : undefined}
+
       />
 
 

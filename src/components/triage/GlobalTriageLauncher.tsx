@@ -6,6 +6,7 @@ import { TriageWizard } from "@/components/triage/TriageWizard";
 import { isTriageEnabled } from "@/lib/triageFlag";
 import type { Category } from "@/components/triage/triageMachine";
 import { logWaEvent } from "@/lib/waAudit";
+import { pushDataLayerEvent } from "@/lib/dataLayer";
 
 /**
  * Global TriageWizard launcher.

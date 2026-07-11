@@ -222,7 +222,7 @@ def make_image(W, H, city_name, uf, state_name, region, slug, kind="og"):
     d.text((pad, H - strip_h + int(20 * scale)),
            "precisodeumtecnico.com", font=bf, fill=ACCENT_GOLD)
     pf = font(int(24 * scale))
-    msg = "Visita a partir de R$ 99,90  •  WhatsApp 24h  •  Garantia"
+    msg = "Visita a partir de R$ 99,99  •  WhatsApp 24h  •  Garantia"
     mw = d.textlength(msg, font=pf)
     d.text((W - pad - mw, H - strip_h + int(22 * scale)),
            msg, font=pf, fill=WHITE)

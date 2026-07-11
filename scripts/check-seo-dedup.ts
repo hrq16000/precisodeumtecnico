@@ -44,6 +44,22 @@ for (const rule of CRITICAL) {
   }
 }
 
+// Regra dedicada Rodada 24.3: meta robots é fonte única no SEOHead (Helmet).
+// index.html NÃO pode conter <meta name="robots"> — evita colisão index/noindex.
+const staticRobots = (indexHtml.match(/<meta[^>]+name=["']robots["']/gi) || []).length;
+const helmetRobots = (seoHead.match(/name="robots"/g) || []).length;
+if (staticRobots > 0) {
+  errors.push(
+    `meta robots estática em index.html (${staticRobots}x) — remover. ` +
+    `Fonte única é SEOHead.tsx (Helmet), que emite index,follow ou noindex,nofollow por rota.`,
+  );
+}
+if (helmetRobots < 1) {
+  errors.push(
+    `SEOHead.tsx não emite <meta name="robots"> — deveria ser a fonte única (Rodada 24.3).`,
+  );
+}
+
 if (warnings.length) {
   console.warn("[seo-dedup] avisos:");
   for (const w of warnings) console.warn("  ⚠ " + w);

@@ -430,6 +430,16 @@ export default function ServicoBairroNacional() {
           </CardContent>
         </Card>
       </section>
+
+      <FAQSection
+        faqs={faqs}
+        title={`Perguntas frequentes — ${service.label} em ${bairro.name}`}
+        whatsappHref={whatsappLink}
+        waSource="matrix-nacional-faq"
+        service={service.label}
+        city={city.name}
+        neighborhood={bairro.name}
+      />
     </Layout>
   );
 }

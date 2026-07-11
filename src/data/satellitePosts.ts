@@ -136,8 +136,19 @@ function slugify(s: string) {
     .replace(/^-|-$/g, "");
 }
 
-// Spread publish dates so lastmod looks natural
-const baseDate = new Date("2026-04-01").getTime();
+// Determinístico e sem datas futuras.
+// Contrato editorial (Rodada 25.1 · B.3.a):
+//   - 5 serviços × 10 bairros = 50 posts, ordem preservada;
+//   - primeira publicação em SATELLITE_FIRST_ISO;
+//   - passo fixo de SATELLITE_STEP_DAYS entre posts consecutivos;
+//   - última data = 2026-06-11 (antes de hoje), garantindo lastmod válido;
+//   - datas NÃO recalculadas por new Date() em runtime — literais congeladas.
+// Se ampliar o conjunto, recalcule SATELLITE_FIRST_ISO para manter a última
+// entrada <= data real do build; o guard scripts/check-publication-dates.ts
+// falha o build caso alguma publishedAt fique no futuro.
+export const SATELLITE_FIRST_ISO = "2026-01-15";
+export const SATELLITE_STEP_DAYS = 3;
+const baseDate = new Date(`${SATELLITE_FIRST_ISO}T00:00:00Z`).getTime();
 const dayMs = 24 * 60 * 60 * 1000;
 let counter = 0;
 

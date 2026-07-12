@@ -1,0 +1,2062 @@
+{
+  "manifestVersion": 1,
+  "templateVersion": "2026-og-v1",
+  "commercialValue": "R$ 99,99",
+  "generatedAtUtc": "2026-07-12T06:35:50Z",
+  "generatorScripts": [
+    {
+      "path": "scripts/build-city-images.py",
+      "sha256": "f7b7c1c190ab650e05bf9cccc275771c096a42431fb888516778729ab2d83862"
+    },
+    {
+      "path": "scripts/build-city-responsive.py",
+      "sha256": "9e3ecec025b6f6776355e0df0b54e28e5f422ff2e5e2d0d18af527fa350571d1"
+    },
+    {
+      "path": "scripts/build-og-images.py",
+      "sha256": "b286dcc651801772caa1bdb2d087f8d17fadf7ac14088c2e4943a356eb7c4e41"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "public/hero/cidade/aracaju-1200.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 22128,
+      "sha256": "5299b2fcc66884a8b0fe477612f046952e98922a66930b85938c31327f1d83dc"
+    },
+    {
+      "path": "public/hero/cidade/aracaju-1600.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 31070,
+      "sha256": "7f711def1d96fab750c2e4570a5b928ebaa4338c48badcb8da31d909030097c8"
+    },
+    {
+      "path": "public/hero/cidade/aracaju-800.jpg",
+      "format": "jpeg",
+      "width": 800,
+      "height": 450,
+      "bytes": 28229,
+      "sha256": "05a98d784ad8fb9c0c827f3344207e6689ca46c2699679ac8960a66fdd66b471"
+    },
+    {
+      "path": "public/hero/cidade/aracaju-800.webp",
+      "format": "webp",
+      "width": 800,
+      "height": 450,
+      "bytes": 14026,
+      "sha256": "09dac13322ecda1b64e9ab1264f849eae1ab600585cc476e6e478060b5b5c583"
+    },
+    {
+      "path": "public/hero/cidade/aracaju.jpg",
+      "format": "jpeg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 85849,
+      "sha256": "c3b4c7da2974f12186c88c53b80b21d3a2ee0c679daec42fdbc63e5860839025"
+    },
+    {
+      "path": "public/hero/cidade/belem-1200.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 21666,
+      "sha256": "3cdad2e2dcaa96a7727e4458d2407862b17ac4b2be43550c5994c0cc1e0e22e8"
+    },
+    {
+      "path": "public/hero/cidade/belem-1600.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 30554,
+      "sha256": "2244b1af7d0d12e99184b0a67279270233c5b57ccbb6f35494c77a4a52c44d08"
+    },
+    {
+      "path": "public/hero/cidade/belem-800.jpg",
+      "format": "jpeg",
+      "width": 800,
+      "height": 450,
+      "bytes": 28076,
+      "sha256": "eeb355ea1b038ccfb4cdfb79db5a17d277eab74ea1f829bba954687981271026"
+    },
+    {
+      "path": "public/hero/cidade/belem-800.webp",
+      "format": "webp",
+      "width": 800,
+      "height": 450,
+      "bytes": 13888,
+      "sha256": "0b201ee2aff2bc7d5e03a1c285f82accb03ff4013f953b9a5d257d5b5de597fe"
+    },
+    {
+      "path": "public/hero/cidade/belem.jpg",
+      "format": "jpeg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 85231,
+      "sha256": "16c2ed3be27183ac2d4755a762a0f7943689baa6d6524c2ecb9f96a56b32d3dc"
+    },
+    {
+      "path": "public/hero/cidade/belo-horizonte-1200.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 22490,
+      "sha256": "0a78015e8af13604ddec52ca541b5ece85af180608d600d889fb54b91cf901a4"
+    },
+    {
+      "path": "public/hero/cidade/belo-horizonte-1600.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 31378,
+      "sha256": "530b32727e59407084d65a0d4705b6f452d6b3cc998e524f594138a30e66800a"
+    },
+    {
+      "path": "public/hero/cidade/belo-horizonte-800.jpg",
+      "format": "jpeg",
+      "width": 800,
+      "height": 450,
+      "bytes": 28688,
+      "sha256": "79c4e7e2f4124601e4f19b7ad904cfeebed3124f6a2efee167de8cd926677a4b"
+    },
+    {
+      "path": "public/hero/cidade/belo-horizonte-800.webp",
+      "format": "webp",
+      "width": 800,
+      "height": 450,
+      "bytes": 14180,
+      "sha256": "9da0f2f1ad0e035768f50bb7ea692a46e9ca26fb74fb58c9e830f245167d6b5e"
+    },
+    {
+      "path": "public/hero/cidade/belo-horizonte.jpg",
+      "format": "jpeg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 87120,
+      "sha256": "12f389caf6891bcb4d3e9f15e73c02e77b3e4fe5e17b645384fb750d1bd0858c"
+    },
+    {
+      "path": "public/hero/cidade/boa-vista-1200.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 21716,
+      "sha256": "7d66a0764b21c92aea3a0855cea5cc02829f3f88421a6428dc49799f24c2d992"
+    },
+    {
+      "path": "public/hero/cidade/boa-vista-1600.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 30842,
+      "sha256": "b79ebf580799e418e0dd1935192b41cda21d3e8fb1a84cbac94df6446ea676da"
+    },
+    {
+      "path": "public/hero/cidade/boa-vista-800.jpg",
+      "format": "jpeg",
+      "width": 800,
+      "height": 450,
+      "bytes": 28371,
+      "sha256": "db73f03b6449de177514ce9a5b795d520f8982a02b3493a361aefd3ed83f8bde"
+    },
+    {
+      "path": "public/hero/cidade/boa-vista-800.webp",
+      "format": "webp",
+      "width": 800,
+      "height": 450,
+      "bytes": 13916,
+      "sha256": "b8ff5c4e959e588e97481442e93221ec207eceaf8628807067c940f530741e23"
+    },
+    {
+      "path": "public/hero/cidade/boa-vista.jpg",
+      "format": "jpeg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 85450,
+      "sha256": "1a4943e6b11ef071a27afef3e669fbdef347f20e73aa72c2dc16528e30f3d551"
+    },
+    {
+      "path": "public/hero/cidade/brasilia-1200.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 22058,
+      "sha256": "9102dfc77fc920fb668ad59dea0f547af5e7161a98505c8d0337199d1e8a1ccc"
+    },
+    {
+      "path": "public/hero/cidade/brasilia-1600.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 31288,
+      "sha256": "7d282e1465dcb987a327b4b55dc3d7953589822e18adf939d8587065ecaafb4b"
+    },
+    {
+      "path": "public/hero/cidade/brasilia-800.jpg",
+      "format": "jpeg",
+      "width": 800,
+      "height": 450,
+      "bytes": 28056,
+      "sha256": "a651f65016591afdad8f2c78bcdbd08770b40a664cfe36748e2a4fd041ace3e0"
+    },
+    {
+      "path": "public/hero/cidade/brasilia-800.webp",
+      "format": "webp",
+      "width": 800,
+      "height": 450,
+      "bytes": 14018,
+      "sha256": "75033ae809d0924ce86583c78d856a85bda580883261d984a0eab3db42e2112c"
+    },
+    {
+      "path": "public/hero/cidade/brasilia.jpg",
+      "format": "jpeg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 85808,
+      "sha256": "3af5da88552d4b2c1b0ed025a97303d97e082243db8dac7c32a72960e2d74912"
+    },
+    {
+      "path": "public/hero/cidade/campinas-1200.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 21108,
+      "sha256": "81af034e5edb3129146b204cfd0c78d349b8c5d49cc23a87ca4ef1a58ec58e96"
+    },
+    {
+      "path": "public/hero/cidade/campinas-1600.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 30172,
+      "sha256": "88225e6bb7d84457a82cff8dbc03a9c086dbd5054e3ead69b6c7f87ccab9269b"
+    },
+    {
+      "path": "public/hero/cidade/campinas-800.jpg",
+      "format": "jpeg",
+      "width": 800,
+      "height": 450,
+      "bytes": 27909,
+      "sha256": "a9c56ecb9fb12e16778280fd06a2d2b2463ba01f78346294f8fc61c4ec52d73c"
+    },
+    {
+      "path": "public/hero/cidade/campinas-800.webp",
+      "format": "webp",
+      "width": 800,
+      "height": 450,
+      "bytes": 13526,
+      "sha256": "38c716ca1f4bb54baad5f0b498f20b98479c704c9a25321928623a221d2dc1c9"
+    },
+    {
+      "path": "public/hero/cidade/campinas.jpg",
+      "format": "jpeg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 84036,
+      "sha256": "40de318c202720992bb3c402fe8d77f134dcd3567a288868c2000fbd8315e9df"
+    },
+    {
+      "path": "public/hero/cidade/campo-grande-1200.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 21408,
+      "sha256": "7936b03ce9bb0962d400350f49ad50db61317dbafd91f5427daa0c0d5a32709c"
+    },
+    {
+      "path": "public/hero/cidade/campo-grande-1600.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 30586,
+      "sha256": "b4a11356f2643e5b21c40a66bc18491233523d2b3409139db9b9c9aadd99b3ce"
+    },
+    {
+      "path": "public/hero/cidade/campo-grande-800.jpg",
+      "format": "jpeg",
+      "width": 800,
+      "height": 450,
+      "bytes": 27971,
+      "sha256": "40afa541be712c1da7b6555c1a43011f94813113ad7675793930056e07b2699e"
+    },
+    {
+      "path": "public/hero/cidade/campo-grande-800.webp",
+      "format": "webp",
+      "width": 800,
+      "height": 450,
+      "bytes": 13798,
+      "sha256": "ea8bf9c2ff8ec62c387fcc18897361db997e053f55a9c17971a9bb92a2bc81ad"
+    },
+    {
+      "path": "public/hero/cidade/campo-grande.jpg",
+      "format": "jpeg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 85952,
+      "sha256": "e70559dd24bcdbc908f35038cab535aa4ae94a475a29cb6decbf210e4b9b31bf"
+    },
+    {
+      "path": "public/hero/cidade/caxias-do-sul-1200.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 20868,
+      "sha256": "e58794e7c6ebaec7d85ab9bbf3f431b43bbe33382e3c14d3d0976ef93853f1f1"
+    },
+    {
+      "path": "public/hero/cidade/caxias-do-sul-1600.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 30230,
+      "sha256": "9090f91310f256a78b8efe9c71e6fc49d215db838faf716cb71f89c085b9384d"
+    },
+    {
+      "path": "public/hero/cidade/caxias-do-sul-800.jpg",
+      "format": "jpeg",
+      "width": 800,
+      "height": 450,
+      "bytes": 27615,
+      "sha256": "7653fb0c0a429f96f39fd7dca7fd5661d059813b6767803e3adb2d4efbe9a99c"
+    },
+    {
+      "path": "public/hero/cidade/caxias-do-sul-800.webp",
+      "format": "webp",
+      "width": 800,
+      "height": 450,
+      "bytes": 13478,
+      "sha256": "9175ad642ed1d5e558fb218b5fb8dbc22a1be7d3603455a8333f28141a367bdd"
+    },
+    {
+      "path": "public/hero/cidade/caxias-do-sul.jpg",
+      "format": "jpeg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 83894,
+      "sha256": "889a145132f7ae11ef39d4fd4bf70d8f10c3b76263c6fd35c33eb4e6f24cba3c"
+    },
+    {
+      "path": "public/hero/cidade/cuiaba-1200.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 20132,
+      "sha256": "dab1d3bf92c91afb16ea822299153577488f3a833354678fe98f9cf233d26f88"
+    },
+    {
+      "path": "public/hero/cidade/cuiaba-1600.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 28918,
+      "sha256": "70e4541a09a5d8619a4b7e3d3f8be106519124bbf45b3ac02ea2c56479dace55"
+    },
+    {
+      "path": "public/hero/cidade/cuiaba-800.jpg",
+      "format": "jpeg",
+      "width": 800,
+      "height": 450,
+      "bytes": 27250,
+      "sha256": "17567e40d56182a7f51b8c1aee3eae9ff3c33044447b0b47b954d6c34c60abfc"
+    },
+    {
+      "path": "public/hero/cidade/cuiaba-800.webp",
+      "format": "webp",
+      "width": 800,
+      "height": 450,
+      "bytes": 13036,
+      "sha256": "07ba099592ff013a5f756073668540b484c2b462bd652d83f340e62c59cab656"
+    },
+    {
+      "path": "public/hero/cidade/cuiaba.jpg",
+      "format": "jpeg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 82058,
+      "sha256": "36b403754ded74d35ca62322cd02bd7fe5582d2c11ef070850e853f0bb66e897"
+    },
+    {
+      "path": "public/hero/cidade/florianopolis-1200.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 20332,
+      "sha256": "acc207b755201448f4557c58d46ffe4efaba03776e6d1b7c67d197a108d12a05"
+    },
+    {
+      "path": "public/hero/cidade/florianopolis-1600.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 29720,
+      "sha256": "529c6f25cabf6c129afab3b12dc211921f377f69eba9b2c0d0f34d20431379e8"
+    },
+    {
+      "path": "public/hero/cidade/florianopolis-800.jpg",
+      "format": "jpeg",
+      "width": 800,
+      "height": 450,
+      "bytes": 27536,
+      "sha256": "a01732befa244e8b94e23242913dbaaf9d2784c0caa780aedb06f156ed7eb83b"
+    },
+    {
+      "path": "public/hero/cidade/florianopolis-800.webp",
+      "format": "webp",
+      "width": 800,
+      "height": 450,
+      "bytes": 13218,
+      "sha256": "652106a72492162120e61899f7a0b182bbd0dd438a5239f6bccf0e24851c8ed6"
+    },
+    {
+      "path": "public/hero/cidade/florianopolis.jpg",
+      "format": "jpeg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 82739,
+      "sha256": "a768ee1336d1195aa9af3073a4541a0020b62defda8a5bc7413d5b80b238a9f0"
+    },
+    {
+      "path": "public/hero/cidade/fortaleza-1200.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 21044,
+      "sha256": "79c6f89f0c8f156864fea596b5101afafb58a56697c4066c44485cbfda56f381"
+    },
+    {
+      "path": "public/hero/cidade/fortaleza-1600.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 29798,
+      "sha256": "98f2a60fb2d18662d3aa3edb935ff46a8e6fc8443cea5712f57e9347a7abf612"
+    },
+    {
+      "path": "public/hero/cidade/fortaleza-800.jpg",
+      "format": "jpeg",
+      "width": 800,
+      "height": 450,
+      "bytes": 27788,
+      "sha256": "7bb31144349a773dcbe53766f7bb3290876daaea5366b9face73e92a13f19185"
+    },
+    {
+      "path": "public/hero/cidade/fortaleza-800.webp",
+      "format": "webp",
+      "width": 800,
+      "height": 450,
+      "bytes": 13474,
+      "sha256": "9e1c876af789cb1c5f0ae123e1cb5af2d02222c91eafc056a7876c19d302a96c"
+    },
+    {
+      "path": "public/hero/cidade/fortaleza.jpg",
+      "format": "jpeg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 83630,
+      "sha256": "8624c3e7f7d30f52470841b640672a0a802657a391c4a623c7f7c2e879790adf"
+    },
+    {
+      "path": "public/hero/cidade/goiania-1200.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 21214,
+      "sha256": "6bbede713ed9ba5660ed364af3a799c82ec1e7387e7eb943a2efd85b0ea50e46"
+    },
+    {
+      "path": "public/hero/cidade/goiania-1600.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 30210,
+      "sha256": "0806bc696e3cb11370f5094ff5e7e3bbe71ca1766e454943f419afe215cced27"
+    },
+    {
+      "path": "public/hero/cidade/goiania-800.jpg",
+      "format": "jpeg",
+      "width": 800,
+      "height": 450,
+      "bytes": 27983,
+      "sha256": "fc6b93f637365df5b35d8b9f0c1720f0762cc50ad7240c01401b95b7f3875f41"
+    },
+    {
+      "path": "public/hero/cidade/goiania-800.webp",
+      "format": "webp",
+      "width": 800,
+      "height": 450,
+      "bytes": 13728,
+      "sha256": "f6f8d4b2d82af083e32c7f7160fba2e58dd723f4d1ec9ea91c34e0f479fccd27"
+    },
+    {
+      "path": "public/hero/cidade/goiania.jpg",
+      "format": "jpeg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 84995,
+      "sha256": "88b8056f55ca6e71f0dd60fa03d4549c9de0f795b6cace7e426927c6552e6e28"
+    },
+    {
+      "path": "public/hero/cidade/guarulhos-1200.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 22632,
+      "sha256": "6a828e12691f0e8a1cb1313ccfe4e74fff7e0b4a232485442b82b965bbc6f59b"
+    },
+    {
+      "path": "public/hero/cidade/guarulhos-1600.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 31718,
+      "sha256": "4bceac84f4311e3572d72a6016d20edf1afe72dc2984191ce0342c5d6468a8ea"
+    },
+    {
+      "path": "public/hero/cidade/guarulhos-800.jpg",
+      "format": "jpeg",
+      "width": 800,
+      "height": 450,
+      "bytes": 28613,
+      "sha256": "273bea33a2918b1c4f7143b8da2ca180f01e57fab9517ca442d4da9c2ec7907a"
+    },
+    {
+      "path": "public/hero/cidade/guarulhos-800.webp",
+      "format": "webp",
+      "width": 800,
+      "height": 450,
+      "bytes": 14290,
+      "sha256": "8b34762d28d3b523f4cd4d219d8b3bb59777e44ca80a55c1345da63c2cc9a22d"
+    },
+    {
+      "path": "public/hero/cidade/guarulhos.jpg",
+      "format": "jpeg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 87130,
+      "sha256": "80b71b9af0beecfaf46c14de1196bad9ce68bbf9f2660da44f91e2a11c091f45"
+    },
+    {
+      "path": "public/hero/cidade/joao-pessoa-1200.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 21336,
+      "sha256": "c5a05ed0c0e4734222b9087b3219731d96668e4756351202d174b24d6437f3e7"
+    },
+    {
+      "path": "public/hero/cidade/joao-pessoa-1600.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 30150,
+      "sha256": "c63935c9d2d582f035e9c3f496642fd8c80ebcd48bff37d95a588f4b9b1fc9b2"
+    },
+    {
+      "path": "public/hero/cidade/joao-pessoa-800.jpg",
+      "format": "jpeg",
+      "width": 800,
+      "height": 450,
+      "bytes": 28215,
+      "sha256": "5985cbcfc6f9859c341c37b70e5faf031078b01b0d4aa978a54caa7e96557386"
+    },
+    {
+      "path": "public/hero/cidade/joao-pessoa-800.webp",
+      "format": "webp",
+      "width": 800,
+      "height": 450,
+      "bytes": 13636,
+      "sha256": "373e56197f7aa483b0faf49712fcd80b7a596ff117a73d0aa204f4282a94d866"
+    },
+    {
+      "path": "public/hero/cidade/joao-pessoa.jpg",
+      "format": "jpeg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 85230,
+      "sha256": "19ecc6b3fbb7d162677fa52a2f62749b2b4e7983483a5aa92e599f3d5fa12567"
+    },
+    {
+      "path": "public/hero/cidade/joinville-1200.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 21404,
+      "sha256": "bf0c72abc6a14e024ee32cd86e6539bc119935aacb3b8c33703704b23b0b2330"
+    },
+    {
+      "path": "public/hero/cidade/joinville-1600.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 30578,
+      "sha256": "8b4221dcb68ab4b0b76a1120f4fd67eed68ee8c2c79fdebacd28a020af6ed2d8"
+    },
+    {
+      "path": "public/hero/cidade/joinville-800.jpg",
+      "format": "jpeg",
+      "width": 800,
+      "height": 450,
+      "bytes": 28067,
+      "sha256": "d53cedc9f435cf5a818049f8dc9dfddb0c2760868f0e4ce36ae50cb6e2c27048"
+    },
+    {
+      "path": "public/hero/cidade/joinville-800.webp",
+      "format": "webp",
+      "width": 800,
+      "height": 450,
+      "bytes": 13860,
+      "sha256": "284bd989b886223e12e5a6bd50db2a1820ec7a43316ed7e1777eee1f61ed35ac"
+    },
+    {
+      "path": "public/hero/cidade/joinville.jpg",
+      "format": "jpeg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 84704,
+      "sha256": "0804632d66613eee66d58148911936ee00dd953b0c430c48f2c9254af950b0b3"
+    },
+    {
+      "path": "public/hero/cidade/londrina-1200.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 21076,
+      "sha256": "b2faf3e24f0d8aed70081fbf53e57e04009fd2f1355b33be78b2037278c25094"
+    },
+    {
+      "path": "public/hero/cidade/londrina-1600.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 30056,
+      "sha256": "847a54c3aa5a6ad5ab9006cf2f22ec777b5482055395d7ca9f35729fc6ab6e9b"
+    },
+    {
+      "path": "public/hero/cidade/londrina-800.jpg",
+      "format": "jpeg",
+      "width": 800,
+      "height": 450,
+      "bytes": 27858,
+      "sha256": "960cbdea0f02232e367918de9bb09926be168053898781fa434e2a67b6cae019"
+    },
+    {
+      "path": "public/hero/cidade/londrina-800.webp",
+      "format": "webp",
+      "width": 800,
+      "height": 450,
+      "bytes": 13588,
+      "sha256": "22d3d285ddc1d0361fbb201f7a161559c28728d5fbd1dcba05ccdebdf1b488fc"
+    },
+    {
+      "path": "public/hero/cidade/londrina.jpg",
+      "format": "jpeg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 83739,
+      "sha256": "e72f4c76d63c1657c8c9861c873f671f56538ff5a9203eb5df80c95577953837"
+    },
+    {
+      "path": "public/hero/cidade/macapa-1200.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 20732,
+      "sha256": "fbe0c700f2fc0b659974641d646e34416ccfebb5e89cc4f7782106083f1ae4f6"
+    },
+    {
+      "path": "public/hero/cidade/macapa-1600.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 29844,
+      "sha256": "44032c0649f2618ee4b4d5a027e8a78a6ed79f7ee5aeca35f3b467b59ed88dcf"
+    },
+    {
+      "path": "public/hero/cidade/macapa-800.jpg",
+      "format": "jpeg",
+      "width": 800,
+      "height": 450,
+      "bytes": 28121,
+      "sha256": "d2e1334bfe9413ac0bd614f97fc8159bd5e9fb2911f516c707b58f4c9592d618"
+    },
+    {
+      "path": "public/hero/cidade/macapa-800.webp",
+      "format": "webp",
+      "width": 800,
+      "height": 450,
+      "bytes": 13470,
+      "sha256": "df0d7d6e109c56702d5ffa36f6f4795c627a53f58f22f87fd50bdc359240f89b"
+    },
+    {
+      "path": "public/hero/cidade/macapa.jpg",
+      "format": "jpeg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 84395,
+      "sha256": "5923d3ed2ddc0dd614688b6ab1a6ec5aedadcfa0fc7446d5ed92ef266bff7277"
+    },
+    {
+      "path": "public/hero/cidade/maceio-1200.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 22048,
+      "sha256": "9a1f296dadd87c7b070c18f8e078231c0c0cc84c9aa1d9cc18a81f11ee8c2afc"
+    },
+    {
+      "path": "public/hero/cidade/maceio-1600.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 30864,
+      "sha256": "3ffc6278dd1563507e0e8b7829a52fcf3e4b6bcad08240ae36355f5e53f7f7cc"
+    },
+    {
+      "path": "public/hero/cidade/maceio-800.jpg",
+      "format": "jpeg",
+      "width": 800,
+      "height": 450,
+      "bytes": 28263,
+      "sha256": "c97e278ff91c156bae8bfe06fa9da89b8022d9a421186abcb26a512fe4dcc399"
+    },
+    {
+      "path": "public/hero/cidade/maceio-800.webp",
+      "format": "webp",
+      "width": 800,
+      "height": 450,
+      "bytes": 13838,
+      "sha256": "3bdb773a5bad07fe9a78d11c712c619680d081a206a23fd0f8ac6ed5b8ae26aa"
+    },
+    {
+      "path": "public/hero/cidade/maceio.jpg",
+      "format": "jpeg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 85278,
+      "sha256": "163a373fe8c860b5d608c6849772490b6df314fac0b4b06647068cefe99dff12"
+    },
+    {
+      "path": "public/hero/cidade/manaus-1200.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 21470,
+      "sha256": "235f262a5817e70a88d42a6f45fdfd6cce7478659ed2069ee8f9cab814fb3ecf"
+    },
+    {
+      "path": "public/hero/cidade/manaus-1600.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 30298,
+      "sha256": "7b9cfcdbcb002ac25bf7c6626f2ddf869292c98da0cf6eef00c26a8e5d430068"
+    },
+    {
+      "path": "public/hero/cidade/manaus-800.jpg",
+      "format": "jpeg",
+      "width": 800,
+      "height": 450,
+      "bytes": 28479,
+      "sha256": "b3e4370486aa4721db3b41bd5ff4c10dbf7fd9acdc585ae947b414796a06edd3"
+    },
+    {
+      "path": "public/hero/cidade/manaus-800.webp",
+      "format": "webp",
+      "width": 800,
+      "height": 450,
+      "bytes": 13824,
+      "sha256": "6d9ee0b9aece788e76f6251a86e9ddaa25dd03ff67082feb566339fb9a9d4132"
+    },
+    {
+      "path": "public/hero/cidade/manaus.jpg",
+      "format": "jpeg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 85757,
+      "sha256": "296bd462a5bdbc87c34f37b9bf16e5fcf9c0f60d4af40939762e9e5508cb68cf"
+    },
+    {
+      "path": "public/hero/cidade/maringa-1200.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 20418,
+      "sha256": "8a3c8a2c828f11bb8cdc272a7a2968cd0c01bffdd64247edf72407c65e2fcc16"
+    },
+    {
+      "path": "public/hero/cidade/maringa-1600.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 29442,
+      "sha256": "fb71f559d98253980f4335aecaf5a20fc17cf1e8af4b0dcf2a984c8e63040183"
+    },
+    {
+      "path": "public/hero/cidade/maringa-800.jpg",
+      "format": "jpeg",
+      "width": 800,
+      "height": 450,
+      "bytes": 27022,
+      "sha256": "b66e0033f1fa4cd25c4919d586f2b207088b13ecf8bf03495fa2382edaab40d4"
+    },
+    {
+      "path": "public/hero/cidade/maringa-800.webp",
+      "format": "webp",
+      "width": 800,
+      "height": 450,
+      "bytes": 13154,
+      "sha256": "7888f10252b0d73a6f7f440be5cae03e45a20b12a1f63b3af7aa3f11dd758aa0"
+    },
+    {
+      "path": "public/hero/cidade/maringa.jpg",
+      "format": "jpeg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 81868,
+      "sha256": "b86c8774e1353b4b771643604a20b26325d786ef2200c8e508e7b4536c2abf08"
+    },
+    {
+      "path": "public/hero/cidade/natal-1200.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 20878,
+      "sha256": "11e9161489cc2a27e65a6e29c6940641ec66960a1bac34a3e94b7657a9261537"
+    },
+    {
+      "path": "public/hero/cidade/natal-1600.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 30108,
+      "sha256": "c716dd134e150e42166dda7edc9832815fb9337868f3b66175042d4f2acbbbbe"
+    },
+    {
+      "path": "public/hero/cidade/natal-800.jpg",
+      "format": "jpeg",
+      "width": 800,
+      "height": 450,
+      "bytes": 27698,
+      "sha256": "803fc58d927b1a276d099bd623ff5e71a406e2a113de7b7c1f2c732fb85355a4"
+    },
+    {
+      "path": "public/hero/cidade/natal-800.webp",
+      "format": "webp",
+      "width": 800,
+      "height": 450,
+      "bytes": 13350,
+      "sha256": "8dfb7af116d545219ce57b01893c8a5f624eda8362032f7b3edf44641d6c5438"
+    },
+    {
+      "path": "public/hero/cidade/natal.jpg",
+      "format": "jpeg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 83083,
+      "sha256": "a8aed4d290802df33c1ad9c2eb539995d5902ee4842d87704020a496b9bc062d"
+    },
+    {
+      "path": "public/hero/cidade/niteroi-1200.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 22202,
+      "sha256": "11cea31894032b8b2c2c118577dee7cacc82d17107eec2bc03d531bef5ecef6c"
+    },
+    {
+      "path": "public/hero/cidade/niteroi-1600.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 31154,
+      "sha256": "3f708287b7abad187f12200ea0de62f9690ffe08131e34e7580d8d2053a9d376"
+    },
+    {
+      "path": "public/hero/cidade/niteroi-800.jpg",
+      "format": "jpeg",
+      "width": 800,
+      "height": 450,
+      "bytes": 28628,
+      "sha256": "b886d599e7e21e3a312ac52e1408621b695322e57ffb0f55e74f3e05fe78fd42"
+    },
+    {
+      "path": "public/hero/cidade/niteroi-800.webp",
+      "format": "webp",
+      "width": 800,
+      "height": 450,
+      "bytes": 14042,
+      "sha256": "d745af9ddfc180cbc6ea50ea7b942d942681569bfc210d5af90b80dbd0501777"
+    },
+    {
+      "path": "public/hero/cidade/niteroi.jpg",
+      "format": "jpeg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 86052,
+      "sha256": "4392fb435ea8217ddac0d2b97a8647a74fb5289e7298ece9b88328dd623a3974"
+    },
+    {
+      "path": "public/hero/cidade/palmas-1200.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 21534,
+      "sha256": "7a42b8baa7f12e68a75a776a51ad3d04652670a2ec70e9d17b1529696f69c2a4"
+    },
+    {
+      "path": "public/hero/cidade/palmas-1600.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 30782,
+      "sha256": "95f9b763760d482155a49a02b762b8c3b9c5c6c8ad0901b4e54c0e9ad76162ac"
+    },
+    {
+      "path": "public/hero/cidade/palmas-800.jpg",
+      "format": "jpeg",
+      "width": 800,
+      "height": 450,
+      "bytes": 28573,
+      "sha256": "f7dc0c869aa9dd0d4663f72b429238a4c4cbb4d167f8feeb2717ac095f6ddd23"
+    },
+    {
+      "path": "public/hero/cidade/palmas-800.webp",
+      "format": "webp",
+      "width": 800,
+      "height": 450,
+      "bytes": 13898,
+      "sha256": "f89125a355220ac9009e819f88dadbffa7ba985d4457cdb047360ce9313ca989"
+    },
+    {
+      "path": "public/hero/cidade/palmas.jpg",
+      "format": "jpeg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 87012,
+      "sha256": "ef64f00fe611bb7f7c6b55a5d169b489f4aa49f0094c823414e6138399a86c09"
+    },
+    {
+      "path": "public/hero/cidade/porto-alegre-1200.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 22604,
+      "sha256": "3525d2e86086f509808b523a4393714ccd5ea50c03eea3d5737399926da2c789"
+    },
+    {
+      "path": "public/hero/cidade/porto-alegre-1600.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 31858,
+      "sha256": "7d4071e0cfc79c35403b1fdadaeb028e5da74a37c0db4c0520bb4cff25355816"
+    },
+    {
+      "path": "public/hero/cidade/porto-alegre-800.jpg",
+      "format": "jpeg",
+      "width": 800,
+      "height": 450,
+      "bytes": 28997,
+      "sha256": "6080c95e5d4b9670ceeae81531661fb3e6cee9338f0e4a987d88c63d43a38f17"
+    },
+    {
+      "path": "public/hero/cidade/porto-alegre-800.webp",
+      "format": "webp",
+      "width": 800,
+      "height": 450,
+      "bytes": 14452,
+      "sha256": "79c269aac599d8c5d1da0850fdbcfb6521a842c2a9f824bffcf08a267d1f68d8"
+    },
+    {
+      "path": "public/hero/cidade/porto-alegre.jpg",
+      "format": "jpeg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 87990,
+      "sha256": "99d72c5f0da255ad662c4f476025744597e4e88c1cfd9af7da066b15bc0dd585"
+    },
+    {
+      "path": "public/hero/cidade/porto-velho-1200.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 21966,
+      "sha256": "ae8efce211f445978fffb26e3dbc3422a203a9c0383514ae2b9bdb1ec5c39ac2"
+    },
+    {
+      "path": "public/hero/cidade/porto-velho-1600.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 30762,
+      "sha256": "275dd0d91260b0f6ecdaf9c981eb7a9dab8a27b96e0590c9dd537d50479a2788"
+    },
+    {
+      "path": "public/hero/cidade/porto-velho-800.jpg",
+      "format": "jpeg",
+      "width": 800,
+      "height": 450,
+      "bytes": 28732,
+      "sha256": "03e8ecddc62759fa6498fc8d8fc99220b9ee3eb8c19dfd74236a8e3c8a8edff3"
+    },
+    {
+      "path": "public/hero/cidade/porto-velho-800.webp",
+      "format": "webp",
+      "width": 800,
+      "height": 450,
+      "bytes": 13944,
+      "sha256": "d365cfda2be2a76063379d36502695ccc68156d5e3d064654a2c281b7a04e0a4"
+    },
+    {
+      "path": "public/hero/cidade/porto-velho.jpg",
+      "format": "jpeg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 86196,
+      "sha256": "2e9f432c64df5b0cb9584161c476373c2893ced6d85816c91e9a9d1e877af9aa"
+    },
+    {
+      "path": "public/hero/cidade/recife-1200.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 21828,
+      "sha256": "16d526a0ae2331e2e30f48e109e2c19c566182aaeeccb27dcc437d0ed70aba02"
+    },
+    {
+      "path": "public/hero/cidade/recife-1600.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 30978,
+      "sha256": "5bb328bdec7a63792848635074665794b6309bcc0418d0733c6bd86c673b71a6"
+    },
+    {
+      "path": "public/hero/cidade/recife-800.jpg",
+      "format": "jpeg",
+      "width": 800,
+      "height": 450,
+      "bytes": 28283,
+      "sha256": "87ee772984e5803ffc52e0b42300eb6c581ad76ad0fb0af021e9ce8c3efc2752"
+    },
+    {
+      "path": "public/hero/cidade/recife-800.webp",
+      "format": "webp",
+      "width": 800,
+      "height": 450,
+      "bytes": 13978,
+      "sha256": "cbdd581f65b1d815331c97275e68d4134314549cf533db813ad9df75e19205f0"
+    },
+    {
+      "path": "public/hero/cidade/recife.jpg",
+      "format": "jpeg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 85360,
+      "sha256": "d85a58895f89592b724f80c15eee2a1b59e928a95b4fb94e1c85a803cb83c74e"
+    },
+    {
+      "path": "public/hero/cidade/rio-branco-1200.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 21854,
+      "sha256": "633afcc97d405349691c94c2efe10f4cf6e6fa02d6e6c0b71575303b376ea737"
+    },
+    {
+      "path": "public/hero/cidade/rio-branco-1600.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 30262,
+      "sha256": "59f7aa6bd246d3535bc2a8d3a1cf81b141a55572042920e6069ccbc4e8985562"
+    },
+    {
+      "path": "public/hero/cidade/rio-branco-800.jpg",
+      "format": "jpeg",
+      "width": 800,
+      "height": 450,
+      "bytes": 28492,
+      "sha256": "df34b94f3546887461cd8a8cf8ba62b436364086a09f3f1598498e04f3546584"
+    },
+    {
+      "path": "public/hero/cidade/rio-branco-800.webp",
+      "format": "webp",
+      "width": 800,
+      "height": 450,
+      "bytes": 13672,
+      "sha256": "619c6a33012a8ac2154fbb9ec1514c41b634c3436579890d5f29729f466bcf8c"
+    },
+    {
+      "path": "public/hero/cidade/rio-branco.jpg",
+      "format": "jpeg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 85440,
+      "sha256": "cac9cdf4363ca38fa9308c4a6d2794478de73317ed463baa99276d5347b20e3e"
+    },
+    {
+      "path": "public/hero/cidade/rio-de-janeiro-1200.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 21730,
+      "sha256": "07f94e08797f63f4734b662802c4c778a0e1102e447957fd144517255cf57d85"
+    },
+    {
+      "path": "public/hero/cidade/rio-de-janeiro-1600.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 31058,
+      "sha256": "30ba0bdfc7d9346d44cd68eb88d6661190f8c32db64124b93f5891ca4ed7efef"
+    },
+    {
+      "path": "public/hero/cidade/rio-de-janeiro-800.jpg",
+      "format": "jpeg",
+      "width": 800,
+      "height": 450,
+      "bytes": 28400,
+      "sha256": "c7e3686d4604f0225252bf29642315d1dc134c2a89174eb8ce85ce8e69895cac"
+    },
+    {
+      "path": "public/hero/cidade/rio-de-janeiro-800.webp",
+      "format": "webp",
+      "width": 800,
+      "height": 450,
+      "bytes": 14040,
+      "sha256": "5efea4937f794f3549e9da4eae872cd64ab46810e0628cd8e87c2b8830feb8f2"
+    },
+    {
+      "path": "public/hero/cidade/rio-de-janeiro.jpg",
+      "format": "jpeg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 86174,
+      "sha256": "de9472af63ea9fc732438b9b38b233ba5b38b8c5d237d8d517bb0489602c7123"
+    },
+    {
+      "path": "public/hero/cidade/salvador-1200.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 22388,
+      "sha256": "5636fc8c125b9f69bbec9388b5ba0b571cbf2b3b9d6fc2a2b3b2e4ce733a349c"
+    },
+    {
+      "path": "public/hero/cidade/salvador-1600.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 31098,
+      "sha256": "a75d7ff81edbc659c910f663eb0b98e8c0592f9cd643816ccb3297e6b4d4156d"
+    },
+    {
+      "path": "public/hero/cidade/salvador-800.jpg",
+      "format": "jpeg",
+      "width": 800,
+      "height": 450,
+      "bytes": 28261,
+      "sha256": "cc4394f295858e1e8665c6bb1686c60585ea26e102a98dcc9929a52842ddfb07"
+    },
+    {
+      "path": "public/hero/cidade/salvador-800.webp",
+      "format": "webp",
+      "width": 800,
+      "height": 450,
+      "bytes": 14022,
+      "sha256": "339b70c7a1e40ca3992536fc5ddf06cd2ed678e0f13576d33388cc063f88fe85"
+    },
+    {
+      "path": "public/hero/cidade/salvador.jpg",
+      "format": "jpeg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 86360,
+      "sha256": "9757a1fc1d690bed1ed9280c8bcc7da82da0d076509b567dbc72f635e387ce1a"
+    },
+    {
+      "path": "public/hero/cidade/santos-1200.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 21614,
+      "sha256": "8e422edd5d9c1523886046709202605a131e1291d10dbbcf7af7487c0d8343b1"
+    },
+    {
+      "path": "public/hero/cidade/santos-1600.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 30566,
+      "sha256": "0aad145e7f29c07fecdaa9d62e2c30d97da935244b98e0f11695b7a9844f7864"
+    },
+    {
+      "path": "public/hero/cidade/santos-800.jpg",
+      "format": "jpeg",
+      "width": 800,
+      "height": 450,
+      "bytes": 27911,
+      "sha256": "54d3b1ff1a1ed9e34ff2954c0762fb152088d500ed39392aa8cbcf4f6a3f434b"
+    },
+    {
+      "path": "public/hero/cidade/santos-800.webp",
+      "format": "webp",
+      "width": 800,
+      "height": 450,
+      "bytes": 13816,
+      "sha256": "351d175c63fa44e3ebdb1fe6b4f7b71c771753c8e0a4f698407495cb58153eea"
+    },
+    {
+      "path": "public/hero/cidade/santos.jpg",
+      "format": "jpeg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 84151,
+      "sha256": "ab37d4476e6d46ac3ae43632dad5e5b1917fc07af580bf490b95fe4293441dfa"
+    },
+    {
+      "path": "public/hero/cidade/sao-bernardo-do-campo-1200.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 22596,
+      "sha256": "5ce62c5271d84328d712b771902e8fe6f5396c0670ef05eb359d9b530f3e5b44"
+    },
+    {
+      "path": "public/hero/cidade/sao-bernardo-do-campo-1600.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 31932,
+      "sha256": "6102d3ec17e218d73ee512cdec0b8967e5b562a54e24ca0c30f3197ab311ee04"
+    },
+    {
+      "path": "public/hero/cidade/sao-bernardo-do-campo-800.jpg",
+      "format": "jpeg",
+      "width": 800,
+      "height": 450,
+      "bytes": 28556,
+      "sha256": "86c56948a85834c0f335d0848fc8ec560116092e959932f4b52fa294171d979c"
+    },
+    {
+      "path": "public/hero/cidade/sao-bernardo-do-campo-800.webp",
+      "format": "webp",
+      "width": 800,
+      "height": 450,
+      "bytes": 14472,
+      "sha256": "5af4d9225bde7b0a65bb0cff30f3b56912ab53439acceb56ea5b35a8c5551a17"
+    },
+    {
+      "path": "public/hero/cidade/sao-bernardo-do-campo.jpg",
+      "format": "jpeg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 87664,
+      "sha256": "939865b9e1c8703ceec4d55a1dcc9a7380d23994c8070966622545397aff44b8"
+    },
+    {
+      "path": "public/hero/cidade/sao-luis-1200.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 21314,
+      "sha256": "f765b754b2734f722ffe5c11a4d340d58c87ea432c8b03adf507f7f1ce16aecb"
+    },
+    {
+      "path": "public/hero/cidade/sao-luis-1600.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 29964,
+      "sha256": "fd5f4f88a649ec0a45b76175c87c7dec2ad82615c0901db6867e04a19450351f"
+    },
+    {
+      "path": "public/hero/cidade/sao-luis-800.jpg",
+      "format": "jpeg",
+      "width": 800,
+      "height": 450,
+      "bytes": 27585,
+      "sha256": "916489ebcf37045404e711f6b7d88fcb5c538612b961d6a3b927a87ce789887d"
+    },
+    {
+      "path": "public/hero/cidade/sao-luis-800.webp",
+      "format": "webp",
+      "width": 800,
+      "height": 450,
+      "bytes": 13344,
+      "sha256": "1f4e7c8dc6f2b13a8850ce392481a1be9eca6bf147ae5e47ff0be59cd58833b9"
+    },
+    {
+      "path": "public/hero/cidade/sao-luis.jpg",
+      "format": "jpeg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 83662,
+      "sha256": "99c84ac480120e1946153e84fb824163b36d59f181dce9dcdf7b4151f5188d04"
+    },
+    {
+      "path": "public/hero/cidade/sao-paulo-1200.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 21690,
+      "sha256": "7585eeff519ce6d99847fb4646b9c5f3e53d76801588abd9d540ca775bd04909"
+    },
+    {
+      "path": "public/hero/cidade/sao-paulo-1600.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 30634,
+      "sha256": "e4f5dd4d98b3983bad898137e214aca2e8f7099d6990a888b9bb1cd0f4bdd67a"
+    },
+    {
+      "path": "public/hero/cidade/sao-paulo-800.jpg",
+      "format": "jpeg",
+      "width": 800,
+      "height": 450,
+      "bytes": 28270,
+      "sha256": "a65aa0bbec1d0b3b33b2a5dc5fba8f2230b090f0778dfb6f10e32da6bf96de1f"
+    },
+    {
+      "path": "public/hero/cidade/sao-paulo-800.webp",
+      "format": "webp",
+      "width": 800,
+      "height": 450,
+      "bytes": 13924,
+      "sha256": "f35be72c32da334b2f41a1293209cc4783479fb0f423397a66a4a1cdab035acf"
+    },
+    {
+      "path": "public/hero/cidade/sao-paulo.jpg",
+      "format": "jpeg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 85106,
+      "sha256": "68f9916b2cabc73f914f0f802774dbcf34df81b4f171e142b2de3d9256c359f6"
+    },
+    {
+      "path": "public/hero/cidade/teresina-1200.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 22564,
+      "sha256": "c8e873f1f3250a489e15b626fe0457685fd4f5b43590782cddc52dc5d8774030"
+    },
+    {
+      "path": "public/hero/cidade/teresina-1600.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 31476,
+      "sha256": "e25212d86cd3f33cec49400a64de8bb8e88ed43b27ae534d58981dd4e2bc64f9"
+    },
+    {
+      "path": "public/hero/cidade/teresina-800.jpg",
+      "format": "jpeg",
+      "width": 800,
+      "height": 450,
+      "bytes": 28663,
+      "sha256": "866577ae024a5d4a2ae8b5d25240e2346effd2ffe3d82751ff03942784be7abe"
+    },
+    {
+      "path": "public/hero/cidade/teresina-800.webp",
+      "format": "webp",
+      "width": 800,
+      "height": 450,
+      "bytes": 14332,
+      "sha256": "e61a8221b86cee6c15acca88ee0df95a19886570b58e86b8cd6e9f25f5578b79"
+    },
+    {
+      "path": "public/hero/cidade/teresina.jpg",
+      "format": "jpeg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 86804,
+      "sha256": "7a4481c3d7d6c0d5f5a9af7d319dd355a3439a66d2e065d2bc13d62fadacb9af"
+    },
+    {
+      "path": "public/hero/cidade/vitoria-1200.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 675,
+      "bytes": 21356,
+      "sha256": "9554d9f1827ffdc26cc3e02af13e61bfda1d14a7ddfc8619c9de55b8513601ff"
+    },
+    {
+      "path": "public/hero/cidade/vitoria-1600.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 30096,
+      "sha256": "7a03bca29a075da57868452b4dd4fa51ac62c862ddd5473eb97be83360138bd4"
+    },
+    {
+      "path": "public/hero/cidade/vitoria-800.jpg",
+      "format": "jpeg",
+      "width": 800,
+      "height": 450,
+      "bytes": 28068,
+      "sha256": "e7a3022fedc2d01929e3926b75876a97036a9fd12d4935a77576d502d94b58aa"
+    },
+    {
+      "path": "public/hero/cidade/vitoria-800.webp",
+      "format": "webp",
+      "width": 800,
+      "height": 450,
+      "bytes": 13498,
+      "sha256": "f354058262c96709c0bffefcb7d19afea97e6e5953927646c802519e2e4c5658"
+    },
+    {
+      "path": "public/hero/cidade/vitoria.jpg",
+      "format": "jpeg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 84100,
+      "sha256": "2c1cb40aca01986dea19d71466e78883112cc8193ae522ca22a26e8b6c205a4b"
+    },
+    {
+      "path": "public/og-image.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 26181,
+      "sha256": "d7a74175509b0451aa2fdcc325c8ea0cb1c4472e6d110d37be8a3998f3663ed8"
+    },
+    {
+      "path": "public/og/ar-condicionado.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 24046,
+      "sha256": "5c19eb568d80374c8e839a6b3844c5417ebb3ed0c6323e1853c072edd9ead951"
+    },
+    {
+      "path": "public/og/blog.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 25262,
+      "sha256": "fbcb2b4a555bbc38e09998661bd597e02dd72881022109e4a3207d90ec87177d"
+    },
+    {
+      "path": "public/og/celulares.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 22392,
+      "sha256": "2eb5d7f69647a5c418cfe5fe281ba36f9d7ae00ce895d58a6c07d6da80dfa62d"
+    },
+    {
+      "path": "public/og/cftv-seguranca.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 23373,
+      "sha256": "a061ed809e1213054f337da3f934f33d91ef27676b45642005d1d9c8dfede130"
+    },
+    {
+      "path": "public/og/cidade/aracaju.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 57636,
+      "sha256": "3d312b730f10575c5cdd9aa83eccc10c46628a574290c5c225527ee69490ed3b"
+    },
+    {
+      "path": "public/og/cidade/aracaju.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 630,
+      "bytes": 23658,
+      "sha256": "4df190acb1d1cf1fb764377e488cc9e9162682a8f7a4f32f9eddd50a7d1b26b0"
+    },
+    {
+      "path": "public/og/cidade/belem.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 58388,
+      "sha256": "6c132c285cf24f1d8340a5ae8d4956d1269a5ec94e5b7f6fd6a76857099b35bc"
+    },
+    {
+      "path": "public/og/cidade/belem.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 630,
+      "bytes": 23846,
+      "sha256": "34de8b8b9c6c7e9331f61dd5a31809c057278b23603afba1093f932b28132116"
+    },
+    {
+      "path": "public/og/cidade/belo-horizonte.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 59732,
+      "sha256": "3d83a256070b25e79b4359ddc02f5ef1ea49667ae637318de1ab68e6d9dad65c"
+    },
+    {
+      "path": "public/og/cidade/belo-horizonte.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 630,
+      "bytes": 23694,
+      "sha256": "ad94e69a687f79ca3c003f22201c9e824c6c94d581efa86f2558c3d8658fd6e9"
+    },
+    {
+      "path": "public/og/cidade/boa-vista.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 61245,
+      "sha256": "bb97d8aaae41f62284ba47107ec6b57972125ef5af3e5ddc99f96cc833b1a872"
+    },
+    {
+      "path": "public/og/cidade/boa-vista.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 630,
+      "bytes": 25132,
+      "sha256": "98ac26e9d4b4da43e84d39802a9ffce20502b30447b572398ebe09a5f91a2c26"
+    },
+    {
+      "path": "public/og/cidade/brasilia.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 60860,
+      "sha256": "8bf4a4cb119b50fe2bea9ab88e147cfc9faf56961ec097746274ef4f5061ccbe"
+    },
+    {
+      "path": "public/og/cidade/brasilia.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 630,
+      "bytes": 24954,
+      "sha256": "77f7962d3bfc9903ff883dce53d5fdfa626bdddbf4df34cb8c76cbfb497f216b"
+    },
+    {
+      "path": "public/og/cidade/campinas.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 59146,
+      "sha256": "18509a7ccebc4e60d3b0592d5decdcd4058eb1ad93941500c164a2f163bc9481"
+    },
+    {
+      "path": "public/og/cidade/campinas.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 630,
+      "bytes": 23320,
+      "sha256": "9e6f4f1961a29e2c781c60193b0cc1cbea95eb6bbe34001ec91e9afecc260744"
+    },
+    {
+      "path": "public/og/cidade/campo-grande.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 61158,
+      "sha256": "065d3b0de842b7e6143d7c8e71ed97e4d3dcc3079c04f0058f30846b20e58a07"
+    },
+    {
+      "path": "public/og/cidade/campo-grande.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 630,
+      "bytes": 24042,
+      "sha256": "2ce96772d9217c1532b7b617937793021651f3c11ac99f0946621510204e09d4"
+    },
+    {
+      "path": "public/og/cidade/caxias-do-sul.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 59606,
+      "sha256": "ae888963b89104a7c037b4a23b98e9afd781462eef953f236b13ded869ee91d1"
+    },
+    {
+      "path": "public/og/cidade/caxias-do-sul.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 630,
+      "bytes": 24186,
+      "sha256": "3a0ba848e0de9fc2f63ba3fe3aeed4a73c5268106b58e894b715271c74f13e79"
+    },
+    {
+      "path": "public/og/cidade/cuiaba.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 58292,
+      "sha256": "6fa13e71845c8a461938f180e67422de2c893831082058be9648cd19828e34b7"
+    },
+    {
+      "path": "public/og/cidade/cuiaba.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 630,
+      "bytes": 23054,
+      "sha256": "5df93cc9b771e46326a2b46d42e1c760d379e5eec1730d5be86347ae1ff60138"
+    },
+    {
+      "path": "public/og/cidade/florianopolis.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 59869,
+      "sha256": "c8db539ae5e33cafb87057b6e1fc21ea258d66f0b26fef3a6e223a90ff34cdd0"
+    },
+    {
+      "path": "public/og/cidade/florianopolis.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 630,
+      "bytes": 24098,
+      "sha256": "ff5359b5573e3a0665fce83190223648cd557f9a8a6f095b09a579ff150e9d8d"
+    },
+    {
+      "path": "public/og/cidade/fortaleza.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 59483,
+      "sha256": "d5feedd6f23a8094b3c34bf15f318ac9e44dc1bea7389ec391763df5f897a284"
+    },
+    {
+      "path": "public/og/cidade/fortaleza.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 630,
+      "bytes": 23960,
+      "sha256": "e8bb47d62f1d059bd96416fe1f3e9b805d005439f0e248a84325bbe11f95f2c0"
+    },
+    {
+      "path": "public/og/cidade/goiania.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 58552,
+      "sha256": "5a6ffc4a5aca6eaa60f8d1a6bae7ca0cb847e98a56d5ac52fa7f1dbf540fe992"
+    },
+    {
+      "path": "public/og/cidade/goiania.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 630,
+      "bytes": 23468,
+      "sha256": "f426199cb37c8395b8ef457c836dae6f2a5c666d8d1aefd8c3c964b2a0bd03e4"
+    },
+    {
+      "path": "public/og/cidade/guarulhos.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 62414,
+      "sha256": "802947e64cd2bcfbe1047bf56c8a299f168e4b1eff5678a55e31ef1e66a92720"
+    },
+    {
+      "path": "public/og/cidade/guarulhos.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 630,
+      "bytes": 25536,
+      "sha256": "43c8a5d252acdd52af8879f079940fe22cf13cf958a2eeaa88960f671f496508"
+    },
+    {
+      "path": "public/og/cidade/joao-pessoa.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 60403,
+      "sha256": "498fb463a098243b76d2e8920eb651f8bb625b3bf48f9320b7baf62840ff9952"
+    },
+    {
+      "path": "public/og/cidade/joao-pessoa.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 630,
+      "bytes": 23620,
+      "sha256": "54bd54ddb22671515e6a5f0656fee96f08acb25ffb038475d89afda8349a0904"
+    },
+    {
+      "path": "public/og/cidade/joinville.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 60927,
+      "sha256": "1943211396ed1f5b228a7d8f123604003a21b43ab03d17c8c58cac6c5d8c1d36"
+    },
+    {
+      "path": "public/og/cidade/joinville.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 630,
+      "bytes": 24532,
+      "sha256": "c514356424c0efd8bbe8abd1473a6405f835e284f5d9b38df9fb5c0f75b8730b"
+    },
+    {
+      "path": "public/og/cidade/londrina.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 57914,
+      "sha256": "58e0f73ae442a93c089a943e48a585ce41c33c33c64a991c3414d94cb05eabdb"
+    },
+    {
+      "path": "public/og/cidade/londrina.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 630,
+      "bytes": 23112,
+      "sha256": "d61f465704fc1df3a30d30f9ad70511782b73afdeb3d08d65a51d9419928a83b"
+    },
+    {
+      "path": "public/og/cidade/macapa.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 60309,
+      "sha256": "bf6d4a593442c76ef35ba795d13f842bf4fd539d4628b9dc8ff3a69051158edc"
+    },
+    {
+      "path": "public/og/cidade/macapa.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 630,
+      "bytes": 24490,
+      "sha256": "ddb094f260f3a72a156f186886b1332fcb15403dd75209c5787a84816d96ab84"
+    },
+    {
+      "path": "public/og/cidade/maceio.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 58961,
+      "sha256": "6d0e0800d3a1776702e28ff068397f23a9f4be509dbae906b5f079b140a0a71f"
+    },
+    {
+      "path": "public/og/cidade/maceio.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 630,
+      "bytes": 23914,
+      "sha256": "15fe0c8ac994c9b23d4a961508e23b6c45c98b8a710466de26856730e79b2d4f"
+    },
+    {
+      "path": "public/og/cidade/manaus.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 58186,
+      "sha256": "f2ee362c70b91640e2292ea436d0b30bce165c0a957bf6a61e81c84a4f39498a"
+    },
+    {
+      "path": "public/og/cidade/manaus.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 630,
+      "bytes": 23258,
+      "sha256": "3098ba8afdd6c5e16312d31449522c72a6a0967e006bb8b63eb0704f25820177"
+    },
+    {
+      "path": "public/og/cidade/maringa.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 57431,
+      "sha256": "29849f3734e6b4e953bc30ad25271c3f2ab850436fac635e85ae7eaa5f54369e"
+    },
+    {
+      "path": "public/og/cidade/maringa.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 630,
+      "bytes": 23386,
+      "sha256": "49ae9a4c3bf73e7173bfa088405a6ebd4f55c42a3c72b380287cf8f826285d16"
+    },
+    {
+      "path": "public/og/cidade/natal.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 59119,
+      "sha256": "ba732c532257aa41f2c3834b609e11c90fe72041c67477201b78b7f03fce5c1c"
+    },
+    {
+      "path": "public/og/cidade/natal.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 630,
+      "bytes": 24234,
+      "sha256": "ebc5ffca971a629da64e03d96fe5e866c2253a63f75609c4aec3d9f0a6d88c80"
+    },
+    {
+      "path": "public/og/cidade/niteroi.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 61082,
+      "sha256": "d8907b7a3a232de8714446e72d6965c03de4a35ba777254994966e3277cf0e0d"
+    },
+    {
+      "path": "public/og/cidade/niteroi.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 630,
+      "bytes": 24986,
+      "sha256": "0d012133c99b34d79167801bec9a48054c678e4f86da22b38aaac842ad26a3c2"
+    },
+    {
+      "path": "public/og/cidade/palmas.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 59747,
+      "sha256": "9942a8a0668c652892e74937aff7dcd4c32a0b67a605cfe79c1593f72a3dfeff"
+    },
+    {
+      "path": "public/og/cidade/palmas.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 630,
+      "bytes": 23284,
+      "sha256": "e81f62aaecdd171c5330ebaced33de13e0821ec5a9ad196e4e86447e2de96304"
+    },
+    {
+      "path": "public/og/cidade/porto-alegre.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 60159,
+      "sha256": "f220487a101841cd9c46be7d128a1493791a516ea148a565cb7ca6becf563e1a"
+    },
+    {
+      "path": "public/og/cidade/porto-alegre.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 630,
+      "bytes": 24542,
+      "sha256": "e9aa2a0280ebcbad06a6c76bf20ebb063a3d6e7bdaa89e7161563d53e0b5d1fc"
+    },
+    {
+      "path": "public/og/cidade/porto-velho.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 60145,
+      "sha256": "2484379e6f6232d7764f99d04ae667c5563e3ceefb2b1ea34ca07a3b5db286a6"
+    },
+    {
+      "path": "public/og/cidade/porto-velho.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 630,
+      "bytes": 24724,
+      "sha256": "e1b2b58dc6e1bf6570d6471c846c5384b9d9c1c862d673ecf12fcbad989e3aab"
+    },
+    {
+      "path": "public/og/cidade/recife.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 59149,
+      "sha256": "884ddc98dabd734031d0cb9c72b4862cfefe3d07fbb35c55627da7fd6905f408"
+    },
+    {
+      "path": "public/og/cidade/recife.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 630,
+      "bytes": 24242,
+      "sha256": "b2347c8085f15bcf796dc73adcd72d2b0bbd8b9bffe38bb779c998c37a23ea0c"
+    },
+    {
+      "path": "public/og/cidade/rio-branco.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 59068,
+      "sha256": "ff0d4c0802e85ba59c6d183c50c215fe3caeb9a33f3afb9b30a8fe0dcc7c8a0d"
+    },
+    {
+      "path": "public/og/cidade/rio-branco.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 630,
+      "bytes": 23964,
+      "sha256": "a13747a84386c2e7a9d0a5a8c647e20a62ecd5244b9ef9e29f5f42d8cf3a531a"
+    },
+    {
+      "path": "public/og/cidade/rio-de-janeiro.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 60052,
+      "sha256": "45bca37e6e58b282a368ddeb5edc2b88aad2936cb1200f8f294e93dce207fe35"
+    },
+    {
+      "path": "public/og/cidade/rio-de-janeiro.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 630,
+      "bytes": 23840,
+      "sha256": "b59d9895caa1a5d65678f368b2758b155c9b7841630087ca1dd5e094b6b6913e"
+    },
+    {
+      "path": "public/og/cidade/salvador.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 58539,
+      "sha256": "d4070e767b5596ff6333f84b095855d04773edcf3f85f647c291bc569e348a36"
+    },
+    {
+      "path": "public/og/cidade/salvador.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 630,
+      "bytes": 23904,
+      "sha256": "d793254aa101c13de068559d2b8954ca7efdbe5582f3792bbc2a1a6fd1ac3608"
+    },
+    {
+      "path": "public/og/cidade/santos.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 58765,
+      "sha256": "866e241e2b5b57021307d8f32651522386b131d159cd766a205d6f890f3f711f"
+    },
+    {
+      "path": "public/og/cidade/santos.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 630,
+      "bytes": 24000,
+      "sha256": "54ab49e11cb5d3eb07e7ca5a607bd573d30a0a882b6744b260c25b482960899c"
+    },
+    {
+      "path": "public/og/cidade/sao-bernardo-do-campo.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 58396,
+      "sha256": "51b8413eb97031e878ddb0aeacead7e4c5e0a7bbf19ee0b9351b745c717c36a6"
+    },
+    {
+      "path": "public/og/cidade/sao-bernardo-do-campo.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 630,
+      "bytes": 23952,
+      "sha256": "7f5477e011fbf345e90e4c9f6646f81311eace6e4ff1e4a06f1ec69a3a5aa01f"
+    },
+    {
+      "path": "public/og/cidade/sao-luis.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 58888,
+      "sha256": "0254aaf009699aac022fa7ae6f43f06ca7764eb4d3dc1123933ef6f5a98a0665"
+    },
+    {
+      "path": "public/og/cidade/sao-luis.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 630,
+      "bytes": 23262,
+      "sha256": "a130904c905c4002b934c52ac0304966658b039f3d7b46e1c3076ff95835764b"
+    },
+    {
+      "path": "public/og/cidade/sao-paulo.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 60276,
+      "sha256": "9ad94d502f695c98c409c87b0647f2491574b25a2361d1d2f9a79ba6680967c1"
+    },
+    {
+      "path": "public/og/cidade/sao-paulo.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 630,
+      "bytes": 24290,
+      "sha256": "99a8dc2b4a93dfa8fe2cc4fccdf08e8eaa67ea804870fdb7a2c75aa1b97fe135"
+    },
+    {
+      "path": "public/og/cidade/teresina.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 58553,
+      "sha256": "26118df84e7a46c596e20944836f0a518128d0cb7d369b5d21357b0ca6121102"
+    },
+    {
+      "path": "public/og/cidade/teresina.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 630,
+      "bytes": 24058,
+      "sha256": "318d572e868c9230c6c9af6fb1365b5e95929067d9a48ad3e96732114092eef9"
+    },
+    {
+      "path": "public/og/cidade/vitoria.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 59963,
+      "sha256": "dd8bbab14df0f75ae5672ab0fd203afbb055bcd46242d07d216242d9956c8123"
+    },
+    {
+      "path": "public/og/cidade/vitoria.webp",
+      "format": "webp",
+      "width": 1200,
+      "height": 630,
+      "bytes": 24000,
+      "sha256": "d016522188b04c48cbbe1560cc3f51568244fc6ecade3f7dc3a09e73acb899f8"
+    },
+    {
+      "path": "public/og/eletrica.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 24589,
+      "sha256": "5a9ae800ccfe910003c002cfc78abcd9cdef84d27708cd2bfa75a39e670ebce9"
+    },
+    {
+      "path": "public/og/guias-precos.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 25388,
+      "sha256": "c067bb3144b1c22b772f0c4f8c836e8c6ce6628a1b47d901a85d45658af87816"
+    },
+    {
+      "path": "public/og/informatica.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 24120,
+      "sha256": "6b7683b05ba13be646856b44f3b8ada481a07f2ce302acf9717b49abfb1cedc1"
+    },
+    {
+      "path": "public/og/precos.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 26800,
+      "sha256": "97e8742e4af48615dc846a3c61b05bc8d0afeb1555d8213f1c5e93d8a378def5"
+    },
+    {
+      "path": "public/og/redes-wifi.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 23600,
+      "sha256": "f19a341e263118cd14174896a3025ae7f87564b74e9713ab1a27f24aa6d9a97b"
+    }
+  ]
+}

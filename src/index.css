@@ -460,3 +460,24 @@ html { scroll-behavior: smooth; }
     }
   }
 }
+
+/* ---------- Triage modal open state ---------- */
+/* Enquanto a triagem está aberta:
+   - esconde botões flutuantes de WhatsApp para nunca atravessarem o overlay;
+   - bloqueia scroll do body;
+   - remove interação com CTAs de rodapé.
+   O atributo é aplicado pelo GlobalTriageLauncher. */
+body[data-triage-open="true"] {
+  overflow: hidden;
+}
+body[data-triage-open="true"] [data-whatsapp-float],
+body[data-triage-open="true"] .whatsapp-float,
+body[data-triage-open="true"] a[href*="wa.me"][data-cta-float],
+body[data-triage-open="true"] a[href*="api.whatsapp.com"][data-cta-float] {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+body[data-triage-open="true"] footer a[href*="wa.me"],
+body[data-triage-open="true"] footer a[href^="tel:"] {
+  pointer-events: none !important;
+}

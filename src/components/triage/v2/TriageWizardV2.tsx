@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import {
   EQUIPMENTS, PRICING, URGENCY_OPTIONS, TERMS_VERSION,
-  routeLabel, type EquipmentId,
+  routeLabel, getReferenceRangeFor, type EquipmentId,
 } from "@/data/triage/config";
 import { getQuestionsForEquipment, type Question } from "@/data/triage/questions";
 import {
@@ -443,14 +443,15 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
               {pricing.route === "visita" && (
                 <li className="text-xs text-muted-foreground">
                   R$ {PRICING.visitaFee.toFixed(2).replace(".", ",")} por até {PRICING.visitaWindowMinutes} minutos.
-                  A cada novo período de {PRICING.visitaWindowMinutes} minutos poderá haver nova cobrança.
+                  Cada novo período de até {PRICING.visitaWindowMinutes} minutos pode gerar nova cobrança de
+                  R$ {PRICING.visitaFee.toFixed(2).replace(".", ",")}, limitado a 4 blocos (2 horas).
                   A visita não garante reparo; peças não inclusas.
                 </li>
               )}
               {pricing.route === "coleta" && (
                 <li className="text-xs text-muted-foreground">
-                  Serviços de até R$ {PRICING.coletaAutoApprovedCap} podem ser realizados sem nova autorização.
-                  Acima disso, orçamento prévio para aprovação. Peças não inclusas.
+                  Até R$ {PRICING.coletaAutoApprovedCap},00 o procedimento compatível pode ser executado sem nova autorização;
+                  acima disso, aguardamos sua aprovação. Peças não inclusas.
                 </li>
               )}
             </ul>
@@ -522,8 +523,9 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
                   />
                   <span className="text-sm">
                     Estou ciente de que a visita técnica para PC/Notebook custa <strong>R$ 99,99</strong> por
-                    até 30 minutos, com nova cobrança a cada período adicional de até 30 minutos.
-                    A visita não garante o reparo e peças não estão inclusas.
+                    até 30 minutos, e que cada novo período de até 30 minutos pode gerar nova cobrança de R$ 99,99,
+                    limitado a 4 blocos (2 horas). A visita não garante o reparo e peças não estão inclusas.
+                    Se for identificada necessidade de bancada, o atendimento será convertido em coleta e entrega.
                   </span>
                 </label>
                 {errors.visit && <p role="alert" className="text-xs text-destructive">{errors.visit}</p>}
@@ -571,6 +573,19 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
               {summary.minimum && <div><dt className="inline font-medium">Valor mínimo: </dt><dd className="inline">{summary.minimum}</dd></div>}
               {summary.sla && <div><dt className="inline font-medium">Prazo: </dt><dd className="inline">{summary.sla}</dd></div>}
             </dl>
+
+            {(() => {
+              const ref = getReferenceRangeFor(state.equipment, state.symptom);
+              if (!ref) return null;
+              return (
+                <div className="rounded-lg border border-dashed border-border bg-muted/20 p-3 text-xs text-muted-foreground">
+                  <p className="font-medium text-foreground">Referência aproximada, não vinculante</p>
+                  <p>{ref.label}: aproximadamente R$ {ref.from.toLocaleString("pt-BR")} a R$ {ref.to.toLocaleString("pt-BR")}.</p>
+                  {ref.note && <p>{ref.note}</p>}
+                  <p className="mt-1">Valores finais só são definidos após avaliação técnica.</p>
+                </div>
+              );
+            })()}
 
             <div className="grid gap-3 sm:grid-cols-2">
               <div>

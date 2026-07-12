@@ -1,112 +1,71 @@
 
-# Reestruturação do Funil de Triagem — Rodada 26
+# Alinhamento do Funil V2 à especificação global
 
-## Diagnóstico atual (análise dos arquivos)
+## Diagnóstico (o que já está em conformidade)
 
-- **`src/components/triage/triageMachine.ts`** — FSM linear (`category → device → symptom → branch → contact → accept → submitting`). Só 6 categorias (falta Surface, Tablet, Outro), passos fixos, sem perguntas contextuais por sintoma, sem cálculo de modalidade explicado, sem "resetDependentAnswers", sem versionamento de estado.
-- **`src/components/triage/TriageWizard.tsx`** (682 linhas) — JSX gigante com muita lógica condicional espalhada, aceites genéricos, sem foco automático progressivo, avanço via botão único.
-- **`src/data/symptoms.ts`** — tem `ServiceMode` mas não separa remoto/visita/coleta com as regras finais da rodada 26.
-- **`src/lib/whatsapp.ts`** — monta mensagem simples; falta o formato humano completo pedido.
-- **`GlobalTriageLauncher.tsx`** — abre dialog; ok, mas WhatsAppFloat precisa ficar atrás do overlay.
-- **Causa raiz da tela de erro relatada**: `SET_SYMPTOM` sobrescreve `symptomSlug` sem revalidar dependentes; ao trocar `category` depois, `getSymptom` continua com slug incompatível → `sym.triage.mode` retorna algo incoerente → `nextOf`/`canAdvance` divergem → botão "Continuar" tenta ir para `branch` mas `sym` já não pertence à categoria → renderização de `branch` acessa `sym.triage.mediaRequired` de um sintoma removido. Também há avanço duplo possível (botão + Enter). Não há Error Boundary específico.
+A Rodada 26 já implantou a arquitetura descrita no seu texto:
 
-## Nova arquitetura (dados-primeiro)
+- FSM pura em `src/lib/triage/engine.ts` (`determineServiceRoute`, `validateCurrentStep`, `resetDependentAnswers`, `buildTriageSummary`, `buildWhatsAppMessage`).
+- Configuração central em `src/data/triage/config.ts` (equipamentos, `PRICING`, `SLA`, `URGENCY_OPTIONS` sem "Hoje", `TERMS_VERSION`, `routeExplanation`).
+- Questionário contextual em `src/data/triage/questions.ts` cobrindo PC, TV, Celular/Tablet, Surface, Som, Videogame, Outro — incluindo "Quando aconteceu?" para queda/molhou/tela quebrada e "frequência" apenas para intermitentes.
+- `TriageWizardV2.tsx` mobile-first, focus trap via Radix Dialog, botão final "Agendar agora", trava do WhatsApp externo via `body[data-triage-open]` em `index.css`.
+- `TriageErrorBoundary` preserva a página em caso de falha do modal.
+- Registro em `terms_acceptances` com `termsVersion`, `route`, `pricing`, respostas e `terms_accepted_at`.
+- Regras de rota já bloqueiam remoto/visita para TV, Celular/Tablet, Surface, Som, Videogame e forçam coleta para PC que não liga / defeito de placa.
 
-### 1. Configuração central `src/data/triage/config.ts`
-Objeto único com:
-- `EQUIPMENTS` (7 itens: PC/Notebook, TV, Celular/Tablet, Surface, Som/Receiver/Áudio, Videogame, Outro)
-- `PRICING` (visita R$ 99,99/30min, coleta R$ 299,99, cancelamento R$ 99,99, faixas de referência TV/Som/Videogame/Celular)
-- `SLA` (3–60 dias úteis, aviso >60)
-- `TERMS_VERSION`, `COMPANY_NAME`, `WHATSAPP_ENV_KEY` (documentado onde alterar)
+## Lacunas a corrigir
 
-### 2. Catálogo `src/data/triage/questions.ts`
-Perguntas contextuais por equipamento e por sintoma, seguindo literalmente as rotas do briefing (PC, TV, Celular/Tablet, Surface, Som, Videogame, Outro), incluindo perguntas condicionais (molhou → "quando aconteceu", "tentou ligar", etc.).
+1. **Erro de banco (bug ativo relatado agora):**
+   `estimated_ticket_min/max` estavam como `integer` — inserções com `99.99` / `299.99` retornavam `invalid input syntax for type integer: "299.99"`. Já migrei para `numeric(10,2)` e recriei a policy `Anyone can insert leads`. Precisa ser publicado.
 
-### 3. Motor `src/lib/triage/engine.ts` (puro, testável)
-Funções sem React:
-```
-getQuestionsForEquipment(eq)
-getQuestionsForSymptom(eq, symptom)
-determineServiceRoute(state) → 'remoto' | 'visita' | 'coleta'
-getPricingRules(route, equipment, symptom)
-validateCurrentStep(state)
-getFirstIncompleteField(state)
-buildTriageSummary(state)
-buildWhatsAppMessage(state)
-resetDependentAnswers(state, changedField)
-```
-Regras exatas do briefing para `determineServiceRoute` (remoto só se PC/Notebook ligando + intenção software; visita só PC/Notebook em serviços leves; tudo o mais → coleta).
+2. **Textos de aceite:** revisar a copy dos checkboxes na etapa `termsAccepted` para usar exatamente a expressão da spec **"registro de ciência e aceite eletrônico"** e não sugerir "assinatura digital certificada".
 
-### 4. FSM `src/components/triage/triageMachine.ts` reescrita
-Estados: `equipment → deviceDetails → symptom → contextualAnswers → serviceRoute → termsAccepted → review`. Cada `SET_*` chama `resetDependentAnswers`. Migração: `TRIAGE_STATE_VERSION = 2`; estado antigo em localStorage é descartado.
+3. **Faixas informativas visíveis no resumo (opcional-recomendado):**
+   Hoje `REFERENCE_RANGES` existe em `config.ts` mas o wizard não mostra a faixa correspondente ao par equipamento+sintoma no resumo. Adicionar bloco *"Referência aproximada, não vinculante"* na etapa `review` quando houver match (TV display, LEDs, placa; som placa; videogame placa/leitor; celular/tablet).
 
-### 5. UI `TriageWizard.tsx` refatorado em componentes menores
-- `TriageModal` (Radix Dialog, `max-h-[100dvh]`, header/footer fixos, scroll interno, focus trap nativo do Radix).
-- `StepEquipment`, `StepDeviceDetails`, `StepSymptom`, `StepContextual`, `StepServiceRoute`, `StepTerms`, `StepReview`.
-- Auto-advance com trava `isTransitioning` (350–600ms), respeitando `prefers-reduced-motion`.
-- Foco progressivo via `getFirstIncompleteField`.
-- Pulse no ProgressBar ao completar etapa.
+4. **Regra dos R$ 300 (auto-aprovado):**
+   `PRICING.coletaAutoApprovedCap = 300` está no config mas não aparece no texto de aceite. Incluir na etapa `termsAccepted` (apenas rota coleta) a frase: *"Até R$ 300,00 o procedimento compatível pode ser executado sem nova autorização; acima disso, aguardamos sua aprovação."*
 
-### 6. Error Boundary `TriageErrorBoundary`
-Envolve o wizard, oferece "Reiniciar triagem" e preserva estado quando possível.
+5. **Bloco de visita — cobrança por 30 min:**
+   O texto atual diz "R$ 99,99 por até 30 minutos". Ajustar para explicitar *"cada novo período de até 30 minutos pode gerar nova cobrança de R$ 99,99, limitado a 4 blocos"* na aceitação da rota visita.
 
-### 7. WhatsApp
-- Botão final renomeado para **"Agendar agora"**.
-- `buildWhatsAppMessage` gera texto humano (não JSON), pulando campos vazios.
-- Fallback: se `window.open` bloquear, mostra sheet com mensagem copiável e link `wa.me`.
-- `WhatsAppFloat` e CTAs flutuantes recebem `data-triage-open` para ficarem `pointer-events:none` e `z-index` menor enquanto modal aberto (via CSS `body[data-triage-open="true"]`).
+6. **E2E:** os specs V1 (`e2e/triage-funnel.spec.ts`, `e2e/triage-handoff-origins.spec.ts`, `e2e/triage-whatsapp-flow.spec.ts`) ainda apontam para seletores do V1. Reescrever um único `e2e/triage-funnel-v2.spec.ts` cobrindo:
+   - remoto (PC funcionando + install_config),
+   - visita (PC funcionando + printer_periph),
+   - coleta forçada (TV screen_broken, Celular wet, Videogame no_power),
+   - PC no_power → coleta,
+   - troca de equipamento reseta respostas dependentes,
+   - aceite obrigatório antes do CTA final,
+   - WhatsApp externo bloqueado enquanto modal aberto.
 
-### 8. Textos e conteúdo
-- Remover "Outro / Só orçamento" → "Outro".
-- Remover "Hoje" → "Próximas 72 horas úteis — até 3 dias úteis".
-- Aceites separados por modalidade (coleta tem 3 checkboxes distintos: valor mínimo, cancelamento R$ 99,99, prazo).
-- Nenhum checkbox pré-marcado.
-- Texto contextual calculado por rota (nunca "remoto ou visita" genérico).
+7. **Limpeza:** remover `TriageWizard` (V1) e `triageMachine.ts` (V1) após E2E V2 verdes, para eliminar código morto.
 
-## Testes
+## Fora de escopo
 
-- **Unitários** (Vitest) `src/lib/triage/engine.test.ts` — cobre os 22 cenários listados no briefing.
-- **E2E** novo `e2e/triage-funnel-v2.spec.ts` cobrindo: PC funcionando+software→remoto; PC não liga→coleta; TV tela quebrada→coleta+display; Celular molhou→perguntas condicionais; Surface→coleta; troca de equipamento no meio→limpa dependentes; aceite não marcado→WhatsApp bloqueado; teclado mobile→campo visível.
-- **Ajuste** dos E2E existentes (`triage-funnel.spec.ts`, `triage-handoff-origins.spec.ts`, `triage-whatsapp-flow.spec.ts`) para o novo contrato — sem remover cobertura.
+- SEO, sitemap, preços institucionais, blog, analytics, Google Ads, layout de páginas externas ao funil — não serão tocados.
+- GSC, Bloco D e nova publicação: bloqueados até sua autorização expressa.
 
-## Preservação explícita
+## Detalhes técnicos
 
-- Nenhuma alteração em rotas, SEO, sitemap, blog, `SEOHead`, analytics local, Google Ads, componentes institucionais, número WhatsApp (lido de env como hoje).
-- Identidade visual mantida (tokens semânticos, mesmas cores primárias).
-- `GlobalTriageLauncher` continua sendo o único ponto de abertura (já reforçado na rodada 25.1).
+Arquivos a editar:
+- `src/components/triage/v2/TriageWizardV2.tsx` — copy da etapa `termsAccepted`, bloco de faixas informativas na `review`, texto da regra R$ 300 e blocos de visita.
+- `src/data/triage/config.ts` — se necessário, expor helper `getReferenceRangeFor(equipmentId, symptom)`.
+- `src/lib/triage/engine.ts` — sem mudanças de contrato; só se helper for adicionado.
+- `e2e/triage-funnel-v2.spec.ts` — novo.
+- `e2e/triage-funnel.spec.ts`, `e2e/triage-handoff-origins.spec.ts`, `e2e/triage-whatsapp-flow.spec.ts` — remover.
 
-## Arquivos a criar
+Gates a executar após as edições, sem publicar:
+1. `bunx tsgo --noEmit`
+2. `bun run build`
+3. `bunx vitest run src/lib/triage/engine.test.ts`
+4. `bunx playwright test e2e/triage-funnel-v2.spec.ts --workers=1`
+5. Smoke visual mobile 375×812 do modal em `/` (home).
 
-- `src/data/triage/config.ts`
-- `src/data/triage/questions.ts`
-- `src/lib/triage/engine.ts` (+ `.test.ts`)
-- `src/lib/triage/state.ts` (versionamento + migração)
-- `src/components/triage/TriageErrorBoundary.tsx`
-- `src/components/triage/steps/StepEquipment.tsx`
-- `src/components/triage/steps/StepDeviceDetails.tsx`
-- `src/components/triage/steps/StepSymptom.tsx`
-- `src/components/triage/steps/StepContextual.tsx`
-- `src/components/triage/steps/StepServiceRoute.tsx`
-- `src/components/triage/steps/StepTerms.tsx`
-- `src/components/triage/steps/StepReview.tsx`
-- `src/components/triage/ProgressBar.tsx`
-- `e2e/triage-funnel-v2.spec.ts`
+## Entregáveis do turno de execução
 
-## Arquivos a alterar
-
-- `src/components/triage/TriageWizard.tsx` — orquestrador enxuto (~250 linhas).
-- `src/components/triage/triageMachine.ts` — reducer novo, `Step` estendido, `RESET_DEPENDENT`.
-- `src/lib/whatsapp.ts` — novo `buildTriageWhatsAppMessage`.
-- `src/index.css` — regras `body[data-triage-open]` para esconder floats.
-- `src/components/layout/WhatsAppFloat.tsx` — respeita atributo.
-- E2E existentes de triagem — sincronizar com o novo contrato.
-
-## Estimativa e escopo
-
-Trabalho grande (~1500 LOC líquidos, ~15 arquivos novos, ~6 alterados). Não altera nada fora da triagem. Publicação **não** será feita — entregarei relatório de arquivos alterados, cenários testados e configurações globais no final.
-
-## Perguntas antes de começar
-
-1. **Persistência do estado**: manter em localStorage entre sessões (com versionamento e migração) ou zerar sempre ao fechar o modal? O briefing diz "seguir estratégia definida sem estado incompatível" — preciso confirmar a estratégia.
-2. **MediaUploader atual** (upload seguro HMAC para bucket `triage-media`): manter como opcional na etapa de coleta ou remover do novo fluxo? Ele é usado hoje em sintomas com `mediaRequired`.
-3. **Integração backend atual** (`send-lead-notification`, tabela `leads`): continua sendo chamada antes de abrir o WhatsApp, ou o WhatsApp passa a ser o único canal e a persistência vira opcional?
+- Arquivos alterados (lista);
+- Regras de modalidade confirmadas via testes;
+- Causa raiz do bug de integer (resolvida na migração);
+- Como testar cada rota (roteiro passo-a-passo);
+- Confirmação de que nada fora do funil foi tocado;
+- Recomendação final de publicação (ou não).

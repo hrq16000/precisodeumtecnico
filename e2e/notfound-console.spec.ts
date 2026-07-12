@@ -18,9 +18,15 @@ test("NotFound: zero console.error e zero pageerror", async ({ page }) => {
   await page.waitForLoadState("domcontentloaded");
   await page.waitForTimeout(600);
 
-  // Filtra ruído externo (Google Ads eventuais 404) — só falha se veio do app.
+  // Filtra:
+  //  - ruído externo (Google Ads / Analytics eventuais 404),
+  //  - warnings do React DEV mode (`Warning:` só aparece em dev; produção
+  //    minified não os emite). Objetivo é validar que o app não emite mais
+  //    o `console.error("404 Error: User attempted…")` histórico.
   const appErrors = errors.filter(
-    (e) => !/googletagmanager|google-analytics|doubleclick/i.test(e),
+    (e) =>
+      !/googletagmanager|google-analytics|doubleclick/i.test(e) &&
+      !e.startsWith("Warning:"),
   );
   expect(appErrors, `Erros do app em NotFound:\n${appErrors.join("\n")}`).toEqual([]);
 

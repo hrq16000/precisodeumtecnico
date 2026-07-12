@@ -58,6 +58,10 @@ function assertTriageHandoff(text: string) {
 }
 
 test.describe("Triage handoff — contrato do wa.me para diferentes origens", () => {
+  test.beforeEach(async ({ context }) => {
+    await context.clearCookies();
+  });
+
   test("cenário 1: com localização GPS completa (Curitiba/Batel)", async ({ page }) => {
     await mockWrites(page);
     await page.goto("/triagem-preview");

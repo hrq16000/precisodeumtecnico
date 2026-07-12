@@ -36,7 +36,7 @@ html { scroll-behavior: smooth; }
 
     /* Muted */
     --muted: 220 14% 90%;
-    --muted-foreground: 220 9% 46%;
+    --muted-foreground: 220 9% 38%;
 
     /* Accent - Vibrant Green for WhatsApp/CTAs */
     --accent: 142 76% 36%;

@@ -240,7 +240,7 @@ export interface PricingRules {
 export function getPricingRules(state: TriageStateV2): PricingRules | undefined {
   const route = determineServiceRoute(state);
   if (!route) return undefined;
-  const { routeExplanation } = require("@/data/triage/config") as typeof import("@/data/triage/config");
+  // routeExplanation já importado no topo do módulo.
   return {
     route,
     routeLabel: routeLabel(route),
@@ -412,4 +412,4 @@ export function reducerV2(state: TriageStateV2, action: ActionV2): TriageStateV2
   }
 }
 
-export { PRICING, SLA };
+export { PRICING, SLA } from "@/data/triage/config";

@@ -145,7 +145,7 @@ export function QuickQuoteForm() {
               <div className="relative">
                 <Wrench className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground z-10" />
                 <Select value={formData.service} onValueChange={(value) => handleChange("service", value)}>
-                  <SelectTrigger className="pl-10 h-12 bg-background">
+                  <SelectTrigger className="pl-10 h-12 bg-background" aria-label="Selecione o serviço">
                     <SelectValue placeholder="Selecione o serviço" />
                   </SelectTrigger>
                   <SelectContent>

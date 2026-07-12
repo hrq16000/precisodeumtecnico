@@ -62,6 +62,7 @@ test.describe("SEO essentials", () => {
     const c1 = await page.locator('link[rel="canonical"]').getAttribute("href");
     expect(c1).toBeTruthy();
     await page.goto("/faq");
+    await page.waitForSelector("h1");
     const c2 = await page.locator('link[rel="canonical"]').getAttribute("href");
     expect(c2).toBeTruthy();
     expect(c2).not.toBe(c1);

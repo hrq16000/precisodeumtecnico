@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import { TriageWizard } from "@/components/triage/TriageWizard";
+import { TriageWizardV2 } from "@/components/triage/v2/TriageWizardV2";
+import { TriageErrorBoundary } from "@/components/triage/v2/TriageErrorBoundary";
 import { isTriageEnabled } from "@/lib/triageFlag";
 import type { Category } from "@/components/triage/triageMachine";
 import { logWaEvent } from "@/lib/waAudit";
@@ -87,15 +88,20 @@ export function GlobalTriageLauncher() {
   // Fecha o modal ao navegar entre rotas.
   useEffect(() => { setOpen(false); }, [location.pathname]);
 
+  // Marca <body> quando o modal está aberto — usado por CSS para esconder
+  // botões flutuantes de WhatsApp e bloquear interação com o rodapé.
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    if (open) document.body.setAttribute("data-triage-open", "true");
+    else document.body.removeAttribute("data-triage-open");
+    return () => document.body.removeAttribute("data-triage-open");
+  }, [open]);
+
   if (!enabled) return null;
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent
-        // Preserva ESC/botão X como únicos meios de fechar. Bloqueia click
-        // fora / pointerdown fora — evita o "duplo clique" fechar o modal
-        // que acabou de abrir (o segundo clique caía no overlay do Radix
-        // e disparava close, deixando dialogs=0). Rodada 25.1 · B.3.a.
         onPointerDownOutside={(e) => e.preventDefault()}
         onInteractOutside={(e) => e.preventDefault()}
         className="
@@ -103,24 +109,24 @@ export function GlobalTriageLauncher() {
           w-screen max-w-full h-[100dvh] rounded-none
           translate-x-0 translate-y-0 left-0 top-0
           sm:left-[50%] sm:top-[50%] sm:translate-x-[-50%] sm:translate-y-[-50%]
-          sm:w-full sm:max-w-2xl sm:h-auto sm:rounded-lg
-          overflow-y-auto
+          sm:w-full sm:max-w-[640px] sm:h-auto sm:rounded-lg
+          overflow-hidden
           [&>button.absolute]:hidden
         "
       >
         <VisuallyHidden>
           <DialogTitle>Triagem técnica</DialogTitle>
           <DialogDescription>
-            Assistente guiado para diagnóstico do seu equipamento em 6 etapas.
+            Assistente guiado para triagem obrigatória do seu equipamento em 7 etapas.
           </DialogDescription>
         </VisuallyHidden>
-        <TriageWizard
-          key={openCount}
-          source={detail.source || "global-launcher"}
-          initialCategory={detail.category}
-          initialSymptomSlug={detail.symptomSlug}
-          onClose={() => setOpen(false)}
-        />
+        <TriageErrorBoundary onReset={() => { setOpen(false); setTimeout(() => setOpenCount((n) => n + 1), 50); setTimeout(() => setOpen(true), 100); }}>
+          <TriageWizardV2
+            key={openCount}
+            source={detail.source || "global-launcher"}
+            onClose={() => setOpen(false)}
+          />
+        </TriageErrorBoundary>
       </DialogContent>
     </Dialog>
   );

@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { Layout } from "@/components/layout/Layout";
-import { TriageWizard } from "@/components/triage/TriageWizard";
+import { TriageWizardV2 } from "@/components/triage/v2/TriageWizardV2";
 import { OfferHighlight } from "@/components/marketing/OfferHighlight";
 
 /**
@@ -41,7 +41,7 @@ export default function TriagemPreview() {
             <OfferHighlight region="Curitiba" />
           </div>
 
-          <TriageWizard source="triagem-preview" />
+          <TriageWizardV2 source="triagem-preview" />
         </div>
       </section>
     </Layout>

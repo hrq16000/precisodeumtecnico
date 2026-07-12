@@ -20,7 +20,7 @@ async function robotsMetas(page: import("@playwright/test").Page) {
 test.describe("NotFound — robots/canonical", () => {
   test("rota inexistente direta: noindex + canonical não é home", async ({ page }) => {
     await page.goto("/rota-que-nao-existe-b3b");
-    await page.waitForLoadState("networkidle");
+    await page.waitForLoadState("domcontentloaded");
 
     const metas = await robotsMetas(page);
     expect(metas.length, "exatamente 1 meta robots").toBe(1);
@@ -57,7 +57,7 @@ test.describe("NotFound — robots/canonical", () => {
     await page.goto("/");
     const home = await page.locator('link[rel="canonical"]').getAttribute("href");
     await page.goto("/outra-rota-inexistente-xyz");
-    await page.waitForLoadState("networkidle");
+    await page.waitForLoadState("domcontentloaded");
     const c404 = await page.locator('link[rel="canonical"]').getAttribute("href");
     expect(c404).not.toBe(home);
     const metas = await robotsMetas(page);
@@ -67,7 +67,7 @@ test.describe("NotFound — robots/canonical", () => {
   test("voltar do NotFound restaura pathname anterior", async ({ page }) => {
     await page.goto("/");
     await page.goto("/nao-existe-abc");
-    await page.waitForLoadState("networkidle");
+    await page.waitForLoadState("domcontentloaded");
     await page.goBack();
     await page.waitForURL(/\/$|^\/(?:\?.*)?$/);
     expect(new URL(page.url()).pathname).toBe("/");
@@ -75,7 +75,7 @@ test.describe("NotFound — robots/canonical", () => {
 
   test("contrato preservado: /servico-em-nacional/xxx/yyy/informatica usa fallback nacional (noindex)", async ({ page }) => {
     await page.goto("/servico-em-nacional/xxx/yyy/informatica");
-    await page.waitForLoadState("networkidle");
+    await page.waitForLoadState("domcontentloaded");
     const metas = await robotsMetas(page);
     if (metas.length > 0) {
       const c = (await metas[0].getAttribute("content")) || "";

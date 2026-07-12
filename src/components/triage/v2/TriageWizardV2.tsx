@@ -575,7 +575,7 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
             </dl>
 
             {(() => {
-              const ref = getReferenceRangeFor(state.equipment, state.symptomAnswers.symptom);
+              const ref = getReferenceRangeFor(state.equipment, state.symptom);
               if (!ref) return null;
               return (
                 <div className="rounded-lg border border-dashed border-border bg-muted/20 p-3 text-xs text-muted-foreground">

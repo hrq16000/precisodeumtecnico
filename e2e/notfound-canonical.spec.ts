@@ -35,12 +35,22 @@ test.describe("NotFound — robots/canonical", () => {
       expect(canonical).toContain("/rota-que-nao-existe-b3b");
     }
 
-    // zero schemas comerciais falsos
-    const raw = (await page.locator('script[type="application/ld+json"]').allTextContents()).join("\n");
-    expect(raw).not.toContain('"@type":"FAQPage"');
-    expect(raw).not.toContain('"@type": "FAQPage"');
-    expect(raw).not.toContain('"@type":"Service"');
-    expect(raw).not.toContain('"@type": "Service"');
+    // zero schemas comerciais falsos e nenhum Service top-level específico de
+    // página (Service aninhado em LocalBusiness.hasOfferCatalog do baseline
+    // institucional é aceito — documentado em B.3.b, regra 5).
+    const scripts = await page.locator('script[type="application/ld+json"]').allTextContents();
+    for (const s of scripts) {
+      let parsed: unknown;
+      try { parsed = JSON.parse(s); } catch { continue; }
+      const items = Array.isArray(parsed) ? parsed : [parsed];
+      for (const it of items) {
+        if (it && typeof it === "object") {
+          const t = (it as Record<string, unknown>)["@type"];
+          expect(t, "nenhum FAQPage no 404").not.toBe("FAQPage");
+          expect(t, "nenhum Service top-level no 404").not.toBe("Service");
+        }
+      }
+    }
   });
 
   test("navegação SPA para rota inexistente: canonical atualizado (não vaza da anterior)", async ({ page }) => {

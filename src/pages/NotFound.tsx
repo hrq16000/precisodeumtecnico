@@ -1,24 +1,18 @@
 import { useLocation, Link } from "react-router-dom";
-import { useEffect } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { Button } from "@/components/ui/button";
-import { Home, ArrowLeft, MessageCircle, Search } from "lucide-react";
+import { Home, MessageCircle, Search } from "lucide-react";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
-import { pushLocalAnalyticsEvent } from "@/lib/localAnalytics";
 
 const NotFound = () => {
   const location = useLocation();
 
-  useEffect(() => {
-    // Rodada 25.2 — substitui console.error por evento local sanitizado
-    // (sem querystring, referrer ou dados pessoais).
-    pushLocalAnalyticsEvent({
-      event: "virtual_page_view",
-      route_type: "not_found",
-      page_path: location.pathname,
-    });
-  }, [location.pathname]);
+  // Rodada 25.2.1 — emissão de `virtual_page_view` é responsabilidade única
+  // do tracker global `useRoutePageview` (route_type="not_found" resolvido
+  // pelo fallback do resolver). Não emitimos manualmente aqui para evitar
+  // dois emissores lógicos convergindo no mesmo tick.
+
   const whatsappLink = buildWhatsAppUrl({ service: "assistência técnica", sourcePage: "/404" });
 
   return (

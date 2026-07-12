@@ -68,7 +68,7 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="/servicos" className="text-primary hover:text-primary/80 transition-colors text-sm font-medium">
+                <Link to="/servicos" className="text-background hover:text-white underline underline-offset-4 transition-colors text-sm font-semibold">
                   Ver todos →
                 </Link>
               </li>
@@ -87,7 +87,7 @@ export function Footer() {
                 </li>
               ))}
               <li>
-                <Link to="/regioes" className="text-primary hover:text-primary/80 transition-colors text-sm font-medium">
+                <Link to="/regioes" className="text-background hover:text-white underline underline-offset-4 transition-colors text-sm font-semibold">
                   Todas as regiões →
                 </Link>
               </li>

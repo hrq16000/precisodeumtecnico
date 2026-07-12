@@ -282,7 +282,7 @@ export function ContactForm() {
                   <FormLabel>Tipo de Serviço</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger aria-label="Tipo de serviço">
                         <SelectValue placeholder="Selecione um serviço" />
                       </SelectTrigger>
                     </FormControl>
@@ -307,7 +307,7 @@ export function ContactForm() {
                   <FormLabel>Cidade</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger aria-label="Cidade">
                         <SelectValue placeholder="Selecione sua cidade" />
                       </SelectTrigger>
                     </FormControl>
@@ -364,7 +364,10 @@ export function ContactForm() {
               checked={acceptedTerms}
               onCheckedChange={(checked) => setAcceptedTerms(checked === true)}
               className="mt-0.5"
+              aria-label="Li e concordo com os Termos de Orçamento Pré-Aprovado"
+              aria-labelledby="terms-contact-label"
             />
+            <span id="terms-contact-label" className="sr-only">Aceito os Termos de Orçamento Pré-Aprovado</span>
             <label htmlFor="terms-contact" className="text-sm text-muted-foreground leading-tight cursor-pointer">
               Li e concordo com os{" "}
               <TermsDialog

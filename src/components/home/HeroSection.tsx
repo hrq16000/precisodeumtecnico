@@ -79,7 +79,7 @@ export function HeroSection() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col gap-3 px-4 mb-6 animate-fade-up">
-            <Button size="lg" className="w-full bg-[#22C55E] hover:bg-[#16A34A] text-white font-bold text-lg py-6 rounded-xl shadow-lg shadow-green-500/30 transition-all hover:scale-[1.02]" asChild>
+            <Button size="lg" className="w-full bg-[#15803D] hover:bg-[#116932] text-white font-bold text-lg py-6 rounded-xl shadow-lg shadow-green-500/30 transition-all hover:scale-[1.02]" asChild>
               <a href={whatsappLink} target="_blank" rel="noopener noreferrer" data-wa-source="hero" data-service="assistência técnica" data-cta-label="hero_whatsapp" aria-label="Falar com técnico pelo WhatsApp (hero)">
                 <MessageCircle className="w-5 h-5 mr-2" />
                 Falar com técnico agora
@@ -101,26 +101,27 @@ export function HeroSection() {
           </div>
 
           {/* Feature Cards */}
+          <h2 className="sr-only">Diferenciais do atendimento</h2>
           <div className="grid grid-cols-2 gap-4 px-4 animate-fade-up">
             <div className="bg-white/5 backdrop-blur-md rounded-2xl p-5 border border-white/10">
-              <Clock className="w-10 h-10 text-[#3B82F6] mb-3" />
-              <h3 className="font-bold text-white text-2xl mb-1">24h</h3>
-              <p className="text-white/60 text-sm">Agendamento via WhatsApp</p>
+              <Clock className="w-10 h-10 text-[#3B82F6] mb-3" aria-hidden="true" />
+              <div className="font-bold text-white text-2xl mb-1" aria-label="24 horas">24h</div>
+              <p className="text-white/80 text-sm">Agendamento via WhatsApp</p>
             </div>
             <div className="bg-white/5 backdrop-blur-md rounded-2xl p-5 border border-white/10">
-              <Shield className="w-10 h-10 text-[#22C55E] mb-3" />
-              <h3 className="font-bold text-white text-2xl mb-1">1 Ano</h3>
-              <p className="text-white/60 text-sm">Garantia nos serviços</p>
+              <Shield className="w-10 h-10 text-[#22C55E] mb-3" aria-hidden="true" />
+              <div className="font-bold text-white text-2xl mb-1">1 Ano</div>
+              <p className="text-white/80 text-sm">Garantia nos serviços</p>
             </div>
             <div className="bg-white/5 backdrop-blur-md rounded-2xl p-5 border border-white/10">
-              <MapPin className="w-10 h-10 text-[#F59E0B] mb-3" />
-              <h3 className="font-bold text-white text-2xl mb-1">Curitiba   </h3>
-              <p className="text-white/60 text-sm">E região metropolitana</p>
+              <MapPin className="w-10 h-10 text-[#F59E0B] mb-3" aria-hidden="true" />
+              <div className="font-bold text-white text-2xl mb-1">Curitiba</div>
+              <p className="text-white/80 text-sm">E região metropolitana</p>
             </div>
             <div className="bg-white/5 backdrop-blur-md rounded-2xl p-5 border border-white/10">
-              <CheckCircle className="w-10 h-10 text-[#22C55E] mb-3" />
-              <h3 className="font-bold text-white text-2xl mb-1">5.000+</h3>
-              <p className="text-white/60 text-sm">Clientes satisfeitos</p>
+              <CheckCircle className="w-10 h-10 text-[#22C55E] mb-3" aria-hidden="true" />
+              <div className="font-bold text-white text-2xl mb-1">5.000+</div>
+              <p className="text-white/80 text-sm">Clientes satisfeitos</p>
             </div>
           </div>
         </div>

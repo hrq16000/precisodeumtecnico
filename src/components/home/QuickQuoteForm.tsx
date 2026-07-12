@@ -176,7 +176,10 @@ export function QuickQuoteForm() {
                   checked={acceptedTerms}
                   onCheckedChange={(checked) => setAcceptedTerms(checked === true)}
                   className="mt-0.5"
+                  aria-label="Li e concordo com os Termos de Orçamento Pré-Aprovado"
+                  aria-labelledby="terms-quick-label"
                 />
+                <span id="terms-quick-label" className="sr-only">Aceito os Termos de Orçamento Pré-Aprovado</span>
                 <label htmlFor="terms-quick" className="text-sm text-muted-foreground leading-tight cursor-pointer">
                   Li e concordo com os{" "}
                   <TermsDialog

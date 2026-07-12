@@ -3,8 +3,8 @@
  * ÚNICA fonte de verdade das regras de modalidade, validação e resumo.
  */
 import {
-  EQUIPMENT_BY_ID, PRICING, SLA, TERMS_VERSION, URGENCY_OPTIONS,
-  routeLabel, routeMinimumPrice, routeSlaText,
+  EQUIPMENT_BY_ID, TERMS_VERSION, URGENCY_OPTIONS,
+  routeExplanation, routeLabel, routeMinimumPrice, routeSlaText,
   type EquipmentId, type ServiceRoute, type UrgencyId,
 } from "@/data/triage/config";
 import { getQuestionsForEquipment, type Question } from "@/data/triage/questions";

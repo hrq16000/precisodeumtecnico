@@ -73,6 +73,26 @@ export const REFERENCE_RANGES: Record<string, { label: string; from: number; to:
   celular_generico:{ label: "Celular/Tablet",          from: 150,  to: 3000 },
 };
 
+/** Retorna faixa informativa aproximada para o par equipamento+sintoma, se houver. */
+export function getReferenceRangeFor(
+  equipmentId: EquipmentId | undefined,
+  symptom: string | undefined,
+): { label: string; from: number; to: number; note?: string } | null {
+  if (!equipmentId || !symptom) return null;
+  if (equipmentId === "tv") {
+    if (["screen_broken", "screen_lines", "screen_stains"].includes(symptom)) return REFERENCE_RANGES.tv_display;
+    if (["dark_with_sound", "blink_on_off"].includes(symptom)) return REFERENCE_RANGES.tv_leds;
+    if (["no_power", "no_image", "no_sound", "image_defect"].includes(symptom)) return REFERENCE_RANGES.tv_placa;
+  }
+  if (equipmentId === "som_audio") return REFERENCE_RANGES.som_placa;
+  if (equipmentId === "videogame") {
+    if (["no_disc", "turns_off"].includes(symptom)) return REFERENCE_RANGES.videogame_leitor;
+    return REFERENCE_RANGES.videogame_placa;
+  }
+  if (equipmentId === "celular_tablet") return REFERENCE_RANGES.celular_generico;
+  return null;
+}
+
 export const URGENCY_OPTIONS = [
   { id: "72h",    label: "Próximas 72 horas úteis — até 3 dias úteis" },
   { id: "week",   label: "Esta semana" },

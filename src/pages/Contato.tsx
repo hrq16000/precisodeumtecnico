@@ -90,7 +90,8 @@ const Contato = () => {
       </section>
 
       {/* Contact Cards */}
-      <section className="py-12 bg-background">
+      <section className="py-12 bg-background" aria-labelledby="canais-contato">
+        <h2 id="canais-contato" className="sr-only">Canais de contato</h2>
         <div className="container-custom">
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {contactInfo.map((info) => (
@@ -105,7 +106,7 @@ const Contato = () => {
                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${
                   info.highlight ? 'bg-success/20' : 'bg-primary/10'
                 }`}>
-                  <info.icon className={`w-6 h-6 ${info.highlight ? 'text-success' : 'text-primary'}`} />
+                  <info.icon className={`w-6 h-6 ${info.highlight ? 'text-success' : 'text-primary'}`} aria-hidden="true" />
                 </div>
                 <h3 className="font-bold text-lg text-card-foreground mb-1">
                   {info.title}
@@ -133,7 +134,7 @@ const Contato = () => {
                     {info.value}
                   </span>
                 )}
-                <p className="text-muted-foreground text-sm">{info.description}</p>
+                <p className={`text-sm ${info.highlight ? 'text-foreground/80' : 'text-muted-foreground'}`}>{info.description}</p>
               </div>
             ))}
           </div>

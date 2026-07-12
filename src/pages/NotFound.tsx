@@ -5,12 +5,19 @@ import { SEOHead } from "@/components/seo/SEOHead";
 import { Button } from "@/components/ui/button";
 import { Home, ArrowLeft, MessageCircle, Search } from "lucide-react";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
+import { pushLocalAnalyticsEvent } from "@/lib/localAnalytics";
 
 const NotFound = () => {
   const location = useLocation();
 
   useEffect(() => {
-    console.error("404 Error: User attempted to access non-existent route:", location.pathname);
+    // Rodada 25.2 — substitui console.error por evento local sanitizado
+    // (sem querystring, referrer ou dados pessoais).
+    pushLocalAnalyticsEvent({
+      event: "virtual_page_view",
+      route_type: "not_found",
+      page_path: location.pathname,
+    });
   }, [location.pathname]);
   const whatsappLink = buildWhatsAppUrl({ service: "assistência técnica", sourcePage: "/404" });
 

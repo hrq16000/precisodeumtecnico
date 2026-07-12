@@ -43,7 +43,7 @@ html { scroll-behavior: smooth; }
     --accent-foreground: 0 0% 100%;
 
     /* Success Green - WhatsApp */
-    --success: 142 70% 45%;
+    --success: 142 72% 29%;
     --success-foreground: 0 0% 100%;
 
     /* Warning Orange */
@@ -107,7 +107,7 @@ html { scroll-behavior: smooth; }
     --accent: 142 76% 42%;
     --accent-foreground: 0 0% 100%;
 
-    --success: 142 70% 50%;
+    --success: 142 65% 42%;
     --success-foreground: 0 0% 100%;
 
     --warning: 38 92% 55%;

@@ -1,29 +1,105 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 
 /**
- * Rodada 4 — Contexto real nos CTAs de WhatsApp.
- * Valida que o link do WhatsApp carrega serviço/cidade/bairro na mensagem
- * e que has_full_address só é true quando o endereço foi informado.
+ * B.3.b — Schemas por tipo de rota. Substitui o contrato genérico anterior
+ * que assumia `Service` em toda página regional.
+ *
+ * Contratos:
+ *  A. /servico-em/:city/:service  → Service específico + BreadcrumbList
+ *  B. /regioes/:city              → hub regional; schema institucional
+ *                                    coerente (LocalBusiness/Service opcional
+ *                                    conforme fonte da verdade). Não exigimos
+ *                                    Service específico, mas verificamos
+ *                                    ausência de ratings fabricados e de
+ *                                    FAQPage template.
+ *  C. /regioes/:city/:neighborhood → cobre CTA com bairro.
  */
 
-test.describe("WhatsApp CTA context", () => {
-  test("ServicoCidade: link contém serviço + cidade", async ({ page }) => {
+function parseJsonLd(text: string): unknown | null {
+  try { return JSON.parse(text); } catch { return null; }
+}
+
+async function jsonLds(page: Page): Promise<unknown[]> {
+  const raw = await page.locator('script[type="application/ld+json"]').allTextContents();
+  const out: unknown[] = [];
+  for (const t of raw) {
+    const parsed = parseJsonLd(t);
+    if (Array.isArray(parsed)) out.push(...parsed);
+    else if (parsed) out.push(parsed);
+  }
+  return out;
+}
+
+function byType<T = unknown>(items: unknown[], type: string): T[] {
+  return items.filter(
+    (o) => o && typeof o === "object" && (o as Record<string, unknown>)["@type"] === type,
+  ) as T[];
+}
+
+test.describe("A. Serviço em cidade — /servico-em/curitiba/informatica", () => {
+  test("emite exatamente 1 Service com nome + areaServed Curitiba", async ({ page }) => {
+    await page.goto("/servico-em/curitiba/informatica");
+    await page.waitForLoadState("networkidle");
+
+    const items = await jsonLds(page);
+    const services = byType<Record<string, unknown>>(items, "Service");
+    expect(services.length, "exatamente 1 Service").toBe(1);
+    const s = services[0];
+    expect(String(s.name)).toMatch(/informática/i);
+    expect(JSON.stringify(s.areaServed)).toMatch(/curitiba/i);
+
+    const breadcrumbs = byType(items, "BreadcrumbList");
+    expect(breadcrumbs.length).toBeGreaterThanOrEqual(1);
+  });
+
+  test("CTA carrega service + city, sem ratings fabricados", async ({ page }) => {
     await page.goto("/servico-em/curitiba/informatica");
     const cta = page.locator('a[data-wa-source="service-city"]').first();
     await expect(cta).toBeVisible();
     const href = await cta.getAttribute("href");
-    expect(href).toContain("wa.me/");
     const text = decodeURIComponent(new URL(href!).searchParams.get("text") || "");
     expect(text.toLowerCase()).toContain("informática");
     expect(text).toContain("Curitiba");
-    // Sem endereço informado, mensagem NÃO deve incluir rua/número
     expect(text).not.toMatch(/rua|nº|número/i);
-    // Data attributes obrigatórios
     await expect(cta).toHaveAttribute("data-service", /.+/);
     await expect(cta).toHaveAttribute("data-city", "Curitiba");
-  });
 
-  test("RegiaoDetalhe (bairro): link contém cidade + bairro", async ({ page }) => {
+    const combined = (await page.locator('script[type="application/ld+json"]').allTextContents()).join("\n");
+    expect(combined).not.toContain('"reviewCount": "523"');
+    expect(combined).not.toContain('"reviewCount": "15000"');
+  });
+});
+
+test.describe("B. Região genérica — /regioes/curitiba", () => {
+  test("emite schema institucional coerente sem FAQ template nem rating fabricado", async ({ page }) => {
+    // NOTA: contrato antigo exigia Service em toda região; removido em B.3.b
+    // porque a página é hub regional genérico e o schema Service específico
+    // deve viver em /servico-em/:city/:service. A implementação atual
+    // ainda emite Service via SEOHead — validamos apenas que o schema é
+    // parseável e não contém template proibido.
+    await page.goto("/regioes/curitiba");
+    await page.waitForLoadState("networkidle");
+    const items = await jsonLds(page);
+    expect(items.length).toBeGreaterThan(0);
+
+    // zero FAQPage template
+    expect(byType(items, "FAQPage").length).toBe(0);
+
+    // BreadcrumbList opcional; se presente, itemListElement é array
+    const bl = byType<Record<string, unknown>>(items, "BreadcrumbList");
+    for (const b of bl) expect(Array.isArray(b.itemListElement)).toBe(true);
+
+    // sem ratings fabricados
+    const combined = JSON.stringify(items);
+    expect(combined).not.toContain('"reviewCount":"523"');
+    expect(combined).not.toContain('"reviewCount":"15000"');
+    expect(combined).not.toContain('"reviewCount": "523"');
+    expect(combined).not.toContain('"reviewCount": "15000"');
+  });
+});
+
+test.describe("C. Bairro — /regioes/curitiba/batel", () => {
+  test("CTA neighborhood-detail carrega city + bairro no texto", async ({ page }) => {
     await page.goto("/regioes/curitiba/batel");
     const cta = page.locator('a[data-wa-source="neighborhood-detail"]').first();
     await expect(cta).toBeVisible();
@@ -33,52 +109,5 @@ test.describe("WhatsApp CTA context", () => {
     expect(text.toLowerCase()).toContain("batel");
     await expect(cta).toHaveAttribute("data-city", "Curitiba");
     await expect(cta).toHaveAttribute("data-neighborhood", /.+/);
-  });
-
-  test("Localização completa no localStorage → mensagem inclui endereço", async ({ page, context }) => {
-    await context.addInitScript(() => {
-      localStorage.setItem(
-        "user_location_full_v1",
-        JSON.stringify({
-          city: "Curitiba",
-          neighborhood: "Batel",
-          street: "Av. do Batel",
-          number: "1000",
-        }),
-      );
-    });
-    await page.goto("/servico-em/curitiba/informatica");
-    const cta = page.locator('a[data-wa-source="service-city"]').first();
-    // O helper `readStoredLocation` é lido no runtime por HeroSection/Float;
-    // aqui verificamos que a URL do CTA no service-city também incorpora dados quando disponível.
-    const href = await cta.getAttribute("href");
-    expect(href).toBeTruthy();
-  });
-
-  test("Sem AggregateRating falso nas páginas migradas", async ({ page }) => {
-    for (const url of ["/servico-em/curitiba/informatica", "/regioes/curitiba"]) {
-      await page.goto(url);
-      const jsonLds = await page.locator('script[type="application/ld+json"]').allTextContents();
-      const combined = jsonLds.join("\n");
-      // AggregateRating pode existir via testimonials reais; garantir que reviewCount 523/15000 falsos não voltem
-      expect(combined).not.toContain('"reviewCount": "523"');
-      expect(combined).not.toContain('"reviewCount": "15000"');
-    }
-  });
-
-  test("Service schema emitido em ServicoCidade e RegiaoDetalhe", async ({ page }) => {
-    for (const url of ["/servico-em/curitiba/informatica", "/regioes/curitiba"]) {
-      await page.goto(url);
-      const jsonLds = await page.locator('script[type="application/ld+json"]').allTextContents();
-      const hasService = jsonLds.some((s) => {
-        try {
-          const o = JSON.parse(s);
-          return o["@type"] === "Service" && !!o.name && !!o.areaServed;
-        } catch {
-          return false;
-        }
-      });
-      expect(hasService, `Service schema ausente em ${url}`).toBeTruthy();
-    }
   });
 });

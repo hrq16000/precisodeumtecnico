@@ -19,6 +19,8 @@ const NotFound = () => {
       <SEOHead
         title="Página Não Encontrada | Preciso de Um Técnico"
         description="A página que você está procurando não foi encontrada. Volte para a página inicial ou entre em contato conosco."
+        canonical={`https://precisodeumtecnico.com${location.pathname}`}
+        noindex
       />
       
       <section className="section-padding bg-background min-h-[60vh] flex items-center">

@@ -53,6 +53,8 @@ test.describe("axe a11y – formulário e modal interativos", () => {
   test("contato: formulário visível é acessível", async ({ page }) => {
     await page.goto("/contato");
     await page.waitForLoadState("domcontentloaded");
+    // Aguarda o form renderizar (React hydrate); include() falha com "No elements found" se rodar cedo demais.
+    await page.locator("form").first().waitFor({ state: "attached", timeout: 10_000 });
     const results = await new AxeBuilder({ page })
       .include("form")
       .withTags(["wcag2a", "wcag2aa"])
@@ -61,6 +63,9 @@ test.describe("axe a11y – formulário e modal interativos", () => {
     const serious = results.violations.filter((v) =>
       ["serious", "critical"].includes(v.impact ?? ""),
     );
-    expect(serious).toEqual([]);
+    expect(
+      serious,
+      JSON.stringify(serious.map((v) => ({ id: v.id, nodes: v.nodes.length })), null, 2),
+    ).toEqual([]);
   });
 });

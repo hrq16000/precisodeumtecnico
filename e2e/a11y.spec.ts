@@ -16,15 +16,32 @@ import AxeBuilder from "@axe-core/playwright";
 const DESKTOP = { width: 1280, height: 1800 };
 const MOBILE = { width: 390, height: 844 };
 
+async function disableAnimations(page: Page) {
+  await page.addStyleTag({
+    content: `
+      *, *::before, *::after {
+        animation-duration: 0s !important;
+        animation-delay: 0s !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0s !important;
+        transition-delay: 0s !important;
+        opacity: 1 !important;
+      }
+    `,
+  });
+}
+
 async function waitHomeHydrated(page: Page) {
   await page.locator("h1").first().waitFor({ state: "visible", timeout: 10_000 });
   await page.locator('[data-wa-source="hero"]').first().waitFor({ state: "visible", timeout: 10_000 });
+  await disableAnimations(page);
 }
 
 async function waitContatoHydrated(page: Page) {
   await page.locator("h1").first().waitFor({ state: "visible", timeout: 10_000 });
   await page.locator("form").first().waitFor({ state: "attached", timeout: 10_000 });
   await page.locator("#terms-contact").waitFor({ state: "attached", timeout: 10_000 });
+  await disableAnimations(page);
 }
 
 function assertNoCriticalOrSerious(violations: Awaited<ReturnType<AxeBuilder["analyze"]>>["violations"], label: string) {

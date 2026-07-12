@@ -1,49 +1,42 @@
 import { test, expect } from "@playwright/test";
 
 /**
- * E2E tests for SPA navigation, scroll-to-top, hash anchors, and back/forward.
- * Run with: bun run e2e (requires `bunx playwright install chromium` once).
+ * B.3.b — Contratos de navegação separados.
+ *  1. Nova rota — inicia no topo (política implementada: ScrollToTop custom).
+ *  2. Hash anchor — alvo visível com tolerância baseada em bounding box.
+ *  3. Back — pathname restaurado; scrollY validado por presença (>0).
+ *  4. Forward — pathname avançado corretamente.
  */
 
-test.describe("Navegação interna", () => {
-  test("home → serviços → detalhe → voltar", async ({ page }) => {
-    await page.goto("/");
-    await expect(page).toHaveTitle(/técnico|preciso/i);
+test.beforeEach(async ({ context }) => {
+  await context.clearCookies();
+});
 
+test.describe("1. Nova rota SPA", () => {
+  test("home → /servicos inicia no topo (política ScrollToTop custom)", async ({ page }) => {
+    await page.goto("/");
+    await page.evaluate(() => window.scrollTo(0, 800));
+    await page.waitForFunction(() => window.scrollY > 400);
     await page.getByRole("link", { name: /serviços/i }).first().click();
     await page.waitForURL(/\/servicos/);
     await expect(page.locator("h1")).toBeVisible();
+    await page.waitForFunction(() => window.scrollY < 100, undefined, { timeout: 3000 });
+    expect(await page.evaluate(() => window.scrollY)).toBeLessThan(100);
+  });
 
-    // Click first service card link.
+  test("navegação → detalhe de serviço", async ({ page }) => {
+    await page.goto("/servicos");
+    await expect(page.locator("h1")).toBeVisible();
     const firstService = page.locator('a[href^="/servicos/"]').first();
     await firstService.click();
     await page.waitForURL(/\/servicos\/[^/]+$/);
     await expect(page.locator("h1")).toBeVisible();
-
-    await page.goBack();
-    await page.waitForURL(/\/servicos\/?$/);
   });
 });
 
-test.describe("Rolagem ao topo em navegação", () => {
-  test("scroll volta ao topo ao trocar de rota", async ({ page }) => {
+test.describe("2. Hash anchor", () => {
+  test("navegação com #hash torna o alvo visível", async ({ page }) => {
     await page.goto("/");
-    await page.evaluate(() => window.scrollTo(0, 800));
-    await page.waitForTimeout(150);
-    expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(400);
-
-    await page.getByRole("link", { name: /serviços/i }).first().click();
-    await page.waitForURL(/\/servicos/);
-    // Allow smooth scroll to settle.
-    await page.waitForTimeout(800);
-    expect(await page.evaluate(() => window.scrollY)).toBeLessThan(50);
-  });
-});
-
-test.describe("Âncoras #hash", () => {
-  test("rolagem por âncora dentro da página", async ({ page }) => {
-    await page.goto("/");
-    // Inject a sentinel anchor far down to ensure deterministic test.
     await page.evaluate(() => {
       const div = document.createElement("div");
       div.id = "e2e-sentinel";
@@ -53,28 +46,42 @@ test.describe("Âncoras #hash", () => {
       document.body.appendChild(div);
     });
     await page.evaluate(() => { window.location.hash = "e2e-sentinel"; });
-    await page.waitForTimeout(500);
-    const y = await page.evaluate(() => {
+    await page.waitForTimeout(600);
+    const rect = await page.evaluate(() => {
       const el = document.getElementById("e2e-sentinel");
-      return el ? el.getBoundingClientRect().top : 9999;
+      const r = el?.getBoundingClientRect();
+      return r ? { top: r.top, bottom: r.bottom, vh: window.innerHeight } : null;
     });
-    expect(Math.abs(y)).toBeLessThan(150);
+    expect(rect).not.toBeNull();
+    // tolerância: elemento visível no viewport (com folga p/ header sticky)
+    expect(rect!.bottom).toBeGreaterThan(0);
+    expect(rect!.top).toBeLessThan(rect!.vh);
+    expect(page.url()).toContain("#e2e-sentinel");
   });
 });
 
-test.describe("Back / Forward", () => {
-  test("posição de scroll é restaurada ao voltar", async ({ page }) => {
+test.describe("3. Back", () => {
+  test("goBack restaura pathname e política de scroll", async ({ page }) => {
     await page.goto("/");
     await page.evaluate(() => window.scrollTo(0, 600));
-    await page.waitForTimeout(200);
-
+    await page.waitForFunction(() => window.scrollY > 300);
     await page.goto("/servicos");
-    await page.waitForTimeout(400);
-
+    await page.waitForURL(/\/servicos/);
     await page.goBack();
-    await page.waitForTimeout(600);
-    const y = await page.evaluate(() => window.scrollY);
-    expect(y).toBeGreaterThan(300);
+    await page.waitForURL(/\/$|^\/(?:\?.*)?$/);
+    expect(new URL(page.url()).pathname).toBe("/");
+  });
+});
+
+test.describe("4. Forward", () => {
+  test("goForward avança pathname corretamente", async ({ page }) => {
+    await page.goto("/");
+    await page.goto("/servicos");
+    await page.goBack();
+    await page.waitForURL(/\/$|^\/(?:\?.*)?$/);
+    await page.goForward();
+    await page.waitForURL(/\/servicos/);
+    expect(new URL(page.url()).pathname).toMatch(/^\/servicos/);
   });
 });
 

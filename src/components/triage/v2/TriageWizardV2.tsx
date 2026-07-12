@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import {
   EQUIPMENTS, PRICING, URGENCY_OPTIONS, TERMS_VERSION,
-  routeLabel, type EquipmentId,
+  routeLabel, getReferenceRangeFor, type EquipmentId,
 } from "@/data/triage/config";
 import { getQuestionsForEquipment, type Question } from "@/data/triage/questions";
 import {

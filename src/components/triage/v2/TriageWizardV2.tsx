@@ -574,6 +574,19 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
               {summary.sla && <div><dt className="inline font-medium">Prazo: </dt><dd className="inline">{summary.sla}</dd></div>}
             </dl>
 
+            {(() => {
+              const ref = getReferenceRangeFor(state.equipment, state.symptomAnswers.symptom);
+              if (!ref) return null;
+              return (
+                <div className="rounded-lg border border-dashed border-border bg-muted/20 p-3 text-xs text-muted-foreground">
+                  <p className="font-medium text-foreground">Referência aproximada, não vinculante</p>
+                  <p>{ref.label}: aproximadamente R$ {ref.from.toLocaleString("pt-BR")} a R$ {ref.to.toLocaleString("pt-BR")}.</p>
+                  {ref.note && <p>{ref.note}</p>}
+                  <p className="mt-1">Valores finais só são definidos após avaliação técnica.</p>
+                </div>
+              );
+            })()}
+
             <div className="grid gap-3 sm:grid-cols-2">
               <div>
                 <Label htmlFor="triage-field-name">Nome</Label>

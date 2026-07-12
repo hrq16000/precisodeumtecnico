@@ -36,24 +36,31 @@ test.describe("1. Nova rota SPA", () => {
 
 test.describe("2. Hash anchor", () => {
   test("navegação com #hash torna o alvo visível", async ({ page }) => {
-    await page.goto("/");
-    await page.evaluate(() => {
-      const div = document.createElement("div");
-      div.id = "e2e-sentinel";
-      div.style.marginTop = "3000px";
-      div.style.height = "100px";
-      div.textContent = "sentinel";
-      document.body.appendChild(div);
+    // Injeta o sentinel via addInitScript para que exista antes da resolução
+    // do hash inicial pelo ScrollToTop (BrowserRouter só reage a mutações de
+    // hash via navegação real, não a `location.hash = ...`).
+    await page.addInitScript(() => {
+      const install = () => {
+        if (document.getElementById("e2e-sentinel")) return;
+        const div = document.createElement("div");
+        div.id = "e2e-sentinel";
+        div.style.marginTop = "3000px";
+        div.style.height = "100px";
+        div.textContent = "sentinel";
+        document.body.appendChild(div);
+      };
+      if (document.body) install();
+      else document.addEventListener("DOMContentLoaded", install);
     });
-    await page.evaluate(() => { window.location.hash = "e2e-sentinel"; });
-    await page.waitForTimeout(600);
+    await page.goto("/#e2e-sentinel");
+    await page.waitForFunction(() => !!document.getElementById("e2e-sentinel"));
+    await page.waitForTimeout(800); // MutationObserver + smooth scroll
     const rect = await page.evaluate(() => {
       const el = document.getElementById("e2e-sentinel");
       const r = el?.getBoundingClientRect();
       return r ? { top: r.top, bottom: r.bottom, vh: window.innerHeight } : null;
     });
     expect(rect).not.toBeNull();
-    // tolerância: elemento visível no viewport (com folga p/ header sticky)
     expect(rect!.bottom).toBeGreaterThan(0);
     expect(rect!.top).toBeLessThan(rect!.vh);
     expect(page.url()).toContain("#e2e-sentinel");

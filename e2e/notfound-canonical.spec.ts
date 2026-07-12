@@ -20,7 +20,7 @@ async function robotsMetas(page: import("@playwright/test").Page) {
 test.describe("NotFound — robots/canonical", () => {
   test("rota inexistente direta: noindex + canonical não é home", async ({ page }) => {
     await page.goto("/rota-que-nao-existe-b3b");
-    await page.waitForLoadState("networkidle");
+    await page.waitForLoadState("domcontentloaded");
 
     const metas = await robotsMetas(page);
     expect(metas.length, "exatamente 1 meta robots").toBe(1);
@@ -35,19 +35,29 @@ test.describe("NotFound — robots/canonical", () => {
       expect(canonical).toContain("/rota-que-nao-existe-b3b");
     }
 
-    // zero schemas comerciais falsos
-    const raw = (await page.locator('script[type="application/ld+json"]').allTextContents()).join("\n");
-    expect(raw).not.toContain('"@type":"FAQPage"');
-    expect(raw).not.toContain('"@type": "FAQPage"');
-    expect(raw).not.toContain('"@type":"Service"');
-    expect(raw).not.toContain('"@type": "Service"');
+    // zero schemas comerciais falsos e nenhum Service top-level específico de
+    // página (Service aninhado em LocalBusiness.hasOfferCatalog do baseline
+    // institucional é aceito — documentado em B.3.b, regra 5).
+    const scripts = await page.locator('script[type="application/ld+json"]').allTextContents();
+    for (const s of scripts) {
+      let parsed: unknown;
+      try { parsed = JSON.parse(s); } catch { continue; }
+      const items = Array.isArray(parsed) ? parsed : [parsed];
+      for (const it of items) {
+        if (it && typeof it === "object") {
+          const t = (it as Record<string, unknown>)["@type"];
+          expect(t, "nenhum FAQPage no 404").not.toBe("FAQPage");
+          expect(t, "nenhum Service top-level no 404").not.toBe("Service");
+        }
+      }
+    }
   });
 
   test("navegação SPA para rota inexistente: canonical atualizado (não vaza da anterior)", async ({ page }) => {
     await page.goto("/");
     const home = await page.locator('link[rel="canonical"]').getAttribute("href");
     await page.goto("/outra-rota-inexistente-xyz");
-    await page.waitForLoadState("networkidle");
+    await page.waitForLoadState("domcontentloaded");
     const c404 = await page.locator('link[rel="canonical"]').getAttribute("href");
     expect(c404).not.toBe(home);
     const metas = await robotsMetas(page);
@@ -57,7 +67,7 @@ test.describe("NotFound — robots/canonical", () => {
   test("voltar do NotFound restaura pathname anterior", async ({ page }) => {
     await page.goto("/");
     await page.goto("/nao-existe-abc");
-    await page.waitForLoadState("networkidle");
+    await page.waitForLoadState("domcontentloaded");
     await page.goBack();
     await page.waitForURL(/\/$|^\/(?:\?.*)?$/);
     expect(new URL(page.url()).pathname).toBe("/");
@@ -65,7 +75,7 @@ test.describe("NotFound — robots/canonical", () => {
 
   test("contrato preservado: /servico-em-nacional/xxx/yyy/informatica usa fallback nacional (noindex)", async ({ page }) => {
     await page.goto("/servico-em-nacional/xxx/yyy/informatica");
-    await page.waitForLoadState("networkidle");
+    await page.waitForLoadState("domcontentloaded");
     const metas = await robotsMetas(page);
     if (metas.length > 0) {
       const c = (await metas[0].getAttribute("content")) || "";

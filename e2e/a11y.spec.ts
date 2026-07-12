@@ -20,15 +20,15 @@ async function disableAnimations(page: Page) {
   await page.addStyleTag({
     content: `
       *, *::before, *::after {
-        animation-duration: 0s !important;
+        animation-duration: 0.001s !important;
         animation-delay: 0s !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0s !important;
+        transition-duration: 0.001s !important;
         transition-delay: 0s !important;
-        opacity: 1 !important;
       }
+      .animate-fade-up { opacity: 1 !important; transform: none !important; }
     `,
   });
+  await page.waitForTimeout(300);
 }
 
 async function waitHomeHydrated(page: Page) {

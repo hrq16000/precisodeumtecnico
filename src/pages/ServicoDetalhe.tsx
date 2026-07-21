@@ -326,6 +326,56 @@ const ServicoDetalhe = () => {
                 </div>
               </div>
 
+              {/* Depoimentos reais para este serviço (política Rodada 23: sem AggregateRating) */}
+              {serviceTestimonials.length > 0 && (
+                <div className="mb-12">
+                  <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-6">
+                    O que dizem quem já contratou
+                  </h2>
+                  <div className="space-y-4">
+                    {serviceTestimonials.map((t) => (
+                      <article
+                        key={`${t.name}-${t.date ?? t.service}`}
+                        className="p-6 rounded-xl bg-card border border-border/50"
+                      >
+                        <div
+                          className="flex items-center gap-1 mb-3"
+                          aria-label={`Nota ${t.rating} de 5`}
+                        >
+                          {Array.from({ length: t.rating }).map((_, i) => (
+                            <Star
+                              key={i}
+                              className="w-4 h-4 text-accent fill-accent"
+                              aria-hidden="true"
+                            />
+                          ))}
+                        </div>
+                        <p className="text-muted-foreground leading-relaxed mb-4">
+                          &ldquo;{t.text}&rdquo;
+                        </p>
+                        <footer className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
+                          <span className="font-semibold text-card-foreground">{t.name}</span>
+                          <span className="text-muted-foreground">·</span>
+                          <span className="text-muted-foreground">{t.location}</span>
+                          {t.date && (
+                            <>
+                              <span className="text-muted-foreground">·</span>
+                              <time dateTime={t.date} className="text-muted-foreground">
+                                {new Date(t.date).toLocaleDateString("pt-BR", {
+                                  month: "long",
+                                  year: "numeric",
+                                })}
+                              </time>
+                            </>
+                          )}
+                        </footer>
+                      </article>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+
               {/* FAQs */}
               <div>
                 <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-6">

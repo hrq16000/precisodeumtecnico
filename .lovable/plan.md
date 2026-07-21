@@ -1,50 +1,51 @@
-## Sequenciamento acordado (fatiar em rodadas)
+# Rodada 27 — Observabilidade, ativos visuais e expansão regional
 
-Decisões travadas nas respostas:
-- **WhatsApp direto**: exceção pós-triagem apenas — nunca em página pública.
-- **Sentry**: substituído por logger local + edge function `log-frontend-error` gravando em tabela `frontend_errors`.
-- **Bairros**: Top 5 por cidade (5 Curitiba + 5 SJP + 5 Pinhais + 5 Colombo = 20 páginas), na 26.3.
+Cinco solicitações, dois conflitos com regras vigentes e volume alto. Proponho fatiar em 3 sub-rodadas e resolver os conflitos antes de escrever qualquer código.
 
-### Rodada 26.1 — Troca de tela TV (Curitiba) + smoke + verificação produção  ← **começar por esta**
+## Conflitos de política a decidir agora
 
-**Escopo**
-1. Nova página `/servicos/troca-de-tela-tv-curitiba` (rota + entrada em `src/data/services.ts` ou análoga).
-   - H1, seção "Como funciona" (coleta obrigatória — regra já existente para TV), preço estimado (R$ 299,99 mínimo coleta), prazo, escopo do serviço, quando NÃO compensa trocar, FAQ local.
-   - CTA único → dispara `triage:open` com pré-classificação (equipamento=TV, sintoma=tela quebrada).
-   - JSON-LD `Service` + `FAQPage` + `BreadcrumbList` (paridade DOM ↔ schema, política Rodada 23).
-   - Sem AggregateRating; usar `getTestimonialsForService` para reviews individuais se houver match.
-2. Verificação de produção: fetch de `https://precisodeumtecnico.com/`, checar 200, presença de `<div id="root">` populado, ausência de erros de hidratação no HTML, canonical único.
-3. Smoke test automatizado `e2e/smoke-boot.spec.ts`: build → carrega `/`, valida header, H1, canonical, ausência de console.error, root não vazio. Rodar também contra a nova rota.
+### 1. Botão WhatsApp com mensagem pré-preenchida em página pública
+Regra atual (memória do projeto + guardrail Rodada 26): **a triagem é a porta única**, telefone/WhatsApp ficam ocultos até o handoff pós-classificação. Adicionar `wa.me` direto quebra:
+- O funil V2 (perde categoria, sintoma, urgência, mídia obrigatória).
+- O contrato analytics `triage_open` que sustenta o dashboard.
+- O spec `e2e/whatsapp-context.spec.ts` e a lógica de `GlobalTriageLauncher`.
 
-**Aceite**: typecheck + build + guards verdes; suíte E2E incluindo o novo smoke; fetch de produção OK.
+Três caminhos possíveis:
+- **A. Manter regra (recomendado)**: nenhum botão WhatsApp em página pública. Mantemos só o CTA de triagem — que já entrega WhatsApp no fim do fluxo com contexto correto.
+- **B. Exceção controlada**: liberar `wa.me` **apenas nas 3 páginas de serviço Curitiba** (TV Smart, Troca de Tela, Wi-Fi), com mensagem pré-preenchida por serviço, evento `wa_bypass` registrado na tabela `wa_bypass_events` e guardrail atualizado para permitir só nessas rotas.
+- **C. Abandonar regra**: expor WhatsApp em todas as páginas de serviço (não recomendo — perde qualificação).
 
----
+### 2. Galeria de "exemplos do que está incluso"
+Não temos fotos reais de atendimentos. Opções:
+- **A. Fotos reais** que você fornece (WebP + alt + legenda) — melhor para SEO e confiança, respeita a Rodada 23 (nada fabricado).
+- **B. Ilustrações genéricas** geradas por IA, claramente rotuladas como ilustrativas nas legendas.
+- **C. Adiar galeria** até haver material real.
 
-### Rodada 26.2 — Replicação SJP / Pinhais / Colombo (3 serviços × 3 cidades = 9 páginas)
-Conserto TV Smart, Troca de Tela TV, Configuração Wi-Fi. Reaproveita componentes/data-driven da 26.1. JSON-LD completo.
+## Escopo proposto — 3 sub-rodadas
 
-### Rodada 26.3 — Bairros × Conserto TV Smart (Top 5 por cidade = 20 páginas)
-Gerar por template + dados locais (`src/data/neighborhoods.ts`). Links internos cidade↔bairro. Guard anti-thin-content (mínimo de tokens únicos por página).
+### 27.1 — Sentry + validação de contratos de triagem (baixo risco)
+- Instrumentação de erros via `@sentry/react` com `ErrorBoundary` global e `BrowserTracing`. DSN vem de `VITE_SENTRY_DSN` (secret publicável — pode ficar no bundle).
+- Captura de falha de hidratação, erros de rota lazy e exceções não tratadas. Sampling 10% em produção, 100% em dev.
+- Log local sanitizado (sem PII) mantido como fallback quando DSN não existir.
+- Novo spec `e2e/triage-preclassification.spec.ts` valida que cada botão das 3 páginas Curitiba dispara `triage:open` com `category` e `symptomSlug` corretos (sem mapeamento incorreto). Cobre também o hero card de sintomas em `/assistencia-tecnica-curitiba`.
 
-### Rodada 26.4 — Monitoramento local de erros
-- Tabela `public.frontend_errors` (route, message, stack, ua, session_id, created_at) com RLS: insert-only para `anon`, select apenas `service_role`.
-- Edge function `log-frontend-error` (rate-limit por IP, sanitização, sem PII).
-- `src/lib/errorLogger.ts`: hooks em `window.onerror`, `unhandledrejection`, `React.ErrorBoundary` global; debounce e amostragem.
-- Handoff pós-triagem: link `wa.me` gerado apenas no passo final do funil (documentar exceção em memória).
+### 27.2 — Ativos visuais + decisão WhatsApp
+- Galeria WebP com alt text e legenda nas páginas de TV Smart, Troca de Tela e Wi-Fi (fonte definida no conflito 2).
+- Se aprovada opção B do conflito 1: componente `<WhatsAppQuickCTA/>` com mensagem por serviço, evento `wa_bypass` gravado, guardrail atualizado.
 
-### Rodada 26.5 — Galerias por serviço (TV Smart, troca de tela, Wi-Fi)
-Componente `ServiceGallery` com WebP + `<figcaption>` + alt descritivo. Assets via `lovable-assets` (CDN). Sem imagens fabricadas de "antes/depois" — apenas fotos genéricas do escopo.
+### 27.3 — Replicação regional (grande, precisa de duas passadas)
+- **Passo 1** (mesma rodada): 9 páginas cidade (3 serviços × SJP, Pinhais, Colombo) via template compartilhado orientado a dados. Preços, prazos e JSON-LD idênticos por serviço, apenas cidade varia.
+- **Passo 2** (rodada seguinte): páginas por bairro top 5 de cada cidade (5 bairros × 3 serviços × 4 cidades = 60 páginas). Precisamos definir a lista dos top 5 bairros de cada cidade antes; posso propor lista baseada nos dados de `regioes.ts`.
 
----
+## Detalhes técnicos
 
-## Detalhes técnicos da 26.1 (a única a executar agora)
+- **Sentry**: pacote `@sentry/react`. Init em `src/main.tsx`. `VITE_SENTRY_DSN` opcional — se ausente, sentry fica inerte (não quebra build). Sem `beforeSend` custom que possa vazar; enviamos apenas erro, breadcrumb técnico e URL sem query.
+- **Template regional**: novo `src/data/serviceCities.ts` com `{ city, slug, service, symptomSlug, ... }`. Uma página React genérica `src/pages/ServicoCidadeRegional.tsx` renderiza a partir da entrada. Uma rota `/servicos/:serviceSlug-:citySlug` ou 9 rotas explícitas — prefiro explícitas para evitar colisão com `/servicos/:slug`.
+- **Guardrails**: atualizar `e2e/public-routes-smoke.spec.ts` a cada nova rota. Manifesto OG precisa cobrir novos títulos se gerarmos imagens.
+- **Testes**: novo spec de pré-classificação, atualização do smoke e (se WhatsApp for aprovado) spec de dedupe/analytics do bypass.
 
-- Arquivos novos:
-  - `src/pages/TrocaDeTelaTVCuritiba.tsx`
-  - Rota em `src/App.tsx` (ou router central)
-  - Entrada em `src/data/services.ts` (slug, ticket, mode='coleta', pré-classificação)
-  - `e2e/smoke-boot.spec.ts`
-- Sem migrations, sem novas dependências.
-- Verificação de produção: `curl -sI` + `curl -s | grep` — sem tocar em `index.html` a menos que o fetch mostre root vazio (a mensagem menciona "correção do index.html", mas não há alteração pendente registrada; se o fetch estiver OK, apenas confirmo).
+## Decisões que preciso de você antes de executar 27.1
 
-Ao aprovar, executo 26.1 fim-a-fim e volto com resultados antes de iniciar 26.2.
+1. Conflito WhatsApp: **A**, **B** ou **C**?
+2. Galeria: **A** (fotos reais que você envia), **B** (ilustrações IA rotuladas) ou **C** (adiar)?
+3. Autorizo iniciar já pela **27.1 (Sentry + validação de contratos)**, que não depende das decisões acima?

@@ -4,8 +4,31 @@ import "./index.css";
 import { initWebVitals } from "./lib/webVitals";
 import { trackWhatsAppClick } from "./lib/analytics";
 import { pushLocalAnalyticsEvent } from "./lib/localAnalytics";
+import { initSentry, captureHandledError } from "./lib/sentry";
+import { GlobalErrorBoundary } from "./components/system/GlobalErrorBoundary";
 
-createRoot(document.getElementById("root")!).render(<App />);
+initSentry();
+
+createRoot(document.getElementById("root")!).render(
+  <GlobalErrorBoundary>
+    <App />
+  </GlobalErrorBoundary>,
+);
+
+if (typeof window !== "undefined") {
+  window.addEventListener("error", (event) => {
+    captureHandledError(event.error ?? new Error(event.message), {
+      source: "window.error",
+      filename: event.filename,
+    });
+  });
+  window.addEventListener("unhandledrejection", (event) => {
+    captureHandledError(event.reason ?? new Error("unhandledrejection"), {
+      source: "window.unhandledrejection",
+    });
+  });
+}
+
 
 initWebVitals();
 

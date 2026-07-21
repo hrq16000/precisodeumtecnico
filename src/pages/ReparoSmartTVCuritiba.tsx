@@ -252,6 +252,12 @@ export default function ReparoSmartTVCuritiba() {
         </div>
       </section>
 
+      <ServiceGallery
+        title="O que está incluso no reparo de Smart TV"
+        intro="Exemplos ilustrativos do que fazemos em bancada e do resultado esperado após o reparo. Não são fotos de atendimentos reais."
+        items={GALLERY}
+      />
+
       <section id="faq" className="py-16 md:py-20 border-t border-border">
         <div className="container-custom max-w-3xl">
           <div className="text-center">

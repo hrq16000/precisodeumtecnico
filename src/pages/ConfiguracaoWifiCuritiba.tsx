@@ -244,6 +244,25 @@ export default function ConfiguracaoWifiCuritiba() {
         items={GALLERY}
       />
 
+      <section className="py-12 md:py-16 border-t border-border bg-muted/30">
+        <div className="container-custom max-w-5xl">
+          <h2 className="text-2xl md:text-3xl font-bold text-foreground">Configuração de Wi-Fi por bairro em Curitiba</h2>
+          <p className="mt-2 text-muted-foreground max-w-2xl">Páginas dedicadas com o cenário real de rede em cada bairro e triagem pré-classificada.</p>
+          <ul className="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 text-sm">
+            {BAIRROS_CURITIBA_SERVICO.map((b) => (
+              <li key={b.slug}>
+                <Link
+                  to={`/servicos/configuracao-wifi/curitiba/${b.slug}`}
+                  className="block px-3 py-2 rounded-md border border-border bg-background hover:bg-accent hover:text-accent-foreground transition"
+                >
+                  {b.nome}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
       <section id="faq" className="py-16 md:py-20 border-t border-border">
         <div className="container-custom max-w-3xl">
           <div className="text-center">

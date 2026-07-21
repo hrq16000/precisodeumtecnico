@@ -10,6 +10,24 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { getSymptomBySlug } from "@/data/symptoms";
+import { ServiceGallery } from "@/components/service/ServiceGallery";
+
+const GALLERY = [
+  {
+    src: "/gallery/smart-tv-apps.webp",
+    alt: "Ilustração de Smart TV na sala com ícones genéricos de aplicativos carregando corretamente",
+    caption: "Após o reparo: apps abrindo sem travamento, sistema respondendo ao controle remoto.",
+    width: 1280,
+    height: 720,
+  },
+  {
+    src: "/gallery/smart-tv-bench.webp",
+    alt: "Ilustração de bancada técnica com Smart TV desmontada, multímetro e laptop mostrando diagnóstico",
+    caption: "Diagnóstico em bancada com equipamento calibrado antes do orçamento fechado.",
+    width: 1280,
+    height: 720,
+  },
+];
 
 const SYMPTOM_SLUG = "tv-smart-travando-apps";
 const PAGE_PATH = "/servicos/reparo-smart-tv-curitiba";

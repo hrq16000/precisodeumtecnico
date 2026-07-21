@@ -44,6 +44,8 @@ const CidadeNacional = lazy(() => import("./pages/CidadeNacional"));
 const BairroNacional = lazy(() => import("./pages/BairroNacional"));
 const ServicoBairroNacional = lazy(() => import("./pages/ServicoBairroNacional"));
 const TrocaDeTelaTVCuritiba = lazy(() => import("./pages/TrocaDeTelaTVCuritiba"));
+const ReparoSmartTVCuritiba = lazy(() => import("./pages/ReparoSmartTVCuritiba"));
+const ConfiguracaoWifiCuritiba = lazy(() => import("./pages/ConfiguracaoWifiCuritiba"));
 
 const TriagemPreview = lazy(() => import("./pages/TriagemPreview"));
 const Faq = lazy(() => import("./pages/Faq"));

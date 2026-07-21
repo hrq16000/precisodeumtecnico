@@ -10,6 +10,24 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { getSymptomBySlug } from "@/data/symptoms";
+import { ServiceGallery } from "@/components/service/ServiceGallery";
+
+const GALLERY = [
+  {
+    src: "/gallery/wifi-heatmap.webp",
+    alt: "Ilustração de planta baixa de residência com mapa de calor de sinal de Wi-Fi por cômodo",
+    caption: "Diagnóstico de cobertura por cômodo com medição de sinal antes de recomendar qualquer troca.",
+    width: 1280,
+    height: 720,
+  },
+  {
+    src: "/gallery/wifi-mesh.webp",
+    alt: "Ilustração de técnico configurando sistema mesh Wi-Fi integrado a TV e câmera de segurança",
+    caption: "Configuração de mesh e integração de TV, câmeras e assistentes na mesma rede.",
+    width: 1280,
+    height: 720,
+  },
+];
 
 const SYMPTOM_SLUG = "wifi-lento-instavel";
 const PAGE_PATH = "/servicos/configuracao-wifi-curitiba";
@@ -218,6 +236,12 @@ export default function ConfiguracaoWifiCuritiba() {
           </div>
         </div>
       </section>
+
+      <ServiceGallery
+        title="Como diagnosticamos e configuramos seu Wi-Fi"
+        intro="Exemplos ilustrativos de cobertura por cômodo e da configuração de mesh integrado. Não são fotos de atendimentos reais."
+        items={GALLERY}
+      />
 
       <section id="faq" className="py-16 md:py-20 border-t border-border">
         <div className="container-custom max-w-3xl">

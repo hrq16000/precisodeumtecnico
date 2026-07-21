@@ -16,7 +16,11 @@ export type CanonicalEvent =
   | "whatsapp_click"
   | "triage_open"
   | "triage_step"
-  | "triage_complete";
+  | "triage_complete"
+  | "triage_cta_intercept"
+  | "triage_cta_dedupe_skip"
+  | "triage_back"
+  | "triage_auto_advance";
 
 export type RouteType =
   | "home"

@@ -58,28 +58,52 @@ export function GlobalTriageLauncher() {
     // Guarda anti-duplo-clique: bloqueia cliques em < 400ms.
     let lastClick = 0;
     const handler = (e: MouseEvent) => {
-      const target = (e.target as HTMLElement | null)?.closest?.("a") as HTMLAnchorElement | null;
-      if (!target) return;
-      const href = target.getAttribute("href") || "";
+      const rawTarget = e.target as HTMLElement | null;
+      const anchor = rawTarget?.closest?.("a") as HTMLAnchorElement | null;
+      // Fallback: qualquer elemento marcado com data-triage-source dispara o
+      // wizard mesmo sem ser um <a href="wa.me/...">. Corrige CTAs de portal
+      // (botões/spans) que antes não eram capturados pelo interceptor.
+      const triageTrigger = rawTarget?.closest?.("[data-triage-source]") as HTMLElement | null;
+      const href = anchor?.getAttribute("href") || "";
       const isWhats = href.includes("wa.me") || href.includes("api.whatsapp.com") || href.startsWith("whatsapp:");
       const isTel = href.startsWith("tel:");
-      if (!isWhats && !isTel) return;
 
-      const source = target.dataset.waSource || target.dataset.triageSource || "cta-intercept";
-      const category = (target.dataset.triageCategory as Category | undefined) ?? undefined;
+      if (!anchor && !triageTrigger) return;
+      if (anchor && !isWhats && !isTel && !triageTrigger) return;
+
+      const el = (anchor ?? triageTrigger)!;
+      const source = el.dataset.waSource || el.dataset.triageSource || "cta-intercept";
+      const category = (el.dataset.triageCategory as Category | undefined) ?? undefined;
+      const symptomSlug = el.dataset.triageSymptom || undefined;
       const kind: "whatsapp" | "tel" = isTel ? "tel" : "whatsapp";
 
-      if (target.dataset.waKeep === "footer") {
+      if (anchor?.dataset.waKeep === "footer") {
         logWaEvent({ source: source || "footer-keep", href, kind, bypass: true });
         return;
       }
 
+      // Telemetria: registra CADA clique interceptado antes de qualquer
+      // early-return por dedupe — facilita diagnosticar botões "sem efeito".
+      pushLocalAnalyticsEvent({
+        event: "triage_cta_intercept",
+        source,
+        surface: kind === "tel" ? "cta_tel" : "cta_whatsapp",
+        page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+      });
+
       e.preventDefault();
       e.stopPropagation();
       const now = Date.now();
-      if (now - lastClick < 400) return; // dedupe
+      if (now - lastClick < 400) {
+        pushLocalAnalyticsEvent({
+          event: "triage_cta_dedupe_skip",
+          source,
+          page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+        });
+        return;
+      }
       lastClick = now;
-      openFresh({ source, category }, href, kind);
+      openFresh({ source, category, symptomSlug }, href, kind);
     };
     document.addEventListener("click", handler, true);
     return () => document.removeEventListener("click", handler, true);

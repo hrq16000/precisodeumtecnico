@@ -43,6 +43,7 @@ const AtendimentoNacional = lazy(() => import("./pages/AtendimentoNacional"));
 const CidadeNacional = lazy(() => import("./pages/CidadeNacional"));
 const BairroNacional = lazy(() => import("./pages/BairroNacional"));
 const ServicoBairroNacional = lazy(() => import("./pages/ServicoBairroNacional"));
+const TrocaDeTelaTVCuritiba = lazy(() => import("./pages/TrocaDeTelaTVCuritiba"));
 
 const TriagemPreview = lazy(() => import("./pages/TriagemPreview"));
 const Faq = lazy(() => import("./pages/Faq"));
@@ -71,6 +72,7 @@ const App = () => (
                 <Route path="/dados-da-empresa" element={<DadosEmpresa />} />
 
                 <Route path="/servicos" element={<Servicos />} />
+                <Route path="/servicos/troca-de-tela-tv-curitiba" element={<TrocaDeTelaTVCuritiba />} />
                 <Route path="/servicos/:slug" element={<ServicoDetalhe />} />
                 <Route path="/regioes" element={<Regioes />} />
                 <Route path="/regioes/:city" element={<RegiaoDetalhe />} />

@@ -76,6 +76,19 @@ export const SYMPTOMS: Symptom[] = [
     ],
     triage: { mode: "visita", ticketMin: 150, ticketMax: 1200, slaMinDays: 1, slaMaxDays: 15, mediaRequired: false },
   },
+  {
+    slug: "tv-tela-quebrada",
+    category: "tv",
+    label: "TV com tela quebrada, trincada ou com manchas",
+    shortDescription:
+      "Painel LCD/LED danificado, imagem com rachaduras, listras ou manchas escuras — em muitos modelos, trocar o painel custa mais do que uma TV nova equivalente.",
+    faq: [
+      { q: "Vale a pena trocar a tela da minha TV?", a: "Nem sempre. Painéis novos de TVs de 43\" a 55\" custam entre R$ 1.800 e R$ 4.500, muitas vezes mais do que uma TV nova equivalente. Fazemos o diagnóstico e avaliação de viabilidade antes de qualquer serviço." },
+      { q: "Como funciona a coleta para troca de tela em Curitiba?", a: "Coleta e devolução em Curitiba e Região Metropolitana. Taxa mínima de R$ 299,99, abatida do orçamento se aprovado. O prazo médio é 15 a 45 dias, dependendo da disponibilidade do painel." },
+      { q: "Vocês têm painel de todos os tamanhos e marcas?", a: "Trabalhamos com Samsung, LG, Sony, TCL, Philco, Philips, AOC e Semp. Painéis de 32\", 40\", 43\", 50\", 55\", 65\" — sob consulta e conforme disponibilidade do fornecedor." },
+    ],
+    triage: { mode: "coleta", ticketMin: 1800, ticketMax: 4500, slaMinDays: 15, slaMaxDays: 45, mediaRequired: true },
+  },
 ];
 
 export function getSymptomBySlug(slug: string): Symptom | undefined {

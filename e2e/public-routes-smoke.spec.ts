@@ -20,6 +20,7 @@ const PUBLIC_ROUTES = [
   "/regioes",
   "/atendimento-nacional",
   "/servicos/informatica",
+  "/servicos/troca-de-tela-tv-curitiba",
   "/regioes/curitiba",
   "/servico-em/curitiba/informatica",
   "/regioes/curitiba/batel",

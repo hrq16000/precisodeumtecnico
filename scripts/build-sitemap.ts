@@ -108,6 +108,18 @@ for (const c of CIDADES_REGIAO) {
   }
 }
 
+// Bairros dedicados por serviço em SJP e Pinhais (rodada 27.7)
+import { BAIRROS_BY_CIDADE, CIDADE_REGIAO_META } from "../src/data/bairrosCidadesRegiao";
+const bairrosRegiaoMtime = fileDate("src/data/bairrosCidadesRegiao.ts");
+for (const [cidadeSlug, bairros] of Object.entries(BAIRROS_BY_CIDADE)) {
+  const services = CIDADE_REGIAO_META[cidadeSlug as keyof typeof CIDADE_REGIAO_META].services;
+  for (const b of bairros) {
+    for (const svc of services) {
+      mainUrls.push({ loc: `${BASE}/servicos/${svc}/${cidadeSlug}/${b.slug}`, changefreq: "weekly", priority: 0.7, lastmod: bairrosRegiaoMtime });
+    }
+  }
+}
+
 for (const slug of Object.keys(servicesData))
   mainUrls.push({ loc: `${BASE}/servicos/${slug}`, changefreq: "weekly", priority: 0.85, lastmod: servicesMtime });
 

@@ -89,7 +89,35 @@ export const SYMPTOMS: Symptom[] = [
     ],
     triage: { mode: "coleta", ticketMin: 1800, ticketMax: 4500, slaMinDays: 15, slaMaxDays: 45, mediaRequired: true },
   },
+  {
+    slug: "tv-smart-travando-apps",
+    category: "tv",
+    label: "TV Smart lenta, travando ou com apps que não abrem",
+    shortDescription:
+      "Sistema operacional travando, Netflix/YouTube/Prime que não abrem, TV que reinicia sozinha, controle remoto sem resposta ou atualização de firmware travada.",
+    faq: [
+      { q: "Quanto custa consertar Smart TV em Curitiba?", a: "Reparos de software (reset, reinstalação de firmware, apps travando) partem de R$ 250. Troca de placa principal ou de Wi-Fi fica entre R$ 450 e R$ 900. Diagnóstico + coleta R$ 299,99, abatido se aprovar." },
+      { q: "Preciso levar a TV até vocês?", a: "Sim. Reparos de Smart TV são feitos em bancada com equipamento calibrado. Fazemos coleta e devolução em Curitiba e Região Metropolitana." },
+      { q: "Vale a pena consertar Smart TV antiga?", a: "Se a TV tiver mais de 6 anos e o orçamento passar de 60% do valor de mercado, avisamos honestamente que não compensa. O diagnóstico é sempre feito antes do orçamento fechado." },
+    ],
+    triage: { mode: "coleta", ticketMin: 250, ticketMax: 900, slaMinDays: 5, slaMaxDays: 20, mediaRequired: true },
+  },
+  {
+    slug: "wifi-lento-instavel",
+    category: "pc",
+    label: "Wi-Fi lento, caindo ou sem sinal em partes da casa",
+    shortDescription:
+      "Configuração e troubleshooting de rede Wi-Fi: roteador novo, mudança de senha, mesh, análise de canais, cobertura por cômodo e integração com dispositivos (TV, câmeras, impressora).",
+    faq: [
+      { q: "Quanto custa configurar Wi-Fi em Curitiba?", a: "Visita técnica a partir de R$ 99,99 para diagnóstico e configuração básica de roteador. Instalação de mesh, cabeamento leve ou reconfiguração completa de rede é orçada na visita, tipicamente entre R$ 150 e R$ 450." },
+      { q: "Vocês vão até minha casa?", a: "Sim, atendemos em domicílio em Curitiba e Região Metropolitana. Toda visita começa pela triagem online — você recebe janela de atendimento e o WhatsApp do técnico após a classificação." },
+      { q: "Meu Wi-Fi cai em um cômodo específico. Precisa trocar de roteador?", a: "Nem sempre. Muitas vezes é reposicionamento, mudança de canal ou instalação de um repetidor/mesh no ponto certo. Avaliamos na visita e só recomendamos troca se realmente for necessário." },
+      { q: "Configuram câmera, impressora e TV na mesma rede?", a: "Sim. A visita inclui configuração dos dispositivos que estiverem no local: TV, câmeras IP, impressoras Wi-Fi, campainhas inteligentes e assistentes de voz." },
+    ],
+    triage: { mode: "visita", ticketMin: 99.99, ticketMax: 450, slaMinDays: 0, slaMaxDays: 3, mediaRequired: false },
+  },
 ];
+
 
 export function getSymptomBySlug(slug: string): Symptom | undefined {
   return SYMPTOMS.find((s) => s.slug === slug);

@@ -1,0 +1,265 @@
+import { Helmet } from "react-helmet-async";
+import { Link } from "react-router-dom";
+import { ArrowRight, ShieldCheck, Home, Clock, Wifi, CheckCircle2, HelpCircle, Router } from "lucide-react";
+import { Layout } from "@/components/layout/Layout";
+import { Button } from "@/components/ui/button";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { getSymptomBySlug } from "@/data/symptoms";
+
+const SYMPTOM_SLUG = "wifi-lento-instavel";
+const PAGE_PATH = "/servicos/configuracao-wifi-curitiba";
+const PAGE_URL = `https://precisodeumtecnico.com${PAGE_PATH}`;
+
+const PROCESS = [
+  { title: "Triagem online", description: "Você descreve o que acontece: cai em cômodo específico, lento à noite, roteador novo, mudança de provedor, mesh a instalar." },
+  { title: "Pré-orientação remota", description: "Ajustes simples (reiniciar, mudar canal, atualizar firmware) orientamos sem cobrar visita." },
+  { title: "Agendamento da visita", description: "Confirmada a necessidade da visita, você escolhe janela de horário. Cobrança mínima R$ 99,99 informada por escrito." },
+  { title: "Diagnóstico no local", description: "Medição de sinal por cômodo, análise de canais 2,4 e 5 GHz, teste de velocidade real e verificação do roteador do provedor." },
+  { title: "Configuração e testes", description: "Reconfiguração de rede, SSID único, senha nova, integração de TV, câmeras, impressoras e assistentes de voz." },
+  { title: "Entrega documentada", description: "Você recebe por escrito a nova configuração (SSID, senha, canal, posição do roteador) e recomendações de upgrade se fizer sentido." },
+];
+
+const INCLUDES = [
+  "Diagnóstico de sinal por cômodo com equipamento de medição",
+  "Configuração de roteador principal e/ou mesh",
+  "SSID único, senha segura e rede de visitantes",
+  "Integração de TV, câmeras IP, impressora e assistentes de voz",
+  "Análise e mudança de canal Wi-Fi (2,4 e 5 GHz)",
+  "Recomendações por escrito de upgrade, se necessário",
+];
+
+function openTriage() {
+  window.dispatchEvent(
+    new CustomEvent("triage:open", {
+      detail: {
+        source: "servicos_configuracao_wifi_curitiba",
+        category: "pc",
+        symptomSlug: SYMPTOM_SLUG,
+      },
+    }),
+  );
+}
+
+export default function ConfiguracaoWifiCuritiba() {
+  const symptom = getSymptomBySlug(SYMPTOM_SLUG)!;
+
+  const metaTitle = "Configuração de Wi-Fi em Curitiba | Rede, Mesh e Troubleshooting";
+  const metaDescription =
+    "Configuração e troubleshooting de Wi-Fi em Curitiba e Região Metropolitana. Visita técnica a partir de R$ 99,99, análise de sinal por cômodo, instalação de mesh e integração de TV, câmeras e impressora. Toda visita começa pela triagem online.";
+
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: "Configuração de Wi-Fi em Curitiba",
+    serviceType: "Configuração, instalação e troubleshooting de rede Wi-Fi residencial e escritório",
+    provider: {
+      "@type": "LocalBusiness",
+      name: "Preciso de um Técnico",
+      url: "https://precisodeumtecnico.com",
+      areaServed: { "@type": "City", name: "Curitiba" },
+    },
+    areaServed: [
+      { "@type": "City", name: "Curitiba" },
+      { "@type": "City", name: "São José dos Pinhais" },
+      { "@type": "City", name: "Pinhais" },
+      { "@type": "City", name: "Colombo" },
+    ],
+    offers: {
+      "@type": "Offer",
+      priceCurrency: "BRL",
+      price: "99.99",
+      priceSpecification: {
+        "@type": "PriceSpecification",
+        priceCurrency: "BRL",
+        minPrice: 99.99,
+        description: "Visita técnica mínima. Serviços adicionais orçados no local antes de executar.",
+      },
+      availability: "https://schema.org/InStock",
+      url: PAGE_URL,
+    },
+    url: PAGE_URL,
+  };
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: symptom.faq.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Início", item: "https://precisodeumtecnico.com/" },
+      { "@type": "ListItem", position: 2, name: "Serviços", item: "https://precisodeumtecnico.com/servicos" },
+      { "@type": "ListItem", position: 3, name: "Configuração de Wi-Fi em Curitiba", item: PAGE_URL },
+    ],
+  };
+
+  return (
+    <Layout>
+      <Helmet>
+        <title>{metaTitle}</title>
+        <meta name="description" content={metaDescription} />
+        <link rel="canonical" href={PAGE_URL} />
+        <meta property="og:title" content={metaTitle} />
+        <meta property="og:description" content={metaDescription} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={PAGE_URL} />
+        <script type="application/ld+json">{JSON.stringify(serviceSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
+      </Helmet>
+
+      <section className="py-16 md:py-24 bg-gradient-to-b from-primary/5 to-background">
+        <div className="container-custom max-w-4xl">
+          <nav aria-label="Breadcrumb" className="text-sm text-muted-foreground mb-4">
+            <Link to="/" className="hover:text-primary">Início</Link>
+            <span className="mx-2">/</span>
+            <Link to="/servicos" className="hover:text-primary">Serviços</Link>
+            <span className="mx-2">/</span>
+            <span className="text-foreground">Configuração de Wi-Fi em Curitiba</span>
+          </nav>
+
+          <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-semibold text-primary">
+            <Wifi className="w-3.5 h-3.5" /> Visita técnica em Curitiba e RMC
+          </span>
+          <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">
+            Configuração de Wi-Fi em Curitiba
+          </h1>
+          <p className="mt-4 text-lg text-muted-foreground">
+            Rede que cai, cômodo sem sinal, roteador novo para configurar, mesh a instalar ou integração de TV, câmeras e impressora. Fazemos diagnóstico no local com medição real e ajustamos o que precisar — sem empurrar equipamento que você não precisa.
+          </p>
+
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="rounded-lg border border-border bg-card p-4">
+              <div className="text-xs text-muted-foreground">Modalidade</div>
+              <div className="font-semibold text-foreground mt-1 flex items-center gap-2">
+                <Home className="w-4 h-4 text-primary" /> Visita em domicílio
+              </div>
+            </div>
+            <div className="rounded-lg border border-border bg-card p-4">
+              <div className="text-xs text-muted-foreground">Faixa de preço</div>
+              <div className="font-semibold text-foreground mt-1">A partir de R$ 99,99</div>
+              <div className="text-xs text-muted-foreground mt-1">mesh/reconfig. entre R$ 150 e R$ 450</div>
+            </div>
+            <div className="rounded-lg border border-border bg-card p-4">
+              <div className="text-xs text-muted-foreground">Prazo</div>
+              <div className="font-semibold text-foreground mt-1 flex items-center gap-2">
+                <Clock className="w-4 h-4 text-primary" /> Mesmo dia ou até 72h
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Button
+              size="lg"
+              onClick={openTriage}
+              data-triage-source="servicos_configuracao_wifi_curitiba"
+              data-triage-category="pc"
+            >
+              Iniciar triagem <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
+            <Link to="/servicos">
+              <Button size="lg" variant="outline">Ver outros serviços</Button>
+            </Link>
+          </div>
+          <p className="mt-3 text-xs text-muted-foreground">
+            Todo contato começa pela triagem online. Após a classificação, você recebe o link direto para o WhatsApp do técnico e a janela de visita.
+          </p>
+        </div>
+      </section>
+
+      <section className="py-16 md:py-20 border-t border-border">
+        <div className="container-custom max-w-4xl">
+          <h2 className="text-3xl font-extrabold tracking-tight text-foreground">Etapas do atendimento</h2>
+          <p className="mt-3 text-muted-foreground">
+            Um roteiro claro, do primeiro contato à entrega da rede funcionando.
+          </p>
+          <ol className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+            {PROCESS.map((step, i) => (
+              <li key={step.title} className="rounded-lg border border-border bg-card p-5">
+                <div className="text-xs font-semibold text-primary">Etapa {i + 1}</div>
+                <div className="mt-1 font-bold text-foreground">{step.title}</div>
+                <p className="mt-2 text-sm text-muted-foreground">{step.description}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section className="py-16 md:py-20 bg-muted/30 border-t border-border">
+        <div className="container-custom max-w-3xl">
+          <h2 className="text-2xl font-extrabold tracking-tight text-foreground flex items-center gap-2">
+            <CheckCircle2 className="w-6 h-6 text-primary" /> O que está incluso na visita
+          </h2>
+          <ul className="mt-5 grid sm:grid-cols-2 gap-3">
+            {INCLUDES.map((it) => (
+              <li key={it} className="flex gap-2 text-sm text-foreground rounded-lg border border-border bg-card p-4">
+                <ShieldCheck className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                <span>{it}</span>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-6 rounded-lg border border-border bg-card p-5 flex gap-3">
+            <Router className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+            <p className="text-sm text-muted-foreground">
+              <strong className="text-foreground">Compra de equipamento é opcional.</strong> Se um mesh ou roteador novo for necessário, indicamos modelos e você compra por conta própria — sem markup embutido no orçamento.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="faq" className="py-16 md:py-20 border-t border-border">
+        <div className="container-custom max-w-3xl">
+          <div className="text-center">
+            <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-semibold text-primary">
+              <HelpCircle className="w-3.5 h-3.5" /> Perguntas Frequentes
+            </span>
+            <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-foreground">
+              Dúvidas sobre configuração de Wi-Fi em Curitiba
+            </h2>
+          </div>
+          <Accordion type="single" collapsible className="mt-8">
+            {symptom.faq.map((f, i) => (
+              <AccordionItem key={f.q} value={`faq-${i}`}>
+                <AccordionTrigger className="text-left">{f.q}</AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">{f.a}</AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+      </section>
+
+      <section className="py-16 border-t border-border bg-primary/5">
+        <div className="container-custom max-w-3xl text-center">
+          <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-foreground">
+            Pronto para resolver seu Wi-Fi?
+          </h2>
+          <p className="mt-3 text-muted-foreground">
+            A triagem leva menos de 2 minutos. Você recebe janela de visita e o WhatsApp direto do técnico após a classificação.
+          </p>
+          <div className="mt-6">
+            <Button
+              size="lg"
+              onClick={openTriage}
+              data-triage-source="servicos_configuracao_wifi_curitiba_final"
+              data-triage-category="pc"
+            >
+              Iniciar triagem agora <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
+          </div>
+        </div>
+      </section>
+    </Layout>
+  );
+}

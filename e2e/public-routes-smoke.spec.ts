@@ -21,6 +21,8 @@ const PUBLIC_ROUTES = [
   "/atendimento-nacional",
   "/servicos/informatica",
   "/servicos/troca-de-tela-tv-curitiba",
+  "/servicos/reparo-smart-tv-curitiba",
+  "/servicos/configuracao-wifi-curitiba",
   "/regioes/curitiba",
   "/servico-em/curitiba/informatica",
   "/regioes/curitiba/batel",

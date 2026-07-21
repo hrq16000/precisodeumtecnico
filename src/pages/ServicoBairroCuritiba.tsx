@@ -33,6 +33,7 @@ export default function ServicoBairroCuritiba({ service }: Props) {
   const bairroData = bairro ? getBairroServicoContent(bairro) : undefined;
   const meta = SERVICO_META[service];
   const symptom = getSymptomBySlug(meta.symptomSlug);
+  const vizinhos = bairroData ? getBairrosVizinhos(bairroData.slug, 4) : [];
 
   if (!bairroData || !symptom) {
     return <Navigate to={meta.parentPath} replace />;
@@ -206,7 +207,7 @@ export default function ServicoBairroCuritiba({ service }: Props) {
           <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-foreground">
             Dúvidas de quem mora no {bairroData.nome}
           </h2>
-          <Accordion type="single" collapsible className="mt-6">
+          <Accordion type="single" collapsible className="mt-6" data-testid="faq-accordion">
             {symptom.faq.map((f, i) => (
               <AccordionItem key={f.q} value={`faq-${i}`}>
                 <AccordionTrigger className="text-left">{f.q}</AccordionTrigger>
@@ -214,6 +215,46 @@ export default function ServicoBairroCuritiba({ service }: Props) {
               </AccordionItem>
             ))}
           </Accordion>
+        </div>
+      </section>
+
+      {/* Bairros vizinhos + páginas-mãe do serviço */}
+      <section className="py-12 md:py-16 border-t border-border bg-muted/30" aria-labelledby="vizinhos-heading">
+        <div className="container-custom max-w-5xl">
+          <h2 id="vizinhos-heading" className="text-2xl font-bold text-foreground">
+            Bairros vizinhos ({REGIAO_LABEL[bairroData.regiao]})
+          </h2>
+          <p className="mt-2 text-muted-foreground max-w-2xl text-sm">
+            Também atendemos {meta.label.toLowerCase()} nos bairros próximos ao {bairroData.nome}.
+          </p>
+          {vizinhos.length > 0 && (
+            <ul className="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 text-sm" data-testid="vizinhos-list">
+              {vizinhos.map((v) => (
+                <li key={v.slug}>
+                  <Link
+                    to={`/servicos/${service}/curitiba/${v.slug}`}
+                    className="block px-3 py-2 rounded-md border border-border bg-background hover:bg-accent hover:text-accent-foreground transition"
+                  >
+                    {v.nome}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+          <div className="mt-6 flex flex-wrap gap-3 text-sm">
+            <Link
+              to={meta.parentPath}
+              className="inline-flex items-center gap-1 px-4 py-2 rounded-md border border-border bg-background hover:bg-accent hover:text-accent-foreground transition"
+            >
+              {meta.parentLabel}
+            </Link>
+            <Link
+              to={service === "configuracao-wifi" ? SERVICO_META["reparo-smart-tv"].parentPath : SERVICO_META["configuracao-wifi"].parentPath}
+              className="inline-flex items-center gap-1 px-4 py-2 rounded-md border border-border bg-background hover:bg-accent hover:text-accent-foreground transition"
+            >
+              {service === "configuracao-wifi" ? SERVICO_META["reparo-smart-tv"].parentLabel : SERVICO_META["configuracao-wifi"].parentLabel}
+            </Link>
+          </div>
         </div>
       </section>
     </Layout>

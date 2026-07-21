@@ -132,14 +132,16 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
   useEffect(() => {
     if (!canAdvanceNow) return;
     if (state.currentStep === "review") return;
+    if (suppressAutoAdvanceRef.current) return;
     // steps que NÃO fazem auto-advance (precisam de confirmação do usuário)
     if (["termsAccepted", "serviceRoute"].includes(state.currentStep)) return;
     if (advanceTimerRef.current) window.clearTimeout(advanceTimerRef.current);
     const delay = prefersReducedMotion() ? 0 : 500;
     advanceTimerRef.current = window.setTimeout(() => {
       if (transitioningRef.current) return;
+      if (suppressAutoAdvanceRef.current) return;
       transitioningRef.current = true;
-      dispatch({ type: "NEXT" });
+      rawDispatch({ type: "NEXT" });
       window.setTimeout(() => { transitioningRef.current = false; }, 400);
     }, delay);
     return () => { if (advanceTimerRef.current) window.clearTimeout(advanceTimerRef.current); };

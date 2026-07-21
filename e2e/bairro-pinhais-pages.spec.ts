@@ -1,32 +1,40 @@
 import { test, expect } from "@playwright/test";
 import { getJsonLdBlocks, findByType } from "./utils/jsonld";
+import { BAIRROS_BY_CIDADE, CIDADE_REGIAO_META } from "../src/data/bairrosCidadesRegiao";
 
 /**
  * Rodada 27.9 — Contratos automatizados para TODOS os bairros de Pinhais.
  *
- * Cobre 5 bairros × 3 serviços (Reparo Smart TV, Wi-Fi, Troca de Tela)
- * com validações estritas:
+ * Lista de bairros derivada de src/data/bairrosCidadesRegiao.ts (fonte única),
+ * de modo que qualquer novo bairro passa a ser coberto automaticamente.
+ *
+ * Para cada combinação bairro × serviço valida:
  *  - HTTP 200 + H1 com nome do bairro + serviço
  *  - Bloco FAQ/triagem visível (accordion + CTA)
  *  - CTA de triagem carrega category, symptomSlug, city e neighborhood
+ *    (política Rodada 26: porta única de contato é a triagem — WhatsApp
+ *    direto está desativado no front, então validamos o payload que alimenta
+ *    o funil, equivalente semântico do link do WhatsApp pré-preenchido)
  *  - JSON-LD Service / BreadcrumbList / FAQPage com todos os campos
  *    obrigatórios preenchidos (nada nulo, indefinido ou vazio)
  *  - A11y básica: toda <img> tem `alt` e a ordem de headings não pula níveis
  */
 
-const BAIRROS_PINHAIS = [
-  { slug: "centro", nome: "Centro" },
-  { slug: "weissopolis", nome: "Weissópolis" },
-  { slug: "emiliano-perneta", nome: "Emiliano Perneta" },
-  { slug: "alto-taruma", nome: "Alto Tarumã" },
-  { slug: "maria-antonieta", nome: "Maria Antonieta" },
-] as const;
+const BAIRROS_PINHAIS = BAIRROS_BY_CIDADE.pinhais.map((b) => ({
+  slug: b.slug,
+  nome: b.nome,
+}));
 
-const SERVICES = [
-  { key: "reparo-smart-tv", label: "Reparo de Smart TV", minFaq: 3 },
-  { key: "configuracao-wifi", label: "Configuração de Wi-Fi", minFaq: 3 },
-  { key: "troca-de-tela-tv", label: "Troca de Tela", minFaq: 3 },
-] as const;
+const SERVICE_LABEL: Record<string, { label: string; minFaq: number }> = {
+  "reparo-smart-tv": { label: "Reparo de Smart TV", minFaq: 3 },
+  "configuracao-wifi": { label: "Configuração de Wi-Fi", minFaq: 3 },
+  "troca-de-tela-tv": { label: "Troca de Tela", minFaq: 3 },
+};
+
+const SERVICES = CIDADE_REGIAO_META.pinhais.services.map((key) => ({
+  key,
+  ...SERVICE_LABEL[key],
+}));
 
 function nonEmptyString(v: unknown): v is string {
   return typeof v === "string" && v.trim().length > 0;

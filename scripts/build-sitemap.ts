@@ -93,10 +93,19 @@ const mainUrls: Url[] = [
 
 // Bairros dedicados por serviço em Curitiba (Wi-Fi + Smart TV)
 import { BAIRROS_CURITIBA_SERVICO } from "../src/data/bairrosCuritibaServico";
+import { CIDADES_REGIAO } from "../src/data/cidadesRegiao";
 const bairroServicoMtime = fileDate("src/data/bairrosCuritibaServico.ts");
+const cidadesRegiaoMtime = fileDate("src/data/cidadesRegiao.ts");
 for (const b of BAIRROS_CURITIBA_SERVICO) {
   mainUrls.push({ loc: `${BASE}/servicos/reparo-smart-tv/curitiba/${b.slug}`, changefreq: "weekly", priority: 0.75, lastmod: bairroServicoMtime });
   mainUrls.push({ loc: `${BASE}/servicos/configuracao-wifi/curitiba/${b.slug}`, changefreq: "weekly", priority: 0.75, lastmod: bairroServicoMtime });
+}
+
+// Serviço × cidade da RMC (rodada 27.3)
+for (const c of CIDADES_REGIAO) {
+  for (const svc of ["reparo-smart-tv", "troca-de-tela-tv", "configuracao-wifi"] as const) {
+    mainUrls.push({ loc: `${BASE}/servicos/${svc}/${c.slug}`, changefreq: "weekly", priority: 0.8, lastmod: cidadesRegiaoMtime });
+  }
 }
 
 for (const slug of Object.keys(servicesData))

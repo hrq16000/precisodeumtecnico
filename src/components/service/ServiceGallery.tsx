@@ -34,7 +34,11 @@ export function ServiceGallery({ title, intro, items }: Props) {
           {title}
         </h2>
         {intro ? <p className="mt-3 text-muted-foreground max-w-2xl">{intro}</p> : null}
-        <ul className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-6" data-testid="service-gallery">
+        <ul
+          className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-6"
+          data-testid="service-gallery"
+          style={{ contentVisibility: "auto", containIntrinsicSize: "720px" }}
+        >
           {items.map((item) => (
             <li key={item.src} className="rounded-lg overflow-hidden border border-border bg-card">
               <figure>
@@ -45,6 +49,7 @@ export function ServiceGallery({ title, intro, items }: Props) {
                   height={item.height}
                   loading="lazy"
                   decoding="async"
+                  sizes="(min-width: 1024px) 480px, (min-width: 640px) 45vw, 100vw"
                   className="w-full h-auto aspect-video object-cover bg-muted"
                 />
                 <figcaption className="p-4 text-sm text-muted-foreground">

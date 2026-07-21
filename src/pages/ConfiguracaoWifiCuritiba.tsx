@@ -237,6 +237,12 @@ export default function ConfiguracaoWifiCuritiba() {
         </div>
       </section>
 
+      <ServiceGallery
+        title="Como diagnosticamos e configuramos seu Wi-Fi"
+        intro="Exemplos ilustrativos de cobertura por cômodo e da configuração de mesh integrado. Não são fotos de atendimentos reais."
+        items={GALLERY}
+      />
+
       <section id="faq" className="py-16 md:py-20 border-t border-border">
         <div className="container-custom max-w-3xl">
           <div className="text-center">

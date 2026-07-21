@@ -44,3 +44,69 @@ export function buildReviewsSchema() {
     })),
   };
 }
+
+/** Normaliza string para matching de tokens (lowercase, sem acento, alfanum). */
+function normalize(s: string): string {
+  return s
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9\s-]/g, " ");
+}
+
+/** Stopwords PT-BR irrelevantes para matching de serviço. */
+const STOPWORDS = new Set([
+  "de", "do", "da", "e", "em", "para", "um", "uma", "com", "sem",
+  "no", "na", "os", "as", "ar",
+]);
+
+function tokens(s: string): string[] {
+  return normalize(s)
+    .split(/[\s-]+/)
+    .filter((t) => t.length >= 3 && !STOPWORDS.has(t));
+}
+
+/**
+ * Retorna depoimentos cujo `service` compartilha ao menos 1 token com o
+ * slug OU título fornecido. Match honesto e determinístico — nenhum
+ * depoimento fabricado ou reatribuído.
+ */
+export function getTestimonialsForService(
+  slug: string | undefined,
+  title?: string,
+): Testimonial[] {
+  if (!slug && !title) return [];
+  const needle = new Set([
+    ...tokens(slug ?? ""),
+    ...tokens(title ?? ""),
+  ]);
+  if (needle.size === 0) return [];
+  return testimonials.filter((t) => {
+    const haystack = tokens(t.service);
+    return haystack.some((tok) => needle.has(tok));
+  });
+}
+
+/**
+ * Schema Review individual por serviço. Mantém política Rodada 23 —
+ * sem aggregateRating. Retorna null quando não há match.
+ */
+export function buildServiceReviewsSchema(
+  serviceName: string,
+  matches: Testimonial[],
+): object | null {
+  if (!matches.length) return null;
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: serviceName,
+    provider: { "@type": "LocalBusiness", name: "Preciso de Um Técnico" },
+    review: matches.map((t) => ({
+      "@type": "Review",
+      reviewRating: { "@type": "Rating", ratingValue: t.rating, bestRating: "5", worstRating: "1" },
+      author: { "@type": "Person", name: t.name },
+      reviewBody: t.text,
+      datePublished: t.date,
+    })),
+  };
+}

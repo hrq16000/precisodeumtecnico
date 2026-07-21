@@ -64,11 +64,17 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
         window.clearTimeout(advanceTimerRef.current);
         advanceTimerRef.current = null;
       }
+      pushLocalAnalyticsEvent({
+        event: "triage_back",
+        source,
+        step_id: lastStepRef.current ?? undefined,
+        page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+      });
     } else if (action.type.startsWith("SET_")) {
       suppressAutoAdvanceRef.current = false;
     }
     rawDispatch(action);
-  }, []);
+  }, [source]);
 
   // ---------- efeitos de body[data-triage-open] gerenciados pelo Dialog pai
   // (GlobalTriageLauncher aplica ao abrir/fechar)
@@ -141,11 +147,17 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
       if (transitioningRef.current) return;
       if (suppressAutoAdvanceRef.current) return;
       transitioningRef.current = true;
+      pushLocalAnalyticsEvent({
+        event: "triage_auto_advance",
+        source,
+        step_id: state.currentStep,
+        page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+      });
       rawDispatch({ type: "NEXT" });
       window.setTimeout(() => { transitioningRef.current = false; }, 400);
     }, delay);
     return () => { if (advanceTimerRef.current) window.clearTimeout(advanceTimerRef.current); };
-  }, [canAdvanceNow, state.currentStep]);
+  }, [canAdvanceNow, state.currentStep, source]);
 
   // ---------- submit final
   const handleSubmit = async () => {

@@ -23,12 +23,24 @@ import { persistTriageEvent, flushTriageEventBuffer } from "@/lib/triageEventBuf
 export function GlobalTriageLauncher() {
   const [open, setOpen] = useState(false);
   const [openCount, setOpenCount] = useState(0);
-  const [detail, setDetail] = useState<{ source?: string; category?: Category; symptomSlug?: string }>({});
+  const [detail, setDetail] = useState<{
+    source?: string;
+    category?: Category;
+    symptomSlug?: string;
+    city?: string;
+    neighborhood?: string;
+  }>({});
   const location = useLocation();
   const enabled = isTriageEnabled();
 
   const openFresh = (
-    d: { source?: string; category?: Category; symptomSlug?: string },
+    d: {
+      source?: string;
+      category?: Category;
+      symptomSlug?: string;
+      city?: string;
+      neighborhood?: string;
+    },
     href?: string,
     kind: "whatsapp" | "tel" = "whatsapp",
   ) => {
@@ -41,18 +53,27 @@ export function GlobalTriageLauncher() {
       source: d?.source,
       surface: kind === "tel" ? "cta_tel" : "cta_whatsapp",
       page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+      city: d?.city,
+      neighborhood: d?.neighborhood,
     });
   };
 
   useEffect(() => {
     if (!enabled) return;
     const onOpen = (e: Event) => {
-      const ce = e as CustomEvent<{ source?: string; category?: Category; symptomSlug?: string }>;
+      const ce = e as CustomEvent<{
+        source?: string;
+        category?: Category;
+        symptomSlug?: string;
+        city?: string;
+        neighborhood?: string;
+      }>;
       openFresh(ce.detail ?? {});
     };
     window.addEventListener("triage:open", onOpen);
     return () => window.removeEventListener("triage:open", onOpen);
   }, [enabled]);
+
 
   // Interceptor global (kill-switch p/ CTAs WhatsApp/telefone).
   useEffect(() => {

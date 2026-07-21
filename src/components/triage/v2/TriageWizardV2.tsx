@@ -43,7 +43,7 @@ const prefersReducedMotion = () =>
   window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
 export function TriageWizardV2({ source = "triagem", onClose }: Props) {
-  const [state, dispatch] = useReducer(reducerV2, undefined, makeInitialStateV2);
+  const [state, rawDispatch] = useReducer(reducerV2, undefined, makeInitialStateV2);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [copyFallback, setCopyFallback] = useState<string | null>(null);
@@ -52,6 +52,23 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
   const advanceTimerRef = useRef<number | null>(null);
   const scrollAnchorRef = useRef<HTMLDivElement | null>(null);
   const lastStepRef = useRef<StepId | null>(null);
+  // Suprime auto-advance após BACK: só volta a valer quando o usuário
+  // realmente altera um campo (dispatch SET_*) no passo atual.
+  const suppressAutoAdvanceRef = useRef(false);
+
+  // Wrapper: BACK ativa supressão; qualquer SET_* limpa.
+  const dispatch = useCallback((action: Parameters<typeof rawDispatch>[0]) => {
+    if (action.type === "BACK") {
+      suppressAutoAdvanceRef.current = true;
+      if (advanceTimerRef.current) {
+        window.clearTimeout(advanceTimerRef.current);
+        advanceTimerRef.current = null;
+      }
+    } else if (action.type.startsWith("SET_")) {
+      suppressAutoAdvanceRef.current = false;
+    }
+    rawDispatch(action);
+  }, []);
 
   // ---------- efeitos de body[data-triage-open] gerenciados pelo Dialog pai
   // (GlobalTriageLauncher aplica ao abrir/fechar)

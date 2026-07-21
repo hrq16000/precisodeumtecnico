@@ -43,6 +43,7 @@ import { buildOfferSchema } from "@/components/seo/OfferSchema";
 import { buildReviewsSchema } from "@/data/testimonials";
 import { trackWhatsAppClick } from "@/lib/analytics";
 import { buildWhatsAppUrl, buildWhatsAppUrlFromText } from "@/lib/whatsapp";
+import { SYMPTOMS } from "@/data/symptoms";
 
 
 const WHATSAPP_DISPLAY = "WhatsApp 24h";

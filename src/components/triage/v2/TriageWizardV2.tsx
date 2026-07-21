@@ -251,6 +251,14 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
         completion_status: "completed",
         page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
       });
+      // Drena o buffer persistente — acumulava BACK / auto-advance /
+      // intercept desde a abertura; agora expõe em
+      // window.__PDT_TRIAGE_BUFFER_FLUSHED__.
+      try {
+        const { flushTriageEventBuffer } = await import("@/lib/triageEventBuffer");
+        flushTriageEventBuffer();
+      } catch { /* noop */ }
+
       trackWhatsAppClick({
         source: "triage",
         service: state.equipment ?? "triagem",

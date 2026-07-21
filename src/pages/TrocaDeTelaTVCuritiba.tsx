@@ -10,6 +10,24 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { getSymptomBySlug } from "@/data/symptoms";
+import { ServiceGallery } from "@/components/service/ServiceGallery";
+
+const GALLERY = [
+  {
+    src: "/gallery/tela-coleta.webp",
+    alt: "Ilustração de mãos com luvas embalando TV com tela trincada em espuma protetora para coleta",
+    caption: "Coleta com embalagem apropriada para painéis frágeis em Curitiba e RMC.",
+    width: 1280,
+    height: 720,
+  },
+  {
+    src: "/gallery/tela-troca.webp",
+    alt: "Ilustração de técnico substituindo o painel de LCD de uma TV grande em bancada preparada",
+    caption: "Substituição do painel em bancada após aprovação do orçamento fechado.",
+    width: 1280,
+    height: 720,
+  },
+];
 
 const SYMPTOM_SLUG = "tv-tela-quebrada";
 const PAGE_PATH = "/servicos/troca-de-tela-tv-curitiba";

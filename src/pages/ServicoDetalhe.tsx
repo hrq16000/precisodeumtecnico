@@ -1,13 +1,18 @@
 import { useParams, Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { Layout } from "@/components/layout/Layout";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { Button } from "@/components/ui/button";
 import { CTASection } from "@/components/home/CTASection";
-import { 
-  MessageCircle, Phone, CheckCircle, Clock, Shield, Award, 
+import {
+  MessageCircle, Phone, CheckCircle, Clock, Shield, Award,
   ArrowRight, MapPin, Star
 } from "lucide-react";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
+import {
+  getTestimonialsForService,
+  buildServiceReviewsSchema,
+} from "@/data/testimonials";
 
 // Service data mapping
 const servicesData: Record<string, {

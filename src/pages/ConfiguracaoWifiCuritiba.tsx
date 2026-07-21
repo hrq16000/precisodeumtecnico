@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/accordion";
 import { getSymptomBySlug } from "@/data/symptoms";
 import { ServiceGallery } from "@/components/service/ServiceGallery";
+import { BAIRROS_CURITIBA_SERVICO } from "@/data/bairrosCuritibaServico";
 
 const GALLERY = [
   {

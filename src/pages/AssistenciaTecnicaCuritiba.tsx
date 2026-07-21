@@ -225,6 +225,14 @@ const faqs = [
     q: "Como faço para solicitar um reparo?",
     a: `Basta chamar no WhatsApp ${WHATSAPP_DISPLAY}. Descreva o problema, envie fotos se possível e nosso técnico responde com um diagnóstico inicial e o próximo passo.`,
   },
+  // Perguntas oriundas do catálogo de sintomas (SYMPTOMS) — mantidas visíveis
+  // no accordion e no FAQPage JSON-LD para paridade DOM ↔ schema.
+  ...SYMPTOMS.flatMap((s) =>
+    s.faq.map((f) => ({
+      q: f.q.includes("Curitiba") ? f.q : `${f.q} (Curitiba)`,
+      a: f.a,
+    })),
+  ),
 ];
 
 const relatedServices = [

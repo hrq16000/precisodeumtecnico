@@ -21,7 +21,7 @@ const BAIRROS_1A_CAMADA = [
   { slug: "portao", nome: "Portão" },
   { slug: "reboucas", nome: "Rebouças" },
   { slug: "boa-vista", nome: "Boa Vista" },
-  { slug: "champagnat", nome: "Champagnat" },
+  { slug: "merces", nome: "Mercês" },
 ] as const;
 
 const SERVICES = [

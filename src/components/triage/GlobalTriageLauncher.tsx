@@ -8,6 +8,8 @@ import { isTriageEnabled } from "@/lib/triageFlag";
 import type { Category } from "@/components/triage/triageMachine";
 import { logWaEvent } from "@/lib/waAudit";
 import { pushLocalAnalyticsEvent } from "@/lib/localAnalytics";
+import { persistTriageEvent, flushTriageEventBuffer } from "@/lib/triageEventBuffer";
+
 
 /**
  * Global TriageWizard launcher.

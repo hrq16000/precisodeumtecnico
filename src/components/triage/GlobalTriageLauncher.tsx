@@ -8,6 +8,8 @@ import { isTriageEnabled } from "@/lib/triageFlag";
 import type { Category } from "@/components/triage/triageMachine";
 import { logWaEvent } from "@/lib/waAudit";
 import { pushLocalAnalyticsEvent } from "@/lib/localAnalytics";
+import { persistTriageEvent, flushTriageEventBuffer } from "@/lib/triageEventBuffer";
+
 
 /**
  * Global TriageWizard launcher.
@@ -21,12 +23,24 @@ import { pushLocalAnalyticsEvent } from "@/lib/localAnalytics";
 export function GlobalTriageLauncher() {
   const [open, setOpen] = useState(false);
   const [openCount, setOpenCount] = useState(0);
-  const [detail, setDetail] = useState<{ source?: string; category?: Category; symptomSlug?: string }>({});
+  const [detail, setDetail] = useState<{
+    source?: string;
+    category?: Category;
+    symptomSlug?: string;
+    city?: string;
+    neighborhood?: string;
+  }>({});
   const location = useLocation();
   const enabled = isTriageEnabled();
 
   const openFresh = (
-    d: { source?: string; category?: Category; symptomSlug?: string },
+    d: {
+      source?: string;
+      category?: Category;
+      symptomSlug?: string;
+      city?: string;
+      neighborhood?: string;
+    },
     href?: string,
     kind: "whatsapp" | "tel" = "whatsapp",
   ) => {
@@ -39,18 +53,27 @@ export function GlobalTriageLauncher() {
       source: d?.source,
       surface: kind === "tel" ? "cta_tel" : "cta_whatsapp",
       page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+      city: d?.city,
+      neighborhood: d?.neighborhood,
     });
   };
 
   useEffect(() => {
     if (!enabled) return;
     const onOpen = (e: Event) => {
-      const ce = e as CustomEvent<{ source?: string; category?: Category; symptomSlug?: string }>;
+      const ce = e as CustomEvent<{
+        source?: string;
+        category?: Category;
+        symptomSlug?: string;
+        city?: string;
+        neighborhood?: string;
+      }>;
       openFresh(ce.detail ?? {});
     };
     window.addEventListener("triage:open", onOpen);
     return () => window.removeEventListener("triage:open", onOpen);
   }, [enabled]);
+
 
   // Interceptor global (kill-switch p/ CTAs WhatsApp/telefone).
   useEffect(() => {
@@ -75,6 +98,8 @@ export function GlobalTriageLauncher() {
       const source = el.dataset.waSource || el.dataset.triageSource || "cta-intercept";
       const category = (el.dataset.triageCategory as Category | undefined) ?? undefined;
       const symptomSlug = el.dataset.triageSymptom || undefined;
+      const city = el.dataset.triageCity || undefined;
+      const neighborhood = el.dataset.triageNeighborhood || undefined;
       const kind: "whatsapp" | "tel" = isTel ? "tel" : "whatsapp";
 
       if (anchor?.dataset.waKeep === "footer") {
@@ -85,6 +110,16 @@ export function GlobalTriageLauncher() {
       // Telemetria: registra CADA clique interceptado antes de qualquer
       // early-return por dedupe — facilita diagnosticar botões "sem efeito".
       pushLocalAnalyticsEvent({
+        event: "triage_cta_intercept",
+        source,
+        surface: kind === "tel" ? "cta_tel" : "cta_whatsapp",
+        page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+        city,
+        neighborhood,
+      });
+      // Persistência em localStorage — útil quando o usuário navega/sai
+      // antes do flush em memória.
+      persistTriageEvent({
         event: "triage_cta_intercept",
         source,
         surface: kind === "tel" ? "cta_tel" : "cta_whatsapp",
@@ -103,7 +138,7 @@ export function GlobalTriageLauncher() {
         return;
       }
       lastClick = now;
-      openFresh({ source, category, symptomSlug }, href, kind);
+      openFresh({ source, category, symptomSlug, city, neighborhood }, href, kind);
     };
     document.addEventListener("click", handler, true);
     return () => document.removeEventListener("click", handler, true);
@@ -111,6 +146,15 @@ export function GlobalTriageLauncher() {
 
   // Fecha o modal ao navegar entre rotas.
   useEffect(() => { setOpen(false); }, [location.pathname]);
+
+  // Ao fechar o wizard, drena o buffer persistente — expõe eventos
+  // acumulados (BACK / auto-advance / intercept) em
+  // window.__PDT_TRIAGE_BUFFER_FLUSHED__ para diagnóstico.
+  useEffect(() => {
+    if (open) return;
+    flushTriageEventBuffer();
+  }, [open]);
+
 
   // Marca <body> quando o modal está aberto — usado por CSS para esconder
   // botões flutuantes de WhatsApp e bloquear interação com o rodapé.

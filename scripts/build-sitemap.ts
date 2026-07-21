@@ -86,7 +86,18 @@ const mainUrls: Url[] = [
   { loc: `${BASE}/atendimento-nacional`, changefreq: "weekly", priority: 0.9, lastmod: fileDate("src/pages/AtendimentoNacional.tsx") },
   { loc: `${BASE}/faq`, changefreq: "monthly", priority: 0.6, lastmod: fileDate("src/pages/Faq.tsx") },
   { loc: `${BASE}/dados-da-empresa`, changefreq: "yearly", priority: 0.4, lastmod: fileDate("src/pages/DadosEmpresa.tsx") },
+  { loc: `${BASE}/servicos/troca-de-tela-tv-curitiba`, changefreq: "weekly", priority: 0.85, lastmod: fileDate("src/pages/TrocaDeTelaTVCuritiba.tsx") },
+  { loc: `${BASE}/servicos/reparo-smart-tv-curitiba`, changefreq: "weekly", priority: 0.85, lastmod: fileDate("src/pages/ReparoSmartTVCuritiba.tsx") },
+  { loc: `${BASE}/servicos/configuracao-wifi-curitiba`, changefreq: "weekly", priority: 0.85, lastmod: fileDate("src/pages/ConfiguracaoWifiCuritiba.tsx") },
 ];
+
+// Bairros dedicados por serviço em Curitiba (Wi-Fi + Smart TV)
+import { BAIRROS_CURITIBA_SERVICO } from "../src/data/bairrosCuritibaServico";
+const bairroServicoMtime = fileDate("src/data/bairrosCuritibaServico.ts");
+for (const b of BAIRROS_CURITIBA_SERVICO) {
+  mainUrls.push({ loc: `${BASE}/servicos/reparo-smart-tv/curitiba/${b.slug}`, changefreq: "weekly", priority: 0.75, lastmod: bairroServicoMtime });
+  mainUrls.push({ loc: `${BASE}/servicos/configuracao-wifi/curitiba/${b.slug}`, changefreq: "weekly", priority: 0.75, lastmod: bairroServicoMtime });
+}
 
 for (const slug of Object.keys(servicesData))
   mainUrls.push({ loc: `${BASE}/servicos/${slug}`, changefreq: "weekly", priority: 0.85, lastmod: servicesMtime });

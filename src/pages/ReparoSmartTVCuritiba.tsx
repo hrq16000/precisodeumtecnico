@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/accordion";
 import { getSymptomBySlug } from "@/data/symptoms";
 import { ServiceGallery } from "@/components/service/ServiceGallery";
+import { BAIRROS_CURITIBA_SERVICO } from "@/data/bairrosCuritibaServico";
 
 const GALLERY = [
   {
@@ -257,6 +258,25 @@ export default function ReparoSmartTVCuritiba() {
         intro="Exemplos ilustrativos do que fazemos em bancada e do resultado esperado após o reparo. Não são fotos de atendimentos reais."
         items={GALLERY}
       />
+
+      <section className="py-12 md:py-16 border-t border-border bg-muted/30">
+        <div className="container-custom max-w-5xl">
+          <h2 className="text-2xl md:text-3xl font-bold text-foreground">Reparo de Smart TV por bairro em Curitiba</h2>
+          <p className="mt-2 text-muted-foreground max-w-2xl">Páginas dedicadas com contexto local, faixa de preço e triagem pré-classificada por bairro.</p>
+          <ul className="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 text-sm">
+            {BAIRROS_CURITIBA_SERVICO.map((b) => (
+              <li key={b.slug}>
+                <Link
+                  to={`/servicos/reparo-smart-tv/curitiba/${b.slug}`}
+                  className="block px-3 py-2 rounded-md border border-border bg-background hover:bg-accent hover:text-accent-foreground transition"
+                >
+                  {b.nome}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
 
       <section id="faq" className="py-16 md:py-20 border-t border-border">
         <div className="container-custom max-w-3xl">

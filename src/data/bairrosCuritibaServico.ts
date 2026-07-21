@@ -112,14 +112,14 @@ export const BAIRROS_CURITIBA_SERVICO: BairroServicoContent[] = [
     tvLogistica: "Coleta com carro próprio até a porta da casa; sem taxa extra dentro do bairro.",
   },
   {
-    slug: "champagnat",
-    nome: "Champagnat",
-    regiao: "oeste",
-    perfil: "Bairro nobre com edifícios altos, muita área verde e residências de alto padrão próximas ao Parque Barigui.",
-    wifiIntro: "No Champagnat, apartamentos de 4 quartos com escritório e área gourmet são padrão — e todos exigem cobertura Wi-Fi 5 GHz completa para funcionar bem com Smart TVs 4K e videochamadas simultâneas.",
-    wifiDestaque: "Instalamos mesh de 3 pontos com backhaul dedicado e configuramos rede exclusiva para IoT (câmeras, campainha, ar-condicionado inteligente). Ajustamos DNS local para acelerar acesso a serviços de streaming.",
-    tvIntro: "Muitas TVs OLED e QLED de 65\"–77\" com painéis originais — sempre validamos disponibilidade de peça no distribuidor antes de fechar orçamento para evitar surpresas.",
-    tvLogistica: "Coleta com equipe de dois técnicos, embalagem sob medida e devolução com calibração básica de imagem/som.",
+    slug: "merces",
+    nome: "Mercês",
+    regiao: "central",
+    perfil: "Bairro tradicional de perfil residencial-comercial ao norte do Centro, com edifícios antigos altos, muitos escritórios de profissionais liberais e famílias consolidadas.",
+    wifiIntro: "Nas Mercês, o cenário típico é apartamento antigo de 3 a 4 dormitórios com paredes internas de tijolo maciço, onde o sinal 5 GHz do roteador único mal atravessa dois cômodos.",
+    wifiDestaque: "Instalamos mesh Wi-Fi 6 com backhaul cabeado por conduítes de telefonia existentes e separamos rede administrativa do consultório da rede residencial em imóveis mistos.",
+    tvIntro: "Coletas frequentes de Smart TVs 50\"–65\" com apps travando após atualização, muitas Samsung e LG das linhas 2020–2022 instaladas em painéis de rack.",
+    tvLogistica: "Coleta com carro próprio saindo do Centro; janelas D+0 ou D+1 e devolução com reinstalação no suporte original, sem taxa extra dentro do bairro.",
   },
 
   // ============ 2ª camada (bairros complementares) ============

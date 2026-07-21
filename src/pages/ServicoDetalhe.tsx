@@ -191,8 +191,18 @@ const ServicoDetalhe = () => {
 
   const whatsappLink = buildWhatsAppUrl({ service: displayTitle, sourcePage: `/servicos/${slug ?? ""}` });
 
+  // Depoimentos reais que fazem match com este serviço (política Rodada 23:
+  // Review individual, sem AggregateRating).
+  const serviceTestimonials = getTestimonialsForService(slug, displayTitle);
+  const reviewsSchema = buildServiceReviewsSchema(displayTitle, serviceTestimonials);
+
   return (
     <Layout>
+      {reviewsSchema && (
+        <Helmet>
+          <script type="application/ld+json">{JSON.stringify(reviewsSchema)}</script>
+        </Helmet>
+      )}
       <SEOHead
         title={`${displayTitle} em Curitiba | Preciso de Um Técnico`}
         description={service.description}

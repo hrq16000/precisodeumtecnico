@@ -20,6 +20,8 @@ import {
 } from "@/lib/triage/engine";
 import { WHATSAPP_NUMBER } from "@/lib/whatsapp";
 import { pushLocalAnalyticsEvent } from "@/lib/localAnalytics";
+import { persistTriageEvent } from "@/lib/triageEventBuffer";
+
 import { trackWhatsAppClick } from "@/lib/analytics";
 import { logWaEvent } from "@/lib/waAudit";
 
@@ -70,6 +72,13 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
         step_id: lastStepRef.current ?? undefined,
         page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
       });
+      persistTriageEvent({
+        event: "triage_back",
+        source,
+        step_id: lastStepRef.current ?? undefined,
+        page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+      });
+
     } else if (action.type.startsWith("SET_")) {
       suppressAutoAdvanceRef.current = false;
     }
@@ -153,6 +162,13 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
         step_id: state.currentStep,
         page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
       });
+      persistTriageEvent({
+        event: "triage_auto_advance",
+        source,
+        step_id: state.currentStep,
+        page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+      });
+
       rawDispatch({ type: "NEXT" });
       window.setTimeout(() => { transitioningRef.current = false; }, 400);
     }, delay);

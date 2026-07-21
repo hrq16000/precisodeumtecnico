@@ -11,6 +11,8 @@ import {
 } from "@/components/ui/accordion";
 import {
   getBairroServicoContent,
+  getBairrosVizinhos,
+  REGIAO_LABEL,
   SERVICO_META,
   type ServiceKey,
 } from "@/data/bairrosCuritibaServico";

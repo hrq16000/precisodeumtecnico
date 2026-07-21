@@ -1,51 +1,48 @@
-# Rodada 27 — Observabilidade, ativos visuais e expansão regional
+# Rodada 27.3/27.4 — Plano de Execução
 
-Cinco solicitações, dois conflitos com regras vigentes e volume alto. Proponho fatiar em 3 sub-rodadas e resolver os conflitos antes de escrever qualquer código.
+Escopo grande; proponho fatiar em 4 sub-rodadas sequenciais para manter cada entrega auditável e evitar regressão dos guardrails (Rodada 23 sem reviews fabricados, Rodada 26 triagem como porta única, política de bairros com textos exclusivos).
 
-## Conflitos de política a decidir agora
+## Sub-rodada 27.3 — Replicação regional (SJP, Pinhais, Colombo)
+- Criar dataset `src/data/cidadesRegiao.ts` com metadados exclusivos por cidade (perfil demográfico, logística, bairros âncora, prazo de deslocamento).
+- Criar componente unificado `src/pages/ServicoCidadeRegiao.tsx` que consome cidade + serviço (reparo-smart-tv, troca-de-tela-tv, configuracao-wifi) e gera:
+  - SEO local (title, description, canonical)
+  - JSON-LD `Service` (com `areaServed` = cidade) + `BreadcrumbList` + `FAQPage` (herdando catálogo de sintomas correspondente).
+  - CTA principal = triagem pré-classificada com `category` + `symptomSlug` corretos (TV → `tv-tela-quebrada`/`tv-smart-travando-apps`; Wi-Fi → `wifi-lento-instavel`).
+- Registrar 9 rotas em `App.tsx`: `/servicos/<serviço>/<cidade>` para SJP, Pinhais, Colombo.
+- Atualizar `scripts/build-sitemap.ts` e links internos das páginas-mãe Curitiba (bloco "Atendemos também na região").
+- E2E: estender `e2e/triage-preclassification.spec.ts` para varrer as 9 páginas garantindo `data-triage-*` corretos.
 
-### 1. Botão WhatsApp com mensagem pré-preenchida em página pública
-Regra atual (memória do projeto + guardrail Rodada 26): **a triagem é a porta única**, telefone/WhatsApp ficam ocultos até o handoff pós-classificação. Adicionar `wa.me` direto quebra:
-- O funil V2 (perde categoria, sintoma, urgência, mídia obrigatória).
-- O contrato analytics `triage_open` que sustenta o dashboard.
-- O spec `e2e/whatsapp-context.spec.ts` e a lógica de `GlobalTriageLauncher`.
+## Sub-rodada 27.4 — Bairros restantes de Curitiba
+- Estender `src/data/bairrosCuritibaServico.ts` com os bairros restantes de segunda camada (~15 adicionais: Cristo Rei, Juvevê, Alto da Glória, Alto da XV, Mercês, Bacacheri, Hugo Lange, Jardim Social, São Francisco, Vila Izabel, Seminário, Santa Felicidade, Cajuru, Novo Mundo, Xaxim). Textos exclusivos por bairro (características do bairro + desafios técnicos locais).
+- Reaproveitar `ServicoBairroCuritiba.tsx` (já unificado) — apenas registrar as 30 novas rotas (15 bairros × 2 serviços).
+- Adicionar em `ServicoBairroCuritiba.tsx` bloco "Bairros vizinhos" (agrupamento por região: central, sul, norte, leste, oeste) + link para páginas-mãe do serviço.
+- Atualizar sitemap.
 
-Três caminhos possíveis:
-- **A. Manter regra (recomendado)**: nenhum botão WhatsApp em página pública. Mantemos só o CTA de triagem — que já entrega WhatsApp no fim do fluxo com contexto correto.
-- **B. Exceção controlada**: liberar `wa.me` **apenas nas 3 páginas de serviço Curitiba** (TV Smart, Troca de Tela, Wi-Fi), com mensagem pré-preenchida por serviço, evento `wa_bypass` registrado na tabela `wa_bypass_events` e guardrail atualizado para permitir só nessas rotas.
-- **C. Abandonar regra**: expor WhatsApp em todas as páginas de serviço (não recomendo — perde qualificação).
+## Sub-rodada 27.5 — Contratos automatizados e JSON-LD
+- Novo `e2e/bairro-pages.spec.ts` iterando os 10 bairros principais em ambos serviços, validando:
+  - HTTP 200 e H1 correto
+  - Presença do bloco FAQ/triagem (accordion + botão `data-triage-open`)
+  - JSON-LD válido: `Service.areaServed.name === bairro`, `BreadcrumbList` com 4 níveis, `FAQPage.mainEntity` com IDs presentes no catálogo de sintomas.
+- Helper `e2e/utils/jsonld.ts` para parse/asserção reutilizável.
+- Reforço no `ServicoBairroCuritiba.tsx` para garantir `symptomSlug`, `neighborhood` e Q&A alinhados com `symptoms.ts`.
 
-### 2. Galeria de "exemplos do que está incluso"
-Não temos fotos reais de atendimentos. Opções:
-- **A. Fotos reais** que você fornece (WebP + alt + legenda) — melhor para SEO e confiança, respeita a Rodada 23 (nada fabricado).
-- **B. Ilustrações genéricas** geradas por IA, claramente rotuladas como ilustrativas nas legendas.
-- **C. Adiar galeria** até haver material real.
-
-## Escopo proposto — 3 sub-rodadas
-
-### 27.1 — Sentry + validação de contratos de triagem (baixo risco)
-- Instrumentação de erros via `@sentry/react` com `ErrorBoundary` global e `BrowserTracing`. DSN vem de `VITE_SENTRY_DSN` (secret publicável — pode ficar no bundle).
-- Captura de falha de hidratação, erros de rota lazy e exceções não tratadas. Sampling 10% em produção, 100% em dev.
-- Log local sanitizado (sem PII) mantido como fallback quando DSN não existir.
-- Novo spec `e2e/triage-preclassification.spec.ts` valida que cada botão das 3 páginas Curitiba dispara `triage:open` com `category` e `symptomSlug` corretos (sem mapeamento incorreto). Cobre também o hero card de sintomas em `/assistencia-tecnica-curitiba`.
-
-### 27.2 — Ativos visuais + decisão WhatsApp
-- Galeria WebP com alt text e legenda nas páginas de TV Smart, Troca de Tela e Wi-Fi (fonte definida no conflito 2).
-- Se aprovada opção B do conflito 1: componente `<WhatsAppQuickCTA/>` com mensagem por serviço, evento `wa_bypass` gravado, guardrail atualizado.
-
-### 27.3 — Replicação regional (grande, precisa de duas passadas)
-- **Passo 1** (mesma rodada): 9 páginas cidade (3 serviços × SJP, Pinhais, Colombo) via template compartilhado orientado a dados. Preços, prazos e JSON-LD idênticos por serviço, apenas cidade varia.
-- **Passo 2** (rodada seguinte): páginas por bairro top 5 de cada cidade (5 bairros × 3 serviços × 4 cidades = 60 páginas). Precisamos definir a lista dos top 5 bairros de cada cidade antes; posso propor lista baseada nos dados de `regioes.ts`.
+## Sub-rodada 27.6 — Performance de imagens
+- Reprocessar `public/gallery/*.webp` com `sharp` (qualidade 70, dimensões max 1280×720 e variante 640×360 para mobile) via `scripts/optimize-gallery.ts` executado sob demanda; commitar binários otimizados.
+- Ajustar `ServiceGallery.tsx`:
+  - `loading="lazy"` + `decoding="async"` (já ok) + `sizes` explícito e `srcset` com variante mobile.
+  - `content-visibility: auto` no container para adiar layout offscreen.
+- Rodar Lighthouse CI local (`bunx @lhci/cli autorun` ou script equivalente já existente) na Home + página de serviço + página de bairro; anexar delta no relatório final.
 
 ## Detalhes técnicos
+- Nenhum WhatsApp direto: CTA continua abrindo triagem (`window.dispatchEvent(new CustomEvent('triage:open', { detail: { category, symptomSlug, cityHint, neighborhoodHint } }))`).
+- Sem reviews fabricados / sem AggregateRating.
+- Todas as strings de bairro/cidade centralizadas em dataset — nenhum literal em componente.
+- Cada PR de sub-rodada roda: typecheck + suíte E2E impactada + build (com guards de OG manifest e sitemap).
 
-- **Sentry**: pacote `@sentry/react`. Init em `src/main.tsx`. `VITE_SENTRY_DSN` opcional — se ausente, sentry fica inerte (não quebra build). Sem `beforeSend` custom que possa vazar; enviamos apenas erro, breadcrumb técnico e URL sem query.
-- **Template regional**: novo `src/data/serviceCities.ts` com `{ city, slug, service, symptomSlug, ... }`. Uma página React genérica `src/pages/ServicoCidadeRegional.tsx` renderiza a partir da entrada. Uma rota `/servicos/:serviceSlug-:citySlug` ou 9 rotas explícitas — prefiro explícitas para evitar colisão com `/servicos/:slug`.
-- **Guardrails**: atualizar `e2e/public-routes-smoke.spec.ts` a cada nova rota. Manifesto OG precisa cobrir novos títulos se gerarmos imagens.
-- **Testes**: novo spec de pré-classificação, atualização do smoke e (se WhatsApp for aprovado) spec de dedupe/analytics do bypass.
+## Ordem e checkpoints
+1. 27.3 → smoke + review preview
+2. 27.4 → sitemap + smoke
+3. 27.5 → E2E + JSON-LD gate
+4. 27.6 → Lighthouse report
 
-## Decisões que preciso de você antes de executar 27.1
-
-1. Conflito WhatsApp: **A**, **B** ou **C**?
-2. Galeria: **A** (fotos reais que você envia), **B** (ilustrações IA rotuladas) ou **C** (adiar)?
-3. Autorizo iniciar já pela **27.1 (Sentry + validação de contratos)**, que não depende das decisões acima?
+Confirma essa fatiação e a ordem, ou prefere que eu comece direto por outra sub-rodada?

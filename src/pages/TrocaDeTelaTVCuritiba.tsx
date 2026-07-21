@@ -260,6 +260,12 @@ export default function TrocaDeTelaTVCuritiba() {
       </section>
 
       {/* FAQ */}
+      <ServiceGallery
+        title="Como é a coleta e a troca de painel"
+        intro="Exemplos ilustrativos do processo de coleta e substituição do painel. Não são fotos de atendimentos reais."
+        items={GALLERY}
+      />
+
       <section id="faq" className="py-16 md:py-20 border-t border-border">
         <div className="container-custom max-w-3xl">
           <div className="text-center">

@@ -63,6 +63,25 @@ const CASES: Array<{
   },
 ];
 
+// Rodada 27.3 — replicação regional (SJP, Pinhais, Colombo)
+const REGIONAL_CITIES = ["sao-jose-dos-pinhais", "pinhais", "colombo"] as const;
+const REGIONAL_SERVICES = [
+  { path: "reparo-smart-tv", category: "tv", symptom: "tv-smart-travando-apps" },
+  { path: "troca-de-tela-tv", category: "tv", symptom: "tv-tela-quebrada" },
+  { path: "configuracao-wifi", category: "pc", symptom: "wifi-lento-instavel" },
+] as const;
+for (const svc of REGIONAL_SERVICES) {
+  for (const city of REGIONAL_CITIES) {
+    const source = `servicos_${svc.path.replace(/-/g, "_")}_${city.replace(/-/g, "_")}`;
+    CASES.push({
+      path: `/servicos/${svc.path}/${city}`,
+      triggerSelector: `[data-triage-source="${source}"]`,
+      expectedCategory: svc.category,
+      expectedSymptomSlug: svc.symptom,
+    });
+  }
+}
+
 for (const c of CASES) {
   test(`pré-classificação correta em ${c.path}`, async ({ page }) => {
     await page.goto(c.path, { waitUntil: "domcontentloaded" });

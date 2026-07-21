@@ -43,6 +43,7 @@ import { buildOfferSchema } from "@/components/seo/OfferSchema";
 import { buildReviewsSchema } from "@/data/testimonials";
 import { trackWhatsAppClick } from "@/lib/analytics";
 import { buildWhatsAppUrl, buildWhatsAppUrlFromText } from "@/lib/whatsapp";
+import { SYMPTOMS } from "@/data/symptoms";
 
 
 const WHATSAPP_DISPLAY = "WhatsApp 24h";
@@ -224,6 +225,14 @@ const faqs = [
     q: "Como faço para solicitar um reparo?",
     a: `Basta chamar no WhatsApp ${WHATSAPP_DISPLAY}. Descreva o problema, envie fotos se possível e nosso técnico responde com um diagnóstico inicial e o próximo passo.`,
   },
+  // Perguntas oriundas do catálogo de sintomas (SYMPTOMS) — mantidas visíveis
+  // no accordion e no FAQPage JSON-LD para paridade DOM ↔ schema.
+  ...SYMPTOMS.flatMap((s) =>
+    s.faq.map((f) => ({
+      q: f.q.includes("Curitiba") ? f.q : `${f.q} (Curitiba)`,
+      a: f.a,
+    })),
+  ),
 ];
 
 const relatedServices = [
@@ -673,6 +682,114 @@ export default function AssistenciaTecnicaCuritiba() {
                   <h3 className="mt-5 font-bold text-foreground text-lg">{d.title}</h3>
                   <p className="mt-1.5 text-sm text-muted-foreground">{d.desc}</p>
                 </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* PROBLEMAS COMUNS — SEO local + prova de repertório técnico */}
+      <section
+        id="problemas-comuns"
+        aria-labelledby="problemas-comuns-title"
+        className="py-16 md:py-24 border-t border-border"
+      >
+        <div className="container-custom max-w-5xl">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+            variants={fadeUp}
+            className="text-center"
+          >
+            <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-semibold text-primary">
+              <Wrench className="w-3.5 h-3.5" /> Problemas mais atendidos
+            </span>
+            <h2
+              id="problemas-comuns-title"
+              className="mt-4 text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground"
+            >
+              Problemas técnicos comuns em <span className="text-primary">Curitiba</span>
+            </h2>
+            <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
+              Diagnósticos que atendemos com frequência em bairros como Batel, Água Verde,
+              Boqueirão, Cajuru e Portão. Toque no problema mais parecido com o seu para
+              iniciar a triagem guiada.
+            </p>
+          </motion.div>
+
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {SYMPTOMS.map((s, i) => {
+              const modeLabel =
+                s.triage.mode === "bancada"
+                  ? "Reparo em bancada"
+                  : s.triage.mode === "visita"
+                    ? "Visita técnica"
+                    : "Coleta e devolução";
+              return (
+                <motion.article
+                  key={s.slug}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, margin: "-40px" }}
+                  variants={fadeUp}
+                  custom={i}
+                  className="rounded-2xl p-6 bg-card border border-border hover:border-primary/40 hover:-translate-y-1 hover:shadow-lg transition flex flex-col"
+                >
+                  <h3 className="font-bold text-foreground text-lg leading-snug">
+                    {s.label} — Curitiba
+                  </h3>
+                  <p className="mt-2 text-sm text-muted-foreground flex-1">
+                    {s.shortDescription}
+                  </p>
+                  <dl className="mt-4 grid grid-cols-2 gap-2 text-xs">
+                    <div>
+                      <dt className="text-muted-foreground">Modalidade</dt>
+                      <dd className="font-semibold text-foreground">{modeLabel}</dd>
+                    </div>
+                    <div>
+                      <dt className="text-muted-foreground">Faixa estimada</dt>
+                      <dd className="font-semibold text-foreground">
+                        R$ {s.triage.ticketMin}–{s.triage.ticketMax}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className="text-muted-foreground">Prazo</dt>
+                      <dd className="font-semibold text-foreground">
+                        {s.triage.slaMinDays === s.triage.slaMaxDays
+                          ? `${s.triage.slaMaxDays} dias`
+                          : `${s.triage.slaMinDays}–${s.triage.slaMaxDays} dias`}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className="text-muted-foreground">Foto/vídeo</dt>
+                      <dd className="font-semibold text-foreground">
+                        {s.triage.mediaRequired ? "Obrigatório" : "Opcional"}
+                      </dd>
+                    </div>
+                  </dl>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="mt-5"
+                    data-triage-source={`curitiba_lp_problema_${s.slug}`}
+                    data-triage-category={s.category}
+                    onClick={() => {
+                      window.dispatchEvent(
+                        new CustomEvent("triage:open", {
+                          detail: {
+                            source: `curitiba_lp_problema_${s.slug}`,
+                            category: s.category,
+                            symptomSlug: s.slug,
+                          },
+                        }),
+                      );
+                    }}
+                  >
+                    Iniciar triagem <ArrowRight className="w-4 h-4 ml-1" />
+                  </Button>
+                </motion.article>
               );
             })}
           </div>

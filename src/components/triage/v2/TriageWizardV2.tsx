@@ -266,6 +266,7 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
       } catch { /* não bloqueia */ }
 
       // Analytics
+      completedRef.current = true;
       pushLocalAnalyticsEvent({
         event: "triage_complete",
         source,

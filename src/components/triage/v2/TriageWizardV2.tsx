@@ -54,6 +54,8 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
   const advanceTimerRef = useRef<number | null>(null);
   const scrollAnchorRef = useRef<HTMLDivElement | null>(null);
   const lastStepRef = useRef<StepId | null>(null);
+  // Marca triagem concluída para suprimir triage_abandoned no unmount.
+  const completedRef = useRef(false);
   // Suprime auto-advance após BACK: só volta a valer quando o usuário
   // realmente altera um campo (dispatch SET_*) no passo atual.
   const suppressAutoAdvanceRef = useRef(false);
@@ -103,10 +105,21 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
     });
   }, [state.currentStep, source]);
 
-  // ---------- limpeza de timers
+  // ---------- limpeza de timers + evento de abandono no unmount
   useEffect(() => () => {
     if (advanceTimerRef.current) window.clearTimeout(advanceTimerRef.current);
-  }, []);
+    if (!completedRef.current) {
+      const stepId = lastStepRef.current;
+      pushLocalAnalyticsEvent({
+        event: "triage_abandoned",
+        source,
+        step_id: stepId ?? undefined,
+        step_index: stepId ? STEP_ORDER.indexOf(stepId) : undefined,
+        completion_status: "abandoned",
+        page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+      });
+    }
+  }, [source]);
 
   // ---------- foco automático no primeiro campo inválido
   useEffect(() => {
@@ -132,14 +145,22 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
       return;
     }
     transitioningRef.current = true;
+    // Diferencia avanço MANUAL do auto-advance (ambos disparam NEXT).
+    pushLocalAnalyticsEvent({
+      event: "triage_step_next",
+      source,
+      step_id: state.currentStep,
+      step_index: STEP_ORDER.indexOf(state.currentStep),
+      page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+    });
     dispatch({ type: "NEXT" });
     window.setTimeout(() => { transitioningRef.current = false; }, 400);
-  }, [state]);
+  }, [state, source, dispatch]);
 
   const goBack = useCallback(() => {
     if (transitioningRef.current) return;
     dispatch({ type: "BACK" });
-  }, []);
+  }, [dispatch]);
 
   // ---------- auto-advance quando etapa fica completa
   const canAdvanceNow = useMemo(() => validateCurrentStep(state).ok, [state]);
@@ -245,6 +266,7 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
       } catch { /* não bloqueia */ }
 
       // Analytics
+      completedRef.current = true;
       pushLocalAnalyticsEvent({
         event: "triage_complete",
         source,

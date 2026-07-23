@@ -25,25 +25,37 @@ export interface EquipmentOption {
   id: EquipmentId;
   label: string;
   emoji: string;
-  /** Modalidade padrão quando não há regra específica. */
+  /**
+   * Rota de fallback quando nenhuma regra específica se aplica.
+   * O engine consulta `LIGHT_SYMPTOMS_BY_EQUIPMENT` antes deste fallback
+   * para promover casos leves a `visita` mesmo quando o default é `coleta`.
+   */
   defaultRoute: ServiceRoute;
-  /** Se `true`, remoto e visita nunca podem ser oferecidos. */
-  forceCollect: boolean;
 }
 
 export const EQUIPMENTS: EquipmentOption[] = [
-  { id: "pc_notebook",   label: "PC / Notebook",         emoji: "💻", defaultRoute: "visita", forceCollect: false },
-  { id: "tv",            label: "TV",                    emoji: "📺", defaultRoute: "coleta", forceCollect: true },
-  { id: "celular_tablet",label: "Celular / Tablet",      emoji: "📱", defaultRoute: "coleta", forceCollect: true },
-  { id: "surface",       label: "Surface",               emoji: "📘", defaultRoute: "coleta", forceCollect: true },
-  { id: "som_audio",     label: "Som / Receiver / Áudio",emoji: "🔊", defaultRoute: "coleta", forceCollect: true },
-  { id: "videogame",     label: "Videogame",             emoji: "🎮", defaultRoute: "coleta", forceCollect: true },
-  { id: "outro",         label: "Outro",                 emoji: "🧰", defaultRoute: "coleta", forceCollect: true },
+  { id: "pc_notebook",    label: "PC / Notebook",          emoji: "💻", defaultRoute: "visita" },
+  { id: "tv",             label: "TV",                     emoji: "📺", defaultRoute: "coleta" },
+  { id: "celular_tablet", label: "Celular / Tablet",       emoji: "📱", defaultRoute: "coleta" },
+  { id: "surface",        label: "Surface",                emoji: "📘", defaultRoute: "coleta" },
+  { id: "som_audio",      label: "Som / Receiver / Áudio", emoji: "🔊", defaultRoute: "coleta" },
+  { id: "videogame",      label: "Videogame",              emoji: "🎮", defaultRoute: "coleta" },
+  { id: "outro",          label: "Outro",                  emoji: "🧰", defaultRoute: "coleta" },
 ];
 
 export const EQUIPMENT_BY_ID: Record<EquipmentId, EquipmentOption> = Object.fromEntries(
   EQUIPMENTS.map((e) => [e.id, e]),
 ) as Record<EquipmentId, EquipmentOption>;
+
+/**
+ * Sintomas "leves" por equipamento — tipicamente resolvíveis em visita
+ * (config, cabo, conexão externa) sem exigir bancada. O engine promove
+ * estes casos a `visita` mesmo quando o defaultRoute do equipamento é `coleta`.
+ */
+export const LIGHT_SYMPTOMS_BY_EQUIPMENT: Partial<Record<EquipmentId, readonly string[]>> = {
+  som_audio: ["input_fail", "no_sound", "one_channel"],
+  videogame: ["controller", "hdmi"],
+};
 
 /** Preços mínimos e regras de negócio da rodada 26. */
 export const PRICING = {

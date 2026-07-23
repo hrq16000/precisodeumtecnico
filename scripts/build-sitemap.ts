@@ -1,12 +1,13 @@
 // Build-time sitemap generator. Run with: bun scripts/build-sitemap.ts
 //
-// Emite um sitemap-index em public/sitemap.xml apontando para shards:
-//   - public/sitemap-main.xml           (estáticas + serviços + blog + nacional)
-//   - public/sitemap-city-{city}.xml    (rota da cidade + service×city)
-//   - public/sitemap-bairros-{city}.xml (bairros da cidade)
+// Emite um sitemap-index consolidado em public/sitemap.xml com poucos shards:
+//   - public/sitemap-main.xml                       (estáticas + serviços + blog + nacional)
+//   - public/sitemap-regions.xml                    (rotas de cidades + service×city)
+//   - public/sitemap-bairros.xml                    (todos os bairros de todas as cidades)
+//   - public/sitemap-nacional-servicos-piloto.xml   (matriz piloto)
 //
-// Cada URL tem canonical == loc (URL absoluta https no domínio oficial).
-// Todos os shards são deduplicados globalmente antes de escrever.
+// Cada URL tem canonical == loc. Consolidação reduz número de arquivos
+// publicados (de ~24 para 4) — menos falhas de upload no deploy.
 
 import { writeFileSync, statSync, existsSync, readdirSync, unlinkSync } from "node:fs";
 import { servicesData } from "../src/data/services";
@@ -194,9 +195,10 @@ ${urls.map(urlXml).join("\n")}
 const shardLastmod = (urls: Url[]) =>
   clampLastmod(urls.map((u) => u.lastmod ?? today).sort().at(-1) ?? today);
 
-// Limpa shards antigos (inclui shard piloto nacional serviços)
+// Limpa shards antigos (per-city e per-bairro do modelo antigo, além dos
+// consolidados atuais e do shard piloto nacional).
 for (const f of readdirSync("public")) {
-  if (/^sitemap-(main|city-|bairros-|nacional-servicos-piloto).*\.xml$/.test(f)) {
+  if (/^sitemap-(main|city-|bairros-?|regions|nacional-servicos-piloto).*\.xml$/.test(f)) {
     try { unlinkSync(`public/${f}`); } catch {}
   }
 }
@@ -212,24 +214,23 @@ const matrixUrls: Url[] = matrixCombos.slice(0, NATIONAL_MATRIX_MAX).map((c) => 
 }));
 const matrixDeduped = dedupe(matrixUrls);
 
+// Consolidação: todas as URLs por-cidade e por-bairro em dois shards únicos.
+const regionsConsolidated = cityDeduped.flatMap((s) => s.urls);
+const bairrosConsolidated = bairroDeduped.flatMap((s) => s.urls);
 
 const shardIndex: { name: string; lastmod: string }[] = [];
 
 writeFileSync("public/sitemap-main.xml", buildUrlset(mainDeduped));
 shardIndex.push({ name: "sitemap-main.xml", lastmod: shardLastmod(mainDeduped) });
 
-for (const s of cityDeduped) {
-  if (s.urls.length === 0) continue;
-  const name = `sitemap-city-${s.city}.xml`;
-  writeFileSync(`public/${name}`, buildUrlset(s.urls));
-  shardIndex.push({ name, lastmod: shardLastmod(s.urls) });
+if (regionsConsolidated.length > 0) {
+  writeFileSync("public/sitemap-regions.xml", buildUrlset(regionsConsolidated));
+  shardIndex.push({ name: "sitemap-regions.xml", lastmod: shardLastmod(regionsConsolidated) });
 }
 
-for (const s of bairroDeduped) {
-  if (s.urls.length === 0) continue;
-  const name = `sitemap-bairros-${s.city}.xml`;
-  writeFileSync(`public/${name}`, buildUrlset(s.urls));
-  shardIndex.push({ name, lastmod: shardLastmod(s.urls) });
+if (bairrosConsolidated.length > 0) {
+  writeFileSync("public/sitemap-bairros.xml", buildUrlset(bairrosConsolidated));
+  shardIndex.push({ name: "sitemap-bairros.xml", lastmod: shardLastmod(bairrosConsolidated) });
 }
 
 // Shard piloto — matriz nacional serviços.

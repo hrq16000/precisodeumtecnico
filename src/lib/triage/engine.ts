@@ -3,7 +3,7 @@
  * ÚNICA fonte de verdade das regras de modalidade, validação e resumo.
  */
 import {
-  EQUIPMENT_BY_ID, TERMS_VERSION, URGENCY_OPTIONS,
+  EQUIPMENT_BY_ID, LIGHT_SYMPTOMS_BY_EQUIPMENT, TERMS_VERSION, URGENCY_OPTIONS,
   routeExplanation, routeLabel, routeMinimumPrice, routeSlaText,
   type EquipmentId, type ServiceRoute, type UrgencyId,
 } from "@/data/triage/config";
@@ -85,10 +85,7 @@ export function determineServiceRoute(state: TriageStateV2): ServiceRoute | unde
   const eq = EQUIPMENT_BY_ID[state.equipment];
   if (!eq) return undefined;
 
-  // Equipamentos com coleta obrigatória
-  if (eq.forceCollect) return "coleta";
-
-  // PC / Notebook
+  // PC / Notebook — regras finas (mantidas)
   if (state.equipment === "pc_notebook") {
     const power = state.deviceDetails.power;
     const symptom = state.symptom;
@@ -109,6 +106,10 @@ export function determineServiceRoute(state: TriageStateV2): ServiceRoute | unde
     // Default seguro
     return "coleta";
   }
+
+  // Demais equipamentos: sintoma leve → visita; senão → fallback do equipamento.
+  const light = LIGHT_SYMPTOMS_BY_EQUIPMENT[state.equipment];
+  if (light && state.symptom && light.includes(state.symptom)) return "visita";
 
   return eq.defaultRoute;
 }

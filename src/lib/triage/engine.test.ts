@@ -60,9 +60,44 @@ describe("triage engine — determineServiceRoute", () => {
     expect(determineServiceRoute(s)).toBe("coleta");
   });
 
-  it("Videogame → coleta", () => {
+  it("Videogame sem sintoma → coleta (fallback)", () => {
     let s = makeInitialStateV2();
     s = reducerV2(s, { type: "SET_EQUIPMENT", value: "videogame" });
+    expect(determineServiceRoute(s)).toBe("coleta");
+  });
+
+  it("Videogame controle → visita (sintoma leve)", () => {
+    let s = makeInitialStateV2();
+    s = reducerV2(s, { type: "SET_EQUIPMENT", value: "videogame" });
+    s = reducerV2(s, { type: "SET_SYMPTOM", value: "controller" });
+    expect(determineServiceRoute(s)).toBe("visita");
+  });
+
+  it("Videogame HDMI → visita (sintoma leve)", () => {
+    let s = makeInitialStateV2();
+    s = reducerV2(s, { type: "SET_EQUIPMENT", value: "videogame" });
+    s = reducerV2(s, { type: "SET_SYMPTOM", value: "hdmi" });
+    expect(determineServiceRoute(s)).toBe("visita");
+  });
+
+  it("Videogame não liga → coleta (não é leve)", () => {
+    let s = makeInitialStateV2();
+    s = reducerV2(s, { type: "SET_EQUIPMENT", value: "videogame" });
+    s = reducerV2(s, { type: "SET_SYMPTOM", value: "no_power" });
+    expect(determineServiceRoute(s)).toBe("coleta");
+  });
+
+  it("Som/áudio entrada não funciona → visita (sintoma leve)", () => {
+    let s = makeInitialStateV2();
+    s = reducerV2(s, { type: "SET_EQUIPMENT", value: "som_audio" });
+    s = reducerV2(s, { type: "SET_SYMPTOM", value: "input_fail" });
+    expect(determineServiceRoute(s)).toBe("visita");
+  });
+
+  it("Som/áudio ruído → coleta (fallback)", () => {
+    let s = makeInitialStateV2();
+    s = reducerV2(s, { type: "SET_EQUIPMENT", value: "som_audio" });
+    s = reducerV2(s, { type: "SET_SYMPTOM", value: "noise" });
     expect(determineServiceRoute(s)).toBe("coleta");
   });
 

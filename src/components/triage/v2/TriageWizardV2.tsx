@@ -105,10 +105,21 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
     });
   }, [state.currentStep, source]);
 
-  // ---------- limpeza de timers
+  // ---------- limpeza de timers + evento de abandono no unmount
   useEffect(() => () => {
     if (advanceTimerRef.current) window.clearTimeout(advanceTimerRef.current);
-  }, []);
+    if (!completedRef.current) {
+      const stepId = lastStepRef.current;
+      pushLocalAnalyticsEvent({
+        event: "triage_abandoned",
+        source,
+        step_id: stepId ?? undefined,
+        step_index: stepId ? STEP_ORDER.indexOf(stepId) : undefined,
+        completion_status: "abandoned",
+        page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+      });
+    }
+  }, [source]);
 
   // ---------- foco automático no primeiro campo inválido
   useEffect(() => {

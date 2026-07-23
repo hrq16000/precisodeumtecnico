@@ -54,6 +54,8 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
   const advanceTimerRef = useRef<number | null>(null);
   const scrollAnchorRef = useRef<HTMLDivElement | null>(null);
   const lastStepRef = useRef<StepId | null>(null);
+  // Marca triagem concluída para suprimir triage_abandoned no unmount.
+  const completedRef = useRef(false);
   // Suprime auto-advance após BACK: só volta a valer quando o usuário
   // realmente altera um campo (dispatch SET_*) no passo atual.
   const suppressAutoAdvanceRef = useRef(false);

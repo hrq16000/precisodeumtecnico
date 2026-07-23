@@ -132,14 +132,22 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
       return;
     }
     transitioningRef.current = true;
+    // Diferencia avanço MANUAL do auto-advance (ambos disparam NEXT).
+    pushLocalAnalyticsEvent({
+      event: "triage_step_next",
+      source,
+      step_id: state.currentStep,
+      step_index: STEP_ORDER.indexOf(state.currentStep),
+      page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+    });
     dispatch({ type: "NEXT" });
     window.setTimeout(() => { transitioningRef.current = false; }, 400);
-  }, [state]);
+  }, [state, source, dispatch]);
 
   const goBack = useCallback(() => {
     if (transitioningRef.current) return;
     dispatch({ type: "BACK" });
-  }, []);
+  }, [dispatch]);
 
   // ---------- auto-advance quando etapa fica completa
   const canAdvanceNow = useMemo(() => validateCurrentStep(state).ok, [state]);

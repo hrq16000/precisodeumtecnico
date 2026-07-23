@@ -1,12 +1,13 @@
 // Build-time sitemap generator. Run with: bun scripts/build-sitemap.ts
 //
-// Emite um sitemap-index em public/sitemap.xml apontando para shards:
-//   - public/sitemap-main.xml           (estáticas + serviços + blog + nacional)
-//   - public/sitemap-city-{city}.xml    (rota da cidade + service×city)
-//   - public/sitemap-bairros-{city}.xml (bairros da cidade)
+// Emite um sitemap-index consolidado em public/sitemap.xml com poucos shards:
+//   - public/sitemap-main.xml                       (estáticas + serviços + blog + nacional)
+//   - public/sitemap-regions.xml                    (rotas de cidades + service×city)
+//   - public/sitemap-bairros.xml                    (todos os bairros de todas as cidades)
+//   - public/sitemap-nacional-servicos-piloto.xml   (matriz piloto)
 //
-// Cada URL tem canonical == loc (URL absoluta https no domínio oficial).
-// Todos os shards são deduplicados globalmente antes de escrever.
+// Cada URL tem canonical == loc. Consolidação reduz número de arquivos
+// publicados (de ~24 para 4) — menos falhas de upload no deploy.
 
 import { writeFileSync, statSync, existsSync, readdirSync, unlinkSync } from "node:fs";
 import { servicesData } from "../src/data/services";

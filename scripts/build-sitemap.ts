@@ -21,6 +21,8 @@ import {
 } from "../src/data/regions";
 import { allBlogPosts as blogPosts, blogCategories } from "../src/data/blog";
 import { nationalCities } from "../src/data/nationalCities";
+import { nationalBairrosByCity } from "../src/data/nationalBairros";
+
 import { enumeratePilotCombinations, NATIONAL_MATRIX_MAX } from "../src/data/nationalServiceCoverage";
 
 

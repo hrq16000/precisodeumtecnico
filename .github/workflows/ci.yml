@@ -168,15 +168,31 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         run: |
+          set -e
           if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_ANON_KEY" ]; then
             echo "::warning::SUPABASE_URL/ANON_KEY não configurados — pulando IndexNow."
             exit 0
           fi
-          curl -sS -X POST "$SUPABASE_URL/functions/v1/submit-sitemap-indexnow" \
+          HTTP_STATUS=$(curl -sS -o /tmp/indexnow.json -w "%{http_code}" \
+            -X POST "$SUPABASE_URL/functions/v1/submit-sitemap-indexnow" \
             -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
             -H "Content-Type: application/json" \
-            -d '{}' | tee /tmp/indexnow.json
-          grep -q '"ok":true' /tmp/indexnow.json
+            -d '{}')
+          echo "IndexNow HTTP $HTTP_STATUS"
+          cat /tmp/indexnow.json
+          if [ "$HTTP_STATUS" -lt 200 ] || [ "$HTTP_STATUS" -ge 300 ]; then
+            echo "::error::IndexNow retornou HTTP $HTTP_STATUS"
+            exit 1
+          fi
+          if ! grep -q '"ok":true' /tmp/indexnow.json; then
+            echo "::error::Payload IndexNow não contém ok:true"
+            exit 1
+          fi
+          echo "OK: sitemap submetido via IndexNow com sucesso."
+      - name: Skip notice
+        if: steps.diff.outputs.changed != 'true'
+        run: echo "Sitemap não mudou nesse push — IndexNow não acionado."
+
 
 
 

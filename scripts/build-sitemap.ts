@@ -143,7 +143,6 @@ for (const c of nationalCities)
 // path="/atendimento-nacional/:city/:bairro" />. Adicionados aqui para o Google
 // descobrir a matriz cidade×bairro sem shards separados.
 {
-  const { nationalBairrosByCity } = await import("../src/data/nationalBairros");
   const natBairroMtime = fileDate("src/data/nationalBairros.ts");
   for (const c of nationalCities) {
     const bairros = nationalBairrosByCity[c.slug] ?? [];
@@ -157,6 +156,7 @@ for (const c of nationalCities)
     }
   }
 }
+
 
 
 // Por-cidade (rota + service×city)

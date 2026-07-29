@@ -123,6 +123,43 @@ jobs:
             -d '{}' | tee /tmp/gsc.json
           grep -q '"ok":true' /tmp/gsc.json
 
+  submit-sitemap-indexnow:
+    # Pinga Bing/Yandex via IndexNow quando o sitemap muda em main.
+    # Requer secrets do repo: SUPABASE_URL, SUPABASE_ANON_KEY.
+    # A chave IndexNow em si vive como secret runtime (BING_INDEXNOW_KEY),
+    # e o arquivo público /{KEY}.txt deve existir no domínio.
+    runs-on: ubuntu-latest
+    needs: verify
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Detect sitemap changes
+        id: diff
+        run: |
+          if git diff --name-only HEAD~1 HEAD | grep -qE '^(public/sitemap|scripts/build-sitemap)'; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Submit sitemap via IndexNow (Bing/Yandex)
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_ANON_KEY" ]; then
+            echo "::warning::SUPABASE_URL/ANON_KEY não configurados — pulando IndexNow."
+            exit 0
+          fi
+          curl -sS -X POST "$SUPABASE_URL/functions/v1/submit-sitemap-indexnow" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' | tee /tmp/indexnow.json
+          grep -q '"ok":true' /tmp/indexnow.json
+
+
 
 
 

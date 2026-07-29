@@ -19,7 +19,10 @@ for (const { city, bairro } of samples) {
     await page.goto(`/atendimento-nacional/${city}/${bairro}`, { waitUntil: "domcontentloaded" });
     await expect(page.locator("h1")).toBeVisible();
 
-    const ctas = page.locator("a[data-wa-source]");
+    // Escopo restrito ao conteúdo principal — excluímos o WhatsApp float
+    // global, que é fornecido pelo Layout e não conhece bairro.
+    const scope = page.locator("main");
+    const ctas = scope.locator("a[data-wa-source]");
     const count = await ctas.count();
     expect(count).toBeGreaterThan(0);
 
@@ -28,9 +31,9 @@ for (const { city, bairro } of samples) {
       await expect(el).toHaveAttribute("data-wa-source", /.+/);
       await expect(el).toHaveAttribute("data-service", /.+/);
       await expect(el).toHaveAttribute("data-neighborhood", /.+/);
-      // href sempre para WhatsApp
       const href = await el.getAttribute("href");
       expect(href).toMatch(/^https?:\/\/(wa\.me|api\.whatsapp\.com)/);
     }
+
   });
 }

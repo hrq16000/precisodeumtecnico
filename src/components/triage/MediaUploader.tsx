@@ -158,6 +158,14 @@ export function MediaUploader({
             setError(info.error);
             continue;
           }
+          // E2E stub: pula upload real e devolve path sintético consistente
+          // com as regex de foto/vídeo (permite validar fluxo do wizard sem
+          // depender da edge function em CI).
+          if (isE2EStubMode()) {
+            const ext = info.kind === "video" ? "mp4" : "jpg";
+            onAdd(`e2e/${crypto.randomUUID()}.${ext}`);
+            continue;
+          }
           const fd = new FormData();
           fd.append("sessionId", session.sessionId);
           fd.append("sessionToken", session.sessionToken);
@@ -188,6 +196,7 @@ export function MediaUploader({
           const { path } = (await res.json()) as { path: string };
           onAdd(path);
         }
+
       } finally {
         setBusy(false);
         if (inputRef.current) inputRef.current.value = "";

@@ -12,6 +12,8 @@ import { AuthProvider } from "@/hooks/useAuth";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import { GlobalTriageLauncher } from "@/components/triage/GlobalTriageLauncher";
+import { E2ETriageBridge } from "@/components/triage/E2ETriageBridge";
+
 import { SmartLocationPrompt } from "@/components/layout/SmartLocationPrompt";
 import { useRoutePageview } from "@/hooks/useRoutePageview";
 
@@ -67,6 +69,8 @@ const App = () => (
             <ScrollToTop />
             <GlobalReveal />
             <GlobalTriageLauncher />
+            <E2ETriageBridge />
+
             <SmartLocationPrompt />
             <RoutePageviewTracker />
 

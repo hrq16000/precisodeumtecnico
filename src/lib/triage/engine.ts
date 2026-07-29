@@ -338,8 +338,58 @@ export function buildWhatsAppTriageMessage(state: TriageStateV2): string {
   lines.push("");
   lines.push(`Triagem #${shortId} · ${dt} · v${TERMS_VERSION}`);
 
+  const ctx = buildTriageContextSuffix({
+    equipment: state.equipment,
+    symptomSlug: state.symptom,
+    pathname: typeof window !== "undefined" ? window.location.pathname : "",
+  });
+  if (ctx) lines.push(ctx);
+
   return lines.join("\n");
 }
+
+// ---------------------------------------------------------------------------
+// Contexto de tracking parseável no ?text= do WhatsApp.
+// Formato estável: `[cat=... · sym=... · cidade=... · bairro=...]`.
+// ---------------------------------------------------------------------------
+export function parseCityBairroFromPathname(pathname: string): { city?: string; bairro?: string } {
+  const m = pathname.match(/^\/atendimento-nacional\/([^/?#]+)(?:\/([^/?#]+))?/);
+  if (m) return { city: m[1], bairro: m[2] };
+  const s = pathname.match(/^\/servicos\/[^/]+\/([^/?#]+)/);
+  if (s) return { city: s[1] };
+  return {};
+}
+
+export function buildTriageContextSuffix(opts: {
+  equipment?: string;
+  symptomSlug?: string;
+  pathname?: string;
+}): string {
+  const parts: string[] = [];
+  if (opts.equipment) parts.push(`cat=${opts.equipment}`);
+  if (opts.symptomSlug) parts.push(`sym=${opts.symptomSlug}`);
+  const { city, bairro } = parseCityBairroFromPathname(opts.pathname ?? "");
+  if (city) parts.push(`cidade=${city}`);
+  if (bairro) parts.push(`bairro=${bairro}`);
+  return parts.length > 0 ? `[${parts.join(" · ")}]` : "";
+}
+
+/** Modo E2E: monta URL final do WhatsApp a partir de estado sintético mínimo. */
+export function buildTriageWaUrlSynthetic(opts: {
+  equipment: string;
+  symptomSlug: string;
+  pathname: string;
+  whatsappNumber: string;
+}): string {
+  const suffix = buildTriageContextSuffix({
+    equipment: opts.equipment,
+    symptomSlug: opts.symptomSlug,
+    pathname: opts.pathname,
+  });
+  const text = `Olá! Concluí a triagem obrigatória pelo site.\n\n${suffix}`;
+  return `https://wa.me/${opts.whatsappNumber}?text=${encodeURIComponent(text)}`;
+}
+
 
 // ---------------------------------------------------------------------------
 // Reducer FSM

@@ -112,7 +112,7 @@ describe("triage engine — determineServiceRoute", () => {
 
 describe("triage engine — defaultRoute por equipamento (sem sintoma leve)", () => {
   const cases = [
-    ["pc_notebook", "visita"],
+    ["pc_notebook", "coleta"], // default seguro sem dados de energia/sintoma
     ["tv", "coleta"],
     ["celular_tablet", "coleta"],
     ["surface", "coleta"],

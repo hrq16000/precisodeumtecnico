@@ -82,6 +82,10 @@ export function MediaUploader({
 
   const ensureSession = useCallback(async () => {
     if (sessionRef.current) return sessionRef.current;
+    if (isE2EStubMode()) {
+      sessionRef.current = { sessionId: "e2e-session", sessionToken: "e2e-token" };
+      return sessionRef.current;
+    }
     const res = await fetch(FN_URL, {
       method: "POST",
       headers: {
@@ -96,6 +100,7 @@ export function MediaUploader({
     sessionRef.current = data;
     return data;
   }, []);
+
 
   useEffect(() => {
     ensureSession().catch(() => {

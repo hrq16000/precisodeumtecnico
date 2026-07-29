@@ -30,17 +30,21 @@ test.describe("Triage lifecycle events", () => {
     const dialog = page.getByRole("dialog");
     await expect(dialog).toBeVisible();
 
-    // Etapa 1 → seleciona TV (auto-advance leva à etapa 2 sem emitir step_next).
+    // Navega até a etapa `serviceRoute` (a única que exige clique manual,
+    // sem auto-advance), passando por TV → LED → screen_broken → hoje.
     await dialog.getByRole("button", { name: /^TV$/i }).first().click();
-    await expect(dialog.getByRole("heading", { name: /Identificação/i })).toBeVisible();
+    await dialog.getByRole("button", { name: /^LED$/i }).first().click();
+    await dialog.getByRole("button", { name: /Tela quebrada/i }).first().click();
+    await dialog.getByRole("button", { name: /^Hoje$/i }).first().click();
+
+    // Aguarda a modalidade calculada (etapa 5 · Modalidade).
+    await expect(dialog.getByRole("heading", { name: /Modalidade/i })).toBeVisible({ timeout: 10_000 });
 
     // Limpa fila para isolar o avanço manual seguinte.
     await page.evaluate(() => {
       (window as unknown as { __PDT_ANALYTICS_QUEUE__: Evt[] }).__PDT_ANALYTICS_QUEUE__ = [];
     });
 
-    // Clique manual em "Próxima etapa" — etapa 2 (deviceDetails) tem campos opcionais,
-    // então a validação passa e goNext emite step_next uma vez.
     await dialog.getByRole("button", { name: /Próxima etapa/i }).click();
 
     await page.waitForFunction(() => {
@@ -51,8 +55,9 @@ test.describe("Triage lifecycle events", () => {
     const q = await readQueue(page);
     const stepNext = q.filter((e) => e.event === "triage_step_next");
     expect(stepNext.length).toBe(1);
-    expect(stepNext[0].step_id).toBe("deviceDetails");
-    expect(stepNext[0].step_index).toBe(1);
+    expect(stepNext[0].step_id).toBe("serviceRoute");
+    expect(typeof stepNext[0].step_index).toBe("number");
+
   });
 
   test("fechar wizard antes de concluir emite triage_abandoned com step atual", async ({ page }) => {

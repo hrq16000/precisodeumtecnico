@@ -108,6 +108,43 @@ describe("triage engine — determineServiceRoute", () => {
   });
 });
 
+
+
+describe("triage engine — defaultRoute por equipamento (sem sintoma leve)", () => {
+  const cases = [
+    ["pc_notebook", "coleta"], // default seguro sem dados de energia/sintoma
+    ["tv", "coleta"],
+    ["celular_tablet", "coleta"],
+    ["surface", "coleta"],
+    ["som_audio", "coleta"],
+    ["videogame", "coleta"],
+    ["outro", "coleta"],
+  ] as const;
+
+  for (const [eq, expected] of cases) {
+    it(`${eq} sem sintoma → ${expected} (defaultRoute)`, () => {
+      let s = makeInitialStateV2();
+      s = reducerV2(s, { type: "SET_EQUIPMENT", value: eq });
+      expect(determineServiceRoute(s)).toBe(expected);
+    });
+  }
+
+  it("som_audio + no_sound → visita (sintoma leve promove)", () => {
+    let s = makeInitialStateV2();
+    s = reducerV2(s, { type: "SET_EQUIPMENT", value: "som_audio" });
+    s = reducerV2(s, { type: "SET_SYMPTOM", value: "no_sound" });
+    expect(determineServiceRoute(s)).toBe("visita");
+  });
+
+  it("som_audio + one_channel → visita (sintoma leve promove)", () => {
+    let s = makeInitialStateV2();
+    s = reducerV2(s, { type: "SET_EQUIPMENT", value: "som_audio" });
+    s = reducerV2(s, { type: "SET_SYMPTOM", value: "one_channel" });
+    expect(determineServiceRoute(s)).toBe("visita");
+  });
+});
+
+
 describe("triage engine — reset dependente", () => {
   it("alterar equipamento limpa deviceDetails, sintoma e termos", () => {
     let s = makeInitialStateV2();

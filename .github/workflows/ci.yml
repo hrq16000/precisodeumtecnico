@@ -27,7 +27,26 @@ jobs:
       - name: Run tests
         run: bun run test
       - name: Build
+        env:
+          BING_INDEXNOW_KEY: ${{ secrets.BING_INDEXNOW_KEY }}
         run: bun run build
+      - name: Guard — IndexNow key file publicado em dist/
+        if: env.BING_INDEXNOW_KEY != ''
+        env:
+          BING_INDEXNOW_KEY: ${{ secrets.BING_INDEXNOW_KEY }}
+        run: |
+          set -e
+          if [ ! -f "dist/${BING_INDEXNOW_KEY}.txt" ]; then
+            echo "::error::Arquivo dist/${BING_INDEXNOW_KEY}.txt ausente — build não publicou a verificação IndexNow."
+            exit 1
+          fi
+          CONTENT=$(cat "dist/${BING_INDEXNOW_KEY}.txt")
+          if [ "$CONTENT" != "$BING_INDEXNOW_KEY" ]; then
+            echo "::error::Conteúdo do arquivo de verificação IndexNow não bate com a chave."
+            exit 1
+          fi
+          echo "OK: arquivo de verificação IndexNow publicado."
+
       - name: Install Playwright (chromium)
         run: bun run e2e:install
       - name: Run E2E (a11y + flows + tracking)

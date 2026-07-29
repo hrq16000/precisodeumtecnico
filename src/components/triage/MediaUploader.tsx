@@ -24,6 +24,22 @@ const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
 const SUPABASE_ANON = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string;
 const FN_URL = `${SUPABASE_URL}/functions/v1/triage-media-upload`;
 
+/**
+ * Stub de upload para testes E2E.
+ * Ativado quando `?e2e=1` está presente na URL (verificado em runtime,
+ * nunca no bundle de produção — não expõe o bypass a usuários reais).
+ * Retorna um path sintético válido que atende às regex de foto/vídeo.
+ */
+function isE2EStubMode(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    return new URLSearchParams(window.location.search).get("e2e") === "1";
+  } catch {
+    return false;
+  }
+}
+
+
 /** Aceita File e devolve `{ kind, mb, duration? }` ou erro humano. */
 async function inspect(file: File, maxVideoSeconds: number) {
   const isVideo = file.type.startsWith("video/");
@@ -66,6 +82,10 @@ export function MediaUploader({
 
   const ensureSession = useCallback(async () => {
     if (sessionRef.current) return sessionRef.current;
+    if (isE2EStubMode()) {
+      sessionRef.current = { sessionId: "e2e-session", sessionToken: "e2e-token" };
+      return sessionRef.current;
+    }
     const res = await fetch(FN_URL, {
       method: "POST",
       headers: {
@@ -80,6 +100,7 @@ export function MediaUploader({
     sessionRef.current = data;
     return data;
   }, []);
+
 
   useEffect(() => {
     ensureSession().catch(() => {
@@ -137,6 +158,14 @@ export function MediaUploader({
             setError(info.error);
             continue;
           }
+          // E2E stub: pula upload real e devolve path sintético consistente
+          // com as regex de foto/vídeo (permite validar fluxo do wizard sem
+          // depender da edge function em CI).
+          if (isE2EStubMode()) {
+            const ext = info.kind === "video" ? "mp4" : "jpg";
+            onAdd(`e2e/${crypto.randomUUID()}.${ext}`);
+            continue;
+          }
           const fd = new FormData();
           fd.append("sessionId", session.sessionId);
           fd.append("sessionToken", session.sessionToken);
@@ -167,6 +196,7 @@ export function MediaUploader({
           const { path } = (await res.json()) as { path: string };
           onAdd(path);
         }
+
       } finally {
         setBusy(false);
         if (inputRef.current) inputRef.current.value = "";

@@ -35,7 +35,7 @@ test.describe("Triage lifecycle events", () => {
     await dialog.getByRole("button", { name: /^TV$/i }).first().click();
     await dialog.getByRole("radio", { name: /^LED$/i }).first().click();
     await dialog.getByRole("radio", { name: /Tela quebrada/i }).first().click();
-    await dialog.getByRole("radio", { name: /^Hoje$/i }).first().click();
+    // contextualAnswers auto-advança quando não há campos obrigatórios pendentes.
 
 
     // Aguarda a modalidade calculada (etapa 5 · Modalidade).

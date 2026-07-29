@@ -105,7 +105,10 @@ describe("triage engine — determineServiceRoute", () => {
     let s = makeInitialStateV2();
     s = reducerV2(s, { type: "SET_EQUIPMENT", value: "outro" });
     expect(determineServiceRoute(s)).toBe("coleta");
+  });
 });
+
+
 
 describe("triage engine — defaultRoute por equipamento (sem sintoma leve)", () => {
   const cases = [

@@ -137,6 +137,26 @@ for (const post of blogPosts) {
 for (const c of nationalCities)
   mainUrls.push({ loc: `${BASE}/atendimento-nacional/${c.slug}`, changefreq: "weekly", priority: 0.8, lastmod: natMtime });
 
+// Bairros âncora de cada cidade nacional — mesma tabela usada pelo <Route
+// path="/atendimento-nacional/:city/:bairro" />. Adicionados aqui para o Google
+// descobrir a matriz cidade×bairro sem shards separados.
+{
+  const { nationalBairrosByCity } = await import("../src/data/nationalBairros");
+  const natBairroMtime = fileDate("src/data/nationalBairros.ts");
+  for (const c of nationalCities) {
+    const bairros = nationalBairrosByCity[c.slug] ?? [];
+    for (const b of bairros) {
+      mainUrls.push({
+        loc: `${BASE}/atendimento-nacional/${c.slug}/${b.slug}`,
+        changefreq: "monthly",
+        priority: 0.7,
+        lastmod: natBairroMtime,
+      });
+    }
+  }
+}
+
+
 // Por-cidade (rota + service×city)
 const cityShards: { city: string; urls: Url[] }[] = [];
 const matrixLastmod = servicesMtime > regionsMtime ? servicesMtime : regionsMtime;

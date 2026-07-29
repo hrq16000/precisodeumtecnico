@@ -32,10 +32,11 @@ test.describe("Triage lifecycle events", () => {
 
     // Navega até a etapa `serviceRoute` (a única que exige clique manual,
     // sem auto-advance), passando por TV → LED → screen_broken → hoje.
-    await dialog.getByRole("button", { name: /^TV$/i }).first().click();
-    await dialog.getByRole("button", { name: /^LED$/i }).first().click();
-    await dialog.getByRole("button", { name: /Tela quebrada/i }).first().click();
-    await dialog.getByRole("button", { name: /^Hoje$/i }).first().click();
+    await dialog.getByRole("radio", { name: /^TV$/i }).first().click();
+    await dialog.getByRole("radio", { name: /^LED$/i }).first().click();
+    await dialog.getByRole("radio", { name: /Tela quebrada/i }).first().click();
+    await dialog.getByRole("radio", { name: /^Hoje$/i }).first().click();
+
 
     // Aguarda a modalidade calculada (etapa 5 · Modalidade).
     await expect(dialog.getByRole("heading", { name: /Modalidade/i })).toBeVisible({ timeout: 10_000 });

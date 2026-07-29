@@ -9,6 +9,8 @@ import {
 } from "lucide-react";
 import { getNationalCityBySlug, nationalCities } from "@/data/nationalCities";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
+import { RegionalSymptomFAQ } from "@/components/seo/RegionalSymptomFAQ";
+
 
 const services = [
   { icon: Monitor, name: "Informática", href: "/servicos/informatica" },
@@ -250,10 +252,14 @@ const CidadeNacional = () => {
             </div>
           </div>
 
-          {/* FAQ removida (Rodada 25.1 — Bloco 0). Voltará quando houver curadoria por cidade. */}
+          {/* FAQ regional derivada de src/data/symptoms.ts (seleção determinística por cidade) */}
 
         </div>
       </section>
+
+      <RegionalSymptomFAQ cityName={city.name} seedSlug={city.slug} count={3} />
+
+
 
       {/* Related cities */}
       <section className="py-12 md:py-16">

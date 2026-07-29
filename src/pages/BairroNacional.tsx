@@ -15,9 +15,10 @@ import {
 } from "@/data/nationalBairros";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { trackWhatsAppClick, trackCtaClick } from "@/lib/analytics";
-// FAQ removida (Rodada 25.1 — Bloco 0): builder era template puro que
-// só trocava tokens entre 100+ páginas. FAQPage voltará apenas quando
-// houver conteúdo curado por combinação (Bloco D).
+import { RegionalSymptomFAQ } from "@/components/seo/RegionalSymptomFAQ";
+// FAQ regional (Rodada 27+): derivada de src/data/symptoms.ts, adaptada
+// automaticamente por cidade/bairro sem inventar preços ou prazos.
+
 
 const services = [
   { icon: Monitor, name: "Informática", href: "/servicos/informatica" },
@@ -324,6 +325,15 @@ export default function BairroNacional() {
           </ul>
         </div>
       </section>
+
+      <RegionalSymptomFAQ
+        cityName={city.name}
+        neighborhoodName={bairro.name}
+        seedSlug={`${city.slug}-${bairro.slug}`}
+        count={3}
+      />
+
+
 
       {/* Bairros vizinhos */}
       {nearby.length > 0 && (

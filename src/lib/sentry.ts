@@ -30,6 +30,13 @@ export function initSentry(): void {
       ],
       tracesSampleRate: ENV === "production" ? 0.1 : 1.0,
       sendDefaultPii: false,
+      // Alertas críticos (configurados no dashboard Sentry → Alerts):
+      //   1) "Critical error spike" → notifica Slack/Email quando
+      //      `event.count():>10 in 5m` com `level:error OR level:fatal`.
+      //   2) "Chunk load failure" → filtro `message:*Loading chunk*`
+      //      OR `message:*Failed to fetch dynamically imported*`.
+      //   Ambos usam as tags `route` e `environment` (env já é nativa)
+      //   emitidas abaixo para roteamento por owner/página.
       beforeSend(event) {
         try {
           if (event.request?.url) {
@@ -40,6 +47,19 @@ export function initSentry(): void {
             delete event.user.email;
             delete event.user.ip_address;
             delete event.user.username;
+          }
+          // Tag `route` para roteamento de alertas por página.
+          if (typeof window !== "undefined") {
+            event.tags = {
+              ...(event.tags ?? {}),
+              route: window.location.pathname,
+            };
+          }
+          // Marca erros de hidratação/chunk como críticos → dispara alerta #2.
+          const msg = event.message ?? event.exception?.values?.[0]?.value ?? "";
+          if (/Loading chunk|dynamically imported|ChunkLoadError|hydrat/i.test(msg)) {
+            event.level = "error";
+            event.tags = { ...(event.tags ?? {}), failure_kind: "chunk_or_hydration" };
           }
         } catch {
           /* noop */
@@ -59,6 +79,7 @@ export function initSentry(): void {
     // Nunca deixa o Sentry derrubar o app.
   }
 }
+
 
 export function captureHandledError(err: unknown, context?: Record<string, unknown>): void {
   if (!initialized) return;

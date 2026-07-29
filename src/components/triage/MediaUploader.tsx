@@ -24,6 +24,22 @@ const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
 const SUPABASE_ANON = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string;
 const FN_URL = `${SUPABASE_URL}/functions/v1/triage-media-upload`;
 
+/**
+ * Stub de upload para testes E2E.
+ * Ativado quando `?e2e=1` está presente na URL (verificado em runtime,
+ * nunca no bundle de produção — não expõe o bypass a usuários reais).
+ * Retorna um path sintético válido que atende às regex de foto/vídeo.
+ */
+function isE2EStubMode(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    return new URLSearchParams(window.location.search).get("e2e") === "1";
+  } catch {
+    return false;
+  }
+}
+
+
 /** Aceita File e devolve `{ kind, mb, duration? }` ou erro humano. */
 async function inspect(file: File, maxVideoSeconds: number) {
   const isVideo = file.type.startsWith("video/");

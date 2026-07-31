@@ -58,12 +58,14 @@ for (const route of ROUTES) {
   });
 }
 
-test("LocalBusiness aparece uma única vez por página", async ({ page }) => {
-  await page.goto("/");
+test("landing por keyword não duplica LocalBusiness", async ({ page }) => {
+  await page.goto("/formatacao-de-computador-curitiba");
   await page.waitForSelector('script[type="application/ld+json"]', { state: "attached" });
+  await page.waitForTimeout(500);
   const blocks = await getJsonLdBlocks(page);
   const count = blocks.filter(
     (b) => (b as { "@type"?: string })["@type"] === "LocalBusiness",
   ).length;
   expect(count).toBe(1);
 });
+

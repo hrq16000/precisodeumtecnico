@@ -16,7 +16,7 @@ const ROUTES = [
 for (const route of ROUTES) {
   test(`LocalBusiness válido em ${route}`, async ({ page }) => {
     await page.goto(route);
-    await page.waitForSelector('script[type="application/ld+json"]');
+    await page.waitForSelector('script[type="application/ld+json"]', { state: "attached" });
 
     const blocks = await getJsonLdBlocks(page);
     const lb = findByType<Record<string, unknown>>(blocks, "LocalBusiness");
@@ -42,7 +42,7 @@ for (const route of ROUTES) {
   test(`BreadcrumbList válido em ${route}`, async ({ page }) => {
     test.skip(route === "/", "Home não usa breadcrumb");
     await page.goto(route);
-    await page.waitForSelector('script[type="application/ld+json"]');
+    await page.waitForSelector('script[type="application/ld+json"]', { state: "attached" });
 
     const blocks = await getJsonLdBlocks(page);
     const bc = findByType<Record<string, unknown>>(blocks, "BreadcrumbList");
@@ -60,7 +60,7 @@ for (const route of ROUTES) {
 
 test("LocalBusiness aparece uma única vez por página", async ({ page }) => {
   await page.goto("/");
-  await page.waitForSelector('script[type="application/ld+json"]');
+  await page.waitForSelector('script[type="application/ld+json"]', { state: "attached" });
   const blocks = await getJsonLdBlocks(page);
   const count = blocks.filter(
     (b) => (b as { "@type"?: string })["@type"] === "LocalBusiness",

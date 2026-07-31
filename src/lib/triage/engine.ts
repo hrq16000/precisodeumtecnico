@@ -59,7 +59,7 @@ export function makeInitialStateV2(): TriageStateV2 {
     deviceDetails: {},
     contextualAnswers: {},
     termsAccepted: {},
-    contact: { name: "", phone: "", email: "" },
+    contact: { name: "", phone: "", email: "", neighborhood: "" },
     validationErrors: {},
   };
 }

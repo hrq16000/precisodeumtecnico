@@ -352,6 +352,8 @@ export function buildWhatsAppTriageMessage(state: TriageStateV2): string {
     equipment: state.equipment,
     symptomSlug: state.symptom,
     pathname: typeof window !== "undefined" ? window.location.pathname : "",
+    neighborhoodFallback: state.contact.neighborhood?.trim() || undefined,
+    urgency: state.urgency,
   });
   if (ctx) lines.push(ctx);
 
@@ -374,14 +376,28 @@ export function buildTriageContextSuffix(opts: {
   equipment?: string;
   symptomSlug?: string;
   pathname?: string;
+  /** Bairro informado na qualificação, usado quando a rota não traz bairro. */
+  neighborhoodFallback?: string;
+  urgency?: string;
 }): string {
   const parts: string[] = [];
   if (opts.equipment) parts.push(`cat=${opts.equipment}`);
   if (opts.symptomSlug) parts.push(`sym=${opts.symptomSlug}`);
   const { city, bairro } = parseCityBairroFromPathname(opts.pathname ?? "");
   if (city) parts.push(`cidade=${city}`);
-  if (bairro) parts.push(`bairro=${bairro}`);
+  const nb = bairro ?? (opts.neighborhoodFallback ? slugifyToken(opts.neighborhoodFallback) : undefined);
+  if (nb) parts.push(`bairro=${nb}`);
+  if (opts.urgency) parts.push(`urg=${opts.urgency}`);
   return parts.length > 0 ? `[${parts.join(" · ")}]` : "";
+}
+
+function slugifyToken(v: string): string {
+  return v
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 }
 
 /** Modo E2E: monta URL final do WhatsApp a partir de estado sintético mínimo. */

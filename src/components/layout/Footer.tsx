@@ -154,6 +154,9 @@ export function Footer() {
               <Link to="/dados-da-empresa" className="text-background/60 hover:text-background text-sm transition-colors">
                 Dados da Empresa
               </Link>
+              <Link to="/gestor-responsavel" className="text-background/60 hover:text-background text-sm transition-colors">
+                Gestor Responsável
+              </Link>
               <Link to="/precos" className="text-background/60 hover:text-background text-sm transition-colors">
                 Preços
               </Link>

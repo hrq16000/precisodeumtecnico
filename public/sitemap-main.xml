@@ -92,6 +92,13 @@
     <xhtml:link rel="canonical" href="https://precisodeumtecnico.com/dados-da-empresa"/>
   </url>
   <url>
+    <loc>https://precisodeumtecnico.com/gestor-responsavel</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.60</priority>
+    <xhtml:link rel="canonical" href="https://precisodeumtecnico.com/gestor-responsavel"/>
+  </url>
+  <url>
     <loc>https://precisodeumtecnico.com/servicos/troca-de-tela-tv-curitiba</loc>
     <lastmod>2026-07-31</lastmod>
     <changefreq>weekly</changefreq>

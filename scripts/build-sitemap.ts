@@ -89,6 +89,7 @@ const mainUrls: Url[] = [
   { loc: `${BASE}/atendimento-nacional`, changefreq: "weekly", priority: 0.9, lastmod: fileDate("src/pages/AtendimentoNacional.tsx") },
   { loc: `${BASE}/faq`, changefreq: "monthly", priority: 0.6, lastmod: fileDate("src/pages/Faq.tsx") },
   { loc: `${BASE}/dados-da-empresa`, changefreq: "yearly", priority: 0.4, lastmod: fileDate("src/pages/DadosEmpresa.tsx") },
+  { loc: `${BASE}/gestor-responsavel`, changefreq: "yearly", priority: 0.6, lastmod: fileDate("src/pages/GestorResponsavel.tsx") },
   { loc: `${BASE}/servicos/troca-de-tela-tv-curitiba`, changefreq: "weekly", priority: 0.85, lastmod: fileDate("src/pages/TrocaDeTelaTVCuritiba.tsx") },
   { loc: `${BASE}/servicos/reparo-smart-tv-curitiba`, changefreq: "weekly", priority: 0.85, lastmod: fileDate("src/pages/ReparoSmartTVCuritiba.tsx") },
   { loc: `${BASE}/servicos/configuracao-wifi-curitiba`, changefreq: "weekly", priority: 0.85, lastmod: fileDate("src/pages/ConfiguracaoWifiCuritiba.tsx") },

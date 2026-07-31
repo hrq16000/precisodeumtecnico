@@ -61,6 +61,7 @@ export default function KeywordServicePage({ slug }: Props) {
         // LocalBusiness/Organization já são emitidos sitewide pelo <head>
         // estático (index.html). Aqui só entram os schemas específicos da
         // página (Service + FAQPage + BreadcrumbList), evitando duplicidade.
+        structuredData={[]}
       />
 
       {/* HERO */}

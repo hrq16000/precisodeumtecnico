@@ -122,6 +122,14 @@ const App = () => (
                 <Route path="/atendimento-nacional/:city/:bairro" element={<BairroNacional />} />
                 <Route path="/servico-em-nacional/:city/:bairro/:service" element={<ServicoBairroNacional />} />
                 <Route path="/triagem-preview" element={<TriagemPreview />} />
+                {/* Landing pages por keyword de serviço (Rodada 28.1) */}
+                <Route path="/formatacao-de-computador-curitiba" element={<KeywordServicePage slug="formatacao-de-computador-curitiba" />} />
+                <Route path="/remocao-de-virus-curitiba" element={<KeywordServicePage slug="remocao-de-virus-curitiba" />} />
+                <Route path="/upgrade-ssd-curitiba" element={<KeywordServicePage slug="upgrade-ssd-curitiba" />} />
+                <Route path="/upgrade-memoria-ram-curitiba" element={<KeywordServicePage slug="upgrade-memoria-ram-curitiba" />} />
+                <Route path="/conserto-de-notebook-curitiba" element={<KeywordServicePage slug="conserto-de-notebook-curitiba" />} />
+                <Route path="/suporte-tecnico-remoto" element={<KeywordServicePage slug="suporte-tecnico-remoto" />} />
+                <Route path="/assistencia-tecnica-empresas-curitiba" element={<KeywordServicePage slug="assistencia-tecnica-empresas-curitiba" />} />
 
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />

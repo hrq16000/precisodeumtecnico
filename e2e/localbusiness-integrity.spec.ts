@@ -17,6 +17,7 @@ for (const route of ROUTES) {
   test(`LocalBusiness válido em ${route}`, async ({ page }) => {
     await page.goto(route);
     await page.waitForSelector('script[type="application/ld+json"]', { state: "attached" });
+    await page.waitForTimeout(400);
 
     const blocks = await getJsonLdBlocks(page);
     const lb = findByType<Record<string, unknown>>(blocks, "LocalBusiness");
@@ -43,6 +44,7 @@ for (const route of ROUTES) {
     test.skip(route === "/", "Home não usa breadcrumb");
     await page.goto(route);
     await page.waitForSelector('script[type="application/ld+json"]', { state: "attached" });
+    await page.waitForTimeout(400);
 
     const blocks = await getJsonLdBlocks(page);
     const bc = findByType<Record<string, unknown>>(blocks, "BreadcrumbList");
@@ -61,6 +63,7 @@ for (const route of ROUTES) {
 test("landing por keyword não duplica LocalBusiness", async ({ page }) => {
   await page.goto("/formatacao-de-computador-curitiba");
   await page.waitForSelector('script[type="application/ld+json"]', { state: "attached" });
+    await page.waitForTimeout(400);
   await page.waitForTimeout(500);
   const blocks = await getJsonLdBlocks(page);
   const count = blocks.filter(

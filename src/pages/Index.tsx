@@ -14,6 +14,8 @@ import { QuickDiagnosisQuiz } from "@/components/QuickDiagnosisQuiz";
 import { Reveal } from "@/components/Reveal";
 import { buildReviewsSchema } from "@/data/testimonials";
 import { homeFaqs } from "@/data/homeFaqs";
+import { buildLocalBusinessSchema } from "@/lib/schema/localBusiness";
+import { buildOrganizationSchema, buildPersonSchema } from "@/lib/schema/organization";
 import logoWebp from "@/assets/logo.webp";
 
 const Index = () => {
@@ -42,7 +44,12 @@ const Index = () => {
         faq={homeFaqs}
         structuredData={(() => {
           const reviews = buildReviewsSchema();
-          return reviews ? [reviews] : undefined;
+          return [
+            buildLocalBusinessSchema({ url: "https://precisodeumtecnico.com" }),
+            buildOrganizationSchema(),
+            buildPersonSchema(),
+            ...(reviews ? [reviews] : []),
+          ];
         })()}
       />
 

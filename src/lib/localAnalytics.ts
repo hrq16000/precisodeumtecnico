@@ -22,7 +22,8 @@ export type CanonicalEvent =
   | "triage_cta_intercept"
   | "triage_cta_dedupe_skip"
   | "triage_back"
-  | "triage_auto_advance";
+  | "triage_auto_advance"
+  | "triage_qualification";
 
 export type RouteType =
   | "home"

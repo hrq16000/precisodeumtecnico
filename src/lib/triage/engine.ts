@@ -8,6 +8,7 @@ import {
   type EquipmentId, type ServiceRoute, type UrgencyId,
 } from "@/data/triage/config";
 import { getQuestionsForEquipment, type Question } from "@/data/triage/questions";
+import { getMessageTemplate } from "@/data/triage/messageTemplates";
 
 export type StepId =
   | "equipment"
@@ -40,7 +41,7 @@ export interface TriageStateV2 {
   termsAccepted: Record<string, boolean>; // { minimum, cancel, sla, remote, visit }
   termsAcceptedAt?: string;
   finalNotes?: string;
-  contact: { name: string; phone: string; email: string };
+  contact: { name: string; phone: string; email: string; neighborhood: string };
   validationErrors: Record<string, string>;
 }
 
@@ -59,7 +60,7 @@ export function makeInitialStateV2(): TriageStateV2 {
     deviceDetails: {},
     contextualAnswers: {},
     termsAccepted: {},
-    contact: { name: "", phone: "", email: "" },
+    contact: { name: "", phone: "", email: "", neighborhood: "" },
     validationErrors: {},
   };
 }
@@ -184,6 +185,7 @@ export function validateCurrentStep(state: TriageStateV2): { ok: boolean; errors
       if (c.name.trim().length < 2) errors.name = "Informe seu nome.";
       if (c.phone.replace(/\D/g, "").length < 10) errors.phone = "Informe um WhatsApp válido com DDD.";
       if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(c.email)) errors.email = "Informe um e-mail válido.";
+      if (c.neighborhood.trim().length < 2) errors.neighborhood = "Informe o bairro do atendimento.";
       break;
     }
   }
@@ -317,9 +319,13 @@ export function buildWhatsAppTriageMessage(state: TriageStateV2): string {
   const now = new Date();
   const dt = `${now.toLocaleDateString("pt-BR")} ${now.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}`;
 
-  const lines: string[] = ["Olá! Concluí a triagem obrigatória pelo site.", ""];
+  const template = getMessageTemplate(state.equipment);
+  const lines: string[] = [template.intro, ""];
   const push = (label: string, value?: string) => { if (value && value.trim()) lines.push(`${label}: ${value}`); };
 
+  // Qualificação curta (nome, bairro, urgência, sintoma) — primeiro bloco.
+  push("Nome", state.contact.name?.trim());
+  push("Bairro", state.contact.neighborhood?.trim());
   push("Equipamento", s.equipment);
   push("Marca/modelo", s.brandModel);
   push("Idade aproximada", s.age);
@@ -335,13 +341,19 @@ export function buildWhatsAppTriageMessage(state: TriageStateV2): string {
   lines.push("");
   lines.push("Confirmo que li e aceitei as condições apresentadas no funil.");
   if (s.notes) push("Observação adicional", s.notes);
+  lines.push(template.closing);
   lines.push("");
+  // Página em que o visitante estava ao concluir a triagem.
+  const pageUrl = typeof window !== "undefined" ? window.location.href : "";
+  if (pageUrl) lines.push(`Página de origem: ${pageUrl}`);
   lines.push(`Triagem #${shortId} · ${dt} · v${TERMS_VERSION}`);
 
   const ctx = buildTriageContextSuffix({
     equipment: state.equipment,
     symptomSlug: state.symptom,
     pathname: typeof window !== "undefined" ? window.location.pathname : "",
+    neighborhoodFallback: state.contact.neighborhood?.trim() || undefined,
+    urgency: state.urgency,
   });
   if (ctx) lines.push(ctx);
 
@@ -364,14 +376,28 @@ export function buildTriageContextSuffix(opts: {
   equipment?: string;
   symptomSlug?: string;
   pathname?: string;
+  /** Bairro informado na qualificação, usado quando a rota não traz bairro. */
+  neighborhoodFallback?: string;
+  urgency?: string;
 }): string {
   const parts: string[] = [];
   if (opts.equipment) parts.push(`cat=${opts.equipment}`);
   if (opts.symptomSlug) parts.push(`sym=${opts.symptomSlug}`);
   const { city, bairro } = parseCityBairroFromPathname(opts.pathname ?? "");
   if (city) parts.push(`cidade=${city}`);
-  if (bairro) parts.push(`bairro=${bairro}`);
+  const nb = bairro ?? (opts.neighborhoodFallback ? slugifyToken(opts.neighborhoodFallback) : undefined);
+  if (nb) parts.push(`bairro=${nb}`);
+  if (opts.urgency) parts.push(`urg=${opts.urgency}`);
   return parts.length > 0 ? `[${parts.join(" · ")}]` : "";
+}
+
+function slugifyToken(v: string): string {
+  return v
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 }
 
 /** Modo E2E: monta URL final do WhatsApp a partir de estado sintético mínimo. */

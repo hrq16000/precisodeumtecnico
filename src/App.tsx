@@ -55,6 +55,7 @@ const ServicoBairroCidadeRegiao = lazy(() => import("./pages/ServicoBairroCidade
 const TriagemPreview = lazy(() => import("./pages/TriagemPreview"));
 const Faq = lazy(() => import("./pages/Faq"));
 const DadosEmpresa = lazy(() => import("./pages/DadosEmpresa"));
+const GestorResponsavel = lazy(() => import("./pages/GestorResponsavel"));
 
 const queryClient = new QueryClient();
 
@@ -79,6 +80,7 @@ const App = () => (
                 <Route path="/" element={<Index />} />
                 <Route path="/faq" element={<Faq />} />
                 <Route path="/dados-da-empresa" element={<DadosEmpresa />} />
+                <Route path="/gestor-responsavel" element={<GestorResponsavel />} />
 
                 <Route path="/servicos" element={<Servicos />} />
                 <Route path="/servicos/troca-de-tela-tv-curitiba" element={<TrocaDeTelaTVCuritiba />} />

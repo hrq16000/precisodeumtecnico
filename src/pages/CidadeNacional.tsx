@@ -10,6 +10,8 @@ import {
 import { getNationalCityBySlug, nationalCities } from "@/data/nationalCities";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { RegionalSymptomFAQ } from "@/components/seo/RegionalSymptomFAQ";
+import { InternalLinkCluster } from "@/components/seo/InternalLinkCluster";
+import { buildLocalBusinessSchema } from "@/lib/schema/localBusiness";
 
 
 const services = [
@@ -89,7 +91,7 @@ const CidadeNacional = () => {
         ogImage={ogImage}
         type="service"
         keywords={`técnico em ${city.name}, assistência técnica ${city.name}, técnico informática ${city.name} ${city.state}, suporte ti ${city.name}`}
-        structuredData={[breadcrumb, service]}
+        structuredData={[breadcrumb, service, buildLocalBusinessSchema({ city: city.name, state: city.uf, extraAreas: [city.name] })]}
       />
       <Helmet>
         {/* Preload the LCP hero in modern format with responsive srcset */}
@@ -258,6 +260,8 @@ const CidadeNacional = () => {
       </section>
 
       <RegionalSymptomFAQ cityName={city.name} seedSlug={city.slug} count={3} />
+
+      <InternalLinkCluster city={city.name} citySlug={city.slug} />
 
 
 

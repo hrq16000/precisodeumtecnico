@@ -16,6 +16,8 @@ import {
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { trackWhatsAppClick, trackCtaClick } from "@/lib/analytics";
 import { RegionalSymptomFAQ } from "@/components/seo/RegionalSymptomFAQ";
+import { InternalLinkCluster } from "@/components/seo/InternalLinkCluster";
+import { buildLocalBusinessSchema } from "@/lib/schema/localBusiness";
 // FAQ regional (Rodada 27+): derivada de src/data/symptoms.ts, adaptada
 // automaticamente por cidade/bairro sem inventar preços ou prazos.
 
@@ -158,7 +160,7 @@ export default function BairroNacional() {
         description={description}
         canonical={url}
         breadcrumbs={breadcrumbs}
-        structuredData={[serviceSchema]}
+        structuredData={[serviceSchema, buildLocalBusinessSchema({ city: city.name, state: city.uf, neighborhood: bairro.name, extraAreas: [city.name] })]}
       />
 
 
@@ -331,6 +333,13 @@ export default function BairroNacional() {
         neighborhoodName={bairro.name}
         seedSlug={`${city.slug}-${bairro.slug}`}
         count={3}
+      />
+
+      <InternalLinkCluster
+        city={city.name}
+        citySlug={city.slug}
+        neighborhood={bairro.name}
+        neighborhoodSlug={bairro.slug}
       />
 
 

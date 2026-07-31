@@ -91,3 +91,43 @@ export function captureHandledError(err: unknown, context?: Record<string, unkno
 }
 
 export const SentryErrorBoundary = Sentry.ErrorBoundary;
+
+/**
+ * Registra a qualificação curta da triagem (nome, bairro, urgência, sintoma)
+ * como breadcrumb + tags. Sem PII sensível: o nome é reduzido ao primeiro nome
+ * e nenhum telefone/e-mail é enviado.
+ */
+export function captureTriageQualification(q: {
+  firstName?: string;
+  neighborhood?: string;
+  urgency?: string;
+  symptom?: string;
+  category?: string;
+  route?: string;
+  pageUrl?: string;
+}): void {
+  if (!initialized) return;
+  try {
+    Sentry.setTags({
+      triage_category: q.category ?? "unknown",
+      triage_urgency: q.urgency ?? "unknown",
+      triage_route: q.route ?? "unknown",
+    });
+    Sentry.addBreadcrumb({
+      category: "triage",
+      level: "info",
+      message: "triage_qualification",
+      data: {
+        first_name: q.firstName,
+        neighborhood: q.neighborhood,
+        urgency: q.urgency,
+        symptom: q.symptom,
+        category: q.category,
+        route: q.route,
+        page_url: q.pageUrl,
+      },
+    });
+  } catch {
+    /* noop */
+  }
+}

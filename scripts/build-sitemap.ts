@@ -22,6 +22,7 @@ import {
 import { allBlogPosts as blogPosts, blogCategories } from "../src/data/blog";
 import { nationalCities } from "../src/data/nationalCities";
 import { nationalBairrosByCity } from "../src/data/nationalBairros";
+import { KEYWORD_SERVICE_PAGES } from "../src/data/keywordServices";
 
 import { enumeratePilotCombinations, NATIONAL_MATRIX_MAX } from "../src/data/nationalServiceCoverage";
 
@@ -93,6 +94,13 @@ const mainUrls: Url[] = [
   { loc: `${BASE}/servicos/troca-de-tela-tv-curitiba`, changefreq: "weekly", priority: 0.85, lastmod: fileDate("src/pages/TrocaDeTelaTVCuritiba.tsx") },
   { loc: `${BASE}/servicos/reparo-smart-tv-curitiba`, changefreq: "weekly", priority: 0.85, lastmod: fileDate("src/pages/ReparoSmartTVCuritiba.tsx") },
   { loc: `${BASE}/servicos/configuracao-wifi-curitiba`, changefreq: "weekly", priority: 0.85, lastmod: fileDate("src/pages/ConfiguracaoWifiCuritiba.tsx") },
+  // Landing pages por keyword de serviço (Rodada 28.1)
+  ...KEYWORD_SERVICE_PAGES.map((p) => ({
+    loc: `${BASE}/${p.slug}`,
+    changefreq: "weekly",
+    priority: 0.9,
+    lastmod: fileDate("src/data/keywordServices.ts"),
+  })),
 ];
 
 // Bairros dedicados por serviço em Curitiba (Wi-Fi + Smart TV)

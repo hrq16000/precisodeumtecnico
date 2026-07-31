@@ -60,10 +60,9 @@ export default function KeywordServicePage({ slug }: Props) {
             page.city === "Brasil" ? "Brasil" : "Curitiba e Região Metropolitana",
         }}
         faq={page.faq}
-        structuredData={[
-          buildLocalBusinessSchema({ url }),
-          buildOrganizationSchema(),
-        ]}
+        // LocalBusiness/Organization já são emitidos sitewide pelo <head>
+        // estático (index.html). Aqui só entram os schemas específicos da
+        // página (Service + FAQPage + BreadcrumbList), evitando duplicidade.
       />
 
       {/* HERO */}

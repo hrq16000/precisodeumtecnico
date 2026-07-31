@@ -56,6 +56,7 @@ const TriagemPreview = lazy(() => import("./pages/TriagemPreview"));
 const Faq = lazy(() => import("./pages/Faq"));
 const DadosEmpresa = lazy(() => import("./pages/DadosEmpresa"));
 const GestorResponsavel = lazy(() => import("./pages/GestorResponsavel"));
+const KeywordServicePage = lazy(() => import("./pages/KeywordServicePage"));
 
 const queryClient = new QueryClient();
 

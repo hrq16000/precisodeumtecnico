@@ -24,6 +24,7 @@ import { persistTriageEvent } from "@/lib/triageEventBuffer";
 
 import { trackWhatsAppClick } from "@/lib/analytics";
 import { logWaEvent } from "@/lib/waAudit";
+import { captureTriageQualification } from "@/lib/sentry";
 
 interface Props {
   source?: string;
@@ -210,7 +211,7 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
         name: state.contact.name.trim(),
         email: state.contact.email.trim(),
         phone: state.contact.phone.trim(),
-        neighborhood: undefined,
+        neighborhood: state.contact.neighborhood.trim() || undefined,
         category: state.equipment,
         brand: state.deviceDetails.brand || state.deviceDetails.equipment_name,
         model: state.deviceDetails.model,
@@ -260,13 +261,45 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
           body: {
             name: payload.name, email: payload.email, phone: payload.phone,
             service: summary.symptom ?? state.equipment,
-            city: undefined, message,
+            city: state.contact.neighborhood.trim() || undefined, message,
           },
         });
       } catch { /* não bloqueia */ }
 
-      // Analytics
+      // Analytics — qualificação curta (nome, bairro, urgência, sintoma)
       completedRef.current = true;
+      const pageUrl = typeof window !== "undefined" ? window.location.href : undefined;
+      const qualification = {
+        lead_name: state.contact.name.trim().split(" ")[0],
+        neighborhood: state.contact.neighborhood.trim(),
+        urgency: state.urgency,
+        symptom_slug: state.symptom,
+        symptom_label: summary.symptom,
+        category: state.equipment,
+        service_route: pricing?.route,
+        page_url: pageUrl,
+      };
+      pushLocalAnalyticsEvent({
+        event: "triage_qualification",
+        source,
+        page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+        ...qualification,
+      });
+      persistTriageEvent({
+        event: "triage_qualification",
+        source,
+        page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+        ...qualification,
+      });
+      captureTriageQualification({
+        firstName: qualification.lead_name,
+        neighborhood: qualification.neighborhood,
+        urgency: state.urgency,
+        symptom: state.symptom,
+        category: state.equipment,
+        route: pricing?.route,
+        pageUrl,
+      });
       pushLocalAnalyticsEvent({
         event: "triage_complete",
         source,
@@ -678,6 +711,13 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
                   onChange={(e) => dispatch({ type: "SET_CONTACT", field: "phone", value: e.target.value })}
                   aria-invalid={!!errors.phone} placeholder="(41) 99999-0000" />
                 {errors.phone && <p role="alert" className="text-xs text-destructive">{errors.phone}</p>}
+              </div>
+              <div className="sm:col-span-2">
+                <Label htmlFor="triage-field-neighborhood">Bairro do atendimento</Label>
+                <Input id="triage-field-neighborhood" value={state.contact.neighborhood} maxLength={120}
+                  onChange={(e) => dispatch({ type: "SET_CONTACT", field: "neighborhood", value: e.target.value })}
+                  aria-invalid={!!errors.neighborhood} placeholder="Ex.: Centro, Boqueirão, Portão" />
+                {errors.neighborhood && <p role="alert" className="text-xs text-destructive">{errors.neighborhood}</p>}
               </div>
               <div className="sm:col-span-2">
                 <Label htmlFor="triage-field-email">E-mail</Label>

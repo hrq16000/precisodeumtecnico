@@ -160,7 +160,7 @@ export default function BairroNacional() {
         description={description}
         canonical={url}
         breadcrumbs={breadcrumbs}
-        structuredData={[serviceSchema, buildLocalBusinessSchema({ city: city.name, state: city.uf, areaServed: [`${bairro.name}, ${city.name}`] })]}
+        structuredData={[serviceSchema, buildLocalBusinessSchema({ city: city.name, state: city.uf, neighborhood: bairro.name, extraAreas: [city.name] })]}
       />
 
 

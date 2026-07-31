@@ -91,7 +91,7 @@ const CidadeNacional = () => {
         ogImage={ogImage}
         type="service"
         keywords={`técnico em ${city.name}, assistência técnica ${city.name}, técnico informática ${city.name} ${city.state}, suporte ti ${city.name}`}
-        structuredData={[breadcrumb, service, buildLocalBusinessSchema({ city: city.name, state: city.uf, areaServed: [city.name] })]}
+        structuredData={[breadcrumb, service, buildLocalBusinessSchema({ city: city.name, state: city.uf, extraAreas: [city.name] })]}
       />
       <Helmet>
         {/* Preload the LCP hero in modern format with responsive srcset */}

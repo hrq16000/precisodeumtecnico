@@ -22,6 +22,7 @@ import {
 import { allBlogPosts as blogPosts, blogCategories } from "../src/data/blog";
 import { nationalCities } from "../src/data/nationalCities";
 import { nationalBairrosByCity } from "../src/data/nationalBairros";
+import { KEYWORD_SERVICE_PAGES } from "../src/data/keywordServices";
 
 import { enumeratePilotCombinations, NATIONAL_MATRIX_MAX } from "../src/data/nationalServiceCoverage";
 

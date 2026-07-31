@@ -14,10 +14,12 @@ test("qualificação da triagem envia campos para analytics", async ({ page }) =
 
   // Evento de abertura registrado com a origem correta
   const events = await page.evaluate(
-    () => (window as unknown as { __PDT_ANALYTICS_QUEUE__?: { event: string; params?: Record<string, unknown> }[] }).__PDT_ANALYTICS_QUEUE__ ?? [],
+    () =>
+      (window as unknown as { __PDT_ANALYTICS_QUEUE__?: Record<string, unknown>[] })
+        .__PDT_ANALYTICS_QUEUE__ ?? [],
   );
   const open = events.find((e) => e.event === "triage_open");
   expect(open, "triage_open não registrado").toBeTruthy();
-  expect(String(open!.params?.source ?? "")).toContain("keyword_formatacao");
-  expect(open!.params?.category).toBe("pc");
+  expect(String(open!.source ?? "")).toContain("keyword_formatacao");
+  expect(open!.page_path).toBe("/formatacao-de-computador-curitiba");
 });

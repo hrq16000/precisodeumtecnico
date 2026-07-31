@@ -40,7 +40,7 @@ export interface TriageStateV2 {
   termsAccepted: Record<string, boolean>; // { minimum, cancel, sla, remote, visit }
   termsAcceptedAt?: string;
   finalNotes?: string;
-  contact: { name: string; phone: string; email: string };
+  contact: { name: string; phone: string; email: string; neighborhood: string };
   validationErrors: Record<string, string>;
 }
 

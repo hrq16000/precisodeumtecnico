@@ -39,7 +39,7 @@ if (errors.length === 0) {
       push(`shard ausente no disco: ${fname}`);
       continue;
     }
-    if (!/^sitemap-(main|city-[a-z0-9-]+|bairros-[a-z0-9-]+)\.xml$/.test(fname)) {
+    if (!/^sitemap-(main|regions|bairros|nacional-servicos-piloto|city-[a-z0-9-]+|bairros-[a-z0-9-]+)\.xml$/.test(fname)) {
       push(`nomenclatura inesperada de shard: ${fname}`);
     }
 

@@ -20,6 +20,15 @@ jobs:
         run: bun run sitemap
       - name: Validate sitemap & robots
         run: bun run validate:sitemap
+      - name: Sitemap diff report (vs. produção)
+        run: bun run diff:sitemap
+      - name: Upload sitemap diff report
+        uses: actions/upload-artifact@v4
+        with:
+          name: sitemap-diff
+          path: sitemap-diff.md
+          if-no-files-found: warn
+          retention-days: 14
       - name: Validate OG images
         run: bun run check:og
       - name: Validate JSON-LD structured data

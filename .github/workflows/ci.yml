@@ -71,6 +71,63 @@ jobs:
         run: bun scripts/check-page-images.ts
         env:
           PAGE_BASE_URL: http://localhost:4173
+      - name: Canonical parity — canonical do HTML == loc do sitemap
+        run: bun run check:canonical
+        env:
+          CANONICAL_BASE_URL: http://localhost:4173
+          CANONICAL_SAMPLE: "25"
+          CANONICAL_BATCH: "8"
+      - name: Upload canonical parity report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: canonical-parity-report
+          path: canonical-parity-report.json
+          if-no-files-found: ignore
+          retention-days: 14
+
+  post-deploy-smoke:
+    # Smoke pós-deploy contra produção: index + todos os shards + amostra de
+    # 50 URLs por shard, tudo precisa responder 200.
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: verify
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+      - name: Aguardar propagação do deploy
+        run: sleep 60
+      - name: Smoke — sitemap index, shards e amostra de URLs (produção)
+        run: bun run smoke:sitemap
+        env:
+          SMOKE_BASE_URL: https://precisodeumtecnico.com
+          SMOKE_SAMPLE: "50"
+          SMOKE_CONCURRENCY: "8"
+      - name: Sitemap status endpoint (dashboard/alertas)
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_ANON_KEY" ]; then
+            echo "::warning::SUPABASE_URL/ANON_KEY ausentes — pulando /sitemap-status."
+            exit 0
+          fi
+          HTTP=$(curl -sS -o /tmp/status.json -w "%{http_code}" \
+            "$SUPABASE_URL/functions/v1/sitemap-status" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY")
+          cat /tmp/status.json
+          [ "$HTTP" = "200" ] || { echo "::error::sitemap-status HTTP $HTTP"; exit 1; }
+      - name: Canonical parity em produção (amostra)
+        run: bun run e2e:install && bun run check:canonical
+        env:
+          CANONICAL_BASE_URL: https://precisodeumtecnico.com
+          CANONICAL_SAMPLE: "25"
+
 
   security:
     runs-on: ubuntu-latest

@@ -26,7 +26,10 @@
     "lhci:local": "lhci autorun --config=./lighthouserc.json",
     "postbuild": "bunx tsx scripts/check-seo-dedup.ts && bunx tsx scripts/check-no-debug.ts && bunx tsx scripts/check-cta-attrs.ts && bunx tsx scripts/check-no-bancada-legacy.ts && bunx tsx scripts/check-national-service-matrix.ts && bunx tsx scripts/check-faq-consistency.ts && bunx tsx scripts/check-sitemap-dates.ts && bunx tsx scripts/check-publication-dates.ts && bunx tsx scripts/check-og-manifest.ts && bunx tsx scripts/check-nacional-sitemap.ts && bunx tsx scripts/build-sitemap-manifest.ts && bunx tsx scripts/check-sitemap-presence.ts",
     "og:manifest": "bun scripts/build-og-manifest.ts",
-    "indexnow:key": "bun scripts/write-indexnow-key.ts"
+    "indexnow:key": "bun scripts/write-indexnow-key.ts",
+    "smoke:sitemap": "bun scripts/smoke-sitemap-prod.ts",
+    "diff:sitemap": "bun scripts/diff-sitemap.ts",
+    "check:canonical": "bun scripts/check-canonical-parity.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

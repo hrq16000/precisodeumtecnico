@@ -26,3 +26,7 @@ dist-ssr
 # IndexNow key verification file (gerado no prebuild a partir de BING_INDEXNOW_KEY)
 public/*.txt
 !public/llms.txt
+
+# Relatórios de sitemap gerados no CI
+sitemap-diff.md
+canonical-parity-report.json

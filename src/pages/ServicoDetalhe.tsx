@@ -10,6 +10,10 @@ import {
 } from "lucide-react";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import NotFound from "@/pages/NotFound";
+import { servicesData as SERVICES_CATALOG } from "@/data/services";
+import { PcAssemblyPolicySections } from "@/components/marketing/PcAssemblyPolicySections";
+
+const PC_GAMER = SERVICES_CATALOG["pc-gamer"];
 import {
   getTestimonialsForService,
   buildServiceReviewsSchema,
@@ -139,13 +143,13 @@ const servicesData: Record<string, {
     category: "Ar-Condicionado",
   },
   "pc-gamer": {
-    title: SERVICES["pc-gamer"].title,
-    subtitle: SERVICES["pc-gamer"].subtitle,
-    description: SERVICES["pc-gamer"].description,
-    longDescription: [SERVICES["pc-gamer"].longDescription],
-    benefits: [...SERVICES["pc-gamer"].benefits],
-    process: [...SERVICES["pc-gamer"].process],
-    faqs: [...SERVICES["pc-gamer"].faqs],
+    title: PC_GAMER.title,
+    subtitle: PC_GAMER.subtitle,
+    description: PC_GAMER.description,
+    longDescription: [PC_GAMER.longDescription],
+    benefits: [...PC_GAMER.benefits],
+    process: [...PC_GAMER.process],
+    faqs: [...PC_GAMER.faqs],
     relatedServices: [
       { name: "Informática", href: "/servicos/informatica" },
       { name: "Upgrade de SSD", href: "/upgrade-ssd-curitiba" },

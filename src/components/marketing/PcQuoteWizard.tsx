@@ -1,9 +1,10 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { z } from "zod";
-import { ArrowLeft, ArrowRight, Download, MessageCircle } from "lucide-react";
+import { AlertCircle, ArrowLeft, ArrowRight, Download, MessageCircle } from "lucide-react";
 import { buildWhatsAppUrlFromText, readStoredLocation, currentSourcePage } from "@/lib/whatsapp";
 import { trackWhatsAppClick, trackEvent } from "@/lib/analytics";
+
 
 /**
  * Mini-wizard de orçamento de montagem/upgrade de PC.
@@ -53,16 +54,36 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [acceptPrices, setAcceptPrices] = useState(false);
   const [acceptParts, setAcceptParts] = useState(false);
+  const [acceptLgpd, setAcceptLgpd] = useState(false);
+  const [showAcceptErrors, setShowAcceptErrors] = useState(false);
   const [orderProtocol, setOrderProtocol] = useState<string | null>(null);
+  const errorRef = useRef<HTMLParagraphElement | null>(null);
 
   const page = sourcePage ?? currentSourcePage();
+
+  // Leva o foco para o primeiro campo inválido, tornando óbvio o que falta.
+  function focusFirst(fields: string[], errs: Errors) {
+    const id = fields.find((f) => errs[f]);
+    if (!id) return;
+    requestAnimationFrame(() => {
+      const el = document.getElementById(`pcq-${id}`) as HTMLElement | null;
+      el?.focus();
+      el?.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+  }
+
+  useEffect(() => {
+    if (Object.keys(errors).length > 0) errorRef.current?.focus();
+  }, [errors]);
 
   function next() {
     if (step === 0) {
       const parsed = stepOneSchema.safeParse({ model, usage });
       if (!parsed.success) {
         const f = parsed.error.flatten().fieldErrors;
-        setErrors({ model: f.model?.[0], usage: f.usage?.[0] });
+        const next = { model: f.model?.[0], usage: f.usage?.[0] };
+        setErrors(next);
+        focusFirst(["model", "usage"], next);
         return;
       }
     }
@@ -70,7 +91,9 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
       const parsed = stepTwoSchema.safeParse({ partsBy, parts, city, neighborhood });
       if (!parsed.success) {
         const f = parsed.error.flatten().fieldErrors;
-        setErrors({ parts: f.parts?.[0] });
+        const next = { parts: f.parts?.[0] };
+        setErrors(next);
+        focusFirst(["parts"], next);
         return;
       }
     }
@@ -79,7 +102,8 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
     setStep((s) => Math.min(s + 1, 2));
   }
 
-  const canSubmit = acceptTerms && acceptPrices && (partsBy !== "cliente" || acceptParts);
+  const canSubmit =
+    acceptTerms && acceptPrices && acceptLgpd && (partsBy !== "cliente" || acceptParts);
 
   function buildProtocol(): string {
     const d = new Date();
@@ -105,7 +129,7 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
     if (neighborhood.trim()) lines.push(`Bairro: ${neighborhood.trim()}`);
     lines.push(
       "",
-      "Li e aceito os termos e condições, a política de preços e a política de peças do cliente.",
+      "Li e aceito os termos e condições, a política de preços, a política de peças do cliente e o uso dos meus dados conforme a LGPD.",
       "",
       "Origem: source=pc_quote_wizard",
       "service=montagem-de-pc",
@@ -116,7 +140,16 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
   }
 
   function submit() {
-    if (!canSubmit) return;
+    if (!canSubmit) {
+      setShowAcceptErrors(true);
+      requestAnimationFrame(() => {
+        const el = document.querySelector<HTMLElement>("[data-accept-invalid='true']");
+        el?.focus();
+        el?.scrollIntoView({ behavior: "smooth", block: "center" });
+      });
+      return;
+    }
+    setShowAcceptErrors(false);
     const protocol = orderProtocol ?? buildProtocol();
     setOrderProtocol(protocol);
     const url = buildWhatsAppUrlFromText(buildMessage(protocol));
@@ -138,14 +171,22 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
     document.body.removeAttribute("data-print-target");
   }
 
-  const inputClass =
-    "w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-ring";
+  const inputBase =
+    "w-full rounded-lg border bg-background px-3 py-3 text-base text-foreground focus:outline-none focus:ring-2 focus:ring-ring";
+  const inputClass = (invalid?: string) =>
+    `${inputBase} ${invalid ? "field-invalid" : "border-border"}`;
+  // Aceites obrigatórios ganham destaque pulsante quando o envio é tentado sem marcar.
+  const acceptClass = (checked: boolean) =>
+    !checked && showAcceptErrors
+      ? "field-invalid rounded-lg border p-3 -m-[1px]"
+      : "border border-transparent p-3";
 
   return (
     <section
       aria-labelledby="pc-quote-wizard"
-      className="p-6 rounded-2xl border border-border bg-card"
+      className="p-4 sm:p-6 rounded-2xl border border-border bg-card"
     >
+
       <h2 id="pc-quote-wizard" className="font-display text-2xl font-bold text-card-foreground mb-1">
         Orçamento de montagem em 3 passos
       </h2>
@@ -173,26 +214,35 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
         <div className="space-y-4">
           <div>
             <label htmlFor="pcq-model" className="block text-sm font-semibold text-card-foreground mb-1">
-              Modelo ou configuração pretendida
+              Modelo ou configuração pretendida <span className="text-destructive">*</span>
             </label>
             <input
               id="pcq-model"
-              className={inputClass}
+              className={inputClass(errors.model)}
               value={model}
               maxLength={200}
+              aria-invalid={!!errors.model}
+              aria-describedby={errors.model ? "pcq-model-err" : undefined}
               onChange={(e) => setModel(e.target.value)}
               placeholder="Ex.: Ryzen 5 + B550 + 16GB + RTX 3060"
             />
-            {errors.model && <p className="text-sm text-destructive mt-1">{errors.model}</p>}
+            {errors.model && (
+              <p id="pcq-model-err" className="flex items-center gap-1 text-sm text-destructive mt-1">
+                <AlertCircle className="w-4 h-4 shrink-0" aria-hidden="true" />
+                {errors.model}
+              </p>
+            )}
           </div>
           <div>
             <label htmlFor="pcq-usage" className="block text-sm font-semibold text-card-foreground mb-1">
-              Uso pretendido
+              Uso pretendido <span className="text-destructive">*</span>
             </label>
             <select
               id="pcq-usage"
-              className={inputClass}
+              className={inputClass(errors.usage)}
               value={usage}
+              aria-invalid={!!errors.usage}
+              aria-describedby={errors.usage ? "pcq-usage-err" : undefined}
               onChange={(e) => setUsage(e.target.value)}
             >
               <option value="">Selecione…</option>
@@ -202,10 +252,16 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
                 </option>
               ))}
             </select>
-            {errors.usage && <p className="text-sm text-destructive mt-1">{errors.usage}</p>}
+            {errors.usage && (
+              <p id="pcq-usage-err" className="flex items-center gap-1 text-sm text-destructive mt-1">
+                <AlertCircle className="w-4 h-4 shrink-0" aria-hidden="true" />
+                {errors.usage}
+              </p>
+            )}
           </div>
         </div>
       )}
+
 
       {step === 1 && (
         <div className="space-y-4">
@@ -235,7 +291,8 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
             </label>
             <textarea
               id="pcq-parts"
-              className={inputClass}
+              className={inputClass(errors.parts)}
+
               rows={3}
               maxLength={600}
               value={parts}
@@ -251,7 +308,8 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
               </label>
               <input
                 id="pcq-city"
-                className={inputClass}
+                className={inputClass()}
+
                 value={city}
                 maxLength={80}
                 onChange={(e) => setCity(e.target.value)}
@@ -263,7 +321,7 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
               </label>
               <input
                 id="pcq-bairro"
-                className={inputClass}
+                className={inputClass()}
                 value={neighborhood}
                 maxLength={80}
                 onChange={(e) => setNeighborhood(e.target.value)}
@@ -274,12 +332,16 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
       )}
 
       {step === 2 && (
-        <div className="space-y-4">
-          <label className="flex items-start gap-2 text-sm text-muted-foreground">
+        <div className="space-y-2">
+          <label
+            className={`flex items-start gap-3 text-sm text-muted-foreground ${acceptClass(acceptTerms)}`}
+          >
             <input
               type="checkbox"
-              className="mt-1"
+              className="mt-1 w-5 h-5"
               checked={acceptTerms}
+              aria-invalid={showAcceptErrors && !acceptTerms}
+              data-accept-invalid={showAcceptErrors && !acceptTerms ? "true" : undefined}
               onChange={(e) => setAcceptTerms(e.target.checked)}
             />
             <span>
@@ -290,11 +352,15 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
               , incluindo a declaração de valor do equipamento.
             </span>
           </label>
-          <label className="flex items-start gap-2 text-sm text-muted-foreground">
+          <label
+            className={`flex items-start gap-3 text-sm text-muted-foreground ${acceptClass(acceptPrices)}`}
+          >
             <input
               type="checkbox"
-              className="mt-1"
+              className="mt-1 w-5 h-5"
               checked={acceptPrices}
+              aria-invalid={showAcceptErrors && !acceptPrices}
+              data-accept-invalid={showAcceptErrors && !acceptPrices ? "true" : undefined}
               onChange={(e) => setAcceptPrices(e.target.checked)}
             />
             <span>
@@ -306,11 +372,15 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
             </span>
           </label>
           {partsBy === "cliente" && (
-            <label className="flex items-start gap-2 text-sm text-muted-foreground">
+            <label
+              className={`flex items-start gap-3 text-sm text-muted-foreground ${acceptClass(acceptParts)}`}
+            >
               <input
                 type="checkbox"
-                className="mt-1"
+                className="mt-1 w-5 h-5"
                 checked={acceptParts}
+                aria-invalid={showAcceptErrors && !acceptParts}
+                data-accept-invalid={showAcceptErrors && !acceptParts ? "true" : undefined}
                 onChange={(e) => setAcceptParts(e.target.checked)}
               />
               <span>
@@ -322,20 +392,49 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
               </span>
             </label>
           )}
-          {!canSubmit && (
-            <p className="text-sm text-muted-foreground">
+          <label
+            className={`flex items-start gap-3 text-sm text-muted-foreground ${acceptClass(acceptLgpd)}`}
+          >
+            <input
+              type="checkbox"
+              className="mt-1 w-5 h-5"
+              checked={acceptLgpd}
+              aria-invalid={showAcceptErrors && !acceptLgpd}
+              data-accept-invalid={showAcceptErrors && !acceptLgpd ? "true" : undefined}
+              onChange={(e) => setAcceptLgpd(e.target.checked)}
+            />
+            <span>
+              Autorizo o uso dos dados informados (equipamento, peças, cidade e bairro) apenas para
+              atendimento e emissão da ordem de serviço, conforme a LGPD. Posso solicitar correção
+              ou exclusão pelo mesmo canal de atendimento.
+            </span>
+          </label>
+          {showAcceptErrors && !canSubmit && (
+            <p
+              ref={errorRef}
+              tabIndex={-1}
+              role="alert"
+              className="flex items-center gap-1 text-sm font-semibold text-destructive pt-2"
+            >
+              <AlertCircle className="w-4 h-4 shrink-0" aria-hidden="true" />
+              Marque os itens destacados para liberar o envio.
+            </p>
+          )}
+          {!showAcceptErrors && (
+            <p className="text-sm text-muted-foreground pt-2">
               Marque todos os aceites para liberar o envio.
             </p>
           )}
         </div>
       )}
 
-      <div className="flex items-center justify-between gap-3 mt-6">
+
+      <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center sm:justify-between gap-3 mt-6">
         <button
           type="button"
           onClick={() => setStep((s) => Math.max(0, s - 1))}
           disabled={step === 0}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border text-foreground disabled:opacity-40"
+          className="inline-flex items-center justify-center gap-2 px-4 py-3 min-h-[48px] rounded-lg border border-border text-foreground disabled:opacity-40"
         >
           <ArrowLeft className="w-4 h-4" aria-hidden="true" />
           Voltar
@@ -345,7 +444,7 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
           <button
             type="button"
             onClick={next}
-            className="inline-flex items-center gap-2 px-5 py-2 rounded-lg bg-primary text-primary-foreground font-semibold"
+            className="inline-flex items-center justify-center gap-2 px-5 py-3 min-h-[48px] rounded-lg bg-primary text-primary-foreground font-semibold"
           >
             Continuar
             <ArrowRight className="w-4 h-4" aria-hidden="true" />
@@ -354,16 +453,18 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
           <button
             type="button"
             onClick={submit}
-            disabled={!canSubmit}
             data-wa-source="pc_quote_wizard"
             data-service="montagem-de-pc"
-            className="inline-flex items-center gap-2 px-5 py-2 rounded-lg bg-success text-success-foreground font-semibold disabled:opacity-40"
+            className={`inline-flex items-center justify-center gap-2 px-5 py-3 min-h-[48px] rounded-lg bg-success text-success-foreground font-semibold ${
+              canSubmit ? "" : "opacity-60"
+            }`}
           >
             <MessageCircle className="w-4 h-4" aria-hidden="true" />
             Enviar orçamento no WhatsApp
           </button>
         )}
       </div>
+
 
       {orderProtocol && (
         <div
@@ -390,7 +491,7 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
               ["Bairro", neighborhood.trim() || "—"],
               [
                 "Aceites",
-                "Termos e condições, política de preços" +
+                "Termos e condições, política de preços, consentimento LGPD" +
                   (partsBy === "cliente" ? " e política de peças do cliente" : ""),
               ],
             ].map(([label, value]) => (

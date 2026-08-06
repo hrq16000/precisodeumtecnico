@@ -38,6 +38,9 @@ export function ReviewsModeration() {
   const [rows, setRows] = useState<ReviewRow[]>([]);
   const [filter, setFilter] = useState<Filter>("pending");
   const [loading, setLoading] = useState(true);
+  const [query, setQuery] = useState("");
+  const [cityFilter, setCityFilter] = useState("all");
+  const [serviceFilter, setServiceFilter] = useState("all");
   const { toast } = useToast();
 
   async function load(f: Filter = filter) {

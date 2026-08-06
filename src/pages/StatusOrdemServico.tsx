@@ -50,7 +50,19 @@ const faq = [
     answer:
       "Pode, quando depende de peça de terceiros ou de aprovação de escopo adicional. Qualquer alteração de prazo é comunicada no WhatsApp e refletida aqui na consulta por protocolo.",
   },
+  {
+    question: "Qual é o formato correto do número da OS?",
+    answer:
+      "O protocolo segue o formato OS-ANO-NÚMERO, por exemplo OS-2026-0001. A consulta aceita letras minúsculas e espaços, mas não aceita números com menos de 4 caracteres nem apenas o nome do cliente.",
+  },
+  {
+    question: "Como compartilho o acompanhamento com outra pessoa?",
+    answer:
+      "Depois de consultar, use o botão de copiar link ou o QR code exibido junto ao resultado. O link já vem com o número da OS e abre direto na etapa atual, sem cadastro e sem expor dados pessoais.",
+  },
 ];
+
+const PROTOCOL_HINT = "Use o formato OS-ANO-NÚMERO (ex.: OS-2026-0001).";
 
 export default function StatusOrdemServico() {
   const [params, setParams] = useSearchParams();
@@ -58,10 +70,51 @@ export default function StatusOrdemServico() {
   const [loading, setLoading] = useState(false);
   const [order, setOrder] = useState<ServiceOrderStatus | null>(null);
   const [notFound, setNotFound] = useState(false);
+  const [invalid, setInvalid] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const whatsappHelpUrl = buildWhatsAppUrl({
+    service: "acompanhamento de Ordem de Serviço",
+  });
+
+  /** Link público da consulta, preservando os UTMs de origem do usuário. */
+  const shareUrl = useMemo(() => {
+    if (!order) return "";
+    const url = new URL("/status-os", SITE_ORIGIN);
+    url.searchParams.set("os", order.protocol);
+    params.forEach((value, key) => {
+      if (key.startsWith("utm_")) url.searchParams.set(key, value);
+    });
+    return url.toString();
+  }, [order, params]);
+
+  /** Link de avaliação reenviado mantendo os mesmos UTMs da origem. */
+  const reviewUrl = useMemo(() => {
+    if (!order) return "";
+    const base = new URL(
+      buildReviewLink({
+        protocol: order.protocol,
+        service: order.service ?? undefined,
+        city: order.city ?? undefined,
+        neighborhood: order.neighborhood ?? undefined,
+        source: "status_os",
+      }),
+    );
+    params.forEach((value, key) => {
+      if (key.startsWith("utm_")) base.searchParams.set(key, value);
+    });
+    return base.toString();
+  }, [order, params]);
 
   async function lookup(value: string) {
     const normalized = normalizeProtocol(value);
-    if (normalized.length < 4) return;
+    if (normalized.length < 4) {
+      setInvalid(true);
+      setNotFound(false);
+      setOrder(null);
+      return;
+    }
+    setInvalid(false);
     setLoading(true);
     setNotFound(false);
     setOrder(null);
@@ -85,7 +138,26 @@ export default function StatusOrdemServico() {
     void lookup(normalized);
   }
 
+  async function copyShareLink() {
+    if (!shareUrl) return;
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopied(true);
+      trackEvent("os_status_share_copy", { has_utm: shareUrl.includes("utm_") });
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setCopied(false);
+    }
+  }
+
   const current = order ? stageIndex(order.status) : -1;
+  const stampFor = (i: number) => {
+    if (!order) return null;
+    if (i === 0) return new Date(order.created_at);
+    if (i === current) return new Date(order.updated_at);
+    return null;
+  };
+
 
   return (
     <Layout>

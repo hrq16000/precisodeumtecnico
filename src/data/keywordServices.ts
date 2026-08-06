@@ -454,12 +454,95 @@ export const KEYWORD_SERVICE_PAGES: KeywordServicePage[] = [
       { question: "Existe contrato de fidelidade?", answer: "Não trabalhamos com fidelidade obrigatória. O contrato define escopo e SLA; o encerramento segue o aviso prévio combinado." },
       { question: "Vocês cuidam também de CFTV e cabeamento?", answer: "Sim. CFTV, controle de acesso, cabeamento estruturado e elétrica de baixa tensão fazem parte do escopo corporativo." },
       { question: "Como funciona o SLA?", answer: "O prazo de resposta e de solução é definido por criticidade do chamado. Cada atendimento registra abertura, execução e encerramento para auditoria." },
+      { question: "Vocês instalam e dão suporte a certificado digital (A1/A3)?", answer: "Damos suporte técnico à instalação do certificado na estação, drivers de leitora/token e configuração do navegador. A emissão, renovação e validação do certificado são feitas pela Autoridade Certificadora contratada pela empresa — não emitimos nem revalidamos certificados." },
+      { question: "Vocês dão suporte a sistemas de terceiros (ERP, contábil, prontuário, sistema jurídico)?", answer: "Atuamos na camada de infraestrutura: instalação do cliente, permissões de pasta, banco local, impressão, rede e acesso remoto. Erros internos do software, atualização de versão e regras de negócio permanecem com o fornecedor do sistema — quando necessário, participamos do chamado junto ao suporte dele." },
+      { question: "Como funciona o acesso remoto e quem autoriza?", answer: "A sessão só é aberta com autorização de um responsável da empresa, é acompanhada na tela e encerrada ao final. Registramos data, chamado e o que foi executado. Não mantemos acesso permanente sem contrato que preveja isso." },
+      { question: "Vocês acessam contas de terceiros da empresa (banco, e-mail, sistema fiscal)?", answer: "Não solicitamos e não usamos senhas de banco. Em contas administrativas de sistemas ou e-mail, o acesso é feito pelo responsável da empresa durante a sessão, ou com credencial técnica fornecida por escrito por ele. A responsabilidade pelo conteúdo e pelas permissões dessas contas é do cliente." },
+      { question: "Qual a diferença entre atendimento avulso e contrato recorrente?", answer: `Avulso é por chamado, a partir de ${VISIT} por bloco de até 30 minutos, sem SLA garantido. Recorrente é mensal, com SLA por criticidade, manutenção preventiva, monitoramento de backup e relatório mensal.` },
+    ],
+    businessTracks: [
+      {
+        title: "Escritórios de advocacia",
+        description: "Foco em disponibilidade das estações, certificado digital funcionando e arquivos com backup verificado.",
+        includes: [
+          "Instalação de leitora/token e drivers do certificado digital na estação",
+          "Configuração de navegador e Java/assinador exigidos por tribunais",
+          "Pasta compartilhada de processos com permissões por usuário",
+          "Rotina de backup com teste de restauração",
+          "Scanner e impressão em rede para digitalização de peças",
+        ],
+      },
+      {
+        title: "Consultórios e clínicas",
+        description: "Continuidade do atendimento: estação da recepção, rede estável e acesso ao sistema de prontuário sem queda.",
+        includes: [
+          "Estação de recepção e consultório padronizadas",
+          "Rede e Wi-Fi segmentados (equipe x visitantes)",
+          "Suporte de infraestrutura ao cliente do sistema de prontuário",
+          "Impressão de receituário e etiquetas em rede",
+          "Backup de arquivos locais e verificação periódica",
+        ],
+      },
+      {
+        title: "Contabilidade e escritórios administrativos",
+        description: "Volume alto de sistemas fiscais, certificados e impressão — o gargalo costuma ser rede, disco e permissão.",
+        includes: [
+          "Certificados A1/A3 instalados por usuário",
+          "Servidor de arquivos e permissões por setor",
+          "Upgrade de SSD/RAM nas estações que travam em fechamento",
+          "Backup diário com retenção definida",
+          "Suporte remoto prioritário em período de entrega de obrigações",
+        ],
+      },
+      {
+        title: "Comércio, obras e operações com CFTV",
+        description: "Infraestrutura física: cabeamento, câmeras, ponto de rede e equipamentos em ambiente hostil.",
+        includes: [
+          "Cabeamento estruturado e organização de rack",
+          "CFTV com acesso remoto configurado",
+          "Pontos de rede e PoE para câmeras e access points",
+          "Manutenção preventiva programada",
+        ],
+      },
+    ],
+    engagementModels: [
+      {
+        name: "Atendimento avulso (por chamado)",
+        howItWorks: `Você aciona pela triagem, descreve o problema e recebe o valor por escrito antes de começar. Cobrança a partir de ${VISIT} por bloco de até 30 minutos.`,
+        includes: [
+          "Diagnóstico e execução do chamado aberto",
+          "Registro técnico do que foi feito",
+          "Garantia de 90 dias na mão de obra do serviço executado",
+          "Sem SLA garantido — atendimento por ordem de fila",
+        ],
+      },
+      {
+        name: "Contrato recorrente (mensal)",
+        howItWorks:
+          "Escopo, número de estações e criticidade definidos em contrato, com prazo de resposta acordado e agenda de manutenção preventiva.",
+        includes: [
+          "SLA de resposta e de solução por criticidade",
+          "Helpdesk remoto dentro do horário contratado",
+          "Visitas preventivas programadas",
+          "Monitoramento da rotina de backup, com teste de restauração",
+          "Relatório mensal de chamados e recomendações",
+        ],
+      },
+    ],
+    scopeLimits: [
+      "Não emitimos, renovamos nem validamos certificados digitais — isso é da Autoridade Certificadora.",
+      "Não corrigimos bugs internos, atualizações ou regras de negócio de sistemas de terceiros (ERP, contábil, prontuário, jurídico).",
+      "Não assumimos responsabilidade por conteúdo, permissões ou uso de contas de terceiros da empresa (banco, e-mail, portais fiscais).",
+      "Não prometemos ganho de desempenho por software específico nem número de usuários simultâneos sem teste no ambiente real.",
+      "Não realizamos consultoria de conformidade (LGPD, auditoria) — atuamos na infraestrutura técnica que a suporta.",
+      "Não garantimos disponibilidade de link de internet ou serviço de nuvem operado por terceiros.",
     ],
     relatedServices: [
       { label: "Suporte técnico remoto", to: "/suporte-tecnico-remoto" },
       { label: "Redes e Wi-Fi", to: "/servicos/redes" },
       { label: "CFTV e monitoramento", to: "/servicos/cftv" },
       { label: "Configuração de Wi-Fi em Curitiba", to: "/servicos/configuracao-wifi-curitiba" },
+      { label: "Upgrade de SSD e memória RAM", to: "/upgrade-ssd-ram-curitiba" },
     ],
   },
 ];

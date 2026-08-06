@@ -202,6 +202,16 @@ export const SERVICE_VISUAL_BY_SLUG: Record<string, ServiceVisualConfig> = {
           "Peças e escopo são apresentados para sua aprovação antes de qualquer execução.",
         ],
       },
+      {
+        title: "Quando não insistir em ligar",
+        tone: "attention",
+        items: [
+          "Houve contato com líquido, cheiro incomum, estalo, aquecimento extremo ou bateria deformada: insistir em ligar pode ampliar o dano.",
+          "Desconecte a energia quando for seguro, não abra o equipamento e solicite avaliação — nenhuma dessas situações permite concluir a causa sem diagnóstico.",
+          "Se há arquivos importantes no equipamento, informe na triagem: o que é recuperável depende do estado do armazenamento e não pode ser garantido sem avaliação.",
+        ],
+      },
     ],
   },
+
 };

@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { WhatsAppFloat } from "./WhatsAppFloat";
+import { CookieConsentBanner } from "@/components/system/CookieConsentBanner";
 
 interface LayoutProps {
   children: ReactNode;
@@ -16,6 +17,8 @@ export function Layout({ children }: LayoutProps) {
       </main>
       <Footer />
       <WhatsAppFloat />
+      <CookieConsentBanner />
     </div>
   );
 }
+

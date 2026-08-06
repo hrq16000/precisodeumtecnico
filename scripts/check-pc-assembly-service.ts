@@ -43,7 +43,8 @@ function walk(dir: string, out: string[] = []): string[] {
 
 const scanRoots = ["src", "scripts", "public"].filter((d) => existsSync(resolve(d)));
 const files = scanRoots.flatMap((d) => walk(resolve(d)));
-const hits = files.filter((f) => readFileSync(f, "utf-8").includes(ROUTE));
+const SELF = resolve("scripts/check-pc-assembly-service.ts");
+const hits = files.filter((f) => f !== SELF && readFileSync(f, "utf-8").includes(ROUTE));
 
 if (!approved) {
   for (const h of hits) {

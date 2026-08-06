@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Star, Check, X, RefreshCw, Loader2 } from "lucide-react";
+import { Star, Check, X, RefreshCw, Loader2, Search } from "lucide-react";
 
 /**
  * Moderação de avaliações: somente avaliações aprovadas E com autorização de

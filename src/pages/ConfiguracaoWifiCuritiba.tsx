@@ -244,6 +244,100 @@ export default function ConfiguracaoWifiCuritiba() {
         items={GALLERY}
       />
 
+      <section
+        id="impressoras-e-perifericos-em-rede"
+        aria-labelledby="impressoras-rede-titulo"
+        className="py-16 md:py-20 border-t border-border"
+      >
+        <div className="container-custom max-w-4xl">
+          <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-semibold text-primary">
+            <Printer className="w-3.5 h-3.5" /> Dispositivos conectados à rede
+          </span>
+          <h2
+            id="impressoras-rede-titulo"
+            className="mt-4 text-2xl md:text-3xl font-extrabold tracking-tight text-foreground"
+          >
+            Impressoras e periféricos em rede
+          </h2>
+          <p className="mt-3 text-muted-foreground">
+            Impressora que some da rede depois de trocar o roteador, computador novo que não
+            enxerga a multifuncional, digitalização que parou de chegar no PC, trabalho que fica
+            preso na fila. São problemas de <strong className="text-foreground">rede e
+            configuração</strong>, não de peça — e é exatamente esse recorte que atendemos aqui,
+            junto com a visita de Wi-Fi.
+          </p>
+
+          <div className="mt-8 grid gap-4 md:grid-cols-2">
+            {PRINTER_NETWORK_SCOPE.map((item) => (
+              <div key={item.title} className="rounded-lg border border-border bg-card p-5">
+                <h3 className="font-bold text-foreground">{item.title}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{item.description}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-8 rounded-lg border border-warning/40 bg-warning/5 p-5 flex gap-3">
+            <AlertTriangle className="w-5 h-5 text-warning shrink-0 mt-0.5" aria-hidden="true" />
+            <div>
+              <h3 className="font-bold text-foreground">Até onde vai esse atendimento</h3>
+              <p className="mt-2 text-sm text-muted-foreground">
+                O atendimento de impressoras e periféricos nesta página se limita à configuração,
+                comunicação e compartilhamento em rede. Defeitos mecânicos ou eletrônicos dependem
+                de assistência específica para o equipamento.
+              </p>
+              <p className="mt-3 text-sm text-muted-foreground">
+                Não fazemos, nesta modalidade: reparo mecânico, troca de cabeçote, recarga de
+                cartucho ou toner, manutenção de fusor, reparo eletrônico, conserto de placa,
+                manutenção de plotter nem fornecimento de suprimentos. Equipamentos muito antigos
+                podem não ter driver compatível com o sistema atual — quando for o caso, avisamos
+                antes de qualquer cobrança adicional.
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-8 rounded-lg border border-border bg-muted/30 p-5">
+            <h3 className="font-bold text-foreground">O que a visita costuma resolver</h3>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Na prática, a maior parte dos chamados de impressora que chegam junto com Wi-Fi se
+              resolve reconectando o equipamento à rede correta, fixando o endereço IP para ele não
+              mudar a cada reinício do roteador, reinstalando o driver oficial do fabricante no
+              computador e liberando a fila de impressão travada. Em escritórios, acrescenta-se o
+              compartilhamento entre as máquinas e a verificação de que a rede permite a descoberta
+              do dispositivo. Tudo isso entra na mesma visita de rede, sem cobrança de um
+              atendimento separado.
+            </p>
+          </div>
+
+          <div className="mt-6 flex flex-wrap gap-3 text-sm">
+            <Link to="/suporte-tecnico-remoto" className="text-primary font-semibold hover:underline">
+              Suporte técnico remoto
+            </Link>
+            <span className="text-muted-foreground" aria-hidden="true">·</span>
+            <Link
+              to="/assistencia-tecnica-empresas-curitiba"
+              className="text-primary font-semibold hover:underline"
+            >
+              Suporte técnico para empresas em Curitiba
+            </Link>
+            <span className="text-muted-foreground" aria-hidden="true">·</span>
+            <Link to="/servicos" className="text-primary font-semibold hover:underline">
+              Equipamentos e serviços atendidos
+            </Link>
+          </div>
+
+          <div className="mt-6">
+            <Button
+              onClick={openTriage}
+              data-triage-source="servicos_configuracao_wifi_curitiba_impressora"
+              data-triage-category="pc"
+            >
+              Descrever o problema na triagem <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
+          </div>
+        </div>
+      </section>
+
+
       <section className="py-12 md:py-16 border-t border-border bg-muted/30">
         <div className="container-custom max-w-5xl">
           <h2 className="text-2xl md:text-3xl font-bold text-foreground">Configuração de Wi-Fi por bairro em Curitiba</h2>

@@ -39,6 +39,7 @@ const ComoAvaliar = lazy(() => import("./pages/ComoAvaliar"));
 const Avaliacoes = lazy(() => import("./pages/Avaliacoes"));
 const StatusOrdemServico = lazy(() => import("./pages/StatusOrdemServico"));
 const ExclusaoDeDados = lazy(() => import("./pages/ExclusaoDeDados"));
+const GuiaEmpresarial = lazy(() => import("./pages/GuiaEmpresarial"));
 
 const ComoFuncionaPcGamer = lazy(() => import("./pages/ComoFuncionaPcGamer"));
 const AvaliarAtendimento = lazy(() => import("./pages/AvaliarAtendimento"));
@@ -151,6 +152,10 @@ const App = () => (
                 <Route path="/conserto-de-notebook-curitiba" element={<KeywordServicePage slug="conserto-de-notebook-curitiba" />} />
                 <Route path="/suporte-tecnico-remoto" element={<KeywordServicePage slug="suporte-tecnico-remoto" />} />
                 <Route path="/assistencia-tecnica-empresas-curitiba" element={<KeywordServicePage slug="assistencia-tecnica-empresas-curitiba" />} />
+
+                {/* Guias educacionais empresariais (Rodada 31) */}
+                <Route path="/guias/organizacao-de-ti-para-pequenos-escritorios" element={<GuiaEmpresarial slug="organizacao-de-ti-para-pequenos-escritorios" />} />
+                <Route path="/guias/como-escolher-uma-workstation" element={<GuiaEmpresarial slug="como-escolher-uma-workstation" />} />
 
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />

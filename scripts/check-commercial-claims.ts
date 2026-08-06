@@ -31,7 +31,7 @@ const FORBIDDEN: { re: RegExp; why: string }[] = [
   { re: /sem\s+juros/i, why: "parcelamento sem juros não comprovado" },
   { re: /\b\d{1,2}\s?x\b(?![\w-])/i, why: "número de parcelas não comprovado" },
   { re: /\b90\s+dias\b/i, why: "prazo fixo de garantia não comprovado" },
-  { re: /clientes\s+satisfeitos/i, why: "contagem de clientes não comprovada" },
+  { re: /\d[\d.]*\+?\s*(mil\s+)?clientes/i, why: "contagem de clientes não comprovada" },
 ];
 
 const errors: string[] = [];

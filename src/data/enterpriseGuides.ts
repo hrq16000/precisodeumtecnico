@@ -339,6 +339,27 @@ export const WORKSTATION_GUIDE: EnterpriseGuide = {
       ],
     },
     {
+      id: "requisitos",
+      title: "1b. Levantamento de requisitos: o que registrar antes de decidir",
+      paragraphs: [
+        "Nenhuma configuração deve ser definida pela profissão de quem vai usar a máquina. Duas pessoas com o mesmo cargo podem ter necessidades opostas dependendo do tamanho dos arquivos, da quantidade de programas abertos e do tipo de projeto. O levantamento abaixo é o que permite discutir componentes com base em fatos.",
+        "Nomes de aplicações aparecem aqui apenas como exemplo de contexto. O critério de decisão é sempre o requisito oficial publicado pelo fornecedor do software somado ao comportamento real do arquivo em uso.",
+      ],
+      bullets: [
+        "Programas utilizados e a versão instalada de cada um.",
+        "Tipo de projeto: desenho técnico, modelagem, render, edição, análise de dados ou virtualização.",
+        "Tamanho típico dos arquivos e tamanho do maior arquivo já aberto.",
+        "Quantidade de arquivos e de programas abertos ao mesmo tempo.",
+        "Resolução de trabalho e quantidade de monitores.",
+        "Tempo diário de uso e duração das tarefas mais pesadas.",
+        "Necessidade de mobilidade ou uso fixo em um posto.",
+        "Armazenamento já em uso hoje e crescimento esperado.",
+        "Necessidade de expansão futura de memória, disco ou vídeo.",
+        "Orçamento disponível e prazo esperado de utilização da máquina.",
+      ],
+    },
+
+    {
       id: "cpu",
       title: "2. Processador: clock por núcleo x quantidade de núcleos",
       paragraphs: [

@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import { PRICING, SLA, COMMERCIAL } from "@/data/pricingPolicy";
 import { COMMERCIAL_TERMS } from "@/data/commercialTerms";
+import { EquipmentValuationTerms } from "@/components/marketing/EquipmentValuationTerms";
 import { Link } from "react-router-dom";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 

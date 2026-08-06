@@ -23,6 +23,8 @@ import {
 } from "@/components/ui/accordion";
 import { SmartImage } from "@/components/SmartImage";
 import { InternalLinkCluster } from "@/components/seo/InternalLinkCluster";
+import { RelatedServiceLinks } from "@/components/seo/RelatedServiceLinks";
+
 import { AuthoritySince } from "@/components/marketing/AuthoritySince";
 import { COMPANY } from "@/data/companyInfo";
 import { KEYWORD_SERVICE_BY_SLUG } from "@/data/keywordServices";
@@ -282,10 +284,15 @@ export default function KeywordServicePage({ slug }: Props) {
         </div>
       </section>
 
+      <section className="container-custom">
+        <RelatedServiceLinks slug={page.slug} />
+      </section>
+
       <InternalLinkCluster
         city={page.city === "Brasil" ? "Curitiba" : page.city}
         citySlug="curitiba"
       />
+
     </Layout>
   );
 }

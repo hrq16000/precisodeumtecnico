@@ -59,7 +59,70 @@ const RELATED_BY_SLUG: Record<string, RelatedLink[]> = {
       description: "Montagem do zero, peças do cliente, garantia delimitada e checklist de testes.",
     },
   ],
+  /* Landing pages por keyword → destinos canônicos com intenção distinta. */
+  "upgrade-ssd-curitiba": [
+    {
+      to: "/upgrade-memoria-ram-curitiba",
+      label: "Upgrade de memória RAM em Curitiba",
+      description:
+        "Quando a lentidão vem de memória insuficiente, e não do armazenamento.",
+    },
+    {
+      to: "/formatacao-de-computador-curitiba",
+      label: "Formatação e reinstalação do sistema",
+      description: "Instalação limpa do sistema no SSD novo, com drivers oficiais.",
+    },
+    {
+      to: "/servicos/pc-gamer",
+      label: "Montagem e configuração de desktop",
+      description:
+        "Para montar a máquina do zero com peças novas, com checklist de testes documentado.",
+    },
+  ],
+  "upgrade-memoria-ram-curitiba": [
+    {
+      to: "/upgrade-ssd-curitiba",
+      label: "Upgrade de SSD em Curitiba",
+      description: "Quando o gargalo é o disco e não a quantidade de memória.",
+    },
+    {
+      to: "/servicos/pc-gamer",
+      label: "Montagem e configuração de desktop",
+      description:
+        "Conferência de compatibilidade, perfis oficiais de memória e testes antes da entrega.",
+    },
+    {
+      to: "/formatacao-de-computador-curitiba",
+      label: "Formatação de computador",
+      description: "Quando a lentidão é de software e o hardware já dá conta.",
+    },
+  ],
+  "formatacao-de-computador-curitiba": [
+    {
+      to: "/remocao-de-virus-curitiba",
+      label: "Remoção de vírus em Curitiba",
+      description: "Limpeza da máquina sem reinstalar o sistema.",
+    },
+    {
+      to: "/upgrade-ssd-curitiba",
+      label: "Upgrade de SSD em Curitiba",
+      description: "Quando a lentidão continua mesmo com o sistema recém-instalado.",
+    },
+  ],
+  "remocao-de-virus-curitiba": [
+    {
+      to: "/formatacao-de-computador-curitiba",
+      label: "Formatação de computador em Curitiba",
+      description: "Quando a infecção não permite recuperar o sistema com segurança.",
+    },
+    {
+      to: "/servicos/configuracao-wifi-curitiba",
+      label: "Configuração de rede e Wi-Fi",
+      description: "Rede e roteador revisados após a limpeza, incluindo dispositivos em rede.",
+    },
+  ],
 };
+
 
 interface Props {
   slug: string;

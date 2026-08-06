@@ -3,6 +3,7 @@ import { Layout } from "@/components/layout/Layout";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { Button } from "@/components/ui/button";
 import { CTASection } from "@/components/home/CTASection";
+import { AuthoritySince } from "@/components/marketing/AuthoritySince";
 import { 
   Monitor, Laptop, Camera, Zap, Wifi, Wind, Wrench, Tv, Server, 
   Smartphone, Printer, Building, HardDrive, Shield, Cpu, Settings,

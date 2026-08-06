@@ -38,6 +38,7 @@ import {
 } from "@/components/ui/accordion";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
+import { AuthoritySince } from "@/components/marketing/AuthoritySince";
 import { OfferHighlight } from "@/components/marketing/OfferHighlight";
 import { buildOfferSchema } from "@/components/seo/OfferSchema";
 import { buildReviewsSchema } from "@/data/testimonials";
@@ -490,6 +491,8 @@ export default function AssistenciaTecnicaCuritiba() {
           </motion.aside>
         </div>
       </section>
+
+      <AuthoritySince />
 
       {/* Oferta âncora — preço (R$ 99,99) + termos com hierarquia forte */}
       <section className="bg-background py-8">

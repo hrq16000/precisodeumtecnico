@@ -11,6 +11,10 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { AlertTriangle, BookOpen, CheckCircle2, MessageCircle } from "lucide-react";
+import { TrustStrip } from "@/components/marketing/TrustStrip";
+import { InlineTriageCTA } from "@/components/marketing/InlineTriageCTA";
+import { PageTableOfContents, type TocItem } from "@/components/layout/PageTableOfContents";
+
 
 const BASE = "https://precisodeumtecnico.com";
 
@@ -29,6 +33,16 @@ export default function GuiaEmpresarial({ slug }: Props) {
     service: guide.whatsappService,
     sourcePage: guide.path,
   });
+
+  /** Sumário gerado dos headings reais da página, incluindo as seções fixas. */
+  const tocItems: TocItem[] = [
+    ...guide.sections.map((s) => ({ id: s.id, label: s.title.replace(/^\d+\.\s*/, "") })),
+    { id: "checklist", label: "Checklist de requisitos" },
+    { id: "limites", label: "Limites operacionais" },
+    { id: "faq", label: "Perguntas frequentes" },
+  ];
+
+
 
   const articleSchema = {
     "@context": "https://schema.org",
@@ -59,18 +73,20 @@ export default function GuiaEmpresarial({ slug }: Props) {
       />
 
       <article>
-        <section className="bg-gradient-to-br from-primary/10 via-background to-accent/5 py-14 md:py-20">
+        {/* Hero compacto no mobile para manter o CTA visível na primeira dobra. */}
+        <section className="bg-gradient-to-br from-primary/10 via-background to-accent/5 py-8 md:py-20">
           <div className="container mx-auto px-4 max-w-4xl">
-            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-semibold mb-5">
+            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1.5 rounded-full text-xs md:text-sm font-semibold mb-3 md:mb-5">
               <BookOpen className="h-4 w-4" aria-hidden="true" />
               {guide.kicker}
             </div>
-            <h1 className="text-3xl md:text-5xl font-bold text-foreground mb-4">{guide.title}</h1>
-            <p className="text-muted-foreground text-lg">{guide.intro}</p>
-            <div className="flex flex-wrap gap-3 mt-7">
+            <h1 className="text-2xl md:text-5xl font-bold text-foreground mb-3 md:mb-4">{guide.title}</h1>
+            <p className="text-muted-foreground text-base md:text-lg">{guide.intro}</p>
+            <div className="flex flex-wrap gap-3 mt-5 md:mt-7">
               {guide.triage && (
                 <Button
                   size="lg"
+                  className="min-h-11"
                   data-triage-cta
                   data-triage-source={guide.triage.source}
                   data-triage-category={guide.triage.category}
@@ -96,20 +112,12 @@ export default function GuiaEmpresarial({ slug }: Props) {
           </div>
         </section>
 
-        <section className="py-12 md:py-16">
+        <section className="py-8 md:py-16">
           <div className="container mx-auto px-4 max-w-4xl">
-            <nav aria-label="Sumário do guia" className="mb-10 rounded-xl border border-border/50 bg-card p-5">
-              <h2 className="font-semibold text-card-foreground mb-3">Neste guia</h2>
-              <ol className="grid gap-2 sm:grid-cols-2 list-decimal list-inside text-sm text-muted-foreground">
-                {guide.sections.map((s) => (
-                  <li key={s.id}>
-                    <a href={`#${s.id}`} className="hover:text-primary underline-offset-4 hover:underline">
-                      {s.title.replace(/^\d+\.\s*/, "")}
-                    </a>
-                  </li>
-                ))}
-              </ol>
-            </nav>
+            {/* Faixa de confiança + sumário: mesmo padrão das páginas de serviço. */}
+            <TrustStrip className="mb-6" />
+            <PageTableOfContents className="mb-10" title="Neste guia" items={tocItems} />
+
 
             {guide.sections.map((s) => (
               <section key={s.id} id={s.id} className="mb-10 scroll-mt-24">
@@ -190,6 +198,18 @@ export default function GuiaEmpresarial({ slug }: Props) {
                 ))}
               </ul>
             </section>
+
+            {guide.triage && (
+              <InlineTriageCTA
+                className="mb-12"
+                label="Iniciar triagem do cenário"
+                description="A triagem online organiza equipamento, contexto de uso e prioridade antes de qualquer deslocamento, e apresenta o valor mínimo aplicável."
+                source={`${guide.triage.source}_meio`}
+                category={guide.triage.category}
+              />
+            )}
+
+
 
             <section id="faq" className="mb-12 scroll-mt-24">
               <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-4">

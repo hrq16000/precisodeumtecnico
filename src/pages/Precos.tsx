@@ -202,7 +202,7 @@ export default function Precos() {
 
           {/* Coleta e entrega — fluxo em 4 passos */}
           <Reveal>
-            <h2 className="font-display text-2xl md:text-3xl font-bold mt-16 mb-2">
+            <h2 id="coleta-e-entrega" data-toc-anchor className="font-display text-2xl md:text-3xl font-bold mt-16 mb-2">
               Como funciona a coleta e entrega
             </h2>
             <p className="text-muted-foreground mb-6 max-w-3xl">
@@ -241,7 +241,7 @@ export default function Precos() {
 
           {/* Hub-and-spoke: services */}
           <Reveal>
-            <h2 className="font-display text-2xl md:text-3xl font-bold mt-16 mb-4">Veja preços por serviço</h2>
+            <h2 id="precos-por-servico" data-toc-anchor className="font-display text-2xl md:text-3xl font-bold mt-16 mb-4">Veja preços por serviço</h2>
             <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
               {Object.values(servicesData).map((s) => (
                 <Link
@@ -257,7 +257,7 @@ export default function Precos() {
 
           {/* Hub-and-spoke: cities */}
           <Reveal>
-            <h2 className="font-display text-2xl md:text-3xl font-bold mt-16 mb-4">Atendimento nas cidades</h2>
+            <h2 id="atendimento-nas-cidades" data-toc-anchor className="font-display text-2xl md:text-3xl font-bold mt-16 mb-4">Atendimento nas cidades</h2>
             <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
               {Object.values(citiesData).map((c) => (
                 <Link
@@ -273,7 +273,7 @@ export default function Precos() {
 
           {/* Bairros de Curitiba */}
           <Reveal>
-            <h2 className="font-display text-2xl md:text-3xl font-bold mt-16 mb-4">Bairros de Curitiba</h2>
+            <h2 id="bairros-de-curitiba" data-toc-anchor className="font-display text-2xl md:text-3xl font-bold mt-16 mb-4">Bairros de Curitiba</h2>
             <div className="flex flex-wrap gap-2">
               {curitibaBairros.map((b) => {
                 const slug = b
@@ -297,7 +297,7 @@ export default function Precos() {
 
           {/* FAQ */}
           <Reveal>
-            <h2 className="font-display text-2xl md:text-3xl font-bold mt-16 mb-4">Perguntas frequentes</h2>
+            <h2 id="perguntas-frequentes" data-toc-anchor className="font-display text-2xl md:text-3xl font-bold mt-16 mb-4">Perguntas frequentes</h2>
             <Accordion type="single" collapsible>
               {faqs.map((f, i) => (
                 <AccordionItem key={i} value={`p-${i}`}>

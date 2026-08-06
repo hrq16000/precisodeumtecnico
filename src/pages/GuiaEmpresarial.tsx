@@ -199,6 +199,18 @@ export default function GuiaEmpresarial({ slug }: Props) {
               </ul>
             </section>
 
+            {guide.triage && (
+              <InlineTriageCTA
+                className="mb-12"
+                label="Iniciar triagem do cenário"
+                description="A triagem online organiza equipamento, contexto de uso e prioridade antes de qualquer deslocamento, e apresenta o valor mínimo aplicável."
+                source={`${guide.triage.source}_meio`}
+                category={guide.triage.category}
+              />
+            )}
+
+
+
             <section id="faq" className="mb-12 scroll-mt-24">
               <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-4">
                 Perguntas frequentes

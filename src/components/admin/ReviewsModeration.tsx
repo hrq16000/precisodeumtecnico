@@ -67,9 +67,14 @@ export function ReviewsModeration() {
   }, [filter]);
 
   async function moderate(id: string, status: "approved" | "rejected") {
+    const { data: userData } = await supabase.auth.getUser();
     const { error } = await supabase
       .from("reviews")
-      .update({ status, moderated_at: new Date().toISOString() })
+      .update({
+        status,
+        moderated_at: new Date().toISOString(),
+        moderated_by: userData?.user?.id ?? null,
+      })
       .eq("id", id);
     if (error) {
       toast({ variant: "destructive", title: "Erro", description: error.message });

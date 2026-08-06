@@ -90,7 +90,7 @@ export default function StatusOrdemServico() {
   const [params, setParams] = useSearchParams();
   const [mode, setMode] = useState<Mode>(params.get("tel") ? "phone" : "protocol");
   const [protocol, setProtocol] = useState(params.get("os") ?? "");
-  const [phone, setPhone] = useState(params.get("tel") ?? "");
+  const [phone, setPhone] = useState(formatPhoneBR(params.get("tel") ?? ""));
   const [loading, setLoading] = useState(false);
   const [slow, setSlow] = useState(false);
   const [order, setOrder] = useState<ServiceOrderStatus | null>(null);
@@ -101,7 +101,47 @@ export default function StatusOrdemServico() {
   const [unavailable, setUnavailable] = useState(false);
   const [copied, setCopied] = useState(false);
   const [lastSync, setLastSync] = useState<Date | null>(null);
+  const [consent, setConsentState] = useState(false);
+  const [consentMissing, setConsentMissing] = useState(false);
   const slowTimer = useRef<number | null>(null);
+
+  // Consentimento LGPD da consulta pública — restaurado entre visitas.
+  useEffect(() => {
+    try {
+      setConsentState(window.localStorage?.getItem(OS_CONSENT_KEY) === "granted");
+    } catch {
+      /* storage indisponível — decisão vale só nesta sessão */
+    }
+  }, []);
+
+  function setConsent(next: boolean) {
+    setConsentState(next);
+    if (next) setConsentMissing(false);
+    try {
+      window.localStorage?.setItem(OS_CONSENT_KEY, next ? "granted" : "denied");
+    } catch {
+      /* ignore */
+    }
+    trackEvent("os_status_consent", { consent: next ? "granted" : "denied" });
+  }
+
+  /** Remove o resultado em tela e apaga os rastros locais da consulta. */
+  function discardLookupData() {
+    setOrder(null);
+    setList(null);
+    resetFeedback();
+    setPhone("");
+    setProtocol("");
+    setParams({}, { replace: true });
+    try {
+      window.localStorage?.removeItem(OS_CONSENT_KEY);
+    } catch {
+      /* ignore */
+    }
+    setConsentState(false);
+    trackEvent("os_status_discard", {});
+  }
+
 
   const whatsappHelpUrl = buildWhatsAppUrl({
     service: "acompanhamento de Ordem de Serviço",

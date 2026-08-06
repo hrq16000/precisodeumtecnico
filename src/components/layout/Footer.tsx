@@ -151,6 +151,16 @@ export function Footer() {
               <Link to="/faq" className="text-background/60 hover:text-background text-sm transition-colors">
                 FAQ
               </Link>
+              <Link to="/empresa-de-ti-curitiba" className="text-background/60 hover:text-background text-sm transition-colors">
+                Empresa de TI em Curitiba
+              </Link>
+              <Link to="/servicos/suporte-tecnico-empresarial" className="text-background/60 hover:text-background text-sm transition-colors">
+                Suporte Empresarial
+              </Link>
+              <Link to="/seguranca-dos-dados" className="text-background/60 hover:text-background text-sm transition-colors">
+                Segurança dos Dados
+              </Link>
+
               <Link to="/dados-da-empresa" className="text-background/60 hover:text-background text-sm transition-colors">
                 Dados da Empresa
               </Link>

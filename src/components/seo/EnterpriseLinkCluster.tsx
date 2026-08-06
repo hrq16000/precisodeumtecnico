@@ -18,6 +18,24 @@ export interface EnterpriseLink {
 
 export const ENTERPRISE_LINKS: EnterpriseLink[] = [
   {
+    to: "/empresa-de-ti-curitiba",
+    label: "Empresa de TI em Curitiba",
+    description:
+      "Hub do atendimento empresarial: postos de trabalho, rede, servidores, backup e preventiva.",
+  },
+  {
+    to: "/servicos/suporte-tecnico-empresarial",
+    label: "Suporte técnico empresarial",
+    description:
+      "Chamados remotos e presenciais com escopo aprovado por escrito e ordem de serviço com protocolo.",
+  },
+  {
+    to: "/seguranca-dos-dados",
+    label: "Segurança dos dados",
+    description:
+      "Backup 3-2-1 testado, contas nominais, duas etapas e resposta aos primeiros minutos de um incidente.",
+  },
+  {
     to: "/assistencia-tecnica-empresas-curitiba",
     label: "Assistência técnica para empresas em Curitiba",
     description:
@@ -83,7 +101,7 @@ interface Props {
 export function EnterpriseLinkCluster({
   currentPath,
   title = "Continue pelo contexto empresarial",
-  limit = 6,
+  limit = 8,
 }: Props) {
   const links = ENTERPRISE_LINKS.filter((l) => l.to !== currentPath).slice(0, limit);
   if (!links.length) return null;

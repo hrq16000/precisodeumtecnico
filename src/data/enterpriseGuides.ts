@@ -34,6 +34,11 @@ export interface EnterpriseGuide {
   limits: string[];
   faq: GuideFaq[];
   whatsappService: string;
+  /** Quando presente, o hero exibe CTA de triagem além do WhatsApp. */
+  triage?: { source: string; category?: string; city?: string };
+  /** Quando presente, emite schema Service além do Article. */
+  serviceSchema?: { name: string; description: string; areaServed: string };
+
 }
 
 export const IT_OFFICE_GUIDE: EnterpriseGuide = {

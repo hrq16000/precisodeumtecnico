@@ -109,6 +109,7 @@ const App = () => (
                 <Route path="/servicos/reparo-smart-tv/:cidade" element={<ServicoCidadeRegiao service="reparo-smart-tv" />} />
                 <Route path="/servicos/troca-de-tela-tv/:cidade" element={<ServicoCidadeRegiao service="troca-de-tela-tv" />} />
                 <Route path="/servicos/configuracao-wifi/:cidade" element={<ServicoCidadeRegiao service="configuracao-wifi" />} />
+                <Route path="/servicos/suporte-tecnico-empresarial" element={<GuiaEmpresarial slug="suporte-tecnico-empresarial" />} />
                 <Route path="/servicos/:slug" element={<ServicoDetalhe />} />
                 <Route path="/regioes" element={<Regioes />} />
                 <Route path="/regioes/:city" element={<RegiaoDetalhe />} />
@@ -156,6 +157,8 @@ const App = () => (
                 {/* Guias educacionais empresariais (Rodada 31) */}
                 <Route path="/guias/organizacao-de-ti-para-pequenos-escritorios" element={<GuiaEmpresarial slug="organizacao-de-ti-para-pequenos-escritorios" />} />
                 <Route path="/guias/como-escolher-uma-workstation" element={<GuiaEmpresarial slug="como-escolher-uma-workstation" />} />
+                <Route path="/empresa-de-ti-curitiba" element={<GuiaEmpresarial slug="empresa-de-ti-curitiba" />} />
+                <Route path="/seguranca-dos-dados" element={<GuiaEmpresarial slug="seguranca-dos-dados" />} />
 
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />

@@ -35,7 +35,8 @@
     "check:indexnow": "bun scripts/check-indexnow.ts",
     "check:visual-wave-3q": "playwright test e2e/visual-wave-3q.spec.ts",
     "check:toc-a11y": "playwright test e2e/toc-keyboard.spec.ts",
-    "check:os-consent": "playwright test e2e/status-os-consent.spec.ts"
+    "check:os-consent": "playwright test e2e/status-os-consent.spec.ts",
+    "check:visual-wave-3r": "playwright test e2e/visual-wave-3r.spec.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

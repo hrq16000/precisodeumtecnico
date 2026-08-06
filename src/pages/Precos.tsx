@@ -17,6 +17,9 @@ import { MessageCircle, Check } from "lucide-react";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { COMMERCIAL_TERMS } from "@/data/commercialTerms";
 import { PRICING, SLA } from "@/data/pricingPolicy";
+import { TrustStrip } from "@/components/marketing/TrustStrip";
+import { PageTableOfContents } from "@/components/layout/PageTableOfContents";
+
 
 const whatsappLink = buildWhatsAppUrl({ service: "preços e condições de assistência técnica", sourcePage: "/precos" });
 

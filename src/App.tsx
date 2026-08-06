@@ -33,6 +33,7 @@ const Contato = lazy(() => import("./pages/Contato"));
 const Auth = lazy(() => import("./pages/Auth"));
 const Admin = lazy(() => import("./pages/Admin"));
 const TermosOrcamento = lazy(() => import("./pages/TermosOrcamento"));
+const PoliticaPecasCliente = lazy(() => import("./pages/PoliticaPecasCliente"));
 const ServicoCidade = lazy(() => import("./pages/ServicoCidade"));
 const Precos = lazy(() => import("./pages/Precos"));
 const Blog = lazy(() => import("./pages/Blog"));

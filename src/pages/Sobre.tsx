@@ -2,6 +2,7 @@ import { Layout } from "@/components/layout/Layout";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { Button } from "@/components/ui/button";
 import { CTASection } from "@/components/home/CTASection";
+import { CommercialTermsBlock } from "@/components/marketing/CommercialTermsBlock";
 import { 
   Shield, Award, Users, Clock, CheckCircle, Target, Heart, 
   Zap, MessageCircle, Building, ThumbsUp

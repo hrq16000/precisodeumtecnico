@@ -153,6 +153,10 @@ const App = () => (
                 <Route path="/suporte-tecnico-remoto" element={<KeywordServicePage slug="suporte-tecnico-remoto" />} />
                 <Route path="/assistencia-tecnica-empresas-curitiba" element={<KeywordServicePage slug="assistencia-tecnica-empresas-curitiba" />} />
 
+                {/* Guias educacionais empresariais (Rodada 31) */}
+                <Route path="/guias/organizacao-de-ti-para-pequenos-escritorios" element={<GuiaEmpresarial slug="organizacao-de-ti-para-pequenos-escritorios" />} />
+                <Route path="/guias/como-escolher-uma-workstation" element={<GuiaEmpresarial slug="como-escolher-uma-workstation" />} />
+
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

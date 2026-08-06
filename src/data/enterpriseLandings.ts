@@ -69,7 +69,6 @@ export const EMPRESA_TI_CURITIBA: EnterpriseGuide = {
         "Bancada: recuperação de dados e reparo que exige teste com peças de referência.",
       ],
     },
-  ],
     {
       id: "contextos",
       title: "4. Contextos empresariais que podem precisar de suporte",
@@ -100,6 +99,7 @@ export const EMPRESA_TI_CURITIBA: EnterpriseGuide = {
         "Não envie por mensagem: senha, código de autenticação, dados bancários, documento pessoal ou arquivo confidencial.",
       ],
     },
+  ],
   checklist: [
     { label: "Inventário do parque", detail: "Máquinas identificadas, com responsável e histórico de intervenções." },
     { label: "Rede documentada", detail: "Postos críticos cabeados, IP fixo em impressora e storage, Wi-Fi de visitantes isolado." },
@@ -215,7 +215,6 @@ export const SUPORTE_EMPRESARIAL: EnterpriseGuide = {
         "Semestral: revisão de inventário, permissões de pasta e licenças em uso.",
       ],
     },
-  ],
     {
       id: "avulso-recorrente",
       title: "4. Atendimento avulso ou recorrente",
@@ -248,6 +247,7 @@ export const SUPORTE_EMPRESARIAL: EnterpriseGuide = {
         "O suporte não promete: corrigir código do sistema, liberar licença, redefinir credencial de terceiro, alterar política corporativa, garantir funcionamento de plataforma externa, substituir o suporte do fornecedor, burlar restrições ou assumir responsabilidade por indisponibilidade externa.",
       ],
     },
+  ],
   checklist: [
     { label: "Postos críticos definidos", detail: "Quais máquinas param a operação se ficarem indisponíveis." },
     { label: "Canal de abertura único", detail: "Chamados entram por um canal só, com identificação do equipamento." },
@@ -381,7 +381,6 @@ export const SEGURANCA_DOS_DADOS: EnterpriseGuide = {
         "Solicitação de exclusão registrada e respondida pelos canais informados na política.",
       ],
     },
-  ],
     {
       id: "terceiros",
       title: "5. Sistemas, credenciais e acessos de terceiros",
@@ -395,6 +394,7 @@ export const SEGURANCA_DOS_DADOS: EnterpriseGuide = {
         "Responsabilidade do fornecedor do sistema: licença, disponibilidade, servidor, correção de erro interno, atualização, recuperação de conta, suporte ao próprio sistema, regras de autenticação, integrações e documentação.",
       ],
     },
+  ],
   checklist: [
     { label: "Backup 3-2-1", detail: "Cópia local, cópia externa e versionamento configurados." },
     { label: "Restauração testada", detail: "Teste mensal com registro de data e responsável." },

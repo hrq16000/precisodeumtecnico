@@ -471,6 +471,21 @@ export type Database = {
           updated_at: string
         }[]
       }
+      get_service_orders_by_phone: {
+        Args: { _phone: string }
+        Returns: {
+          city: string
+          created_at: string
+          equipment: string
+          eta_date: string
+          neighborhood: string
+          protocol: string
+          public_note: string
+          service: string
+          status: string
+          updated_at: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

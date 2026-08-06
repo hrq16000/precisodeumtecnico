@@ -6,6 +6,9 @@ import { Layout } from "@/components/layout/Layout";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { EnterpriseLinkCluster } from "@/components/seo/EnterpriseLinkCluster";
 import { ENTERPRISE_GUIDES, type EnterpriseGuide } from "@/data/enterpriseGuides";
+import { ENTERPRISE_LANDINGS } from "@/data/enterpriseLandings";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { AlertTriangle, BookOpen, CheckCircle2, MessageCircle } from "lucide-react";
 
@@ -16,7 +19,9 @@ interface Props {
 }
 
 export default function GuiaEmpresarial({ slug }: Props) {
-  const guide: EnterpriseGuide | undefined = ENTERPRISE_GUIDES.find((g) => g.slug === slug);
+  const guide: EnterpriseGuide | undefined = [...ENTERPRISE_GUIDES, ...ENTERPRISE_LANDINGS].find(
+    (g) => g.slug === slug,
+  );
   if (!guide) return null;
 
   const canonical = `${BASE}${guide.path}`;
@@ -43,14 +48,14 @@ export default function GuiaEmpresarial({ slug }: Props) {
         title={guide.metaTitle}
         description={guide.metaDescription}
         canonical={canonical}
-        type="article"
+        type={guide.serviceSchema ? "service" : "article"}
         breadcrumbs={[
           { name: "Início", url: `${BASE}/` },
-          { name: "Guias", url: `${BASE}/guias/organizacao-de-ti-para-pequenos-escritorios` },
           { name: guide.title, url: canonical },
         ]}
         faq={guide.faq}
-        structuredData={[articleSchema]}
+        service={guide.serviceSchema}
+        structuredData={guide.serviceSchema ? [] : [articleSchema]}
       />
 
       <article>
@@ -63,6 +68,18 @@ export default function GuiaEmpresarial({ slug }: Props) {
             <h1 className="text-3xl md:text-5xl font-bold text-foreground mb-4">{guide.title}</h1>
             <p className="text-muted-foreground text-lg">{guide.intro}</p>
             <div className="flex flex-wrap gap-3 mt-7">
+              {guide.triage && (
+                <Button
+                  size="lg"
+                  data-triage-cta
+                  data-triage-source={guide.triage.source}
+                  data-triage-category={guide.triage.category}
+                  data-triage-city={guide.triage.city}
+                >
+                  Iniciar triagem
+                  <ArrowRight className="ml-2 h-4 w-4" aria-hidden />
+                </Button>
+              )}
               <a
                 href={waUrl}
                 target="_blank"

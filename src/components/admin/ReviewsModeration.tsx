@@ -23,6 +23,8 @@ interface ReviewRow {
   comment: string | null;
   publish_consent: boolean;
   status: string;
+  moderated_at: string | null;
+  moderated_by: string | null;
 }
 
 const FILTERS = ["pending", "approved", "rejected"] as const;

@@ -80,7 +80,7 @@ export function B2BHero({
               {triage && (
                 <Button
                   size="lg"
-                  className={`min-h-11 w-full justify-center ${isService ? "sm:w-auto" : ""}`}
+                  className={`min-h-11 w-full justify-center whitespace-normal text-center leading-snug ${isService ? "sm:w-auto" : ""}`}
                   data-triage-cta
                   data-triage-source={triage.source}
                   data-triage-category={triage.category}

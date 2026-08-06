@@ -291,6 +291,70 @@ const Servicos = () => {
         </div>
       </section>
 
+      {/* Cluster interno PJ e remoto */}
+      <section className="section-padding bg-background" aria-labelledby="cluster-publicos">
+        <div className="container-custom max-w-5xl">
+          <h2 id="cluster-publicos" className="font-display text-2xl md:text-3xl font-bold text-foreground mb-6">
+            Atendimento para empresas e suporte remoto
+          </h2>
+          <div className="grid gap-4 md:grid-cols-2">
+            <Link
+              to="/assistencia-tecnica-empresas-curitiba"
+              className="group flex items-start gap-4 p-5 rounded-xl bg-card border border-border/50 hover:border-primary/40 hover:bg-primary/5 transition-all"
+            >
+              <div className="w-11 h-11 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                <Building2 className="w-5 h-5 text-primary" aria-hidden="true" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-card-foreground group-hover:text-primary transition-colors">
+                  Assistência técnica para empresas em Curitiba
+                </h3>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Suporte a parques de máquinas, servidores, redes e CFTV com atendimento
+                  programado para CNPJ.
+                </p>
+              </div>
+            </Link>
+            <Link
+              to="/suporte-tecnico-remoto"
+              className="group flex items-start gap-4 p-5 rounded-xl bg-card border border-border/50 hover:border-primary/40 hover:bg-primary/5 transition-all"
+            >
+              <div className="w-11 h-11 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                <Headset className="w-5 h-5 text-primary" aria-hidden="true" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-card-foreground group-hover:text-primary transition-colors">
+                  Suporte técnico remoto
+                </h3>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Resolução de problemas de software, configuração e lentidão sem
+                  deslocamento, com acesso assistido.
+                </p>
+              </div>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <CommercialTermsBlock />
+
+      {/* FAQ */}
+      <section className="section-padding bg-background" aria-labelledby="faq-servicos">
+        <div className="container-custom max-w-3xl">
+          <h2 id="faq-servicos" className="font-display text-2xl md:text-3xl font-bold text-foreground mb-6">
+            Perguntas frequentes sobre nossos serviços
+          </h2>
+          <Accordion type="single" collapsible>
+            {servicosFaqs.map((f, i) => (
+              <AccordionItem key={i} value={`s-${i}`}>
+                <AccordionTrigger className="text-left">{f.question}</AccordionTrigger>
+                <AccordionContent>{f.answer}</AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+      </section>
+
       <CTASection />
     </Layout>
   );

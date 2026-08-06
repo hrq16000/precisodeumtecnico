@@ -20,10 +20,10 @@ export function HeroSection() {
       }} />
       </div>
 
-      <div className="container-custom relative z-10 py-6 md:py-16">
+      <div className="container-custom relative z-10 py-4 md:py-16">
         <div className="max-w-3xl mx-auto text-center">
           {/* Badge — prova de autoridade factual acima da dobra */}
-          <div className="inline-flex items-center gap-2 bg-[#22C55E]/20 border border-[#22C55E]/30 rounded-full px-4 py-1.5 mb-4 animate-fade-up">
+          <div className="inline-flex items-center gap-2 bg-[#22C55E]/20 border border-[#22C55E]/30 rounded-full px-4 py-1.5 mb-3 animate-fade-up">
             <CalendarCheck className="w-4 h-4 text-[#22C55E]" />
             <span className="text-white text-sm font-medium">
               Atuação em informática desde {COMPANY.foundingYear}
@@ -31,24 +31,24 @@ export function HeroSection() {
           </div>
 
           {/* Main Headline */}
-          <h1 className="font-display text-3xl md:text-5xl lg:text-6xl font-bold mb-4 animate-fade-up tracking-tight leading-tight">
+          <h1 className="font-display text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold mb-3 animate-fade-up tracking-tight leading-tight">
             <span className="text-white">Assistência Técnica </span>
             <span className="text-[#22C55E]">Especializada</span>
           </h1>
 
-          <p className="text-base md:text-lg text-white/80 mb-5 max-w-2xl mx-auto animate-fade-up px-4">
+          <p className="text-sm md:text-lg text-white/80 mb-4 max-w-2xl mx-auto animate-fade-up px-4">
             Informática, notebooks, CFTV, elétrica, ar-condicionado, celulares e muito mais.
             Atendimento 24h via WhatsApp. O técnico vai até você!
           </p>
 
           {/* Oferta âncora — preço (1) + Termos (2) com hierarquia forte */}
-          <div className="mb-5 animate-fade-up max-w-xl mx-auto">
+          <div className="mb-4 animate-fade-up max-w-xl mx-auto">
             <OfferHighlight region="Curitiba e Brasil" />
           </div>
 
           {/* CTA principal — mantido acima da dobra no mobile (360/390/430px) */}
           <div className="flex flex-col gap-3 px-4 mb-4 animate-fade-up">
-            <Button size="lg" className="w-full bg-[#15803D] hover:bg-[#116932] text-white font-bold text-lg py-6 rounded-xl shadow-lg shadow-green-500/30 transition-all hover:scale-[1.02]" asChild>
+            <Button size="lg" className="w-full bg-[#15803D] hover:bg-[#116932] text-white font-bold text-lg py-5 rounded-xl shadow-lg shadow-green-500/30 transition-all hover:scale-[1.02]" asChild>
               <a href={whatsappLink} target="_blank" rel="noopener noreferrer" data-wa-source="hero" data-service="assistência técnica" data-cta-label="hero_whatsapp" aria-label="Falar com técnico pelo WhatsApp (hero)">
                 <MessageCircle className="w-5 h-5 mr-2" />
                 Falar com técnico agora

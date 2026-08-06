@@ -3,6 +3,7 @@ import { Layout } from "@/components/layout/Layout";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { HeroSection } from "@/components/home/HeroSection";
 import { HomeSymptomsSection } from "@/components/home/HomeSymptomsSection";
+import { SocialProofBar } from "@/components/home/SocialProofBar";
 
 import { ServicesSection } from "@/components/home/ServicesSection";
 import { RegionsSection } from "@/components/home/RegionsSection";
@@ -58,6 +59,8 @@ const Index = () => {
 
       
       <HeroSection />
+      {/* Prova social + confiança logo após o hero, antes dos CTAs secundários. */}
+      <SocialProofBar />
       {/* Rodada 3P — sintomas ("o que está acontecendo") antes dos serviços
           ("como podemos atender"). A prova de autoridade do hero não é repetida
           imediatamente abaixo: a faixa AuthoritySince passa para depois dos

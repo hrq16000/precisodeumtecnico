@@ -40,7 +40,7 @@ export function CookieConsentBanner() {
   }
 
   return (
-    <div
+    <div data-cookie-banner-root
       role="dialog"
       aria-label="Consentimento de cookies"
       data-cookie-consent

@@ -37,7 +37,7 @@ export function PageTableOfContents({ items, title = "Nesta página", className 
   );
 
   return (
-    <nav aria-label={title} className={`rounded-xl border border-border bg-card p-4 ${className}`}>
+    <nav data-page-toc aria-label={title} className={`rounded-xl border border-border bg-card p-4 ${className}`}>
       <details className="md:hidden" open={false}>
         <summary className="flex min-h-11 cursor-pointer list-none items-center gap-2 font-semibold text-card-foreground">
           <ListTree className="h-4 w-4 text-primary" aria-hidden="true" />

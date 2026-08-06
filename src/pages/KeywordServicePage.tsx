@@ -166,7 +166,9 @@ export default function KeywordServicePage({ slug }: Props) {
         <section className="pt-8">
           <div className="container-custom max-w-4xl">
             <p className="text-base font-medium text-foreground mb-5">{visual.summary}</p>
-            <TrustStrip />
+            {/* Uma única ocorrência visual da prova de autoridade por página. */}
+            {!AUTHORITY_SLUGS.has(page.slug) && <TrustStrip />}
+
             <PageTableOfContents className="mt-6" items={tocItems} />
           </div>
         </section>

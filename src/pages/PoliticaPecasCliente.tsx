@@ -103,6 +103,8 @@ const PoliticaPecasCliente = () => {
         <div className="container mx-auto px-4 max-w-4xl space-y-14">
           <PcAssemblyPolicySections />
 
+          <PcQuoteWizard sourcePage="/politica-de-pecas-do-cliente" />
+
           <EquipmentValuationTerms />
 
           <section aria-labelledby="faq-pecas-cliente">

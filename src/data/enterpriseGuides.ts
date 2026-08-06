@@ -509,20 +509,51 @@ export const WORKSTATION_GUIDE: EnterpriseGuide = {
         "Compensa quando o fabricante do software exige configuração homologada para dar suporte, ou quando a estabilidade de viewport é crítica. Para render por GPU e edição, placas de consumo de gama alta costumam entregar mais desempenho por real.",
     },
     {
-      question: "Quanta memória é suficiente?",
+      question: "Quanta memória RAM é necessária?",
       answer:
-        "Como referência prática: 32 GB para CAD e edição leve, 64 GB para 3D e vídeo em resolução alta, 128 GB ou mais para simulação, grandes conjuntos de dados e virtualização. Deixe slots livres para expansão.",
+        "Depende do tamanho dos arquivos abertos, da quantidade de programas simultâneos e do requisito recomendado pelo fornecedor do software. Não existe número universal: o levantamento de requisitos é o que define a capacidade, a quantidade de módulos e a folga para expansão.",
     },
     {
-      question: "Posso comprar as peças e pedir só a montagem?",
+      question: "Toda workstation precisa de placa de vídeo dedicada?",
       answer:
-        "Sim. As peças passam por conferência de compatibilidade e registro de estado na entrada, e a garantia do serviço cobre a montagem e a configuração — a garantia da peça permanece com o fornecedor dela.",
+        "Não necessariamente. A relevância da GPU depende do tipo de aceleração que a aplicação suporta, da resolução, do peso da visualização e de haver ou não exigência de certificação por parte do fornecedor do software.",
     },
     {
-      question: "Vale mais atualizar a máquina atual ou comprar uma nova?",
+      question: "É melhor usar um ou mais SSDs?",
       answer:
-        "Se o gargalo é memória ou armazenamento e a plataforma ainda suporta expansão, o upgrade costuma resolver por uma fração do custo. Se o gargalo é o processador ou a plataforma não suporta a memória necessária, a substituição tende a ser mais econômica no total.",
+        "Separar sistema, projeto ativo e arquivo morto reduz a disputa de acesso durante exportações e facilita o backup, porque o volume de projeto ativo fica menor e previsível. Um único disco funciona, mas concentra tudo no mesmo ponto de falha.",
     },
+    {
+      question: "É possível aproveitar componentes antigos?",
+      answer:
+        "É possível quando a compatibilidade com a nova plataforma é confirmada e o estado de conservação da peça é verificado. Peças fornecidas pelo cliente seguem a política de peças do cliente, com registro de estado na entrada.",
+    },
+    {
+      question: "Como saber se as peças são compatíveis?",
+      answer:
+        "A conferência considera plataforma, soquete, memória suportada, conectores da fonte, espaço físico no gabinete e saídas de vídeo. Incompatibilidade identificada na conferência interrompe o processo até a definição do cliente.",
+    },
+    {
+      question: "O desempenho em um programa pode ser garantido?",
+      answer:
+        "Não. A montagem correta não garante desempenho específico em um programa: o resultado depende da configuração completa, da versão do software, do tipo de projeto e dos requisitos oficiais publicados pelo fornecedor.",
+    },
+    {
+      question: "É possível fazer upgrade futuramente?",
+      answer:
+        "Sim, quando a plataforma escolhida deixa slots de memória, portas de armazenamento e margem de fonte disponíveis. Por isso a plataforma tem prioridade sobre a quantidade inicial de memória e disco.",
+    },
+    {
+      question: "Os testes estão incluídos?",
+      answer:
+        "A validação segue o escopo confirmado no atendimento e costuma abranger reconhecimento de componentes, inicialização, memória, armazenamento, temperatura, estabilidade, portas, vídeo e rede.",
+    },
+    {
+      question: "O valor pode ser informado sem conhecer os requisitos?",
+      answer:
+        "Não de forma responsável. Sem saber programas, tamanho de arquivos, quantidade de monitores e expectativa de uso, qualquer número seria um chute que muda por completo depois do levantamento.",
+    },
+
   ],
   whatsappService: "dimensionamento de workstation",
 };

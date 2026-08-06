@@ -210,6 +210,9 @@ const Servicos = () => {
         </div>
       </section>
 
+      <AuthoritySince />
+
+
       {/* Services Grid */}
       <section className="section-padding bg-background">
         <div className="container-custom">

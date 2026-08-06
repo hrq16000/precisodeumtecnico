@@ -23,6 +23,8 @@ interface ReviewRow {
   comment: string | null;
   publish_consent: boolean;
   status: string;
+  moderated_at: string | null;
+  moderated_by: string | null;
 }
 
 const FILTERS = ["pending", "approved", "rejected"] as const;
@@ -65,9 +67,14 @@ export function ReviewsModeration() {
   }, [filter]);
 
   async function moderate(id: string, status: "approved" | "rejected") {
+    const { data: userData } = await supabase.auth.getUser();
     const { error } = await supabase
       .from("reviews")
-      .update({ status, moderated_at: new Date().toISOString() })
+      .update({
+        status,
+        moderated_at: new Date().toISOString(),
+        moderated_by: userData?.user?.id ?? null,
+      })
       .eq("id", id);
     if (error) {
       toast({ variant: "destructive", title: "Erro", description: error.message });
@@ -173,6 +180,9 @@ export function ReviewsModeration() {
                       {new Date(r.created_at).toLocaleString("pt-BR")}
                       {r.protocol ? ` · ${r.protocol}` : ""}
                       {r.service ? ` · ${r.service}` : ""}
+                      {r.moderated_at
+                        ? ` · moderada em ${new Date(r.moderated_at).toLocaleString("pt-BR")}`
+                        : ""}
                     </p>
                   </div>
                   <div className="flex items-center gap-2">

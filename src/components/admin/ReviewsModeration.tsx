@@ -180,6 +180,9 @@ export function ReviewsModeration() {
                       {new Date(r.created_at).toLocaleString("pt-BR")}
                       {r.protocol ? ` · ${r.protocol}` : ""}
                       {r.service ? ` · ${r.service}` : ""}
+                      {r.moderated_at
+                        ? ` · moderada em ${new Date(r.moderated_at).toLocaleString("pt-BR")}`
+                        : ""}
                     </p>
                   </div>
                   <div className="flex items-center gap-2">

@@ -52,6 +52,8 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
   const [parts, setParts] = useState("");
   const [city, setCity] = useState(stored.city ?? "");
   const [neighborhood, setNeighborhood] = useState(stored.neighborhood ?? "");
+  const [preferredPeriod, setPreferredPeriod] = useState<string>("");
+  const [preferredDay, setPreferredDay] = useState<string>("");
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [acceptPrices, setAcceptPrices] = useState(false);
   const [acceptParts, setAcceptParts] = useState(false);

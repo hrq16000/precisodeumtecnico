@@ -32,7 +32,8 @@
     "check:canonical": "bun scripts/check-canonical-parity.ts",
     "check:claims": "bun scripts/check-commercial-claims.ts",
     "check:pc-assembly-service": "bun scripts/check-pc-assembly-service.ts",
-    "check:indexnow": "bun scripts/check-indexnow.ts"
+    "check:indexnow": "bun scripts/check-indexnow.ts",
+    "check:visual-wave-3q": "playwright test e2e/visual-wave-3q.spec.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

@@ -28,10 +28,12 @@ import { RelatedServiceLinks } from "@/components/seo/RelatedServiceLinks";
 import { AuthoritySince } from "@/components/marketing/AuthoritySince";
 import { TrustStrip } from "@/components/marketing/TrustStrip";
 import { InlineTriageCTA } from "@/components/marketing/InlineTriageCTA";
+import { EditorialCallout } from "@/components/marketing/EditorialCallout";
 import { PageTableOfContents } from "@/components/layout/PageTableOfContents";
 
 import { COMPANY } from "@/data/companyInfo";
 import { KEYWORD_SERVICE_BY_SLUG } from "@/data/keywordServices";
+import { SERVICE_VISUAL_BY_SLUG } from "@/data/serviceVisualWave";
 import { PRICING } from "@/data/pricingPolicy";
 
 /**
@@ -42,12 +44,6 @@ const AUTHORITY_SLUGS = new Set([
   "assistencia-tecnica-empresas-curitiba",
 ]);
 
-/**
- * Rodada 3P — piloto visual de página de serviço. Sumário navegável e CTA
- * intermediário ficam restritos a esta rota até a validação dos resultados;
- * nenhuma propagação automática para os demais serviços nesta rodada.
- */
-const VISUAL_PILOT_SLUG = "conserto-de-notebook-curitiba";
 
 
 interface Props {
@@ -60,6 +56,21 @@ export default function KeywordServicePage({ slug }: Props) {
 
   const url = `${COMPANY.website}/${page.slug}`;
   const triageSource = `keyword_${page.slug.replace(/-/g, "_")}`;
+
+  /** Rodada 3Q — padrão visual comum, com conteúdo próprio por serviço. */
+  const visual = SERVICE_VISUAL_BY_SLUG[page.slug];
+  const tocItems = visual
+    ? [
+        { id: "o-que-esta-incluido", label: "O que está incluído" },
+        { id: "pontos-de-decisao", label: "Pontos de decisão" },
+        { id: "como-funciona", label: "Como funciona o atendimento" },
+        ...(page.scopeLimits ? [{ id: "limites-do-atendimento", label: "Limites do atendimento" }] : []),
+        ...(page.engagementModels ? [{ id: "avulso-ou-recorrente", label: "Avulso ou recorrente" }] : []),
+        { id: "perguntas-frequentes", label: "Perguntas frequentes" },
+        { id: "servicos-relacionados", label: "Serviços relacionados" },
+      ]
+    : [];
+
 
   return (
     <Layout>
@@ -151,23 +162,18 @@ export default function KeywordServicePage({ slug }: Props) {
 
       {AUTHORITY_SLUGS.has(page.slug) && <AuthoritySince />}
 
-      {page.slug === VISUAL_PILOT_SLUG && (
+      {visual && (
         <section className="pt-8">
           <div className="container-custom max-w-4xl">
-            <TrustStrip />
-            <PageTableOfContents
-              className="mt-6"
-              items={[
-                { id: "o-que-esta-incluido", label: "O que está incluído" },
-                { id: "como-funciona", label: "Como funciona o atendimento" },
-                { id: "antes-e-depois", label: "Antes e depois do serviço" },
-                { id: "perguntas-frequentes", label: "Perguntas frequentes" },
-                { id: "servicos-relacionados", label: "Serviços relacionados" },
-              ]}
-            />
+            <p className="text-base font-medium text-foreground mb-5">{visual.summary}</p>
+            {/* Uma única ocorrência visual da prova de autoridade por página. */}
+            {!AUTHORITY_SLUGS.has(page.slug) && <TrustStrip />}
+
+            <PageTableOfContents className="mt-6" items={tocItems} />
           </div>
         </section>
       )}
+
 
       {/* O QUE É */}
       <section className="section-padding">
@@ -196,6 +202,27 @@ export default function KeywordServicePage({ slug }: Props) {
         </div>
       </section>
 
+      {/* PONTOS DE DECISÃO — caixas editoriais próprias de cada serviço */}
+      {visual && (
+        <section className="pb-4">
+          <div className="container-custom max-w-4xl">
+            <h2
+              id="pontos-de-decisao"
+              data-toc-anchor
+              className="text-2xl md:text-3xl font-display font-bold mb-6"
+            >
+              Pontos de decisão antes do atendimento
+            </h2>
+            <div className="grid gap-4 md:grid-cols-2">
+              {visual.callouts.map((c) => (
+                <EditorialCallout key={c.title} title={c.title} items={c.items} tone={c.tone} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+
       {/* COMO FAZEMOS */}
       <section className="section-padding bg-muted/30">
         <div className="container-custom">
@@ -220,16 +247,17 @@ export default function KeywordServicePage({ slug }: Props) {
             <p className="text-sm text-muted-foreground">{page.warranty}</p>
           </div>
 
-          {page.slug === VISUAL_PILOT_SLUG && (
+          {visual && (
             <InlineTriageCTA
               className="mt-8"
-              label="Descrever meu problema"
+              label={visual.ctaLabel}
               description="A triagem online identifica equipamento, sintoma e modalidade e apresenta o valor mínimo antes de qualquer deslocamento."
               source={`${triageSource}_meio`}
               category={page.triageCategory}
               symptom={page.triageSymptom}
             />
           )}
+
         </div>
       </section>
 
@@ -307,7 +335,7 @@ export default function KeywordServicePage({ slug }: Props) {
       {page.engagementModels && (
         <section className="section-padding bg-muted/30">
           <div className="container-custom max-w-5xl">
-            <h2 className="text-2xl md:text-3xl font-display font-bold mb-8">
+            <h2 id="avulso-ou-recorrente" data-toc-anchor className="text-2xl md:text-3xl font-display font-bold mb-8">
               Avulso ou recorrente: como funciona cada opção
             </h2>
             <div className="grid md:grid-cols-2 gap-6">
@@ -335,7 +363,7 @@ export default function KeywordServicePage({ slug }: Props) {
       {page.scopeLimits && (
         <section className="section-padding">
           <div className="container-custom max-w-4xl">
-            <h2 className="text-2xl md:text-3xl font-display font-bold mb-3">
+            <h2 id="limites-do-atendimento" data-toc-anchor className="text-2xl md:text-3xl font-display font-bold mb-3">
               Limites do atendimento: o que não fazemos
             </h2>
             <p className="text-muted-foreground mb-6">

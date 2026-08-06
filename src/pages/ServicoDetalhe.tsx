@@ -338,7 +338,9 @@ const ServicoDetalhe = () => {
               {slug === "pc-gamer" && (
                 <div className="mb-12">
                   <WorkstationRequirements />
+                  <RelatedGuidesCard links={[GUIDE_LINKS.workstation, GUIDE_LINKS.ti]} />
                   <PcAssemblyPolicySections />
+
                   <div className="mt-8">
                     <PcQuoteWizard sourcePage="/servicos/pc-gamer" />
                   </div>

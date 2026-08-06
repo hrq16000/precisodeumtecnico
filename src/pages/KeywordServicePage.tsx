@@ -57,6 +57,21 @@ export default function KeywordServicePage({ slug }: Props) {
   const url = `${COMPANY.website}/${page.slug}`;
   const triageSource = `keyword_${page.slug.replace(/-/g, "_")}`;
 
+  /** Rodada 3Q — padrão visual comum, com conteúdo próprio por serviço. */
+  const visual = SERVICE_VISUAL_BY_SLUG[page.slug];
+  const tocItems = visual
+    ? [
+        { id: "o-que-esta-incluido", label: "O que está incluído" },
+        { id: "pontos-de-decisao", label: "Pontos de decisão" },
+        { id: "como-funciona", label: "Como funciona o atendimento" },
+        ...(page.scopeLimits ? [{ id: "limites-do-atendimento", label: "Limites do atendimento" }] : []),
+        ...(page.engagementModels ? [{ id: "avulso-ou-recorrente", label: "Avulso ou recorrente" }] : []),
+        { id: "perguntas-frequentes", label: "Perguntas frequentes" },
+        { id: "servicos-relacionados", label: "Serviços relacionados" },
+      ]
+    : [];
+
+
   return (
     <Layout>
       <SEOHead

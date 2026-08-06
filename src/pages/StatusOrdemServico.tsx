@@ -23,6 +23,7 @@ import { QrCode } from "@/components/QrCode";
 import { supabase } from "@/integrations/supabase/client";
 import { trackEvent, trackWhatsAppClick } from "@/lib/analytics";
 import { buildWhatsAppUrl, buildWhatsAppUrlFromText } from "@/lib/whatsapp";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   OS_STAGES,
   stageIndex,
@@ -34,6 +35,8 @@ import {
   slaState,
   SLA_LABEL,
   registerLookupAttempt,
+  formatPhoneBR,
+  OS_CONSENT_KEY,
   type ServiceOrderStatus,
 } from "@/lib/serviceOrder";
 import { SITE_ORIGIN, buildReviewLink } from "@/lib/reviews";

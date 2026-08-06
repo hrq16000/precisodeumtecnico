@@ -136,3 +136,20 @@ export function registerLookupAttempt(now = Date.now()): { allowed: boolean; ret
     return { allowed: true, retryInSeconds: 0 };
   }
 }
+
+/**
+ * Máscara progressiva de celular BR para o campo de consulta pública.
+ * Aceita colagem com DDI 55 e formata como (41) 99999-0000.
+ */
+export function formatPhoneBR(value: string): string {
+  let d = (value || "").replace(/\D/g, "");
+  if (d.length > 11 && d.startsWith("55")) d = d.slice(2);
+  d = d.slice(0, 11);
+  if (d.length <= 2) return d.length ? `(${d}` : "";
+  if (d.length <= 6) return `(${d.slice(0, 2)}) ${d.slice(2)}`;
+  if (d.length <= 10) return `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`;
+  return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
+}
+
+/** Chave de consentimento LGPD da consulta pública de OS. */
+export const OS_CONSENT_KEY = "pdt_os_lookup_consent_v1";

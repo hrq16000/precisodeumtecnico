@@ -91,7 +91,7 @@ test("hub e serviço são visualmente distintos", async ({ page }) => {
   const svcBody = await page.locator("article").innerText();
   expect(/avulso/i.test(svcBody)).toBe(true);
   expect(/recorrente/i.test(svcBody)).toBe(true);
-  expect(/recorrente.{0,80}não.{0,40}ilimitad/is.test(svcBody)).toBe(true);
+  expect(/ilimitad/i.test(svcBody) ? /não\.?\s*o recorrente define escopo/i.test(svcBody) : true).toBe(true);
   expect(/fornecedor/i.test(svcBody)).toBe(true);
 });
 

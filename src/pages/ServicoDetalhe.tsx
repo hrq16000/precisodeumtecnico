@@ -338,6 +338,9 @@ const ServicoDetalhe = () => {
                 </div>
               )}
 
+              {/* Interlinking contextual entre serviços correlatos (anti-canibalização) */}
+              {slug && <RelatedServiceLinks slug={slug} />}
+
 
 
               {/* Process */}

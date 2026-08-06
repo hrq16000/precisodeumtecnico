@@ -317,9 +317,25 @@ html { scroll-behavior: smooth; }
 }
 
 @layer utilities {
+  /* Campo obrigatório não preenchido: borda pulsante de alta visibilidade */
+  .field-invalid {
+    border-color: hsl(var(--destructive)) !important;
+    animation: fieldPulse 1.4s ease-in-out infinite;
+  }
+
+  @keyframes fieldPulse {
+    0%, 100% {
+      box-shadow: 0 0 0 0 hsl(var(--destructive) / 0.45);
+    }
+    50% {
+      box-shadow: 0 0 0 6px hsl(var(--destructive) / 0);
+    }
+  }
+
   .animate-fade-up {
     animation: fadeUp 0.6s ease-out forwards;
   }
+
 
   .animate-fade-in {
     animation: fadeIn 0.5s ease-out forwards;

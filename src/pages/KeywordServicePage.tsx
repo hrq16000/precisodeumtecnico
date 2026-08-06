@@ -230,7 +230,90 @@ export default function KeywordServicePage({ slug }: Props) {
         </div>
       </section>
 
+      {/* CONTEXTOS ATENDIDOS POR TIPO DE EMPRESA */}
+      {page.businessTracks && (
+        <section className="section-padding">
+          <div className="container-custom">
+            <h2 className="text-2xl md:text-3xl font-display font-bold mb-3">
+              Contextos atendidos por tipo de empresa
+            </h2>
+            <p className="text-muted-foreground mb-8 max-w-3xl">
+              O escopo é o mesmo; o que muda é a prioridade. Abaixo, o que costuma ser crítico em
+              cada contexto — sem prometer resultado dentro de software de terceiros.
+            </p>
+            <div className="grid md:grid-cols-2 gap-6">
+              {page.businessTracks.map((track) => (
+                <article key={track.title} className="p-6 rounded-xl bg-card border border-border/50">
+                  <h3 className="font-bold text-lg mb-2">{track.title}</h3>
+                  <p className="text-muted-foreground text-sm mb-4">{track.description}</p>
+                  <ul className="space-y-2">
+                    {track.includes.map((item) => (
+                      <li key={item} className="flex items-start gap-2 text-sm">
+                        <CheckCircle2 className="h-4 w-4 shrink-0 text-primary mt-0.5" aria-hidden />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* AVULSO x RECORRENTE */}
+      {page.engagementModels && (
+        <section className="section-padding bg-muted/30">
+          <div className="container-custom max-w-5xl">
+            <h2 className="text-2xl md:text-3xl font-display font-bold mb-8">
+              Avulso ou recorrente: como funciona cada opção
+            </h2>
+            <div className="grid md:grid-cols-2 gap-6">
+              {page.engagementModels.map((model) => (
+                <article key={model.name} className="p-6 rounded-xl bg-card border border-border/50">
+                  <h3 className="font-bold text-lg mb-2">{model.name}</h3>
+                  <p className="text-muted-foreground text-sm mb-4">{model.howItWorks}</p>
+                  <h4 className="font-semibold text-sm mb-2">O que está incluso</h4>
+                  <ul className="space-y-2">
+                    {model.includes.map((item) => (
+                      <li key={item} className="flex items-start gap-2 text-sm">
+                        <CheckCircle2 className="h-4 w-4 shrink-0 text-primary mt-0.5" aria-hidden />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* LIMITES DE ESCOPO */}
+      {page.scopeLimits && (
+        <section className="section-padding">
+          <div className="container-custom max-w-4xl">
+            <h2 className="text-2xl md:text-3xl font-display font-bold mb-3">
+              Limites do atendimento: o que não fazemos
+            </h2>
+            <p className="text-muted-foreground mb-6">
+              Publicar o limite evita expectativa errada e retrabalho. Estes pontos ficam fora do
+              escopo, mesmo em contrato recorrente.
+            </p>
+            <ul className="space-y-3">
+              {page.scopeLimits.map((limit) => (
+                <li key={limit} className="flex items-start gap-3 text-sm">
+                  <AlertTriangle className="h-4 w-4 shrink-0 text-destructive mt-0.5" aria-hidden />
+                  <span>{limit}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
       {/* FAQ */}
+
       <section className="section-padding bg-muted/30">
         <div className="container-custom max-w-3xl">
           <h2 className="text-2xl md:text-3xl font-display font-bold mb-6">

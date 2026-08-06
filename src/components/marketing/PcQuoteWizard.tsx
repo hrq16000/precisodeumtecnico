@@ -1,9 +1,10 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { z } from "zod";
-import { ArrowLeft, ArrowRight, Download, MessageCircle } from "lucide-react";
+import { AlertCircle, ArrowLeft, ArrowRight, Download, MessageCircle } from "lucide-react";
 import { buildWhatsAppUrlFromText, readStoredLocation, currentSourcePage } from "@/lib/whatsapp";
 import { trackWhatsAppClick, trackEvent } from "@/lib/analytics";
+
 
 /**
  * Mini-wizard de orçamento de montagem/upgrade de PC.

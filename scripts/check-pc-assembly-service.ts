@@ -79,6 +79,58 @@ if (!approved) {
   }
 }
 
+/**
+ * Verificação permanente do conteúdo publicado em /servicos/pc-gamer.
+ * Independe da aprovação da rota de montagem: a página existente não pode
+ * prometer desempenho, FPS, overclock ou preço fechado, e precisa publicar
+ * política de peças do cliente, garantia delimitada e checklist de testes.
+ */
+const PC_GAMER_SOURCES = [
+  "src/data/services.ts",
+  "src/data/pcAssemblyPolicy.ts",
+  "src/components/marketing/PcAssemblyPolicySections.tsx",
+  "src/pages/ServicoDetalhe.tsx",
+];
+
+for (const rel of PC_GAMER_SOURCES) {
+  if (!existsSync(resolve(rel))) {
+    errors.push(`${rel}: fonte obrigatória do serviço PC Gamer ausente.`);
+  }
+}
+
+const policyPath = resolve("src/data/pcAssemblyPolicy.ts");
+if (existsSync(policyPath)) {
+  const policy = readFileSync(policyPath, "utf-8");
+  for (const required of [
+    "buildsFromScratch: true",
+    "acceptsCustomerParts: true",
+    "customerParts",
+    "warranty",
+    "finalChecklist",
+  ]) {
+    if (!policy.includes(required)) {
+      errors.push(`src/data/pcAssemblyPolicy.ts: campo obrigatório ausente → ${required}`);
+    }
+  }
+}
+
+const servicesSrc = existsSync(resolve("src/data/services.ts"))
+  ? readFileSync(resolve("src/data/services.ts"), "utf-8")
+  : "";
+const pcGamerBlock = servicesSrc.split('"pc-gamer": {')[1]?.split('\n  "')[0] ?? "";
+const PC_GAMER_BANNED: [RegExp, string][] = [
+  [/overclock (seguro|de cpu)/i, "oferta de overclock"],
+  [/\bfps\b(?!,? pontua)/i, "promessa de FPS"],
+  [/m[áa]xima performance|m[áa]ximo desempenho/i, "promessa de desempenho"],
+  [/R\$\s?\d{1,3}\.\d{3}/, "preço fechado de configuração"],
+  [/benchmarks?\b(?! específicos)/i, "promessa de benchmark"],
+];
+for (const [re, why] of PC_GAMER_BANNED) {
+  if (re.test(pcGamerBlock)) {
+    errors.push(`src/data/services.ts (pc-gamer): ${why}.`);
+  }
+}
+
 if (errors.length) {
   console.error("[pc-assembly] FALHOU:");
   for (const e of errors) console.error("  ✗ " + e);

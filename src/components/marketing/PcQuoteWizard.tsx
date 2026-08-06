@@ -140,7 +140,16 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
   }
 
   function submit() {
-    if (!canSubmit) return;
+    if (!canSubmit) {
+      setShowAcceptErrors(true);
+      requestAnimationFrame(() => {
+        const el = document.querySelector<HTMLElement>("[data-accept-invalid='true']");
+        el?.focus();
+        el?.scrollIntoView({ behavior: "smooth", block: "center" });
+      });
+      return;
+    }
+    setShowAcceptErrors(false);
     const protocol = orderProtocol ?? buildProtocol();
     setOrderProtocol(protocol);
     const url = buildWhatsAppUrlFromText(buildMessage(protocol));
@@ -162,14 +171,22 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
     document.body.removeAttribute("data-print-target");
   }
 
-  const inputClass =
-    "w-full rounded-lg border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-ring";
+  const inputBase =
+    "w-full rounded-lg border bg-background px-3 py-3 text-base text-foreground focus:outline-none focus:ring-2 focus:ring-ring";
+  const inputClass = (invalid?: string) =>
+    `${inputBase} ${invalid ? "field-invalid" : "border-border"}`;
+  // Aceites obrigatórios ganham destaque pulsante quando o envio é tentado sem marcar.
+  const acceptClass = (checked: boolean) =>
+    !checked && showAcceptErrors
+      ? "field-invalid rounded-lg border p-3 -m-[1px]"
+      : "border border-transparent p-3";
 
   return (
     <section
       aria-labelledby="pc-quote-wizard"
-      className="p-6 rounded-2xl border border-border bg-card"
+      className="p-4 sm:p-6 rounded-2xl border border-border bg-card"
     >
+
       <h2 id="pc-quote-wizard" className="font-display text-2xl font-bold text-card-foreground mb-1">
         Orçamento de montagem em 3 passos
       </h2>

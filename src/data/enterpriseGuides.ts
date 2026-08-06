@@ -429,7 +429,53 @@ export const WORKSTATION_GUIDE: EnterpriseGuide = {
         "Filtros de poeira acessíveis, porque limpeza difícil é limpeza que não acontece.",
       ],
     },
+    {
+      id: "monitores-rede-backup",
+      title: "7. Monitores, rede e backup do posto",
+      paragraphs: [
+        "A workstation raramente trabalha sozinha. Monitores, ponto de rede e destino de backup fazem parte do dimensionamento e costumam ser lembrados depois da compra, quando já não há saída de vídeo suficiente ou o arquivo de projeto não cabe no destino previsto.",
+        "Projeto ativo em rede exige avaliar a velocidade do enlace e o comportamento do armazenamento compartilhado. Arquivo grande aberto diretamente do servidor pode transformar a rede no gargalo, mesmo com a máquina bem dimensionada.",
+      ],
+      bullets: [
+        "Quantidade, resolução e tipo de conexão dos monitores, conferidos contra as saídas da GPU escolhida.",
+        "Ponto de rede cabeado no posto quando o projeto ativo fica em servidor ou NAS.",
+        "Destino de backup do projeto ativo definido antes da entrega da máquina.",
+        "Periféricos específicos (mesa digitalizadora, leitor, dispositivos com driver próprio) validados quanto à compatibilidade.",
+      ],
+    },
+    {
+      id: "upgrade",
+      title: "8. Possibilidade de upgrade e prioridades de orçamento",
+      paragraphs: [
+        "Uma workstation bem escolhida deixa caminhos abertos: slots de memória livres, baias e portas de armazenamento disponíveis, fonte com margem e espaço físico para uma placa maior. Quando o orçamento aperta, é preferível reduzir o que é fácil de ampliar depois e preservar o que define a plataforma.",
+        "Componentes difíceis de trocar depois — placa-mãe, processador, fonte e gabinete — merecem prioridade. Memória e armazenamento costumam aceitar ampliação posterior sem substituir a máquina.",
+      ],
+      bullets: [
+        "Priorize plataforma (placa-mãe, processador, fonte) sobre quantidade inicial de memória e disco.",
+        "Confirme quantos slots e portas ficam livres após a montagem inicial.",
+        "Confira se a fonte comporta uma GPU maior no futuro sem precisar ser trocada.",
+        "Reaproveitar componentes existentes é possível quando há compatibilidade confirmada e estado de conservação verificado.",
+      ],
+    },
+    {
+      id: "testes",
+      title: "9. Testes de validação após a montagem",
+      paragraphs: [
+        "A validação depende do escopo confirmado no atendimento, mas a lógica é sempre a mesma: confirmar que os componentes são reconhecidos, que a máquina se mantém estável sob carga e que todas as portas e conexões respondem.",
+        "A montagem correta não garante desempenho específico em um programa. O resultado depende da configuração completa, da versão do software, do tipo de projeto e dos requisitos oficiais.",
+      ],
+      bullets: [
+        "Reconhecimento de todos os componentes instalados.",
+        "Inicialização e conclusão da instalação do sistema.",
+        "Verificação de memória e de armazenamento.",
+        "Acompanhamento de temperatura sob carga.",
+        "Teste de estabilidade pelo período combinado.",
+        "Conferência de portas, saídas de vídeo e rede.",
+        "Reinicializações sucessivas para confirmar consistência.",
+      ],
+    },
   ],
+
   checklist: [
     { label: "Carga de trabalho descrita", detail: "Softwares, tamanho dos arquivos, tarefas simultâneas e horizonte de uso definidos por escrito." },
     { label: "Processador coerente com o perfil", detail: "Clock por núcleo para CAD e modelagem; contagem de núcleos para render e simulação." },

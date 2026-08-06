@@ -331,6 +331,15 @@ const ServicoDetalhe = () => {
                 </div>
               </div>
 
+              {/* Montagem/PC Gamer: escopo, peças do cliente, garantia e checklist */}
+              {slug === "pc-gamer" && (
+                <div className="mb-12">
+                  <PcAssemblyPolicySections />
+                </div>
+              )}
+
+
+
               {/* Process */}
               <div className="mb-12">
                 <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-6">

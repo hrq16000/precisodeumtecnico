@@ -9,6 +9,7 @@ import {
   ArrowRight, MapPin, Star
 } from "lucide-react";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
+import NotFound from "@/pages/NotFound";
 import {
   getTestimonialsForService,
   buildServiceReviewsSchema,

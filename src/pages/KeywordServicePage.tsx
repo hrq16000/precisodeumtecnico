@@ -38,6 +38,14 @@ const AUTHORITY_SLUGS = new Set([
   "assistencia-tecnica-empresas-curitiba",
 ]);
 
+/**
+ * Rodada 3P — piloto visual de página de serviço. Sumário navegável e CTA
+ * intermediário ficam restritos a esta rota até a validação dos resultados;
+ * nenhuma propagação automática para os demais serviços nesta rodada.
+ */
+const VISUAL_PILOT_SLUG = "conserto-de-notebook-curitiba";
+
+
 interface Props {
   slug: string;
 }

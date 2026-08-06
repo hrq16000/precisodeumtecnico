@@ -453,7 +453,6 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
           <button
             type="button"
             onClick={submit}
-            aria-disabled={!canSubmit}
             data-wa-source="pc_quote_wizard"
             data-service="montagem-de-pc"
             className={`inline-flex items-center justify-center gap-2 px-5 py-3 min-h-[48px] rounded-lg bg-success text-success-foreground font-semibold ${

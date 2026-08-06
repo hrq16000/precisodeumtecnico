@@ -15,6 +15,10 @@ import { TrustStrip } from "@/components/marketing/TrustStrip";
 import { InlineTriageCTA } from "@/components/marketing/InlineTriageCTA";
 import { B2BHero } from "@/components/marketing/B2BHero";
 import { B2BCriteriaBand } from "@/components/marketing/B2BCriteriaBand";
+import { BusinessPillars } from "@/components/marketing/BusinessPillars";
+import { BusinessServiceMap } from "@/components/marketing/BusinessServiceMap";
+import { BusinessScopeIndicators } from "@/components/marketing/BusinessScopeIndicators";
+import { BusinessSupportFlow } from "@/components/marketing/BusinessSupportFlow";
 import { PageTableOfContents, type TocItem } from "@/components/layout/PageTableOfContents";
 
 
@@ -39,16 +43,29 @@ export default function GuiaEmpresarial({ slug }: Props) {
   /** Landings B2B usam template próprio; guias mantêm o layout editorial. */
   const isB2BLanding = ENTERPRISE_LANDINGS.some((l) => l.slug === guide.slug);
 
+  /** Rodada 3S — piloto do sistema empresarial: hub × serviço. */
+  const isHubPilot = guide.slug === "empresa-de-ti-curitiba";
+  const isServicePilot = guide.slug === "suporte-tecnico-empresarial";
+  const isPilot = isHubPilot || isServicePilot;
+  const pilotCtaLabel = isHubPilot
+    ? "Descrever a necessidade da empresa"
+    : "Solicitar suporte para a empresa";
+
   /** Sumário gerado dos headings reais da página, incluindo as seções fixas. */
   const tocItems: TocItem[] = [
+    ...(isHubPilot ? [{ id: "pilares", label: "Pilares operacionais" }] : []),
     ...guide.sections.map((s) => ({ id: s.id, label: s.title.replace(/^\d+\.\s*/, "") })),
+    ...(isHubPilot ? [{ id: "mapa-servicos", label: "Mapa de serviços empresariais" }] : []),
+    ...(isServicePilot ? [{ id: "fluxo", label: "Fluxo de atendimento e impacto" }] : []),
     { id: "checklist", label: "Checklist de requisitos" },
     { id: "limites", label: "Limites operacionais" },
     { id: "faq", label: "Perguntas frequentes" },
   ];
 
   /** Chips de escopo derivados das primeiras seções reais (sem claim novo). */
-  const heroChips = guide.sections.slice(0, 4).map((s) => s.title.replace(/^\d+\.\s*/, ""));
+  const heroChips = isServicePilot
+    ? []
+    : guide.sections.slice(0, 4).map((s) => s.title.replace(/^\d+\.\s*/, ""));
 
   const articleSchema = {
     "@context": "https://schema.org",
@@ -111,6 +128,15 @@ export default function GuiaEmpresarial({ slug }: Props) {
             waSource={`guia-${guide.slug}-hero`}
             waService={guide.whatsappService}
             triage={guide.triage}
+            variant={isServicePilot ? "service" : "hub"}
+            ctaLabel={isPilot ? pilotCtaLabel : undefined}
+            actionTitle={
+              isServicePilot
+                ? "Abertura de chamado empresarial"
+                : isHubPilot
+                  ? "Necessidade da empresa"
+                  : undefined
+            }
           />
         ) : (
           /* Hero compacto no mobile para manter o CTA visível na primeira dobra. */
@@ -157,11 +183,27 @@ export default function GuiaEmpresarial({ slug }: Props) {
           <div className="container mx-auto px-4 max-w-4xl">
             {/* Landings B2B usam faixa de critérios; guias mantêm o TrustStrip. */}
             {isB2BLanding ? <B2BCriteriaBand className="mb-6" /> : <TrustStrip className="mb-6" />}
+
+            {/* Rodada 3S — serviço abre por indicadores de escopo (execução). */}
+            {isServicePilot && <BusinessScopeIndicators className="mb-6" />}
+
             <PageTableOfContents
               className="mb-10"
               title={isB2BLanding ? "Nesta página" : "Neste guia"}
               items={tocItems}
             />
+
+            {/* Rodada 3S — hub abre por pilares operacionais (amplitude). */}
+            {isHubPilot && (
+              <section id="pilares" className="mb-10 scroll-mt-24">
+                <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-4">
+                  Pilares operacionais
+                </h2>
+                <BusinessPillars />
+              </section>
+            )}
+
+
 
 
 
@@ -217,6 +259,41 @@ export default function GuiaEmpresarial({ slug }: Props) {
               </section>
             ))}
 
+            {/* Rodada 3S — hub: mapa de serviços; serviço: fluxo e impacto. */}
+            {isHubPilot && (
+              <section id="mapa-servicos" className="mb-10 scroll-mt-24">
+                <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-4">
+                  Mapa de serviços empresariais
+                </h2>
+                <BusinessServiceMap />
+              </section>
+            )}
+
+            {isServicePilot && (
+              <section id="fluxo" className="mb-10 scroll-mt-24">
+                <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-4">
+                  Fluxo de atendimento e impacto operacional
+                </h2>
+                <BusinessSupportFlow />
+              </section>
+            )}
+
+            {isPilot && guide.triage && (
+              <InlineTriageCTA
+                className="mb-12"
+                label={pilotCtaLabel}
+                description={
+                  isHubPilot
+                    ? "A triagem organiza equipamentos, usuários afetados e impacto na operação antes de qualquer deslocamento."
+                    : "Descreva o chamado com equipamento, usuário afetado e impacto: o escopo é apresentado antes da execução."
+                }
+                source={`${guide.triage.source}_meio`}
+                category={guide.triage.category}
+              />
+            )}
+
+
+
             <section id="checklist" className="mb-10 scroll-mt-24">
               <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-4">
                 Checklist de requisitos
@@ -245,7 +322,7 @@ export default function GuiaEmpresarial({ slug }: Props) {
               </ul>
             </section>
 
-            {guide.triage && (
+            {!isPilot && guide.triage && (
               <InlineTriageCTA
                 className="mb-12"
                 label="Iniciar triagem do cenário"

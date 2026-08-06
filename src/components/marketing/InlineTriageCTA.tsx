@@ -31,7 +31,7 @@ export function InlineTriageCTA({
       {description && <p className="mb-3 text-sm text-muted-foreground">{description}</p>}
       <Button
         size="lg"
-        className="min-h-11"
+        className="min-h-11 max-w-full whitespace-normal text-left leading-snug"
         data-triage-cta
         data-triage-source={source}
         data-triage-category={category}

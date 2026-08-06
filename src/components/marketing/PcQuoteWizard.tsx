@@ -4,6 +4,7 @@ import { z } from "zod";
 import { AlertCircle, ArrowLeft, ArrowRight, Download, MessageCircle } from "lucide-react";
 import { buildWhatsAppUrlFromText, readStoredLocation, currentSourcePage } from "@/lib/whatsapp";
 import { trackWhatsAppClick, trackEvent } from "@/lib/analytics";
+import { buildReviewLink } from "@/lib/reviews";
 
 
 /**

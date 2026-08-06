@@ -26,6 +26,10 @@ import { InternalLinkCluster } from "@/components/seo/InternalLinkCluster";
 import { RelatedServiceLinks } from "@/components/seo/RelatedServiceLinks";
 
 import { AuthoritySince } from "@/components/marketing/AuthoritySince";
+import { TrustStrip } from "@/components/marketing/TrustStrip";
+import { InlineTriageCTA } from "@/components/marketing/InlineTriageCTA";
+import { PageTableOfContents } from "@/components/layout/PageTableOfContents";
+
 import { COMPANY } from "@/data/companyInfo";
 import { KEYWORD_SERVICE_BY_SLUG } from "@/data/keywordServices";
 import { PRICING } from "@/data/pricingPolicy";

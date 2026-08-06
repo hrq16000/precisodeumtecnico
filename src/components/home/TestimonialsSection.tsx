@@ -36,6 +36,20 @@ export function TestimonialsSection() {
 
   const approvedSchema = buildPublishedReviewsSchema(approved);
 
+  // Filtros públicos (bairro / serviço) sobre avaliações aprovadas E autorizadas.
+  const neighborhoods = Array.from(
+    new Set(approved.map((r) => r.neighborhood).filter(Boolean) as string[]),
+  ).sort();
+  const services = Array.from(
+    new Set(approved.map((r) => r.service).filter(Boolean) as string[]),
+  ).sort();
+  const visibleApproved = approved.filter((r) => {
+    if (neighborhoodFilter !== "all" && (r.neighborhood || "") !== neighborhoodFilter) return false;
+    if (serviceFilter !== "all" && (r.service || "") !== serviceFilter) return false;
+    return true;
+  });
+
+
   return <section className="section-padding bg-secondary/30">
       <div className="container-custom">
         {/* Section Header */}

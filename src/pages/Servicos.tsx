@@ -4,12 +4,52 @@ import { SEOHead } from "@/components/seo/SEOHead";
 import { Button } from "@/components/ui/button";
 import { CTASection } from "@/components/home/CTASection";
 import { AuthoritySince } from "@/components/marketing/AuthoritySince";
+import { CommercialTermsBlock } from "@/components/marketing/CommercialTermsBlock";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { 
   Monitor, Laptop, Camera, Zap, Wifi, Wind, Wrench, Tv, Server, 
   Smartphone, Printer, Building, HardDrive, Shield, Cpu, Settings,
-  ArrowRight, CheckCircle, MessageCircle
+  ArrowRight, CheckCircle, MessageCircle, Building2, Headset
 } from "lucide-react";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
+import { COMMERCIAL_TERMS } from "@/data/commercialTerms";
+import { PRICING, SLA } from "@/data/pricingPolicy";
+
+/**
+ * FAQ de /servicos — fonte única: COMMERCIAL_TERMS + PRICING.
+ * Não incluir alegações sem comprovação (guard: check-commercial-claims.ts).
+ */
+const servicosFaqs = [
+  {
+    question: "Como funciona o orçamento antes do serviço?",
+    answer: COMMERCIAL_TERMS.preApprovedPolicyText,
+  },
+  {
+    question: "Quanto custa o diagnóstico?",
+    answer: `${PRICING.benchDiagnosis.description} ${PRICING.technicalVisit.description}`,
+  },
+  {
+    question: "Como funciona a coleta e entrega?",
+    answer: PRICING.pickupDelivery.description,
+  },
+  {
+    question: "Qual é o prazo de atendimento?",
+    answer: `${COMMERCIAL_TERMS.minimumQueueText} ${SLA.disclaimer}`,
+  },
+  {
+    question: "E se eu desistir depois do diagnóstico?",
+    answer: COMMERCIAL_TERMS.cancellationText,
+  },
+  {
+    question: "O valor mínimo inclui peças?",
+    answer: `Não. ${COMMERCIAL_TERMS.preApprovedBudget.minLabel} é o mínimo pré-aprovado e cobre ${COMMERCIAL_TERMS.preApprovedBudget.includes.join(", ").toLowerCase()}. Peças, componentes, materiais ou itens adicionais são informados separadamente e só seguem com sua aprovação.`,
+  },
+];
 
 const serviceCategories = [
   {

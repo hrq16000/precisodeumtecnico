@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { HeroSection } from "@/components/home/HeroSection";
+import { HomeSymptomsSection } from "@/components/home/HomeSymptomsSection";
+
 import { ServicesSection } from "@/components/home/ServicesSection";
 import { RegionsSection } from "@/components/home/RegionsSection";
 import { BenefitsSection } from "@/components/home/BenefitsSection";

@@ -518,11 +518,38 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
             type="button"
             data-print-service-order
             onClick={printServiceOrder}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border font-semibold text-foreground hover:bg-muted print:hidden"
+            className="inline-flex items-center justify-center gap-2 px-4 py-3 min-h-[48px] rounded-lg border border-border font-semibold text-foreground hover:bg-muted print:hidden"
           >
             <Download className="w-4 h-4" aria-hidden="true" />
             Baixar ordem de serviço em PDF
           </button>
+
+          <div className="mt-6 p-4 rounded-lg border border-border bg-muted/30 print:hidden">
+            <p className="text-sm font-semibold text-card-foreground mb-1">
+              Depois do atendimento, avalie com estrelas
+            </p>
+            <p className="text-sm text-muted-foreground mb-3">
+              O mesmo link já vai na mensagem do WhatsApp. A publicação no site só acontece com a
+              sua autorização e após conferência.
+            </p>
+            <a
+              href={buildReviewLink({
+                protocol: orderProtocol,
+                service: "montagem-de-pc",
+                city: city.trim() || undefined,
+                neighborhood: neighborhood.trim() || undefined,
+                source: "pc_quote_wizard",
+              })}
+              onClick={() =>
+                trackEvent("review_link_click", { page_path: page, source: "pc_quote_wizard" })
+              }
+              className="inline-flex items-center justify-center gap-2 px-4 py-3 min-h-[48px] rounded-lg bg-primary text-primary-foreground font-semibold"
+            >
+              <Star className="w-4 h-4" aria-hidden="true" />
+              Abrir formulário de avaliação
+            </a>
+          </div>
+
         </div>
       )}
     </section>

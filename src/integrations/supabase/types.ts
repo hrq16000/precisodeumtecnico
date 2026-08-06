@@ -110,6 +110,66 @@ export type Database = {
         }
         Relationships: []
       }
+      reviews: {
+        Row: {
+          city: string | null
+          comment: string | null
+          created_at: string
+          id: string
+          moderated_at: string | null
+          moderated_by: string | null
+          name: string
+          neighborhood: string | null
+          page_path: string | null
+          protocol: string | null
+          publish_consent: boolean
+          rating: number
+          service: string | null
+          source: string | null
+          status: string
+          updated_at: string
+          user_agent: string | null
+        }
+        Insert: {
+          city?: string | null
+          comment?: string | null
+          created_at?: string
+          id?: string
+          moderated_at?: string | null
+          moderated_by?: string | null
+          name: string
+          neighborhood?: string | null
+          page_path?: string | null
+          protocol?: string | null
+          publish_consent?: boolean
+          rating: number
+          service?: string | null
+          source?: string | null
+          status?: string
+          updated_at?: string
+          user_agent?: string | null
+        }
+        Update: {
+          city?: string | null
+          comment?: string | null
+          created_at?: string
+          id?: string
+          moderated_at?: string | null
+          moderated_by?: string | null
+          name?: string
+          neighborhood?: string | null
+          page_path?: string | null
+          protocol?: string | null
+          publish_consent?: boolean
+          rating?: number
+          service?: string | null
+          source?: string | null
+          status?: string
+          updated_at?: string
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       terms_acceptances: {
         Row: {
           accepted_at: string

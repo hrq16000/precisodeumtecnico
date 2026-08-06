@@ -11,6 +11,7 @@
 
 import { writeFileSync, statSync, existsSync, readdirSync, unlinkSync } from "node:fs";
 import { servicesData } from "../src/data/services";
+import { CURATED_SERVICE_SLUGS } from "../src/data/curatedServiceSlugs";
 import {
   citiesData,
   curitibaBairros,
@@ -132,7 +133,8 @@ for (const [cidadeSlug, bairros] of Object.entries(BAIRROS_BY_CIDADE)) {
   }
 }
 
-for (const slug of Object.keys(servicesData))
+// Apenas slugs com conteúdo curado existem em /servicos/:slug (os demais são NotFound).
+for (const slug of CURATED_SERVICE_SLUGS)
   mainUrls.push({ loc: `${BASE}/servicos/${slug}`, changefreq: "weekly", priority: 0.85, lastmod: servicesMtime });
 
 for (const cat of blogCategories)

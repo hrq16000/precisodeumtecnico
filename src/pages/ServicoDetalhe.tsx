@@ -10,6 +10,10 @@ import {
 } from "lucide-react";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import NotFound from "@/pages/NotFound";
+import { servicesData as SERVICES_CATALOG } from "@/data/services";
+import { PcAssemblyPolicySections } from "@/components/marketing/PcAssemblyPolicySections";
+
+const PC_GAMER = SERVICES_CATALOG["pc-gamer"];
 import {
   getTestimonialsForService,
   buildServiceReviewsSchema,
@@ -138,7 +142,23 @@ const servicesData: Record<string, {
     ],
     category: "Ar-Condicionado",
   },
+  "pc-gamer": {
+    title: PC_GAMER.title,
+    subtitle: PC_GAMER.subtitle,
+    description: PC_GAMER.description,
+    longDescription: [PC_GAMER.longDescription],
+    benefits: [...PC_GAMER.benefits],
+    process: [...PC_GAMER.process],
+    faqs: [...PC_GAMER.faqs],
+    relatedServices: [
+      { name: "Informática", href: "/servicos/informatica" },
+      { name: "Upgrade de SSD", href: "/upgrade-ssd-curitiba" },
+      { name: "Upgrade de Memória RAM", href: "/upgrade-memoria-ram-curitiba" },
+    ],
+    category: "Informática",
+  },
 };
+
 
 // Default data for services not in the mapping
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -310,6 +330,15 @@ const ServicoDetalhe = () => {
                   ))}
                 </div>
               </div>
+
+              {/* Montagem/PC Gamer: escopo, peças do cliente, garantia e checklist */}
+              {slug === "pc-gamer" && (
+                <div className="mb-12">
+                  <PcAssemblyPolicySections />
+                </div>
+              )}
+
+
 
               {/* Process */}
               <div className="mb-12">

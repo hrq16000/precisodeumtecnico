@@ -13,6 +13,8 @@ import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { AlertTriangle, BookOpen, CheckCircle2, MessageCircle } from "lucide-react";
 import { TrustStrip } from "@/components/marketing/TrustStrip";
 import { InlineTriageCTA } from "@/components/marketing/InlineTriageCTA";
+import { B2BHero } from "@/components/marketing/B2BHero";
+import { B2BCriteriaBand } from "@/components/marketing/B2BCriteriaBand";
 import { PageTableOfContents, type TocItem } from "@/components/layout/PageTableOfContents";
 
 

@@ -115,6 +115,9 @@ const App = () => (
                 <Route path="/termos-orcamento-pre-aprovado" element={<TermosOrcamento />} />
                 <Route path="/termos-orcamento" element={<TermosOrcamento />} />
                 <Route path="/politica-de-pecas-do-cliente" element={<PoliticaPecasCliente />} />
+                <Route path="/politica-privacidade" element={<PoliticaPrivacidade />} />
+                <Route path="/politica-de-privacidade" element={<PoliticaPrivacidade />} />
+                <Route path="/termos-uso" element={<TermosOrcamento />} />
                 <Route path="/servico-em/:city/:service" element={<ServicoCidade />} />
                 <Route path="/precos" element={<Precos />} />
                 <Route path="/blog" element={<Blog />} />

@@ -199,7 +199,7 @@ export default function KeywordServicePage({ slug }: Props) {
       {/* COMO FAZEMOS */}
       <section className="section-padding bg-muted/30">
         <div className="container-custom">
-          <h2 className="text-2xl md:text-3xl font-display font-bold mb-8">
+          <h2 id="como-funciona" data-toc-anchor className="text-2xl md:text-3xl font-display font-bold mb-8">
             Como funciona o atendimento, passo a passo
           </h2>
           <ol className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -219,13 +219,24 @@ export default function KeywordServicePage({ slug }: Props) {
             <p className="text-sm text-muted-foreground mb-2">{page.priceNote}</p>
             <p className="text-sm text-muted-foreground">{page.warranty}</p>
           </div>
+
+          {page.slug === VISUAL_PILOT_SLUG && (
+            <InlineTriageCTA
+              className="mt-8"
+              label="Descrever meu problema"
+              description="A triagem online identifica equipamento, sintoma e modalidade e apresenta o valor mínimo antes de qualquer deslocamento."
+              source={`${triageSource}_meio`}
+              category={page.triageCategory}
+              symptom={page.triageSymptom}
+            />
+          )}
         </div>
       </section>
 
       {/* ANTES x DEPOIS */}
       <section className="section-padding">
         <div className="container-custom max-w-4xl">
-          <h2 className="text-2xl md:text-3xl font-display font-bold mb-6">
+          <h2 id="antes-e-depois" data-toc-anchor className="text-2xl md:text-3xl font-display font-bold mb-6">
             Antes e depois do serviço
           </h2>
           <div className="overflow-x-auto">
@@ -347,7 +358,7 @@ export default function KeywordServicePage({ slug }: Props) {
 
       <section className="section-padding bg-muted/30">
         <div className="container-custom max-w-3xl">
-          <h2 className="text-2xl md:text-3xl font-display font-bold mb-6">
+          <h2 id="perguntas-frequentes" data-toc-anchor className="text-2xl md:text-3xl font-display font-bold mb-6">
             Perguntas frequentes sobre {page.keyword}
           </h2>
           <Accordion type="single" collapsible className="w-full">
@@ -364,7 +375,7 @@ export default function KeywordServicePage({ slug }: Props) {
       {/* LINKS INTERNOS DO SERVIÇO */}
       <section className="section-padding">
         <div className="container-custom max-w-4xl">
-          <h2 className="text-2xl md:text-3xl font-display font-bold mb-4">
+          <h2 id="servicos-relacionados" data-toc-anchor className="text-2xl md:text-3xl font-display font-bold mb-4">
             Serviços relacionados
           </h2>
           <ul className="grid gap-3 sm:grid-cols-2">

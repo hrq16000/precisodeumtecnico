@@ -182,12 +182,15 @@ const defaultServiceData = {
 const ServicoDetalhe = () => {
   const { slug } = useParams<{ slug: string }>();
   const hasCuratedEntry = !!(slug && servicesData[slug]);
-  const service = hasCuratedEntry ? servicesData[slug!] : defaultServiceData;
 
-  // Generate title from slug if not in database
-  const displayTitle = slug && !servicesData[slug]
-    ? slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
-    : service.title;
+  // Rodada 3L — anti soft-404: slug fora do catálogo curado não pode render
+  // uma página genérica indexável (era assim que /servicos/<qualquer-coisa>
+  // "existia"). Sem entrada curada, a rota responde como não encontrada.
+  if (!hasCuratedEntry) return <NotFound />;
+
+  const service = servicesData[slug!];
+  const displayTitle = service.title;
+
 
   const whatsappLink = buildWhatsAppUrl({ service: displayTitle, sourcePage: `/servicos/${slug ?? ""}` });
 

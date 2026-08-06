@@ -51,6 +51,44 @@ const INCLUDES = [
   "Análise e mudança de canal Wi-Fi (2,4 e 5 GHz)",
   "Recomendações por escrito de upgrade, se necessário",
 ];
+/**
+ * Escopo de impressoras/periféricos tratado nesta página: exclusivamente
+ * conectividade e compartilhamento em rede. Reparo mecânico ou eletrônico
+ * está explicitamente fora e é sinalizado na própria seção.
+ */
+const PRINTER_NETWORK_SCOPE = [
+  {
+    title: "Impressora sumiu depois de trocar o roteador",
+    description:
+      "Reconexão do equipamento ao SSID correto e ajuste do endereço IP para ele não mudar a cada reinício da rede.",
+  },
+  {
+    title: "Compartilhamento entre computadores",
+    description:
+      "Configuração para que todas as máquinas da casa ou do escritório enxerguem e usem a mesma impressora.",
+  },
+  {
+    title: "Driver oficial e fila de impressão",
+    description:
+      "Instalação do driver do fabricante no computador e liberação de trabalhos travados na fila de impressão.",
+  },
+  {
+    title: "Descoberta na rede e comunicação",
+    description:
+      "Verificação de por que o dispositivo não aparece: faixa de IP diferente, isolamento de clientes no roteador ou rede de visitantes.",
+  },
+  {
+    title: "Scanner em rede, quando suportado",
+    description:
+      "Configuração da digitalização para o computador nos modelos que oferecem esse recurso de fábrica.",
+  },
+  {
+    title: "Armazenamento simples em rede",
+    description:
+      "Compartilhamento de pastas entre computadores da mesma rede, dentro do que o equipamento existente permite.",
+  },
+];
+
 
 function openTriage() {
   window.dispatchEvent(

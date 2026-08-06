@@ -122,6 +122,16 @@ jobs:
             -H "Authorization: Bearer $SUPABASE_ANON_KEY")
           cat /tmp/status.json
           [ "$HTTP" = "200" ] || { echo "::error::sitemap-status HTTP $HTTP"; exit 1; }
+      - name: Gate IndexNow — arquivo de verificação 200 e coerência do status
+        env:
+          BING_INDEXNOW_KEY: ${{ secrets.BING_INDEXNOW_KEY }}
+          SITEMAP_STATUS_URL: ${{ secrets.SUPABASE_URL && format('{0}/functions/v1/sitemap-status', secrets.SUPABASE_URL) || '' }}
+        run: |
+          if [ -z "$BING_INDEXNOW_KEY" ]; then
+            echo "::warning::BING_INDEXNOW_KEY ausente — gate IndexNow pulado."
+            exit 0
+          fi
+          bun run check:indexnow -- --remote precisodeumtecnico.com
       - name: Canonical parity em produção (amostra)
         run: bun run e2e:install && bun run check:canonical
         env:

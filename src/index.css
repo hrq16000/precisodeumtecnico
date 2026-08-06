@@ -193,6 +193,28 @@ html { scroll-behavior: smooth; }
     animation: pulse-glow 2s ease-in-out infinite;
   }
 
+  /* Rodada 3P — enquanto o banner de cookies está aberto, o botão flutuante
+     sobe para não haver sobreposição com o CTA nem com o próprio banner. */
+  body[data-cookie-banner="open"] .whatsapp-float {
+    bottom: calc(9rem + env(safe-area-inset-bottom));
+  }
+  @media (min-width: 640px) {
+    body[data-cookie-banner="open"] .whatsapp-float {
+      bottom: 1.5rem;
+    }
+  }
+
+  /* Largura confortável de leitura para corpos de texto longos. */
+  .reading-width {
+    max-width: 68ch;
+  }
+
+  /* Alvos de âncora do sumário não ficam sob o header fixo. */
+  [data-toc-anchor] {
+    scroll-margin-top: 5.5rem;
+  }
+
+
   @keyframes pulse-glow {
     0%, 100% {
       box-shadow: 0 0 0 0 hsla(142, 70%, 45%, 0.4);

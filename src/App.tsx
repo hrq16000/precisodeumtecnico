@@ -39,6 +39,7 @@ const ComoAvaliar = lazy(() => import("./pages/ComoAvaliar"));
 const Avaliacoes = lazy(() => import("./pages/Avaliacoes"));
 const StatusOrdemServico = lazy(() => import("./pages/StatusOrdemServico"));
 const ExclusaoDeDados = lazy(() => import("./pages/ExclusaoDeDados"));
+const GuiaEmpresarial = lazy(() => import("./pages/GuiaEmpresarial"));
 
 const ComoFuncionaPcGamer = lazy(() => import("./pages/ComoFuncionaPcGamer"));
 const AvaliarAtendimento = lazy(() => import("./pages/AvaliarAtendimento"));

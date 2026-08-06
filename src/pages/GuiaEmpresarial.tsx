@@ -13,6 +13,8 @@ import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { AlertTriangle, BookOpen, CheckCircle2, MessageCircle } from "lucide-react";
 import { TrustStrip } from "@/components/marketing/TrustStrip";
 import { InlineTriageCTA } from "@/components/marketing/InlineTriageCTA";
+import { B2BHero } from "@/components/marketing/B2BHero";
+import { B2BCriteriaBand } from "@/components/marketing/B2BCriteriaBand";
 import { PageTableOfContents, type TocItem } from "@/components/layout/PageTableOfContents";
 
 
@@ -34,6 +36,9 @@ export default function GuiaEmpresarial({ slug }: Props) {
     sourcePage: guide.path,
   });
 
+  /** Landings B2B usam template próprio; guias mantêm o layout editorial. */
+  const isB2BLanding = ENTERPRISE_LANDINGS.some((l) => l.slug === guide.slug);
+
   /** Sumário gerado dos headings reais da página, incluindo as seções fixas. */
   const tocItems: TocItem[] = [
     ...guide.sections.map((s) => ({ id: s.id, label: s.title.replace(/^\d+\.\s*/, "") })),
@@ -42,7 +47,8 @@ export default function GuiaEmpresarial({ slug }: Props) {
     { id: "faq", label: "Perguntas frequentes" },
   ];
 
-
+  /** Chips de escopo derivados das primeiras seções reais (sem claim novo). */
+  const heroChips = guide.sections.slice(0, 4).map((s) => s.title.replace(/^\d+\.\s*/, ""));
 
   const articleSchema = {
     "@context": "https://schema.org",
@@ -56,6 +62,30 @@ export default function GuiaEmpresarial({ slug }: Props) {
     articleSection: "Guias empresariais",
   };
 
+  /** WebPage canônica das landings B2B (evita Article fora de contexto). */
+  const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `${canonical}#webpage`,
+    name: guide.title,
+    description: guide.metaDescription,
+    url: canonical,
+    inLanguage: "pt-BR",
+    isPartOf: { "@type": "WebSite", name: "Preciso de um Técnico", url: `${BASE}/` },
+  };
+
+  /** Breadcrumb padronizado: Início › Empresas › página. */
+  const breadcrumbs = isB2BLanding
+    ? [
+        { name: "Início", url: `${BASE}/` },
+        { name: "Empresas", url: `${BASE}/servicos/suporte-tecnico-empresarial` },
+        { name: guide.title, url: canonical },
+      ]
+    : [
+        { name: "Início", url: `${BASE}/` },
+        { name: guide.title, url: canonical },
+      ];
+
   return (
     <Layout>
       <SEOHead
@@ -63,60 +93,76 @@ export default function GuiaEmpresarial({ slug }: Props) {
         description={guide.metaDescription}
         canonical={canonical}
         type={guide.serviceSchema ? "service" : "article"}
-        breadcrumbs={[
-          { name: "Início", url: `${BASE}/` },
-          { name: guide.title, url: canonical },
-        ]}
+        breadcrumbs={breadcrumbs}
         faq={guide.faq}
         service={guide.serviceSchema}
-        structuredData={guide.serviceSchema ? [] : [articleSchema]}
+        structuredData={isB2BLanding ? [webPageSchema] : guide.serviceSchema ? [] : [articleSchema]}
       />
 
+
       <article>
-        {/* Hero compacto no mobile para manter o CTA visível na primeira dobra. */}
-        <section className="bg-gradient-to-br from-primary/10 via-background to-accent/5 py-8 md:py-20">
-          <div className="container mx-auto px-4 max-w-4xl">
-            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1.5 rounded-full text-xs md:text-sm font-semibold mb-3 md:mb-5">
-              <BookOpen className="h-4 w-4" aria-hidden="true" />
-              {guide.kicker}
-            </div>
-            <h1 className="text-2xl md:text-5xl font-bold text-foreground mb-3 md:mb-4">{guide.title}</h1>
-            <p className="text-muted-foreground text-base md:text-lg">{guide.intro}</p>
-            <div className="flex flex-wrap gap-3 mt-5 md:mt-7">
-              {guide.triage && (
-                <Button
-                  size="lg"
-                  className="min-h-11"
-                  data-triage-cta
-                  data-triage-source={guide.triage.source}
-                  data-triage-category={guide.triage.category}
-                  data-triage-city={guide.triage.city}
+        {isB2BLanding ? (
+          <B2BHero
+            kicker={guide.kicker}
+            title={guide.title}
+            intro={guide.intro}
+            chips={heroChips}
+            waUrl={waUrl}
+            waSource={`guia-${guide.slug}-hero`}
+            waService={guide.whatsappService}
+            triage={guide.triage}
+          />
+        ) : (
+          /* Hero compacto no mobile para manter o CTA visível na primeira dobra. */
+          <section className="bg-gradient-to-br from-primary/10 via-background to-accent/5 py-8 md:py-20">
+            <div className="container mx-auto px-4 max-w-4xl">
+              <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1.5 rounded-full text-xs md:text-sm font-semibold mb-3 md:mb-5">
+                <BookOpen className="h-4 w-4" aria-hidden="true" />
+                {guide.kicker}
+              </div>
+              <h1 className="text-2xl md:text-5xl font-bold text-foreground mb-3 md:mb-4">{guide.title}</h1>
+              <p className="text-muted-foreground text-base md:text-lg">{guide.intro}</p>
+              <div className="flex flex-wrap gap-3 mt-5 md:mt-7">
+                {guide.triage && (
+                  <Button
+                    size="lg"
+                    className="min-h-11"
+                    data-triage-cta
+                    data-triage-source={guide.triage.source}
+                    data-triage-category={guide.triage.category}
+                    data-triage-city={guide.triage.city}
+                  >
+                    Iniciar triagem
+                    <ArrowRight className="ml-2 h-4 w-4" aria-hidden />
+                  </Button>
+                )}
+                <a
+                  href={waUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-wa-source={`guia-${guide.slug}-hero`}
+                  data-service={guide.whatsappService}
+                  aria-label={`Falar no WhatsApp sobre ${guide.whatsappService}`}
+                  className="inline-flex items-center gap-2 min-h-[48px] bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold px-6 py-3 rounded-xl transition-colors"
                 >
-                  Iniciar triagem
-                  <ArrowRight className="ml-2 h-4 w-4" aria-hidden />
-                </Button>
-              )}
-              <a
-                href={waUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                data-wa-source={`guia-${guide.slug}-hero`}
-                data-service={guide.whatsappService}
-                aria-label={`Falar no WhatsApp sobre ${guide.whatsappService}`}
-                className="inline-flex items-center gap-2 min-h-[48px] bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold px-6 py-3 rounded-xl transition-colors"
-              >
-                <MessageCircle className="h-5 w-5" aria-hidden="true" />
-                Avaliar meu cenário
-              </a>
+                  <MessageCircle className="h-5 w-5" aria-hidden="true" />
+                  Avaliar meu cenário
+                </a>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         <section className="py-8 md:py-16">
           <div className="container mx-auto px-4 max-w-4xl">
-            {/* Faixa de confiança + sumário: mesmo padrão das páginas de serviço. */}
-            <TrustStrip className="mb-6" />
-            <PageTableOfContents className="mb-10" title="Neste guia" items={tocItems} />
+            {/* Landings B2B usam faixa de critérios; guias mantêm o TrustStrip. */}
+            {isB2BLanding ? <B2BCriteriaBand className="mb-6" /> : <TrustStrip className="mb-6" />}
+            <PageTableOfContents
+              className="mb-10"
+              title={isB2BLanding ? "Nesta página" : "Neste guia"}
+              items={tocItems}
+            />
+
 
 
             {guide.sections.map((s) => (

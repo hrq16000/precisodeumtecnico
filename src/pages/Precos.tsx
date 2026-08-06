@@ -152,9 +152,9 @@ export default function Precos() {
           <Reveal>
             <div className="mt-10 grid md:grid-cols-3 gap-4">
               {[
-                "Visita abatida no orçamento",
-                "Nota fiscal e garantia de 90 dias",
-                "PIX, cartão e parcelamento em até 12x sem juros",
+                "Visita abatida no orçamento quando o serviço é aprovado",
+                "Valor informado por escrito antes da execução",
+                "Garantia conforme o serviço realizado",
               ].map((b) => (
                 <div key={b} className="flex items-start gap-2 p-4 rounded-lg bg-secondary/40">
                   <Check className="w-5 h-5 text-primary mt-0.5" /> <span>{b}</span>
@@ -162,6 +162,45 @@ export default function Precos() {
               ))}
             </div>
           </Reveal>
+
+          {/* Coleta e entrega — fluxo em 4 passos */}
+          <Reveal>
+            <h2 className="font-display text-2xl md:text-3xl font-bold mt-16 mb-2">
+              Como funciona a coleta e entrega
+            </h2>
+            <p className="text-muted-foreground mb-6 max-w-3xl">
+              {PRICING.pickupDelivery.description}
+            </p>
+            <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {[
+                {
+                  t: "1. Triagem online",
+                  d: "Você preenche a triagem com fotos e/ou vídeos do equipamento. Sem triagem completa, o atendimento não é iniciado.",
+                },
+                {
+                  t: "2. Coleta com seguro",
+                  d: "Retirada agendada no endereço informado, com logística com seguro incluída no valor mínimo pré-aprovado.",
+                },
+                {
+                  t: "3. Diagnóstico técnico",
+                  d: "Avaliação em bancada e tentativa de reparos compatíveis com a situação, dentro das possibilidades técnicas sem substituição de peças.",
+                },
+                {
+                  t: "4. Aprovação e retorno",
+                  d: "Se houver necessidade de peça, componente ou material, o valor é informado separadamente e só seguimos após sua aprovação.",
+                },
+              ].map((s) => (
+                <li key={s.t} className="p-5 rounded-xl border border-border bg-card">
+                  <h3 className="font-semibold mb-1">{s.t}</h3>
+                  <p className="text-sm text-muted-foreground">{s.d}</p>
+                </li>
+              ))}
+            </ol>
+            <p className="text-xs text-muted-foreground mt-4">
+              {COMMERCIAL_TERMS.preApprovedPolicyText}
+            </p>
+          </Reveal>
+
 
           {/* Hub-and-spoke: services */}
           <Reveal>

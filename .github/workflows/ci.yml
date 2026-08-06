@@ -33,6 +33,10 @@ jobs:
         run: bun run check:og
       - name: Validate JSON-LD structured data
         run: bun run validate:jsonld
+      - name: Gate — claims comerciais comprovados
+        run: bun run check:claims
+      - name: Gate — capacidade de montagem de PC (rota bloqueada sem prova)
+        run: bun run check:pc-assembly-service
       - name: Run tests
         run: bun run test
       - name: Build

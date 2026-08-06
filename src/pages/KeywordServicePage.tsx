@@ -26,6 +26,10 @@ import { InternalLinkCluster } from "@/components/seo/InternalLinkCluster";
 import { RelatedServiceLinks } from "@/components/seo/RelatedServiceLinks";
 
 import { AuthoritySince } from "@/components/marketing/AuthoritySince";
+import { TrustStrip } from "@/components/marketing/TrustStrip";
+import { InlineTriageCTA } from "@/components/marketing/InlineTriageCTA";
+import { PageTableOfContents } from "@/components/layout/PageTableOfContents";
+
 import { COMPANY } from "@/data/companyInfo";
 import { KEYWORD_SERVICE_BY_SLUG } from "@/data/keywordServices";
 import { PRICING } from "@/data/pricingPolicy";
@@ -37,6 +41,14 @@ const AUTHORITY_SLUGS = new Set([
   "conserto-de-notebook-curitiba",
   "assistencia-tecnica-empresas-curitiba",
 ]);
+
+/**
+ * Rodada 3P — piloto visual de página de serviço. Sumário navegável e CTA
+ * intermediário ficam restritos a esta rota até a validação dos resultados;
+ * nenhuma propagação automática para os demais serviços nesta rodada.
+ */
+const VISUAL_PILOT_SLUG = "conserto-de-notebook-curitiba";
+
 
 interface Props {
   slug: string;
@@ -139,12 +151,31 @@ export default function KeywordServicePage({ slug }: Props) {
 
       {AUTHORITY_SLUGS.has(page.slug) && <AuthoritySince />}
 
+      {page.slug === VISUAL_PILOT_SLUG && (
+        <section className="pt-8">
+          <div className="container-custom max-w-4xl">
+            <TrustStrip />
+            <PageTableOfContents
+              className="mt-6"
+              items={[
+                { id: "o-que-esta-incluido", label: "O que está incluído" },
+                { id: "como-funciona", label: "Como funciona o atendimento" },
+                { id: "antes-e-depois", label: "Antes e depois do serviço" },
+                { id: "perguntas-frequentes", label: "Perguntas frequentes" },
+                { id: "servicos-relacionados", label: "Serviços relacionados" },
+              ]}
+            />
+          </div>
+        </section>
+      )}
+
       {/* O QUE É */}
       <section className="section-padding">
         <div className="container-custom max-w-4xl">
-          <h2 className="text-2xl md:text-3xl font-display font-bold mb-4">
+          <h2 id="o-que-esta-incluido" data-toc-anchor className="text-2xl md:text-3xl font-display font-bold mb-4">
             O que é {page.keyword} e o que está incluído
           </h2>
+
           <div className="space-y-4 text-base leading-relaxed text-muted-foreground">
             {page.whatIs.map((p) => (
               <p key={p.slice(0, 24)}>{p}</p>
@@ -168,7 +199,7 @@ export default function KeywordServicePage({ slug }: Props) {
       {/* COMO FAZEMOS */}
       <section className="section-padding bg-muted/30">
         <div className="container-custom">
-          <h2 className="text-2xl md:text-3xl font-display font-bold mb-8">
+          <h2 id="como-funciona" data-toc-anchor className="text-2xl md:text-3xl font-display font-bold mb-8">
             Como funciona o atendimento, passo a passo
           </h2>
           <ol className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -188,13 +219,24 @@ export default function KeywordServicePage({ slug }: Props) {
             <p className="text-sm text-muted-foreground mb-2">{page.priceNote}</p>
             <p className="text-sm text-muted-foreground">{page.warranty}</p>
           </div>
+
+          {page.slug === VISUAL_PILOT_SLUG && (
+            <InlineTriageCTA
+              className="mt-8"
+              label="Descrever meu problema"
+              description="A triagem online identifica equipamento, sintoma e modalidade e apresenta o valor mínimo antes de qualquer deslocamento."
+              source={`${triageSource}_meio`}
+              category={page.triageCategory}
+              symptom={page.triageSymptom}
+            />
+          )}
         </div>
       </section>
 
       {/* ANTES x DEPOIS */}
       <section className="section-padding">
         <div className="container-custom max-w-4xl">
-          <h2 className="text-2xl md:text-3xl font-display font-bold mb-6">
+          <h2 id="antes-e-depois" data-toc-anchor className="text-2xl md:text-3xl font-display font-bold mb-6">
             Antes e depois do serviço
           </h2>
           <div className="overflow-x-auto">
@@ -316,7 +358,7 @@ export default function KeywordServicePage({ slug }: Props) {
 
       <section className="section-padding bg-muted/30">
         <div className="container-custom max-w-3xl">
-          <h2 className="text-2xl md:text-3xl font-display font-bold mb-6">
+          <h2 id="perguntas-frequentes" data-toc-anchor className="text-2xl md:text-3xl font-display font-bold mb-6">
             Perguntas frequentes sobre {page.keyword}
           </h2>
           <Accordion type="single" collapsible className="w-full">
@@ -333,7 +375,7 @@ export default function KeywordServicePage({ slug }: Props) {
       {/* LINKS INTERNOS DO SERVIÇO */}
       <section className="section-padding">
         <div className="container-custom max-w-4xl">
-          <h2 className="text-2xl md:text-3xl font-display font-bold mb-4">
+          <h2 id="servicos-relacionados" data-toc-anchor className="text-2xl md:text-3xl font-display font-bold mb-4">
             Serviços relacionados
           </h2>
           <ul className="grid gap-3 sm:grid-cols-2">

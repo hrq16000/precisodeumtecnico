@@ -17,6 +17,9 @@ import { MessageCircle, Check } from "lucide-react";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { COMMERCIAL_TERMS } from "@/data/commercialTerms";
 import { PRICING, SLA } from "@/data/pricingPolicy";
+import { TrustStrip } from "@/components/marketing/TrustStrip";
+import { PageTableOfContents } from "@/components/layout/PageTableOfContents";
+
 
 const whatsappLink = buildWhatsAppUrl({ service: "preços e condições de assistência técnica", sourcePage: "/precos" });
 
@@ -114,17 +117,51 @@ export default function Precos() {
           <Reveal>
             <Badge variant="secondary" className="mb-3">Preços transparentes</Badge>
             <h1 className="font-display text-4xl md:text-5xl font-bold mb-3">Tabela de preços 2026</h1>
-            <p className="text-lg text-background/80 max-w-2xl">
+            <p className="text-lg text-background/80 max-w-2xl reading-width">
               Faixas reais praticadas em Curitiba e Região Metropolitana. Visita técnica + diagnóstico a partir de
               R$ 99,99 — abatido do orçamento se aprovado.
             </p>
+            {/* Rodada 3P — CTA na primeira dobra, mesmo fluxo de triagem. */}
+            <div className="mt-6">
+              <Button
+                size="lg"
+                className="min-h-11"
+                data-triage-cta
+                data-triage-source="precos_hero"
+              >
+                Descrever meu atendimento
+              </Button>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="pt-8">
+        <div className="container-custom max-w-5xl">
+          <Reveal><TrustStrip /></Reveal>
+          <Reveal>
+            <PageTableOfContents
+              className="mt-6"
+              items={[
+                { id: "tabela-de-precos", label: "Tabela de preços" },
+                { id: "coleta-e-entrega", label: "Coleta e entrega" },
+                { id: "precos-por-servico", label: "Preços por serviço" },
+                { id: "atendimento-nas-cidades", label: "Atendimento nas cidades" },
+                { id: "bairros-de-curitiba", label: "Bairros de Curitiba" },
+                { id: "perguntas-frequentes", label: "Perguntas frequentes" },
+              ]}
+            />
           </Reveal>
         </div>
       </section>
 
       <section className="section-padding">
         <div className="container-custom max-w-5xl">
+          <h2 id="tabela-de-precos" data-toc-anchor className="sr-only">
+            Tabela de preços por serviço
+          </h2>
           <Reveal>
+
             <Card className="overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
@@ -165,7 +202,7 @@ export default function Precos() {
 
           {/* Coleta e entrega — fluxo em 4 passos */}
           <Reveal>
-            <h2 className="font-display text-2xl md:text-3xl font-bold mt-16 mb-2">
+            <h2 id="coleta-e-entrega" data-toc-anchor className="font-display text-2xl md:text-3xl font-bold mt-16 mb-2">
               Como funciona a coleta e entrega
             </h2>
             <p className="text-muted-foreground mb-6 max-w-3xl">
@@ -204,7 +241,7 @@ export default function Precos() {
 
           {/* Hub-and-spoke: services */}
           <Reveal>
-            <h2 className="font-display text-2xl md:text-3xl font-bold mt-16 mb-4">Veja preços por serviço</h2>
+            <h2 id="precos-por-servico" data-toc-anchor className="font-display text-2xl md:text-3xl font-bold mt-16 mb-4">Veja preços por serviço</h2>
             <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
               {Object.values(servicesData).map((s) => (
                 <Link
@@ -220,7 +257,7 @@ export default function Precos() {
 
           {/* Hub-and-spoke: cities */}
           <Reveal>
-            <h2 className="font-display text-2xl md:text-3xl font-bold mt-16 mb-4">Atendimento nas cidades</h2>
+            <h2 id="atendimento-nas-cidades" data-toc-anchor className="font-display text-2xl md:text-3xl font-bold mt-16 mb-4">Atendimento nas cidades</h2>
             <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
               {Object.values(citiesData).map((c) => (
                 <Link
@@ -236,7 +273,7 @@ export default function Precos() {
 
           {/* Bairros de Curitiba */}
           <Reveal>
-            <h2 className="font-display text-2xl md:text-3xl font-bold mt-16 mb-4">Bairros de Curitiba</h2>
+            <h2 id="bairros-de-curitiba" data-toc-anchor className="font-display text-2xl md:text-3xl font-bold mt-16 mb-4">Bairros de Curitiba</h2>
             <div className="flex flex-wrap gap-2">
               {curitibaBairros.map((b) => {
                 const slug = b
@@ -260,7 +297,7 @@ export default function Precos() {
 
           {/* FAQ */}
           <Reveal>
-            <h2 className="font-display text-2xl md:text-3xl font-bold mt-16 mb-4">Perguntas frequentes</h2>
+            <h2 id="perguntas-frequentes" data-toc-anchor className="font-display text-2xl md:text-3xl font-bold mt-16 mb-4">Perguntas frequentes</h2>
             <Accordion type="single" collapsible>
               {faqs.map((f, i) => (
                 <AccordionItem key={i} value={`p-${i}`}>

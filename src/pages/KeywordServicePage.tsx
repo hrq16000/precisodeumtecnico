@@ -28,10 +28,12 @@ import { RelatedServiceLinks } from "@/components/seo/RelatedServiceLinks";
 import { AuthoritySince } from "@/components/marketing/AuthoritySince";
 import { TrustStrip } from "@/components/marketing/TrustStrip";
 import { InlineTriageCTA } from "@/components/marketing/InlineTriageCTA";
+import { EditorialCallout } from "@/components/marketing/EditorialCallout";
 import { PageTableOfContents } from "@/components/layout/PageTableOfContents";
 
 import { COMPANY } from "@/data/companyInfo";
 import { KEYWORD_SERVICE_BY_SLUG } from "@/data/keywordServices";
+import { SERVICE_VISUAL_BY_SLUG } from "@/data/serviceVisualWave";
 import { PRICING } from "@/data/pricingPolicy";
 
 /**
@@ -42,12 +44,6 @@ const AUTHORITY_SLUGS = new Set([
   "assistencia-tecnica-empresas-curitiba",
 ]);
 
-/**
- * Rodada 3P — piloto visual de página de serviço. Sumário navegável e CTA
- * intermediário ficam restritos a esta rota até a validação dos resultados;
- * nenhuma propagação automática para os demais serviços nesta rodada.
- */
-const VISUAL_PILOT_SLUG = "conserto-de-notebook-curitiba";
 
 
 interface Props {

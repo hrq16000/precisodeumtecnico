@@ -301,6 +301,14 @@ export default function StatusOrdemServico() {
                         </p>
                         <p className="text-sm text-muted-foreground">{stage.description}</p>
                         <p className="text-xs text-muted-foreground/80 mt-0.5">{stage.slaText}</p>
+                        {stampFor(i) && (
+                          <p className="text-xs font-medium text-foreground/80 mt-1">
+                            {i === 0 ? "Registrado em" : "Atualizado em"}{" "}
+                            <time dateTime={stampFor(i)!.toISOString()}>
+                              {stampFor(i)!.toLocaleString("pt-BR")}
+                            </time>
+                          </p>
+                        )}
                       </div>
                     </li>
                   );
@@ -313,8 +321,43 @@ export default function StatusOrdemServico() {
                   {order.public_note}
                 </p>
               )}
+
+              <div className="mt-6 border-t border-border pt-6 flex flex-col sm:flex-row gap-6 sm:items-center">
+                <QrCode
+                  value={shareUrl}
+                  alt={`QR code para acompanhar a OS ${order.protocol}`}
+                  size={128}
+                  className="rounded-lg border border-border bg-background p-2"
+                />
+                <div className="flex-1">
+                  <p className="text-sm text-muted-foreground mb-3">
+                    Aponte a câmera do celular para acompanhar esta OS, ou copie o link para enviar a
+                    quem estiver acompanhando o atendimento.
+                  </p>
+                  <div className="flex flex-wrap gap-3">
+                    <Button type="button" variant="outline" size="sm" onClick={copyShareLink}>
+                      {copied ? (
+                        <Check className="w-4 h-4 mr-2" />
+                      ) : (
+                        <Copy className="w-4 h-4 mr-2" />
+                      )}
+                      {copied ? "Link copiado" : "Copiar link da OS"}
+                    </Button>
+                    <Button variant="outline" size="sm" asChild>
+                      <a
+                        href={reviewUrl}
+                        onClick={() => trackEvent("os_review_link_resend", { source: "status_os" })}
+                      >
+                        <Star className="w-4 h-4 mr-2" />
+                        Reenviar link de avaliação
+                      </a>
+                    </Button>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
+
 
           <div className="rounded-xl border border-border p-6">
             <h2 className="font-display text-xl font-bold text-foreground mb-4">

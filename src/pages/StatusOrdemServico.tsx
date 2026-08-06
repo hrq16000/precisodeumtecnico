@@ -1,12 +1,24 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { Search, CheckCircle2, Circle, Clock, AlertCircle, MessageCircle } from "lucide-react";
+import {
+  Search,
+  CheckCircle2,
+  Circle,
+  Clock,
+  AlertCircle,
+  MessageCircle,
+  Copy,
+  Check,
+  Star,
+} from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { QrCode } from "@/components/QrCode";
 import { supabase } from "@/integrations/supabase/client";
 import { trackEvent } from "@/lib/analytics";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import {
   OS_STAGES,
   stageIndex,
@@ -14,7 +26,8 @@ import {
   formatEta,
   type ServiceOrderStatus,
 } from "@/lib/serviceOrder";
-import { SITE_ORIGIN } from "@/lib/reviews";
+import { SITE_ORIGIN, buildReviewLink } from "@/lib/reviews";
+
 
 const faq = [
   {

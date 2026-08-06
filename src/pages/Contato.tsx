@@ -2,6 +2,7 @@ import { Layout } from "@/components/layout/Layout";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { Button } from "@/components/ui/button";
 import { ContactForm } from "@/components/forms/ContactForm";
+import { CommercialTermsBlock } from "@/components/marketing/CommercialTermsBlock";
 import { 
   MessageCircle, Phone, MapPin, Clock, CheckCircle,
   Building, Users, Headphones

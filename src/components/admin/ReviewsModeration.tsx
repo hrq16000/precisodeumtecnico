@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Star, Check, X, RefreshCw, Loader2 } from "lucide-react";
+import { Star, Check, X, RefreshCw, Loader2, Search } from "lucide-react";
 
 /**
  * Moderação de avaliações: somente avaliações aprovadas E com autorização de
@@ -38,6 +38,9 @@ export function ReviewsModeration() {
   const [rows, setRows] = useState<ReviewRow[]>([]);
   const [filter, setFilter] = useState<Filter>("pending");
   const [loading, setLoading] = useState(true);
+  const [query, setQuery] = useState("");
+  const [cityFilter, setCityFilter] = useState("all");
+  const [serviceFilter, setServiceFilter] = useState("all");
   const { toast } = useToast();
 
   async function load(f: Filter = filter) {
@@ -74,6 +77,19 @@ export function ReviewsModeration() {
     setRows((r) => r.filter((x) => x.id !== id));
   }
 
+  const cities = Array.from(new Set(rows.map((r) => r.city).filter(Boolean) as string[])).sort();
+  const services = Array.from(new Set(rows.map((r) => r.service).filter(Boolean) as string[])).sort();
+
+  const q = query.trim().toLowerCase();
+  const visible = rows.filter((r) => {
+    if (cityFilter !== "all" && (r.city || "") !== cityFilter) return false;
+    if (serviceFilter !== "all" && (r.service || "") !== serviceFilter) return false;
+    if (!q) return true;
+    return [r.name, r.protocol, r.neighborhood, r.comment]
+      .filter(Boolean)
+      .some((v) => (v as string).toLowerCase().includes(q));
+  });
+
   return (
     <Card className="mt-8">
       <CardHeader className="flex flex-row items-center justify-between gap-3 flex-wrap">
@@ -98,15 +114,51 @@ export function ReviewsModeration() {
         </div>
       </CardHeader>
       <CardContent>
+        <div className="grid gap-3 sm:grid-cols-3 mb-5">
+          <div className="relative">
+            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Buscar por cliente, OS ou bairro"
+              aria-label="Buscar avaliações por cliente, número da OS ou bairro"
+              className="w-full h-11 pl-9 pr-3 rounded-lg border border-input bg-background text-sm text-foreground"
+            />
+          </div>
+          <select
+            value={cityFilter}
+            onChange={(e) => setCityFilter(e.target.value)}
+            aria-label="Filtrar por cidade"
+            className="h-11 px-3 rounded-lg border border-input bg-background text-sm text-foreground"
+          >
+            <option value="all">Todas as cidades</option>
+            {cities.map((c) => (
+              <option key={c} value={c}>{c}</option>
+            ))}
+          </select>
+          <select
+            value={serviceFilter}
+            onChange={(e) => setServiceFilter(e.target.value)}
+            aria-label="Filtrar por serviço"
+            className="h-11 px-3 rounded-lg border border-input bg-background text-sm text-foreground"
+          >
+            <option value="all">Todos os serviços</option>
+            {services.map((s) => (
+              <option key={s} value={s}>{s}</option>
+            ))}
+          </select>
+        </div>
         {loading ? (
           <p className="text-muted-foreground flex items-center gap-2">
             <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" /> Carregando…
           </p>
-        ) : rows.length === 0 ? (
-          <p className="text-muted-foreground">Nenhuma avaliação {LABEL[filter].toLowerCase()}.</p>
+        ) : visible.length === 0 ? (
+          <p className="text-muted-foreground">Nenhuma avaliação {LABEL[filter].toLowerCase()} com esses filtros.</p>
         ) : (
           <ul className="space-y-4">
-            {rows.map((r) => (
+            {visible.map((r) => (
+
               <li key={r.id} className="p-4 rounded-xl border border-border">
                 <div className="flex items-start justify-between gap-3 flex-wrap">
                   <div>

@@ -54,9 +54,9 @@ const priceTable: Row[] = [
 const faqs = [
   { question: "Os preços são fixos?", answer: "São faixas reais praticadas em Curitiba e região metropolitana. Após a visita técnica, formalizamos um orçamento por escrito antes de iniciar qualquer serviço — sem surpresas." },
   { question: "A visita técnica é cobrada mesmo se eu não aprovar?", answer: "A visita é R$ 99,99 e cobre deslocamento + diagnóstico. Se o serviço for aprovado, esse valor é abatido do orçamento final." },
-  { question: "Vocês emitem nota fiscal?", answer: "Sim. Emitimos nota fiscal eletrônica em todos os atendimentos, com garantia mínima de 90 dias em mão de obra." },
+  { question: "Como é documentado o serviço?", answer: "O valor é informado por escrito antes da execução e a garantia é definida conforme o serviço realizado. Peças, componentes ou materiais adicionais são orçados separadamente e só seguem com sua aprovação." },
   { question: "Atendem aos finais de semana?", answer: "Sim, com agendamento 24 horas via WhatsApp. Atendimento presencial 8h às 22h, com chamados emergenciais 24h." },
-  { question: "Como funciona o parcelamento?", answer: "Aceitamos PIX, cartão de débito, crédito em até 12x sem juros e dinheiro. Prazos de conclusão vão de 72h úteis a até 3 semanas, conforme peças e complexidade." },
+  { question: "Quais são os prazos?", answer: COMMERCIAL_TERMS.minimumQueueText + " " + SLA.disclaimer },
 ];
 
 export default function Precos() {

@@ -278,7 +278,38 @@ export const IT_OFFICE_GUIDE: EnterpriseGuide = {
       answer:
         "A ordem que mais reduz risco por real investido é: backup testado, depois contas e acessos, depois rede e energia, e por último renovação de hardware. Trocar máquinas antes de resolver backup só aumenta a exposição.",
     },
+    {
+      question: "Quais informações devem ser registradas no inventário?",
+      answer:
+        "Equipamento e categoria, usuário responsável, local dentro do escritório, configuração relevante, sistema operacional, programas principais, data aproximada de entrada em uso, situação de garantia, problema já conhecido e o quanto aquele posto é importante para a operação.",
+    },
+    {
+      question: "Preciso guardar senhas junto com o inventário?",
+      answer:
+        "Não. Inventário registra equipamento e responsabilidade. Senhas, códigos de autenticação, CPF, dados bancários, chaves privadas e dados de clientes ficam fora dessa lista e devem estar em um gerenciador de senhas com acesso controlado.",
+    },
+    {
+      question: "Quem deve ser responsável pela informática do escritório?",
+      answer:
+        "Mesmo sem equipe de TI, é preciso haver uma pessoa interna que centralize inventário, contatos de fornecedores e abertura de chamados. Sem esse ponto único, cada problema recomeça do zero e a informação se perde entre pessoas.",
+    },
+    {
+      question: "Atendimento avulso é suficiente para uma empresa pequena?",
+      answer:
+        "Em muitos casos sim, principalmente com poucos postos e problemas isolados. O atendimento avulso resolve o sintoma existente, com escopo definido por chamado.",
+    },
+    {
+      question: "Quando vale considerar acompanhamento recorrente?",
+      answer:
+        "Quando os chamados passam a se repetir pelas mesmas causas, quando a parada de um posto impede o trabalho de várias pessoas ou quando ninguém internamente consegue manter inventário, backup e atualizações em dia.",
+    },
+    {
+      question: "Como registrar um problema antes de pedir suporte?",
+      answer:
+        "Anote a identificação do equipamento, a mensagem de erro por inteiro, data e horário do início, o que estava sendo feito, se atinge um ou vários postos, o que mudou antes e o que já foi tentado. Não envie senha nem código de autenticação por mensagem.",
+    },
   ],
+
   whatsappService: "organização de TI para escritório",
 };
 

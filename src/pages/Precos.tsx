@@ -47,7 +47,7 @@ const priceTable: Row[] = [
   { service: "Instalação de split (até 12.000 BTUs)", example: "Distância padrão 3m, materiais básicos", price: "A partir de R$ 450" },
   { service: "Limpeza profunda de ar-condicionado", example: "Lavagem química completa", price: "R$ 220 a R$ 350" },
   { service: "Recarga de gás (R32/R410A)", example: "Inclui detecção de vazamento", price: "R$ 250 a R$ 450" },
-  { service: "Troca de tela de celular", example: "Peça OEM com 90 dias de garantia", price: "Sob consulta" },
+  { service: "Troca de tela de celular", example: "Peça compatível com garantia conforme o serviço", price: "Sob consulta" },
   { service: "Troca de bateria de notebook", example: "Bateria nova + instalação", price: "R$ 280 a R$ 600" },
   { service: "Instalação de impressora em rede", example: "Multifuncional Wi-Fi configurada", price: "R$ 100 a R$ 180" },
   { service: "Recuperação de dados (HD/SSD)", example: "Diagnóstico gratuito; serviço sob orçamento", price: "Sob consulta" },

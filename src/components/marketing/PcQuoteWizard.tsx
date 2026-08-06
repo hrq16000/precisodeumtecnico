@@ -364,6 +364,55 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
           </button>
         )}
       </div>
+
+      {orderProtocol && (
+        <div
+          id="pc-service-order"
+          data-service-order
+          className="mt-8 pt-6 border-t border-border"
+        >
+          <h3 className="font-display text-xl font-bold text-card-foreground mb-1">
+            Ordem de serviço {orderProtocol}
+          </h3>
+          <p className="text-sm text-muted-foreground mb-4">
+            Pré-abertura gerada pelo site em {new Date().toLocaleString("pt-BR")}. Serve como
+            comprovante da solicitação; o escopo, o valor e o prazo válidos são os do orçamento
+            confirmado por escrito no atendimento.
+          </p>
+          <div className="grid sm:grid-cols-2 gap-3 mb-4">
+            {[
+              ["Serviço", "Montagem/configuração de desktop ou PC Gamer"],
+              ["Modelo/configuração", model.trim()],
+              ["Uso pretendido", usage],
+              ["Peças", PARTS_LABEL[partsBy]],
+              ["Lista de peças", parts.trim() || "—"],
+              ["Cidade", city.trim() || "—"],
+              ["Bairro", neighborhood.trim() || "—"],
+              [
+                "Aceites",
+                "Termos e condições, política de preços" +
+                  (partsBy === "cliente" ? " e política de peças do cliente" : ""),
+              ],
+            ].map(([label, value]) => (
+              <article key={label} className="p-3 rounded-lg bg-muted/40 border border-border/50">
+                <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  {label}
+                </p>
+                <p className="text-sm text-card-foreground break-words">{value}</p>
+              </article>
+            ))}
+          </div>
+          <button
+            type="button"
+            data-print-service-order
+            onClick={printServiceOrder}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border font-semibold text-foreground hover:bg-muted print:hidden"
+          >
+            <Download className="w-4 h-4" aria-hidden="true" />
+            Baixar ordem de serviço em PDF
+          </button>
+        </div>
+      )}
     </section>
   );
 };

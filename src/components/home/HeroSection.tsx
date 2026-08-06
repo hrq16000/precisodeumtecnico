@@ -31,7 +31,7 @@ export function HeroSection() {
           </div>
 
           {/* Main Headline */}
-          <h1 className="font-display text-3xl md:text-5xl lg:text-6xl font-bold mb-3 animate-fade-up tracking-tight leading-tight">
+          <h1 className="font-display text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold mb-3 animate-fade-up tracking-tight leading-tight">
             <span className="text-white">Assistência Técnica </span>
             <span className="text-[#22C55E]">Especializada</span>
           </h1>

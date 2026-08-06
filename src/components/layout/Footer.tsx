@@ -172,6 +172,10 @@ export function Footer() {
               <Link to="/termos-uso" className="text-background/60 hover:text-background text-sm transition-colors">
                 Termos de Uso
               </Link>
+              <Link to="/como-avaliar" className="text-background/60 hover:text-background text-sm transition-colors">
+                Como avaliar
+              </Link>
+
             </div>
           </div>
         </div>

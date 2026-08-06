@@ -11,6 +11,10 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { AlertTriangle, BookOpen, CheckCircle2, MessageCircle } from "lucide-react";
+import { TrustStrip } from "@/components/marketing/TrustStrip";
+import { InlineTriageCTA } from "@/components/marketing/InlineTriageCTA";
+import { PageTableOfContents, type TocItem } from "@/components/layout/PageTableOfContents";
+
 
 const BASE = "https://precisodeumtecnico.com";
 

@@ -173,6 +173,7 @@ Deno.serve(async (req) => {
       robots,
       indexNow,
       issues,
+      alerts,
     }, null, 2),
     {
       status: status === "unhealthy" ? 503 : 200,

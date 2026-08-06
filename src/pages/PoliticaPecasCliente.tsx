@@ -96,6 +96,13 @@ const PoliticaPecasCliente = () => {
               Ver montagem de PC Gamer
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
+            <Link
+              to="/servicos/pc-gamer/como-funciona"
+              className="inline-flex items-center gap-2 border border-border bg-card text-card-foreground font-semibold px-6 py-3 rounded-xl hover:bg-accent/40 transition-colors"
+            >
+              Como funciona (etapas e prazos)
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
           </div>
         </div>
       </section>

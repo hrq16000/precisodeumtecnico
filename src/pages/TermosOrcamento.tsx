@@ -373,6 +373,18 @@ const TermosOrcamento = () => {
             </div>
           </div>
 
+          {/* 5.1 – Declaração de valor do equipamento */}
+          <div className="bg-card border border-border rounded-2xl p-6 md:p-10 shadow-sm">
+            <EquipmentValuationTerms />
+            <p className="text-sm text-muted-foreground mt-6">
+              Vai fornecer peças para montagem ou upgrade?{" "}
+              <Link to="/politica-de-pecas-do-cliente" className="text-primary font-semibold hover:underline">
+                Leia a política de peças do cliente
+              </Link>
+              .
+            </p>
+          </div>
+
           {/* 6 – Aceitação */}
           <div className="bg-card border border-border rounded-2xl p-6 md:p-10 shadow-sm">
             <div className="flex items-center gap-3 mb-6">

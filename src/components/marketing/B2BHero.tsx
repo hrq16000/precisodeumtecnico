@@ -18,7 +18,7 @@ interface Props {
   waUrl: string;
   waSource: string;
   waService: string;
-  triage?: { source: string; category: string; city?: string };
+  triage?: { source: string; category?: string; city?: string };
 }
 
 export function B2BHero({ kicker, title, intro, chips, waUrl, waSource, waService, triage }: Props) {

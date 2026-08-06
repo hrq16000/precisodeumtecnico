@@ -308,7 +308,8 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
               </label>
               <input
                 id="pcq-city"
-                className={inputClass}
+                className={inputClass()}
+
                 value={city}
                 maxLength={80}
                 onChange={(e) => setCity(e.target.value)}

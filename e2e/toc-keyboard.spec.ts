@@ -69,9 +69,11 @@ for (const vp of VIEWPORTS) {
       expect(margin, "alvo precisa de scroll-margin-top").toBeGreaterThanOrEqual(64);
 
       // Alvo visível abaixo do header
-      const box = await page.locator(`#${CSS.escape(id)}`).boundingBox();
-      expect(box).not.toBeNull();
-      expect(box!.y).toBeGreaterThanOrEqual(0);
+      const top = await page.evaluate(
+        (anchorId) => document.getElementById(anchorId)?.getBoundingClientRect().top ?? -1,
+        id,
+      );
+      expect(top).toBeGreaterThanOrEqual(0);
     });
   }
 }

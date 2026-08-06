@@ -53,6 +53,7 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [acceptPrices, setAcceptPrices] = useState(false);
   const [acceptParts, setAcceptParts] = useState(false);
+  const [orderProtocol, setOrderProtocol] = useState<string | null>(null);
 
   const page = sourcePage ?? currentSourcePage();
 

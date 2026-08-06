@@ -54,16 +54,36 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [acceptPrices, setAcceptPrices] = useState(false);
   const [acceptParts, setAcceptParts] = useState(false);
+  const [acceptLgpd, setAcceptLgpd] = useState(false);
+  const [showAcceptErrors, setShowAcceptErrors] = useState(false);
   const [orderProtocol, setOrderProtocol] = useState<string | null>(null);
+  const errorRef = useRef<HTMLParagraphElement | null>(null);
 
   const page = sourcePage ?? currentSourcePage();
+
+  // Leva o foco para o primeiro campo inválido, tornando óbvio o que falta.
+  function focusFirst(fields: string[], errs: Errors) {
+    const id = fields.find((f) => errs[f]);
+    if (!id) return;
+    requestAnimationFrame(() => {
+      const el = document.getElementById(`pcq-${id}`) as HTMLElement | null;
+      el?.focus();
+      el?.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+  }
+
+  useEffect(() => {
+    if (Object.keys(errors).length > 0) errorRef.current?.focus();
+  }, [errors]);
 
   function next() {
     if (step === 0) {
       const parsed = stepOneSchema.safeParse({ model, usage });
       if (!parsed.success) {
         const f = parsed.error.flatten().fieldErrors;
-        setErrors({ model: f.model?.[0], usage: f.usage?.[0] });
+        const next = { model: f.model?.[0], usage: f.usage?.[0] };
+        setErrors(next);
+        focusFirst(["model", "usage"], next);
         return;
       }
     }
@@ -71,7 +91,9 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
       const parsed = stepTwoSchema.safeParse({ partsBy, parts, city, neighborhood });
       if (!parsed.success) {
         const f = parsed.error.flatten().fieldErrors;
-        setErrors({ parts: f.parts?.[0] });
+        const next = { parts: f.parts?.[0] };
+        setErrors(next);
+        focusFirst(["parts"], next);
         return;
       }
     }
@@ -79,6 +101,10 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
     trackEvent("pc_quote_step_next", { step: step + 1, page_path: page });
     setStep((s) => Math.min(s + 1, 2));
   }
+
+  const canSubmit =
+    acceptTerms && acceptPrices && acceptLgpd && (partsBy !== "cliente" || acceptParts);
+
 
   const canSubmit = acceptTerms && acceptPrices && (partsBy !== "cliente" || acceptParts);
 

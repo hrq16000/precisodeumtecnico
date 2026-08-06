@@ -99,6 +99,59 @@ export function ReviewsModeration() {
       .some((v) => (v as string).toLowerCase().includes(q));
   });
 
+  /** Exporta em CSV apenas depoimentos aprovados E autorizados a publicar. */
+  function exportCsv() {
+    const rowsToExport = visible.filter((r) => r.status === "approved" && r.publish_consent);
+    if (rowsToExport.length === 0) {
+      toast({
+        title: "Nada para exportar",
+        description: "Nenhum depoimento aprovado e autorizado com os filtros atuais.",
+      });
+      return;
+    }
+    const esc = (v: string | number | null) =>
+      `"${String(v ?? "").replace(/"/g, '""').replace(/\r?\n/g, " ")}"`;
+    const header = [
+      "nome",
+      "cidade",
+      "bairro",
+      "servico",
+      "os",
+      "nota",
+      "comentario",
+      "data",
+      "moderada_em",
+      "link_publico",
+    ];
+    const lines = rowsToExport.map((r) =>
+      [
+        r.name,
+        r.city,
+        r.neighborhood,
+        r.service,
+        r.protocol,
+        r.rating,
+        r.comment,
+        new Date(r.created_at).toLocaleString("pt-BR"),
+        r.moderated_at ? new Date(r.moderated_at).toLocaleString("pt-BR") : "",
+        `${SITE_ORIGIN}/#depoimentos`,
+      ]
+        .map(esc)
+        .join(";"),
+    );
+    const csv = "\uFEFF" + [header.join(";"), ...lines].join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `depoimentos-aprovados-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast({ title: `${rowsToExport.length} depoimento(s) exportado(s)` });
+  }
+
+
+
   return (
     <Card className="mt-8">
       <CardHeader className="flex flex-row items-center justify-between gap-3 flex-wrap">

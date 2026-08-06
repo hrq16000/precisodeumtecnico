@@ -332,12 +332,16 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
       )}
 
       {step === 2 && (
-        <div className="space-y-4">
-          <label className="flex items-start gap-2 text-sm text-muted-foreground">
+        <div className="space-y-2">
+          <label
+            className={`flex items-start gap-3 text-sm text-muted-foreground ${acceptClass(acceptTerms)}`}
+          >
             <input
               type="checkbox"
-              className="mt-1"
+              className="mt-1 w-5 h-5"
               checked={acceptTerms}
+              aria-invalid={showAcceptErrors && !acceptTerms}
+              data-accept-invalid={showAcceptErrors && !acceptTerms ? "true" : undefined}
               onChange={(e) => setAcceptTerms(e.target.checked)}
             />
             <span>
@@ -348,11 +352,15 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
               , incluindo a declaração de valor do equipamento.
             </span>
           </label>
-          <label className="flex items-start gap-2 text-sm text-muted-foreground">
+          <label
+            className={`flex items-start gap-3 text-sm text-muted-foreground ${acceptClass(acceptPrices)}`}
+          >
             <input
               type="checkbox"
-              className="mt-1"
+              className="mt-1 w-5 h-5"
               checked={acceptPrices}
+              aria-invalid={showAcceptErrors && !acceptPrices}
+              data-accept-invalid={showAcceptErrors && !acceptPrices ? "true" : undefined}
               onChange={(e) => setAcceptPrices(e.target.checked)}
             />
             <span>
@@ -364,11 +372,15 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
             </span>
           </label>
           {partsBy === "cliente" && (
-            <label className="flex items-start gap-2 text-sm text-muted-foreground">
+            <label
+              className={`flex items-start gap-3 text-sm text-muted-foreground ${acceptClass(acceptParts)}`}
+            >
               <input
                 type="checkbox"
-                className="mt-1"
+                className="mt-1 w-5 h-5"
                 checked={acceptParts}
+                aria-invalid={showAcceptErrors && !acceptParts}
+                data-accept-invalid={showAcceptErrors && !acceptParts ? "true" : undefined}
                 onChange={(e) => setAcceptParts(e.target.checked)}
               />
               <span>
@@ -380,13 +392,42 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
               </span>
             </label>
           )}
-          {!canSubmit && (
-            <p className="text-sm text-muted-foreground">
+          <label
+            className={`flex items-start gap-3 text-sm text-muted-foreground ${acceptClass(acceptLgpd)}`}
+          >
+            <input
+              type="checkbox"
+              className="mt-1 w-5 h-5"
+              checked={acceptLgpd}
+              aria-invalid={showAcceptErrors && !acceptLgpd}
+              data-accept-invalid={showAcceptErrors && !acceptLgpd ? "true" : undefined}
+              onChange={(e) => setAcceptLgpd(e.target.checked)}
+            />
+            <span>
+              Autorizo o uso dos dados informados (equipamento, peças, cidade e bairro) apenas para
+              atendimento e emissão da ordem de serviço, conforme a LGPD. Posso solicitar correção
+              ou exclusão pelo mesmo canal de atendimento.
+            </span>
+          </label>
+          {showAcceptErrors && !canSubmit && (
+            <p
+              ref={errorRef}
+              tabIndex={-1}
+              role="alert"
+              className="flex items-center gap-1 text-sm font-semibold text-destructive pt-2"
+            >
+              <AlertCircle className="w-4 h-4 shrink-0" aria-hidden="true" />
+              Marque os itens destacados para liberar o envio.
+            </p>
+          )}
+          {!showAcceptErrors && (
+            <p className="text-sm text-muted-foreground pt-2">
               Marque todos os aceites para liberar o envio.
             </p>
           )}
         </div>
       )}
+
 
       <div className="flex items-center justify-between gap-3 mt-6">
         <button

@@ -103,6 +103,78 @@ async function analyseIndexNow(origin: string) {
   return { keyConfigured: true, keyMasked, keyFileUrl, keyFileStatus: res.status, keyFileMatches: matches, ok: issues.length === 0, issues };
 }
 
+/**
+ * Dispara alertas quando o status sai de "healthy".
+ * Canais opcionais, todos fail-safe (nunca derrubam o health check):
+ *   • Slack        → SITEMAP_ALERT_SLACK_WEBHOOK (Incoming Webhook)
+ *   • E-mail       → RESEND_API_KEY + SITEMAP_ALERT_EMAIL_TO (+ SITEMAP_ALERT_EMAIL_FROM)
+ *   • PagerDuty    → PAGERDUTY_ROUTING_KEY (Events API v2)
+ */
+async function dispatchAlerts(status: string, origin: string, issues: string[]) {
+  const result: Record<string, string> = {};
+  if (status === "healthy") return { dispatched: false, channels: result };
+
+  const severity = status === "unhealthy" ? "critical" : "warning";
+  const title = `[${status.toUpperCase()}] sitemap-status — ${origin}`;
+  const body = issues.length ? issues.map((i) => `• ${i}`).join("\n") : "sem detalhes";
+
+  const slack = Deno.env.get("SITEMAP_ALERT_SLACK_WEBHOOK");
+  if (slack) {
+    try {
+      const res = await fetch(slack, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: `*${title}*\n${body}` }),
+      });
+      result.slack = res.ok ? "sent" : `failed:${res.status}`;
+    } catch (e) {
+      result.slack = `error:${e instanceof Error ? e.message : String(e)}`;
+    }
+  }
+
+  const resendKey = Deno.env.get("RESEND_API_KEY");
+  const emailTo = Deno.env.get("SITEMAP_ALERT_EMAIL_TO");
+  if (resendKey && emailTo) {
+    try {
+      const res = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          from: Deno.env.get("SITEMAP_ALERT_EMAIL_FROM") ?? "alertas@precisodeumtecnico.com",
+          to: emailTo.split(",").map((s) => s.trim()).filter(Boolean),
+          subject: title,
+          text: `${title}\n\n${body}\n\nVerificado em ${new Date().toISOString()}`,
+        }),
+      });
+      result.email = res.ok ? "sent" : `failed:${res.status}`;
+    } catch (e) {
+      result.email = `error:${e instanceof Error ? e.message : String(e)}`;
+    }
+  }
+
+  const pdKey = Deno.env.get("PAGERDUTY_ROUTING_KEY");
+  if (pdKey) {
+    try {
+      const res = await fetch("https://events.pagerduty.com/v2/enqueue", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          routing_key: pdKey,
+          event_action: "trigger",
+          dedup_key: `sitemap-status:${origin}`,
+          payload: { summary: title, source: origin, severity, custom_details: { issues } },
+        }),
+      });
+      result.pagerduty = res.ok ? "sent" : `failed:${res.status}`;
+    } catch (e) {
+      result.pagerduty = `error:${e instanceof Error ? e.message : String(e)}`;
+    }
+  }
+
+  if (!Object.keys(result).length) result.none = "nenhum canal de alerta configurado";
+  return { dispatched: Object.values(result).includes("sent"), channels: result };
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
@@ -150,6 +222,11 @@ Deno.serve(async (req) => {
 
   const status = sitemapOk && robots.ok ? (indexNow.ok ? "healthy" : "degraded") : "unhealthy";
 
+  // Alertas: disparados apenas quando o status sai de "healthy".
+  // Canais são opcionais — cada um só é usado se o segredo correspondente existir.
+  const alerts = await dispatchAlerts(status, origin, issues);
+
+
   return new Response(
     JSON.stringify({
       status,
@@ -168,6 +245,7 @@ Deno.serve(async (req) => {
       robots,
       indexNow,
       issues,
+      alerts,
     }, null, 2),
     {
       status: status === "unhealthy" ? 503 : 200,

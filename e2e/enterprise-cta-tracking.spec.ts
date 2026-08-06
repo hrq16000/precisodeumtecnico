@@ -79,7 +79,7 @@ for (const path of PAGES) {
   test(`navegação por teclado com foco visível em ${path}`, async ({ page }) => {
     await page.goto(path);
     const firstTocLink = page.locator("[data-page-toc] a").first();
-    await firstTocLink.waitFor();
+    await firstTocLink.waitFor({ state: "attached" });
     await firstTocLink.evaluate((el) => (el as HTMLElement).focus());
     const focused = await firstTocLink.evaluate((el) => document.activeElement === el);
     expect(focused).toBe(true);

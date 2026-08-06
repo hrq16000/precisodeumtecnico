@@ -10,7 +10,8 @@ import { test, expect, devices } from "@playwright/test";
  */
 
 const PAGES = [
-  "/guias/como-organizar-informatica-de-um-escritorio",
+  "/guias/organizacao-de-ti-para-pequenos-escritorios",
+  "/guias/como-escolher-uma-workstation",
   "/empresa-de-ti-curitiba",
   "/seguranca-dos-dados",
   "/servicos/suporte-tecnico-empresarial",

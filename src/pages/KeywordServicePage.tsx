@@ -23,9 +23,18 @@ import {
 } from "@/components/ui/accordion";
 import { SmartImage } from "@/components/SmartImage";
 import { InternalLinkCluster } from "@/components/seo/InternalLinkCluster";
+import { AuthoritySince } from "@/components/marketing/AuthoritySince";
 import { COMPANY } from "@/data/companyInfo";
 import { KEYWORD_SERVICE_BY_SLUG } from "@/data/keywordServices";
 import { PRICING } from "@/data/pricingPolicy";
+
+/**
+ * Rodada 3K — faixa de autoridade apenas nas páginas comerciais aprovadas.
+ */
+const AUTHORITY_SLUGS = new Set([
+  "conserto-de-notebook-curitiba",
+  "assistencia-tecnica-empresas-curitiba",
+]);
 
 interface Props {
   slug: string;
@@ -125,6 +134,8 @@ export default function KeywordServicePage({ slug }: Props) {
           />
         </div>
       </section>
+
+      {AUTHORITY_SLUGS.has(page.slug) && <AuthoritySince />}
 
       {/* O QUE É */}
       <section className="section-padding">

@@ -12,6 +12,7 @@ import { CTASection } from "@/components/home/CTASection";
 import { QuickQuoteForm } from "@/components/home/QuickQuoteForm";
 import { QuickDiagnosisQuiz } from "@/components/QuickDiagnosisQuiz";
 import { Reveal } from "@/components/Reveal";
+import { AuthoritySince } from "@/components/marketing/AuthoritySince";
 import { buildReviewsSchema } from "@/data/testimonials";
 import { homeFaqs } from "@/data/homeFaqs";
 import { buildLocalBusinessSchema } from "@/lib/schema/localBusiness";
@@ -55,6 +56,7 @@ const Index = () => {
 
       
       <HeroSection />
+      <AuthoritySince />
       <Reveal><ServicesSection /></Reveal>
       <Reveal><QuickDiagnosisQuiz /></Reveal>
       <Reveal><QuickQuoteForm /></Reveal>

@@ -34,6 +34,7 @@ const Auth = lazy(() => import("./pages/Auth"));
 const Admin = lazy(() => import("./pages/Admin"));
 const TermosOrcamento = lazy(() => import("./pages/TermosOrcamento"));
 const PoliticaPecasCliente = lazy(() => import("./pages/PoliticaPecasCliente"));
+const ComoFuncionaPcGamer = lazy(() => import("./pages/ComoFuncionaPcGamer"));
 const ServicoCidade = lazy(() => import("./pages/ServicoCidade"));
 const Precos = lazy(() => import("./pages/Precos"));
 const Blog = lazy(() => import("./pages/Blog"));

@@ -129,7 +129,7 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
     if (neighborhood.trim()) lines.push(`Bairro: ${neighborhood.trim()}`);
     lines.push(
       "",
-      "Li e aceito os termos e condições, a política de preços e a política de peças do cliente.",
+      "Li e aceito os termos e condições, a política de preços, a política de peças do cliente e o uso dos meus dados conforme a LGPD.",
       "",
       "Origem: source=pc_quote_wizard",
       "service=montagem-de-pc",
@@ -491,7 +491,7 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
               ["Bairro", neighborhood.trim() || "—"],
               [
                 "Aceites",
-                "Termos e condições, política de preços" +
+                "Termos e condições, política de preços, consentimento LGPD" +
                   (partsBy === "cliente" ? " e política de peças do cliente" : ""),
               ],
             ].map(([label, value]) => (

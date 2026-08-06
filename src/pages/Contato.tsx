@@ -257,6 +257,8 @@ const Contato = () => {
           </div>
         </div>
       </section>
+
+      <CommercialTermsBlock />
     </Layout>
   );
 };

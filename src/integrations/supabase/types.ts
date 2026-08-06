@@ -14,6 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
+      data_deletion_requests: {
+        Row: {
+          created_at: string
+          details: string | null
+          email: string | null
+          handled_at: string | null
+          handled_by: string | null
+          id: string
+          name: string
+          page_path: string | null
+          phone: string
+          protocol: string | null
+          scope: string
+          status: string
+          user_agent: string | null
+        }
+        Insert: {
+          created_at?: string
+          details?: string | null
+          email?: string | null
+          handled_at?: string | null
+          handled_by?: string | null
+          id?: string
+          name: string
+          page_path?: string | null
+          phone: string
+          protocol?: string | null
+          scope?: string
+          status?: string
+          user_agent?: string | null
+        }
+        Update: {
+          created_at?: string
+          details?: string | null
+          email?: string | null
+          handled_at?: string | null
+          handled_by?: string | null
+          id?: string
+          name?: string
+          page_path?: string | null
+          phone?: string
+          protocol?: string | null
+          scope?: string
+          status?: string
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       leads: {
         Row: {
           brand: string | null
@@ -167,6 +215,54 @@ export type Database = {
           status?: string
           updated_at?: string
           user_agent?: string | null
+        }
+        Relationships: []
+      }
+      service_orders: {
+        Row: {
+          city: string | null
+          created_at: string
+          customer_name: string | null
+          customer_phone: string | null
+          equipment: string | null
+          eta_date: string | null
+          id: string
+          neighborhood: string | null
+          protocol: string
+          public_note: string | null
+          service: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          city?: string | null
+          created_at?: string
+          customer_name?: string | null
+          customer_phone?: string | null
+          equipment?: string | null
+          eta_date?: string | null
+          id?: string
+          neighborhood?: string | null
+          protocol: string
+          public_note?: string | null
+          service?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          city?: string | null
+          created_at?: string
+          customer_name?: string | null
+          customer_phone?: string | null
+          equipment?: string | null
+          eta_date?: string | null
+          id?: string
+          neighborhood?: string | null
+          protocol?: string
+          public_note?: string | null
+          service?: string | null
+          status?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -360,6 +456,21 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_service_order_status: {
+        Args: { _protocol: string }
+        Returns: {
+          city: string
+          created_at: string
+          equipment: string
+          eta_date: string
+          neighborhood: string
+          protocol: string
+          public_note: string
+          service: string
+          status: string
+          updated_at: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

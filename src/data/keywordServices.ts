@@ -542,7 +542,7 @@ export const KEYWORD_SERVICE_PAGES: KeywordServicePage[] = [
       { label: "Redes e Wi-Fi", to: "/servicos/redes" },
       { label: "CFTV e monitoramento", to: "/servicos/cftv" },
       { label: "Configuração de Wi-Fi em Curitiba", to: "/servicos/configuracao-wifi-curitiba" },
-      { label: "Upgrade de SSD e memória RAM", to: "/upgrade-ssd-ram-curitiba" },
+      { label: "Upgrade de SSD em Curitiba", to: "/upgrade-ssd-curitiba" },
     ],
   },
 ];

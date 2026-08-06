@@ -11,8 +11,8 @@ import { buildWhatsAppUrl } from "@/lib/whatsapp";
 const stats = [
   { number: "Rede", label: "Técnicos parceiros verificados", icon: Users },
   { number: "24h", label: "Atendimento via WhatsApp", icon: Clock },
-  { number: "NF", label: "Nota Fiscal emitida pelo prestador", icon: Award },
-  { number: "100%", label: "Serviços com Garantia", icon: Shield },
+  { number: "1998", label: "Atuação em informática desde", icon: Award },
+  { number: "Garantia", label: "Conforme o serviço realizado", icon: Shield },
 ];
 
 const values = [

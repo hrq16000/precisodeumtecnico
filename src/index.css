@@ -481,3 +481,25 @@ body[data-triage-open="true"] footer a[href*="wa.me"],
 body[data-triage-open="true"] footer a[href^="tel:"] {
   pointer-events: none !important;
 }
+
+/* Impressão: exporta apenas o checklist final de montagem (PDF via diálogo do navegador). */
+@media print {
+  body:has(#pc-final-checklist) > * {
+    display: none !important;
+  }
+  body:has(#pc-final-checklist) #pc-final-checklist {
+    display: block !important;
+    position: static;
+  }
+  #pc-final-checklist {
+    color: #000;
+  }
+  #pc-final-checklist .grid {
+    display: block !important;
+  }
+  #pc-final-checklist article {
+    break-inside: avoid;
+    border: 1px solid #ccc;
+    margin-bottom: 12px;
+  }
+}

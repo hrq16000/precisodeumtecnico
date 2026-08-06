@@ -86,6 +86,8 @@ const mainUrls: Url[] = [
   { loc: `${BASE}/termos-orcamento-pre-aprovado`, changefreq: "yearly", priority: 0.5, lastmod: fileDate("src/pages/TermosOrcamento.tsx") },
   { loc: `${BASE}/politica-de-pecas-do-cliente`, changefreq: "monthly", priority: 0.6, lastmod: fileDate("src/pages/PoliticaPecasCliente.tsx") },
   { loc: `${BASE}/politica-privacidade`, changefreq: "yearly", priority: 0.4, lastmod: fileDate("src/pages/PoliticaPrivacidade.tsx") },
+  { loc: `${BASE}/como-avaliar`, changefreq: "monthly", priority: 0.5, lastmod: fileDate("src/pages/ComoAvaliar.tsx") },
+
   { loc: `${BASE}/servicos/pc-gamer/como-funciona`, changefreq: "monthly", priority: 0.75, lastmod: fileDate("src/pages/ComoFuncionaPcGamer.tsx") },
   { loc: `${BASE}/blog`, changefreq: "weekly", priority: 0.9, lastmod: blogMtime },
   { loc: `${BASE}/precos`, changefreq: "weekly", priority: 0.85, lastmod: precosMtime },

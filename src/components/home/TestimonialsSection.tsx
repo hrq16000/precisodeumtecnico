@@ -13,6 +13,9 @@ export function TestimonialsSection() {
   // Avaliações reais aprovadas no painel e com autorização de publicação.
   // Nada é exibido (nem entra no JSON-LD) sem esses dois requisitos.
   const [approved, setApproved] = useState<PublishedReview[]>([]);
+  const [neighborhoodFilter, setNeighborhoodFilter] = useState("all");
+  const [serviceFilter, setServiceFilter] = useState("all");
+
 
   useEffect(() => {
     let active = true;
@@ -32,6 +35,20 @@ export function TestimonialsSection() {
   }, []);
 
   const approvedSchema = buildPublishedReviewsSchema(approved);
+
+  // Filtros públicos (bairro / serviço) sobre avaliações aprovadas E autorizadas.
+  const neighborhoods = Array.from(
+    new Set(approved.map((r) => r.neighborhood).filter(Boolean) as string[]),
+  ).sort();
+  const services = Array.from(
+    new Set(approved.map((r) => r.service).filter(Boolean) as string[]),
+  ).sort();
+  const visibleApproved = approved.filter((r) => {
+    if (neighborhoodFilter !== "all" && (r.neighborhood || "") !== neighborhoodFilter) return false;
+    if (serviceFilter !== "all" && (r.service || "") !== serviceFilter) return false;
+    return true;
+  });
+
 
   return <section className="section-padding bg-secondary/30">
       <div className="container-custom">
@@ -56,8 +73,36 @@ export function TestimonialsSection() {
         )}
 
         {approved.length > 0 && (
+          <div className="flex flex-col sm:flex-row gap-3 justify-center mb-6">
+            <select
+              value={neighborhoodFilter}
+              onChange={(e) => setNeighborhoodFilter(e.target.value)}
+              aria-label="Filtrar depoimentos por bairro"
+              className="h-12 px-3 rounded-lg border border-input bg-background text-sm text-foreground"
+            >
+              <option value="all">Todos os bairros</option>
+              {neighborhoods.map((n) => (
+                <option key={n} value={n}>{n}</option>
+              ))}
+            </select>
+            <select
+              value={serviceFilter}
+              onChange={(e) => setServiceFilter(e.target.value)}
+              aria-label="Filtrar depoimentos por serviço"
+              className="h-12 px-3 rounded-lg border border-input bg-background text-sm text-foreground"
+            >
+              <option value="all">Todos os serviços</option>
+              {services.map((s) => (
+                <option key={s} value={s}>{s}</option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        {approved.length > 0 && (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-            {approved.map((r) => (
+            {visibleApproved.map((r) => (
+
               <div
                 key={r.id}
                 data-approved-review

@@ -321,7 +321,7 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
               </label>
               <input
                 id="pcq-bairro"
-                className={inputClass}
+                className={inputClass()}
                 value={neighborhood}
                 maxLength={80}
                 onChange={(e) => setNeighborhood(e.target.value)}

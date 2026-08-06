@@ -95,7 +95,7 @@ export const PcAssemblyPolicySections = () => {
       </section>
 
       {/* Checklist final */}
-      <section aria-labelledby="checklist-final">
+      <section aria-labelledby="checklist-final" id="pc-final-checklist">
         <h2
           id="checklist-final"
           className="font-display text-2xl md:text-3xl font-bold text-foreground mb-4 flex items-center gap-2"

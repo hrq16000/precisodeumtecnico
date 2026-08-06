@@ -36,7 +36,7 @@ export function HeroSection() {
             <span className="text-[#22C55E]">Especializada</span>
           </h1>
 
-          <p className="text-base md:text-lg text-white/80 mb-4 max-w-2xl mx-auto animate-fade-up px-4">
+          <p className="text-sm md:text-lg text-white/80 mb-4 max-w-2xl mx-auto animate-fade-up px-4">
             Informática, notebooks, CFTV, elétrica, ar-condicionado, celulares e muito mais.
             Atendimento 24h via WhatsApp. O técnico vai até você!
           </p>
@@ -48,7 +48,7 @@ export function HeroSection() {
 
           {/* CTA principal — mantido acima da dobra no mobile (360/390/430px) */}
           <div className="flex flex-col gap-3 px-4 mb-4 animate-fade-up">
-            <Button size="lg" className="w-full bg-[#15803D] hover:bg-[#116932] text-white font-bold text-lg py-6 rounded-xl shadow-lg shadow-green-500/30 transition-all hover:scale-[1.02]" asChild>
+            <Button size="lg" className="w-full bg-[#15803D] hover:bg-[#116932] text-white font-bold text-lg py-5 rounded-xl shadow-lg shadow-green-500/30 transition-all hover:scale-[1.02]" asChild>
               <a href={whatsappLink} target="_blank" rel="noopener noreferrer" data-wa-source="hero" data-service="assistência técnica" data-cta-label="hero_whatsapp" aria-label="Falar com técnico pelo WhatsApp (hero)">
                 <MessageCircle className="w-5 h-5 mr-2" />
                 Falar com técnico agora

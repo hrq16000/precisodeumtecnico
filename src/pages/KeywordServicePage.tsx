@@ -224,16 +224,17 @@ export default function KeywordServicePage({ slug }: Props) {
             <p className="text-sm text-muted-foreground">{page.warranty}</p>
           </div>
 
-          {page.slug === VISUAL_PILOT_SLUG && (
+          {visual && (
             <InlineTriageCTA
               className="mt-8"
-              label="Descrever meu problema"
+              label={visual.ctaLabel}
               description="A triagem online identifica equipamento, sintoma e modalidade e apresenta o valor mínimo antes de qualquer deslocamento."
               source={`${triageSource}_meio`}
               category={page.triageCategory}
               symptom={page.triageSymptom}
             />
           )}
+
         </div>
       </section>
 

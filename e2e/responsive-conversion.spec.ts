@@ -22,7 +22,7 @@ for (const width of WIDTHS) {
 
     test("banner de cookies não cobre o CTA principal", async ({ page }) => {
       await page.goto("/");
-      const banner = page.locator("[data-cookie-banner]").first();
+      const banner = page.locator("[data-cookie-banner-root]").first();
       if ((await banner.count()) === 0 || !(await banner.isVisible())) return;
       const bannerBox = await banner.boundingBox();
       const ctaBox = await page.locator('[data-cta-label="hero_whatsapp"]').first().boundingBox();

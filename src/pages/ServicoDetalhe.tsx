@@ -13,6 +13,7 @@ import NotFound from "@/pages/NotFound";
 import { servicesData as SERVICES_CATALOG } from "@/data/services";
 import { PcAssemblyPolicySections } from "@/components/marketing/PcAssemblyPolicySections";
 import { PcQuoteWizard } from "@/components/marketing/PcQuoteWizard";
+import { WorkstationRequirements } from "@/components/marketing/WorkstationRequirements";
 import { RelatedServiceLinks } from "@/components/seo/RelatedServiceLinks";
 
 const PC_GAMER = SERVICES_CATALOG["pc-gamer"];
@@ -336,6 +337,7 @@ const ServicoDetalhe = () => {
               {/* Montagem/PC Gamer: escopo, peças do cliente, garantia e checklist */}
               {slug === "pc-gamer" && (
                 <div className="mb-12">
+                  <WorkstationRequirements />
                   <PcAssemblyPolicySections />
                   <div className="mt-8">
                     <PcQuoteWizard sourcePage="/servicos/pc-gamer" />

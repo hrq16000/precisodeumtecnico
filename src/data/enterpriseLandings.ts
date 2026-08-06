@@ -69,6 +69,36 @@ export const EMPRESA_TI_CURITIBA: EnterpriseGuide = {
         "Bancada: recuperação de dados e reparo que exige teste com peças de referência.",
       ],
     },
+    {
+      id: "contextos",
+      title: "4. Contextos empresariais que podem precisar de suporte",
+      paragraphs: [
+        "Abaixo estão contextos operacionais — não especializações setoriais. O que muda entre eles é o impacto da parada e o tipo de equipamento envolvido, não uma competência exclusiva.",
+      ],
+      bullets: [
+        "Escritórios que trabalham com arquivos sensíveis e prazos importantes: estações de trabalho, impressão e digitalização, organização de arquivos, backup, múltiplos monitores, conectividade e atendimento remoto para manter a continuidade em períodos críticos.",
+        "Recepções e postos de atendimento ao público: computador da recepção, impressora em rede, Wi-Fi, arquivos, câmera e áudio, e acesso a sistemas de terceiros mantidos pelo fornecedor.",
+        "Operações com períodos de fechamento: aumento temporário de uso, vários programas abertos, impressão em volume, armazenamento, backup reforçado, estações adicionais e acesso remoto planejado com antecedência.",
+        "Profissionais que utilizam arquivos e programas exigentes: memória, armazenamento, múltiplos monitores, refrigeração adequada, rede estável e montagem de estação de trabalho dimensionada por requisito.",
+        "Limite explícito: o suporte de informática não inclui manutenção de equipamentos médicos, laboratoriais ou outros dispositivos especializados.",
+      ],
+    },
+    {
+      id: "antes-do-suporte",
+      title: "5. O que registrar antes de solicitar suporte",
+      paragraphs: [
+        "Informações objetivas sobre o equipamento, o erro e o impacto ajudam a direcionar a triagem. Senhas e códigos de autenticação não devem ser enviados por mensagem.",
+      ],
+      bullets: [
+        "Equipamento afetado e usuário afetado.",
+        "Horário aproximado do início do problema e mensagem de erro exibida.",
+        "Programa envolvido e alteração recente (atualização, troca de peça, mudança de rede).",
+        "Impacto na operação e quantidade de pessoas afetadas.",
+        "Se é possível acesso remoto e se existe backup recente.",
+        "Quem autoriza alterações na máquina e contato do fornecedor do sistema, quando aplicável.",
+        "Não envie por mensagem: senha, código de autenticação, dados bancários, documento pessoal ou arquivo confidencial.",
+      ],
+    },
   ],
   checklist: [
     { label: "Inventário do parque", detail: "Máquinas identificadas, com responsável e histórico de intervenções." },
@@ -85,6 +115,21 @@ export const EMPRESA_TI_CURITIBA: EnterpriseGuide = {
     "Peças fornecidas pela empresa seguem a política de peças do cliente, com registro de estado na entrada.",
   ],
   faq: [
+    {
+      question: "Quais informações devo registrar antes de pedir suporte?",
+      answer:
+        "Equipamento e usuário afetados, horário de início, mensagem de erro, programa envolvido, alteração recente, impacto na operação, se há backup e quem autoriza alterações. Senhas e códigos de autenticação não devem ser enviados por mensagem.",
+    },
+    {
+      question: "Vocês atendem escritórios de diferentes segmentos?",
+      answer:
+        "Sim. O atendimento é generalista em informática: estações de trabalho, rede, impressão, servidores e backup. Não trabalhamos como especialistas de um setor específico nem de um software setorial.",
+    },
+    {
+      question: "Vocês prestam suporte a qualquer sistema empresarial?",
+      answer:
+        "Podemos verificar o computador, a conectividade e a configuração local, registrar o erro e auxiliar na comunicação com o fornecedor. A correção dentro do sistema, licenças e recuperação de conta pertencem a quem mantém o sistema.",
+    },
     {
       question: "Vocês atendem empresas fora de Curitiba?",
       answer:
@@ -170,6 +215,38 @@ export const SUPORTE_EMPRESARIAL: EnterpriseGuide = {
         "Semestral: revisão de inventário, permissões de pasta e licenças em uso.",
       ],
     },
+    {
+      id: "avulso-recorrente",
+      title: "4. Atendimento avulso ou recorrente",
+      paragraphs: [
+        "Os dois modelos atendem bem cenários diferentes. Recorrente não é automaticamente melhor: depende do volume de equipamentos e da frequência real das demandas.",
+        "O avulso é indicado para problema pontual, computador específico, instalação, ajuste, falha de rede, diagnóstico ou suporte remoto sem recorrência prevista. O escopo é definido por solicitação, a prioridade segue a agenda, o valor decorre do diagnóstico autorizado e peças ou serviços externos são tratados à parte — sem disponibilidade permanente.",
+        "O recorrente faz sentido quando existem múltiplos computadores, demandas frequentes, necessidade de preventiva, usuários que pedem suporte periódico, rede compartilhada, backup que exige revisão e necessidade de histórico organizado. Esse modelo depende de um levantamento inicial: quantidade de equipamentos e usuários, frequência, modalidades, escopo, horários, prioridades e responsabilidades.",
+      ],
+      table: {
+        head: ["Critério", "Avulso", "Recorrente"],
+        rows: [
+          ["Uso", "Demanda pontual", "Necessidades frequentes"],
+          ["Escopo", "Definido por chamado", "Definido por acordo"],
+          ["Histórico", "Por atendimento", "Acompanhamento organizado"],
+          ["Preventiva", "Contratada separadamente", "Pode fazer parte do escopo"],
+          ["Prioridade", "Conforme agenda", "Conforme regra acordada"],
+          ["Valor", "Conforme serviço", "Conforme levantamento"],
+        ],
+      },
+    },
+    {
+      id: "limites-terceiros",
+      title: "5. O que depende de fornecedor, autorização ou especialização",
+      paragraphs: [
+        "Parte dos problemas relatados como \"de informática\" pertence a um sistema mantido por terceiros: software empresarial, sistema contábil, prontuário, sistema judicial, ERP, CRM, certificado digital, e-mail corporativo, domínio, provedor, operadora, fabricante ou o próprio administrador da empresa.",
+        "Nesses casos o suporte atua na camada que é dele e encaminha o restante — o que evita tentativa e erro dentro de plataforma de terceiro.",
+      ],
+      bullets: [
+        "O suporte pode: verificar o computador, validar conectividade, registrar o erro com evidência, auxiliar na comunicação com o fornecedor, executar procedimentos autorizados e configurar componentes compatíveis.",
+        "O suporte não promete: corrigir código do sistema, liberar licença, redefinir credencial de terceiro, alterar política corporativa, garantir funcionamento de plataforma externa, substituir o suporte do fornecedor, burlar restrições ou assumir responsabilidade por indisponibilidade externa.",
+      ],
+    },
   ],
   checklist: [
     { label: "Postos críticos definidos", detail: "Quais máquinas param a operação se ficarem indisponíveis." },
@@ -185,6 +262,21 @@ export const SUPORTE_EMPRESARIAL: EnterpriseGuide = {
     "Atendimento remoto depende de conectividade mínima no posto e autorização de acesso.",
   ],
   faq: [
+    {
+      question: "Qual é a diferença entre atendimento avulso e recorrente?",
+      answer:
+        "O avulso resolve uma demanda pontual, com escopo definido por chamado e prioridade conforme agenda. O recorrente organiza demandas frequentes de vários equipamentos, com escopo, frequência e prioridades definidos em um levantamento inicial.",
+    },
+    {
+      question: "Atendimento recorrente significa suporte ilimitado?",
+      answer:
+        "Não. O recorrente define escopo, modalidades, horários e prioridades acordados no levantamento — não é disponibilidade permanente nem volume ilimitado de chamados.",
+    },
+    {
+      question: "Vocês corrigem problemas dentro de sistemas de terceiros?",
+      answer:
+        "Verificamos o computador, a conectividade e a configuração local, registramos o erro e auxiliamos no contato com o fornecedor. Correção de código, licença e recuperação de conta são responsabilidade de quem mantém o sistema.",
+    },
     {
       question: "Qual a diferença entre suporte remoto e presencial?",
       answer:
@@ -289,6 +381,19 @@ export const SEGURANCA_DOS_DADOS: EnterpriseGuide = {
         "Solicitação de exclusão registrada e respondida pelos canais informados na política.",
       ],
     },
+    {
+      id: "terceiros",
+      title: "5. Sistemas, credenciais e acessos de terceiros",
+      paragraphs: [
+        "O acesso ao computador não garante acesso ou correção de sistemas mantidos por terceiros. Senhas, códigos de autenticação e credenciais bancárias não devem ser enviados por mensagem. Quando o problema pertence ao sistema externo, pode ser necessário acionar o fornecedor responsável.",
+        "Deixar essa divisão clara antes do atendimento reduz o tempo perdido e evita alteração indevida em plataforma que não é administrada por nós.",
+      ],
+      bullets: [
+        "Responsabilidade do cliente: possuir licença legítima, indicar quem autoriza alterações, manter acesso ao e-mail de recuperação, preservar códigos de autenticação, conhecer o fornecedor, manter contratos e cadastros, informar restrições internas, manter backup e não compartilhar senha desnecessariamente.",
+        "Responsabilidade do técnico: solicitar apenas o acesso necessário, explicar o procedimento, evitar armazenar credenciais, encerrar sessões, não alterar configuração além do autorizado, registrar limitações encontradas, orientar o contato com o fornecedor quando for o caso e não burlar proteção.",
+        "Responsabilidade do fornecedor do sistema: licença, disponibilidade, servidor, correção de erro interno, atualização, recuperação de conta, suporte ao próprio sistema, regras de autenticação, integrações e documentação.",
+      ],
+    },
   ],
   checklist: [
     { label: "Backup 3-2-1", detail: "Cópia local, cópia externa e versionamento configurados." },
@@ -305,6 +410,16 @@ export const SEGURANCA_DOS_DADOS: EnterpriseGuide = {
     "Auditoria de segurança formal e teste de intrusão não fazem parte do escopo de suporte técnico.",
   ],
   faq: [
+    {
+      question: "O técnico precisa conhecer minha senha?",
+      answer:
+        "Apenas o acesso estritamente necessário para executar o escopo aprovado, de preferência com a pessoa responsável presente ou por sessão remota acompanhada. Senhas, códigos de autenticação e credenciais bancárias não devem ser enviados por mensagem.",
+    },
+    {
+      question: "Quem deve resolver problemas em sistemas de terceiros?",
+      answer:
+        "O fornecedor que mantém o sistema. O suporte técnico verifica o computador e a conectividade, registra o erro e auxilia na comunicação — o acesso ao computador não garante acesso ou correção de plataforma externa.",
+    },
     {
       question: "Nuvem sincronizada já protege meus dados?",
       answer:

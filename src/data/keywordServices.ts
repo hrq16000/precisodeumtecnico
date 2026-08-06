@@ -54,6 +54,12 @@ export interface KeywordServicePage {
   faq: KeywordFAQ[];
   /** Links internos para outros serviços do portal (rotas reais). */
   relatedServices: { label: string; to: string }[];
+  /** Trilhas/contextos atendidos por tipo de empresa (hub empresarial). */
+  businessTracks?: { title: string; description: string; includes: string[] }[];
+  /** Modelos de contratação: avulso x recorrente. */
+  engagementModels?: { name: string; howItWorks: string; includes: string[] }[];
+  /** Limites explícitos de escopo — o que não fazemos. */
+  scopeLimits?: string[];
 }
 
 const BENCH = PRICING.benchDiagnosis.priceLabel; // R$ 99,99

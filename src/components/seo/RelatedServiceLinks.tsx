@@ -18,6 +18,12 @@ export interface RelatedLink {
 const RELATED_BY_SLUG: Record<string, RelatedLink[]> = {
   "pc-gamer": [
     {
+      to: "/guias/como-escolher-uma-workstation",
+      label: "Guia: como escolher uma workstation",
+      description:
+        "Critérios por carga de trabalho, memória, GPU e energia antes de fechar a lista de peças.",
+    },
+    {
       to: "/upgrade-ssd-curitiba",
       label: "Upgrade de SSD em Curitiba",
       description:

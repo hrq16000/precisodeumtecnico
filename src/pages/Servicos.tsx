@@ -220,13 +220,14 @@ const Servicos = () => {
   return (
     <Layout>
       <SEOHead
-        title="Serviços de Assistência Técnica | Preciso de Um Técnico"
-        description="Conheça todos os nossos serviços de assistência técnica: informática, notebooks, CFTV, elétrica, redes, ar-condicionado e muito mais. Atendimento em Curitiba e região."
+        title="Serviços de Assistência Técnica em Curitiba e Região"
+        description="Escolha o serviço técnico que você precisa: informática, notebooks, CFTV, elétrica, redes, ar-condicionado e mais. Orçamento informado antes da execução."
         canonical="https://precisodeumtecnico.com/servicos"
         breadcrumbs={[
           { name: "Início", url: "https://precisodeumtecnico.com/" },
           { name: "Serviços", url: "https://precisodeumtecnico.com/servicos" },
         ]}
+        faq={servicosFaqs}
       />
 
       {/* Hero */}

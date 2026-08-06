@@ -10,6 +10,7 @@ import { ENTERPRISE_LANDINGS } from "@/data/enterpriseLandings";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
+import { trackWhatsAppClick } from "@/lib/analytics";
 import { AlertTriangle, BookOpen, CheckCircle2, MessageCircle } from "lucide-react";
 import { TrustStrip } from "@/components/marketing/TrustStrip";
 import { InlineTriageCTA } from "@/components/marketing/InlineTriageCTA";
@@ -364,6 +365,16 @@ export default function GuiaEmpresarial({ slug }: Props) {
                 rel="noopener noreferrer"
                 data-wa-source={`guia-${guide.slug}-final`}
                 data-service={guide.whatsappService}
+                data-wa-tracked="b2b_final"
+                onClick={() =>
+                  trackWhatsAppClick({
+                    source: `guia-${guide.slug}-final`,
+                    service: guide.whatsappService,
+                    city: guide.triage?.city,
+                    source_component: "b2b_cta_final",
+                    cta_label: "Falar sobre o meu cenário",
+                  })
+                }
                 aria-label={`Falar no WhatsApp sobre ${guide.whatsappService}`}
                 className="inline-flex items-center gap-2 min-h-[48px] bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold px-6 py-3 rounded-xl transition-colors"
               >

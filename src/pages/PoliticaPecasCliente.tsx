@@ -3,6 +3,7 @@ import { Layout } from "@/components/layout/Layout";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { PcAssemblyPolicySections } from "@/components/marketing/PcAssemblyPolicySections";
 import { EquipmentValuationTerms } from "@/components/marketing/EquipmentValuationTerms";
+import { PcQuoteWizard } from "@/components/marketing/PcQuoteWizard";
 import { PC_ASSEMBLY_POLICY } from "@/data/pcAssemblyPolicy";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { PackageCheck, ArrowRight, MessageCircle } from "lucide-react";

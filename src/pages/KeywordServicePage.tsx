@@ -282,10 +282,15 @@ export default function KeywordServicePage({ slug }: Props) {
         </div>
       </section>
 
+      <section className="container-custom">
+        <RelatedServiceLinks slug={page.slug} />
+      </section>
+
       <InternalLinkCluster
         city={page.city === "Brasil" ? "Curitiba" : page.city}
         citySlug="curitiba"
       />
+
     </Layout>
   );
 }

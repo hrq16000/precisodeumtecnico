@@ -14,6 +14,8 @@ export interface GuideSection {
   title: string;
   paragraphs: string[];
   bullets?: string[];
+  /** Tabela comparativa opcional (ex.: avulso x recorrente). */
+  table?: { head: string[]; rows: string[][] };
 }
 
 export interface GuideFaq {

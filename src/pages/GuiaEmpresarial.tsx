@@ -121,6 +121,35 @@ export default function GuiaEmpresarial({ slug }: Props) {
                     {p}
                   </p>
                 ))}
+                {s.table && (
+                  <div className="overflow-x-auto my-5 rounded-xl border border-border">
+                    <table className="w-full text-sm">
+                      <thead className="bg-muted/60">
+                        <tr>
+                          {s.table.head.map((h) => (
+                            <th key={h} scope="col" className="px-4 py-3 text-left font-semibold text-foreground">
+                              {h}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {s.table.rows.map((row) => (
+                          <tr key={row[0]} className="border-t border-border">
+                            {row.map((cell, ci) => (
+                              <td
+                                key={ci}
+                                className={ci === 0 ? "px-4 py-3 font-medium text-foreground" : "px-4 py-3 text-muted-foreground"}
+                              >
+                                {cell}
+                              </td>
+                            ))}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
                 {s.bullets && (
                   <ul className="space-y-2">
                     {s.bullets.map((b, i) => (

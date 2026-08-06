@@ -42,6 +42,15 @@ const PARTS_LABEL: Record<string, string> = {
   indefinido: "Ainda não defini as peças",
 };
 
+const PERIOD_OPTIONS = [
+  "Manhã (8h às 12h)",
+  "Tarde (12h às 18h)",
+  "Noite (18h às 21h)",
+  "Fim de semana",
+] as const;
+
+
+
 export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
   const stored = useMemo(() => readStoredLocation(), []);
   const [step, setStep] = useState(0);

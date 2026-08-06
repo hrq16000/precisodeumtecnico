@@ -114,17 +114,51 @@ export default function Precos() {
           <Reveal>
             <Badge variant="secondary" className="mb-3">Preços transparentes</Badge>
             <h1 className="font-display text-4xl md:text-5xl font-bold mb-3">Tabela de preços 2026</h1>
-            <p className="text-lg text-background/80 max-w-2xl">
+            <p className="text-lg text-background/80 max-w-2xl reading-width">
               Faixas reais praticadas em Curitiba e Região Metropolitana. Visita técnica + diagnóstico a partir de
               R$ 99,99 — abatido do orçamento se aprovado.
             </p>
+            {/* Rodada 3P — CTA na primeira dobra, mesmo fluxo de triagem. */}
+            <div className="mt-6">
+              <Button
+                size="lg"
+                className="min-h-11"
+                data-triage-cta
+                data-triage-source="precos_hero"
+              >
+                Descrever meu atendimento
+              </Button>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="pt-8">
+        <div className="container-custom max-w-5xl">
+          <Reveal><TrustStrip /></Reveal>
+          <Reveal>
+            <PageTableOfContents
+              className="mt-6"
+              items={[
+                { id: "tabela-de-precos", label: "Tabela de preços" },
+                { id: "coleta-e-entrega", label: "Coleta e entrega" },
+                { id: "precos-por-servico", label: "Preços por serviço" },
+                { id: "atendimento-nas-cidades", label: "Atendimento nas cidades" },
+                { id: "bairros-de-curitiba", label: "Bairros de Curitiba" },
+                { id: "perguntas-frequentes", label: "Perguntas frequentes" },
+              ]}
+            />
           </Reveal>
         </div>
       </section>
 
       <section className="section-padding">
         <div className="container-custom max-w-5xl">
+          <h2 id="tabela-de-precos" data-toc-anchor className="sr-only">
+            Tabela de preços por serviço
+          </h2>
           <Reveal>
+
             <Card className="overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">

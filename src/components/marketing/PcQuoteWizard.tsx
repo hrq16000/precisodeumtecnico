@@ -130,6 +130,8 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
     if (parts.trim()) lines.push(`Lista de peças: ${parts.trim()}`);
     if (city.trim()) lines.push(`Cidade: ${city.trim()}`);
     if (neighborhood.trim()) lines.push(`Bairro: ${neighborhood.trim()}`);
+    if (preferredPeriod) lines.push(`Período preferido: ${preferredPeriod}`);
+    if (preferredDay.trim()) lines.push(`Dia preferido: ${preferredDay.trim()}`);
     lines.push(
       "",
       "Li e aceito os termos e condições, a política de preços, a política de peças do cliente e o uso dos meus dados conforme a LGPD.",

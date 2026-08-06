@@ -6,6 +6,8 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { allBlogPosts as blogPosts, blogCategories } from "@/data/blog";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
+import { RelatedGuidesCard, GUIDE_LINKS } from "@/components/seo/RelatedGuidesCard";
+
 
 export default function Blog() {
   const sorted = [...blogPosts].sort((a, b) => (a.publishedAt < b.publishedAt ? 1 : -1));

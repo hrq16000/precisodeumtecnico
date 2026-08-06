@@ -49,7 +49,7 @@ export function CTASection() {
             <Button variant="whatsapp" size="xl" className="text-lg" asChild>
               <a href={whatsappLink} target="_blank" rel="noopener noreferrer" data-wa-source="cta-section" data-service="assistência técnica" aria-label="Falar com técnico pelo WhatsApp">
                 <MessageCircle className="w-6 h-6" />
-                WhatsApp WhatsApp 24h
+                Falar no WhatsApp 24h
                 <ArrowRight className="w-5 h-5" />
               </a>
             </Button>

@@ -23,6 +23,7 @@ import { QrCode } from "@/components/QrCode";
 import { supabase } from "@/integrations/supabase/client";
 import { trackEvent, trackWhatsAppClick } from "@/lib/analytics";
 import { buildWhatsAppUrl, buildWhatsAppUrlFromText } from "@/lib/whatsapp";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   OS_STAGES,
   stageIndex,
@@ -34,6 +35,8 @@ import {
   slaState,
   SLA_LABEL,
   registerLookupAttempt,
+  formatPhoneBR,
+  OS_CONSENT_KEY,
   type ServiceOrderStatus,
 } from "@/lib/serviceOrder";
 import { SITE_ORIGIN, buildReviewLink } from "@/lib/reviews";
@@ -87,7 +90,7 @@ export default function StatusOrdemServico() {
   const [params, setParams] = useSearchParams();
   const [mode, setMode] = useState<Mode>(params.get("tel") ? "phone" : "protocol");
   const [protocol, setProtocol] = useState(params.get("os") ?? "");
-  const [phone, setPhone] = useState(params.get("tel") ?? "");
+  const [phone, setPhone] = useState(formatPhoneBR(params.get("tel") ?? ""));
   const [loading, setLoading] = useState(false);
   const [slow, setSlow] = useState(false);
   const [order, setOrder] = useState<ServiceOrderStatus | null>(null);
@@ -98,7 +101,47 @@ export default function StatusOrdemServico() {
   const [unavailable, setUnavailable] = useState(false);
   const [copied, setCopied] = useState(false);
   const [lastSync, setLastSync] = useState<Date | null>(null);
+  const [consent, setConsentState] = useState(false);
+  const [consentMissing, setConsentMissing] = useState(false);
   const slowTimer = useRef<number | null>(null);
+
+  // Consentimento LGPD da consulta pública — restaurado entre visitas.
+  useEffect(() => {
+    try {
+      setConsentState(window.localStorage?.getItem(OS_CONSENT_KEY) === "granted");
+    } catch {
+      /* storage indisponível — decisão vale só nesta sessão */
+    }
+  }, []);
+
+  function setConsent(next: boolean) {
+    setConsentState(next);
+    if (next) setConsentMissing(false);
+    try {
+      window.localStorage?.setItem(OS_CONSENT_KEY, next ? "granted" : "denied");
+    } catch {
+      /* ignore */
+    }
+    trackEvent("os_status_consent", { consent: next ? "granted" : "denied" });
+  }
+
+  /** Remove o resultado em tela e apaga os rastros locais da consulta. */
+  function discardLookupData() {
+    setOrder(null);
+    setList(null);
+    resetFeedback();
+    setPhone("");
+    setProtocol("");
+    setParams({}, { replace: true });
+    try {
+      window.localStorage?.removeItem(OS_CONSENT_KEY);
+    } catch {
+      /* ignore */
+    }
+    setConsentState(false);
+    trackEvent("os_status_discard", {});
+  }
+
 
   const whatsappHelpUrl = buildWhatsAppUrl({
     service: "acompanhamento de Ordem de Serviço",
@@ -217,6 +260,10 @@ export default function StatusOrdemServico() {
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!consent) {
+      setConsentMissing(true);
+      return;
+    }
     if (mode === "protocol") {
       const normalized = normalizeProtocol(protocol);
       setParams(normalized ? { os: normalized } : {}, { replace: true });
@@ -350,26 +397,97 @@ export default function StatusOrdemServico() {
             </button>
           </div>
 
-          <form onSubmit={onSubmit} className="flex flex-col sm:flex-row gap-3 mb-10">
-            <label htmlFor="os-input" className="sr-only">
-              {mode === "protocol" ? "Número da Ordem de Serviço" : "Celular cadastrado"}
-            </label>
-            <Input
-              id="os-input"
-              value={mode === "protocol" ? protocol : phone}
-              onChange={(e) =>
-                mode === "protocol" ? setProtocol(e.target.value) : setPhone(e.target.value)
-              }
-              inputMode={mode === "phone" ? "tel" : "text"}
-              placeholder={mode === "protocol" ? "Ex.: OS-2026-0001" : "Ex.: (41) 99999-0000"}
-              autoComplete="off"
-              className="h-12 text-base"
-            />
-            <Button type="submit" size="lg" className="h-12 min-w-[10rem]" disabled={loading}>
-              <Search className="w-4 h-4 mr-2" />
-              {loading ? "Consultando..." : "Consultar"}
-            </Button>
+          <form onSubmit={onSubmit} className="mb-10">
+            <div className="flex flex-col sm:flex-row gap-3">
+              <label htmlFor="os-input" className="sr-only">
+                {mode === "protocol" ? "Número da Ordem de Serviço" : "Celular cadastrado"}
+              </label>
+              <Input
+                id="os-input"
+                value={mode === "protocol" ? protocol : phone}
+                onChange={(e) =>
+                  mode === "protocol"
+                    ? setProtocol(e.target.value)
+                    : setPhone(formatPhoneBR(e.target.value))
+                }
+                inputMode={mode === "phone" ? "tel" : "text"}
+                maxLength={mode === "phone" ? 16 : 24}
+                placeholder={mode === "protocol" ? "Ex.: OS-2026-0001" : "Ex.: (41) 99999-0000"}
+                autoComplete="off"
+                className="h-12 text-base"
+              />
+              <Button type="submit" size="lg" className="h-12 min-w-[10rem]" disabled={loading}>
+                <Search className="w-4 h-4 mr-2" />
+                {loading ? "Consultando..." : "Consultar"}
+              </Button>
+            </div>
+
+            <div
+              className={`mt-4 rounded-lg border p-4 ${consentMissing ? "border-destructive/60 bg-destructive/5" : "border-border bg-secondary/30"}`}
+            >
+              <div className="flex items-start gap-3">
+                <Checkbox
+                  id="os-consent"
+                  checked={consent}
+                  onCheckedChange={(v) => setConsent(v === true)}
+                  aria-describedby="os-consent-text"
+                  aria-label="Autorizo a consulta do status da minha Ordem de Serviço"
+                  className="mt-0.5"
+                />
+                <label htmlFor="os-consent" id="os-consent-text" className="text-sm text-muted-foreground leading-snug">
+                  <span className="font-medium text-foreground">
+                    Autorizo a consulta do status desta Ordem de Serviço.
+                  </span>{" "}
+                  Usamos o número informado apenas para localizar o atendimento. A página exibe
+                  somente etapa, prazo, serviço e cidade/bairro — nunca nome, e-mail, endereço ou as
+                  fotos enviadas na triagem. Nada é armazenado no seu navegador além desta
+                  autorização, que você pode descartar a qualquer momento. Detalhes na{" "}
+                  <Link to="/politica-privacidade" className="text-primary underline">
+                    Política de Privacidade
+                  </Link>
+                  .
+                </label>
+              </div>
+              {consentMissing && (
+                <p role="alert" className="mt-2 text-sm font-medium text-destructive">
+                  Marque a autorização acima para consultar.
+                </p>
+              )}
+              {consent && (
+                <button
+                  type="button"
+                  onClick={discardLookupData}
+                  className="mt-3 text-xs font-medium text-muted-foreground underline min-h-11 sm:min-h-0"
+                >
+                  Descartar consulta e apagar autorização deste dispositivo
+                </button>
+              )}
+            </div>
           </form>
+
+          {loading && (
+            <div
+              role="status"
+              aria-live="polite"
+              className="rounded-xl border border-border bg-card p-6 mb-10"
+            >
+              <span className="sr-only">Consultando Ordem de Serviço…</span>
+              <div className="h-5 w-40 rounded bg-secondary animate-pulse mb-3" />
+              <div className="h-3 w-2/3 rounded bg-secondary animate-pulse mb-6" />
+              <div className="h-2 w-full rounded-full bg-secondary animate-pulse mb-6" />
+              <div className="space-y-3">
+                {[0, 1, 2, 3].map((i) => (
+                  <div key={i} className="flex gap-3">
+                    <div className="h-6 w-6 rounded-full bg-secondary animate-pulse shrink-0" />
+                    <div className="flex-1">
+                      <div className="h-3 w-1/3 rounded bg-secondary animate-pulse mb-2" />
+                      <div className="h-3 w-3/4 rounded bg-secondary animate-pulse" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {loading && slow && (
             <div role="status" className="rounded-lg border border-border bg-secondary/40 p-4 mb-10">
@@ -377,11 +495,13 @@ export default function StatusOrdemServico() {
                 A consulta está demorando mais que o normal.
               </p>
               <p className="text-sm text-muted-foreground">
-                Você pode aguardar mais alguns segundos ou falar direto com a equipe técnica.
+                Você pode aguardar mais alguns segundos ou falar direto com a equipe técnica. Se o
+                problema persistir, o sistema de consulta pode estar indisponível no momento.
               </p>
               {fallbackBlock}
             </div>
           )}
+
 
           {invalid && (
             <div

@@ -1,5 +1,6 @@
-import { CheckCircle, ShieldCheck, PackageCheck, ListChecks, XCircle } from "lucide-react";
+import { CheckCircle, ShieldCheck, PackageCheck, ListChecks, XCircle, Download } from "lucide-react";
 import { PC_ASSEMBLY_POLICY } from "@/data/pcAssemblyPolicy";
+import { trackEvent } from "@/lib/analytics";
 
 /**
  * Blocos públicos de montagem/PC Gamer derivados 100% de PC_ASSEMBLY_POLICY.

@@ -175,6 +175,15 @@ export function Footer() {
               <Link to="/como-avaliar" className="text-background/60 hover:text-background text-sm transition-colors">
                 Como avaliar
               </Link>
+              <Link to="/avaliacoes" className="text-background/60 hover:text-background text-sm transition-colors">
+                Avaliações de clientes
+              </Link>
+              <Link to="/status-os" className="text-background/60 hover:text-background text-sm transition-colors">
+                Status da OS
+              </Link>
+              <Link to="/exclusao-de-dados" className="text-background/60 hover:text-background text-sm transition-colors">
+                Exclusão de dados (LGPD)
+              </Link>
 
             </div>
           </div>

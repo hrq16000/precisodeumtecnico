@@ -15,6 +15,8 @@ import { servicesData } from "@/data/services";
 import { citiesData, curitibaBairros } from "@/data/regions";
 import { MessageCircle, Check } from "lucide-react";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
+import { COMMERCIAL_TERMS } from "@/data/commercialTerms";
+import { PRICING, SLA } from "@/data/pricingPolicy";
 
 const whatsappLink = buildWhatsAppUrl({ service: "preços e condições de assistência técnica", sourcePage: "/precos" });
 

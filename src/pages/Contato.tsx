@@ -2,6 +2,7 @@ import { Layout } from "@/components/layout/Layout";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { Button } from "@/components/ui/button";
 import { ContactForm } from "@/components/forms/ContactForm";
+import { CommercialTermsBlock } from "@/components/marketing/CommercialTermsBlock";
 import { 
   MessageCircle, Phone, MapPin, Clock, CheckCircle,
   Building, Users, Headphones
@@ -224,7 +225,7 @@ const Contato = () => {
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle className="w-4 h-4 text-success mt-0.5 flex-shrink-0" />
-                    Aceitamos PIX, cartões e dinheiro
+                    Formas de pagamento confirmadas no fechamento do orçamento
                   </li>
                 </ul>
               </div>
@@ -256,6 +257,8 @@ const Contato = () => {
           </div>
         </div>
       </section>
+
+      <CommercialTermsBlock />
     </Layout>
   );
 };

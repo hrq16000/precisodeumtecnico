@@ -4,12 +4,52 @@ import { SEOHead } from "@/components/seo/SEOHead";
 import { Button } from "@/components/ui/button";
 import { CTASection } from "@/components/home/CTASection";
 import { AuthoritySince } from "@/components/marketing/AuthoritySince";
+import { CommercialTermsBlock } from "@/components/marketing/CommercialTermsBlock";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { 
   Monitor, Laptop, Camera, Zap, Wifi, Wind, Wrench, Tv, Server, 
   Smartphone, Printer, Building, HardDrive, Shield, Cpu, Settings,
-  ArrowRight, CheckCircle, MessageCircle
+  ArrowRight, CheckCircle, MessageCircle, Building2, Headset
 } from "lucide-react";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
+import { COMMERCIAL_TERMS } from "@/data/commercialTerms";
+import { PRICING, SLA } from "@/data/pricingPolicy";
+
+/**
+ * FAQ de /servicos — fonte única: COMMERCIAL_TERMS + PRICING.
+ * Não incluir alegações sem comprovação (guard: check-commercial-claims.ts).
+ */
+const servicosFaqs = [
+  {
+    question: "Como funciona o orçamento antes do serviço?",
+    answer: COMMERCIAL_TERMS.preApprovedPolicyText,
+  },
+  {
+    question: "Quanto custa o diagnóstico?",
+    answer: `${PRICING.benchDiagnosis.description} ${PRICING.technicalVisit.description}`,
+  },
+  {
+    question: "Como funciona a coleta e entrega?",
+    answer: PRICING.pickupDelivery.description,
+  },
+  {
+    question: "Qual é o prazo de atendimento?",
+    answer: `${COMMERCIAL_TERMS.minimumQueueText} ${SLA.disclaimer}`,
+  },
+  {
+    question: "E se eu desistir depois do diagnóstico?",
+    answer: COMMERCIAL_TERMS.cancellationText,
+  },
+  {
+    question: "O valor mínimo inclui peças?",
+    answer: `Não. ${COMMERCIAL_TERMS.preApprovedBudget.minLabel} é o mínimo pré-aprovado e cobre ${COMMERCIAL_TERMS.preApprovedBudget.includes.join(", ").toLowerCase()}. Peças, componentes, materiais ou itens adicionais são informados separadamente e só seguem com sua aprovação.`,
+  },
+];
 
 const serviceCategories = [
   {
@@ -180,13 +220,14 @@ const Servicos = () => {
   return (
     <Layout>
       <SEOHead
-        title="Serviços de Assistência Técnica | Preciso de Um Técnico"
-        description="Conheça todos os nossos serviços de assistência técnica: informática, notebooks, CFTV, elétrica, redes, ar-condicionado e muito mais. Atendimento em Curitiba e região."
+        title="Serviços de Assistência Técnica em Curitiba e Região"
+        description="Escolha o serviço técnico que você precisa: informática, notebooks, CFTV, elétrica, redes, ar-condicionado e mais. Orçamento informado antes da execução."
         canonical="https://precisodeumtecnico.com/servicos"
         breadcrumbs={[
           { name: "Início", url: "https://precisodeumtecnico.com/" },
           { name: "Serviços", url: "https://precisodeumtecnico.com/servicos" },
         ]}
+        faq={servicosFaqs}
       />
 
       {/* Hero */}
@@ -247,6 +288,70 @@ const Servicos = () => {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Cluster interno PJ e remoto */}
+      <section className="section-padding bg-background" aria-labelledby="cluster-publicos">
+        <div className="container-custom max-w-5xl">
+          <h2 id="cluster-publicos" className="font-display text-2xl md:text-3xl font-bold text-foreground mb-6">
+            Atendimento para empresas e suporte remoto
+          </h2>
+          <div className="grid gap-4 md:grid-cols-2">
+            <Link
+              to="/assistencia-tecnica-empresas-curitiba"
+              className="group flex items-start gap-4 p-5 rounded-xl bg-card border border-border/50 hover:border-primary/40 hover:bg-primary/5 transition-all"
+            >
+              <div className="w-11 h-11 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                <Building2 className="w-5 h-5 text-primary" aria-hidden="true" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-card-foreground group-hover:text-primary transition-colors">
+                  Assistência técnica para empresas em Curitiba
+                </h3>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Suporte a parques de máquinas, servidores, redes e CFTV com atendimento
+                  programado para CNPJ.
+                </p>
+              </div>
+            </Link>
+            <Link
+              to="/suporte-tecnico-remoto"
+              className="group flex items-start gap-4 p-5 rounded-xl bg-card border border-border/50 hover:border-primary/40 hover:bg-primary/5 transition-all"
+            >
+              <div className="w-11 h-11 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                <Headset className="w-5 h-5 text-primary" aria-hidden="true" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-card-foreground group-hover:text-primary transition-colors">
+                  Suporte técnico remoto
+                </h3>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Resolução de problemas de software, configuração e lentidão sem
+                  deslocamento, com acesso assistido.
+                </p>
+              </div>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <CommercialTermsBlock />
+
+      {/* FAQ */}
+      <section className="section-padding bg-background" aria-labelledby="faq-servicos">
+        <div className="container-custom max-w-3xl">
+          <h2 id="faq-servicos" className="font-display text-2xl md:text-3xl font-bold text-foreground mb-6">
+            Perguntas frequentes sobre nossos serviços
+          </h2>
+          <Accordion type="single" collapsible>
+            {servicosFaqs.map((f, i) => (
+              <AccordionItem key={i} value={`s-${i}`}>
+                <AccordionTrigger className="text-left">{f.question}</AccordionTrigger>
+                <AccordionContent>{f.answer}</AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
         </div>
       </section>
 

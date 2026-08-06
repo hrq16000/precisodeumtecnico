@@ -429,12 +429,12 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
       )}
 
 
-      <div className="flex items-center justify-between gap-3 mt-6">
+      <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center sm:justify-between gap-3 mt-6">
         <button
           type="button"
           onClick={() => setStep((s) => Math.max(0, s - 1))}
           disabled={step === 0}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border text-foreground disabled:opacity-40"
+          className="inline-flex items-center justify-center gap-2 px-4 py-3 min-h-[48px] rounded-lg border border-border text-foreground disabled:opacity-40"
         >
           <ArrowLeft className="w-4 h-4" aria-hidden="true" />
           Voltar
@@ -444,7 +444,7 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
           <button
             type="button"
             onClick={next}
-            className="inline-flex items-center gap-2 px-5 py-2 rounded-lg bg-primary text-primary-foreground font-semibold"
+            className="inline-flex items-center justify-center gap-2 px-5 py-3 min-h-[48px] rounded-lg bg-primary text-primary-foreground font-semibold"
           >
             Continuar
             <ArrowRight className="w-4 h-4" aria-hidden="true" />
@@ -453,16 +453,19 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
           <button
             type="button"
             onClick={submit}
-            disabled={!canSubmit}
+            aria-disabled={!canSubmit}
             data-wa-source="pc_quote_wizard"
             data-service="montagem-de-pc"
-            className="inline-flex items-center gap-2 px-5 py-2 rounded-lg bg-success text-success-foreground font-semibold disabled:opacity-40"
+            className={`inline-flex items-center justify-center gap-2 px-5 py-3 min-h-[48px] rounded-lg bg-success text-success-foreground font-semibold ${
+              canSubmit ? "" : "opacity-60"
+            }`}
           >
             <MessageCircle className="w-4 h-4" aria-hidden="true" />
             Enviar orçamento no WhatsApp
           </button>
         )}
       </div>
+
 
       {orderProtocol && (
         <div

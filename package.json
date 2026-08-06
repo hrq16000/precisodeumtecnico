@@ -33,7 +33,9 @@
     "check:claims": "bun scripts/check-commercial-claims.ts",
     "check:pc-assembly-service": "bun scripts/check-pc-assembly-service.ts",
     "check:indexnow": "bun scripts/check-indexnow.ts",
-    "check:visual-wave-3q": "playwright test e2e/visual-wave-3q.spec.ts"
+    "check:visual-wave-3q": "playwright test e2e/visual-wave-3q.spec.ts",
+    "check:toc-a11y": "playwright test e2e/toc-keyboard.spec.ts",
+    "check:os-consent": "playwright test e2e/status-os-consent.spec.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

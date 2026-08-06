@@ -1,5 +1,6 @@
-import { CheckCircle, ShieldCheck, PackageCheck, ListChecks, XCircle } from "lucide-react";
+import { CheckCircle, ShieldCheck, PackageCheck, ListChecks, XCircle, Download } from "lucide-react";
 import { PC_ASSEMBLY_POLICY } from "@/data/pcAssemblyPolicy";
+import { trackEvent } from "@/lib/analytics";
 
 /**
  * Blocos públicos de montagem/PC Gamer derivados 100% de PC_ASSEMBLY_POLICY.
@@ -95,7 +96,7 @@ export const PcAssemblyPolicySections = () => {
       </section>
 
       {/* Checklist final */}
-      <section aria-labelledby="checklist-final">
+      <section aria-labelledby="checklist-final" id="pc-final-checklist">
         <h2
           id="checklist-final"
           className="font-display text-2xl md:text-3xl font-bold text-foreground mb-4 flex items-center gap-2"
@@ -103,10 +104,22 @@ export const PcAssemblyPolicySections = () => {
           <ListChecks className="w-7 h-7 text-accent" aria-hidden="true" />
           Checklist executado antes da entrega
         </h2>
-        <p className="text-muted-foreground leading-relaxed mb-6">
+        <p className="text-muted-foreground leading-relaxed mb-4">
           O checklist é o mesmo em todo atendimento e é registrado em laudo. Ele comprova que a
           máquina foi testada — não é promessa de desempenho em jogos.
         </p>
+        <button
+          type="button"
+          data-print-checklist
+          onClick={() => {
+            trackEvent("pc_checklist_download", { page_path: window.location.pathname });
+            window.print();
+          }}
+          className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-lg border border-border font-semibold text-foreground hover:bg-muted print:hidden"
+        >
+          <Download className="w-4 h-4" aria-hidden="true" />
+          Baixar checklist em PDF
+        </button>
         <div className="grid md:grid-cols-3 gap-4">
           {finalChecklist.map((group) => (
             <article key={group.group} className="p-5 rounded-xl bg-card border border-border/50">

@@ -121,7 +121,44 @@ const RELATED_BY_SLUG: Record<string, RelatedLink[]> = {
       description: "Rede e roteador revisados após a limpeza, incluindo dispositivos em rede.",
     },
   ],
+  "assistencia-tecnica-empresas-curitiba": [
+    {
+      to: "/guias/organizacao-de-ti-para-pequenos-escritorios",
+      label: "Guia: organização de TI para pequenos escritórios",
+      description:
+        "Inventário, rede, backup 3-2-1, contas de acesso e rotina de manutenção em ordem de prioridade.",
+    },
+    {
+      to: "/guias/como-escolher-uma-workstation",
+      label: "Guia: como escolher uma workstation",
+      description:
+        "Checklist por carga de trabalho, memória, GPU e armazenamento antes de aprovar a compra.",
+    },
+    {
+      to: "/servicos/servidores",
+      label: "Servidores e storage",
+      description: "Manutenção de servidores, NAS e volumes de arquivos compartilhados.",
+    },
+    {
+      to: "/servicos/redes",
+      label: "Redes cabeadas e Wi-Fi",
+      description: "Segmentação de rede e correção de lentidão intermitente no escritório.",
+    },
+  ],
+  "suporte-tecnico-remoto": [
+    {
+      to: "/guias/organizacao-de-ti-para-pequenos-escritorios",
+      label: "Guia: organização de TI para pequenos escritórios",
+      description: "O que padronizar antes de abrir chamado: backup, acessos e inventário.",
+    },
+    {
+      to: "/assistencia-tecnica-empresas-curitiba",
+      label: "Assistência técnica para empresas em Curitiba",
+      description: "Quando o sintoma exige atendimento presencial no posto de trabalho.",
+    },
+  ],
 };
+
 
 
 interface Props {

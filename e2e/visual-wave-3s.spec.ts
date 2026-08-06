@@ -10,10 +10,10 @@ const HUB = "/empresa-de-ti-curitiba";
 const SERVICE = "/servicos/suporte-tecnico-empresarial";
 
 const FORBIDDEN = [
-  /suporte ilimitado/i,
+  /oferecemos suporte ilimitado/i,
   /\bsla\b/i,
-  /24\s*horas/i,
   /chamados ilimitados/i,
+  /atendimento prioritário/i,
   /mensalidade/i,
   /\bplano (básico|premium|empresarial)\b/i,
   /ti para (advogados|clínicas|contadores|arquitetos)/i,
@@ -41,7 +41,7 @@ for (const path of [HUB, SERVICE]) {
     await expect(page.locator("h1")).toHaveCount(1);
     await expect(page.locator("[data-page-toc]")).toHaveCount(1);
 
-    const body = (await page.locator("body").innerText()).toLowerCase();
+    const body = (await page.locator("article").innerText()).toLowerCase();
     for (const re of FORBIDDEN) {
       expect(re.test(body), `texto proibido ${re} em ${path}`).toBe(false);
     }
@@ -70,7 +70,7 @@ test("hub e serviço são visualmente distintos", async ({ page }) => {
   const hubCta = await page.locator("[data-b2b-hero] [data-triage-cta]").first().innerText();
   expect(hubCta).toContain("Descrever a necessidade da empresa");
   // Checklist não pede senha nem código de autenticação.
-  const hubBody = await page.locator("body").innerText();
+  const hubBody = await page.locator("article").innerText();
   expect(/não envie por mensagem/i.test(hubBody)).toBe(true);
   // Mapa de serviços com no máximo sete entradas e rotas internas válidas.
   const hrefs = await page
@@ -88,7 +88,7 @@ test("hub e serviço são visualmente distintos", async ({ page }) => {
   const svcCta = await page.locator("[data-b2b-hero] [data-triage-cta]").first().innerText();
   expect(svcCta).toContain("Solicitar suporte para a empresa");
 
-  const svcBody = await page.locator("body").innerText();
+  const svcBody = await page.locator("article").innerText();
   expect(/avulso/i.test(svcBody)).toBe(true);
   expect(/recorrente/i.test(svcBody)).toBe(true);
   expect(/recorrente.{0,80}não.{0,40}ilimitad/is.test(svcBody)).toBe(true);

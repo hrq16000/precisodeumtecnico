@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import { PRICING, SLA, COMMERCIAL } from "@/data/pricingPolicy";
 import { COMMERCIAL_TERMS } from "@/data/commercialTerms";
+import { EquipmentValuationTerms } from "@/components/marketing/EquipmentValuationTerms";
 import { Link } from "react-router-dom";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
@@ -371,6 +372,18 @@ const TermosOrcamento = () => {
                 </li>
               </ul>
             </div>
+          </div>
+
+          {/* 5.1 – Declaração de valor do equipamento */}
+          <div className="bg-card border border-border rounded-2xl p-6 md:p-10 shadow-sm">
+            <EquipmentValuationTerms />
+            <p className="text-sm text-muted-foreground mt-6">
+              Vai fornecer peças para montagem ou upgrade?{" "}
+              <Link to="/politica-de-pecas-do-cliente" className="text-primary font-semibold hover:underline">
+                Leia a política de peças do cliente
+              </Link>
+              .
+            </p>
           </div>
 
           {/* 6 – Aceitação */}

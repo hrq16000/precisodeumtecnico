@@ -13,6 +13,9 @@ export function TestimonialsSection() {
   // Avaliações reais aprovadas no painel e com autorização de publicação.
   // Nada é exibido (nem entra no JSON-LD) sem esses dois requisitos.
   const [approved, setApproved] = useState<PublishedReview[]>([]);
+  const [neighborhoodFilter, setNeighborhoodFilter] = useState("all");
+  const [serviceFilter, setServiceFilter] = useState("all");
+
 
   useEffect(() => {
     let active = true;

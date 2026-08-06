@@ -200,6 +200,27 @@ export default function KeywordServicePage({ slug }: Props) {
         </div>
       </section>
 
+      {/* PONTOS DE DECISÃO — caixas editoriais próprias de cada serviço */}
+      {visual && (
+        <section className="pb-4">
+          <div className="container-custom max-w-4xl">
+            <h2
+              id="pontos-de-decisao"
+              data-toc-anchor
+              className="text-2xl md:text-3xl font-display font-bold mb-6"
+            >
+              Pontos de decisão antes do atendimento
+            </h2>
+            <div className="grid gap-4 md:grid-cols-2">
+              {visual.callouts.map((c) => (
+                <EditorialCallout key={c.title} title={c.title} items={c.items} tone={c.tone} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+
       {/* COMO FAZEMOS */}
       <section className="section-padding bg-muted/30">
         <div className="container-custom">

@@ -260,6 +260,10 @@ export default function StatusOrdemServico() {
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!consent) {
+      setConsentMissing(true);
+      return;
+    }
     if (mode === "protocol") {
       const normalized = normalizeProtocol(protocol);
       setParams(normalized ? { os: normalized } : {}, { replace: true });

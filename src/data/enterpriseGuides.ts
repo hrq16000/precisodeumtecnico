@@ -377,7 +377,7 @@ export const WORKSTATION_GUIDE: EnterpriseGuide = {
       id: "memoria",
       title: "3. Memória: capacidade primeiro, ECC quando o erro custa caro",
       paragraphs: [
-        "Falta de memória é o gargalo mais visível em workstation: o sistema passa a usar disco como memória e o desempenho cai de forma abrupta, não gradual. Como referência prática, 32 GB é um piso confortável para CAD e edição leve, 64 GB para 3D e vídeo em resoluções altas, e 128 GB ou mais para simulação, grandes conjuntos de dados e virtualização.",
+        "Falta de memória é o gargalo mais visível em workstation: o sistema passa a usar disco como memória e o desempenho cai de forma abrupta, não gradual. Não existe quantidade universal — a definição vem do tamanho dos arquivos abertos, da quantidade de programas simultâneos, do requisito recomendado pelo fornecedor do software e da folga desejada para os próximos anos.",
         "Memória ECC corrige erros de bit em tempo real. Ela faz diferença quando um resultado silenciosamente errado é pior que uma parada — simulação, cálculo estrutural, finanças e processamento longo de dados. Exige processador e placa-mãe compatíveis, o que muda a plataforma inteira.",
       ],
       bullets: [

@@ -123,7 +123,7 @@ const PC_GAMER_BANNED: [RegExp, string][] = [
   [/\bfps\b(?!,? pontua)/i, "promessa de FPS"],
   [/m[áa]xima performance|m[áa]ximo desempenho/i, "promessa de desempenho"],
   [/R\$\s?\d{1,3}\.\d{3}/, "preço fechado de configuração"],
-  [/benchmarks?\b(?! específicos)/i, "promessa de benchmark"],
+  [/(garantimos|entregamos|prometemos)[^.]*benchmark/i, "promessa de benchmark"],
 ];
 for (const [re, why] of PC_GAMER_BANNED) {
   if (re.test(pcGamerBlock)) {

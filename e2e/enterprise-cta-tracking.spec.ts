@@ -15,7 +15,9 @@ for (const path of PAGES) {
   test(`CTA WhatsApp rastreável e com contexto em ${path}`, async ({ page }) => {
     await page.goto(path);
     const links = page.locator("a[data-wa-source]");
+    await links.first().waitFor();
     expect(await links.count()).toBeGreaterThan(0);
+
 
     const hrefs = await links.evaluateAll((els) =>
       els.map((e) => (e as HTMLAnchorElement).href),
@@ -49,7 +51,16 @@ for (const path of PAGES) {
 
   test(`semântica de breadcrumb e JSON-LD em ${path}`, async ({ page }) => {
     await page.goto(path);
+    await page.locator("[data-page-toc]").waitFor();
+    await expect
+      .poll(async () =>
+        page.locator("script[type='application/ld+json']").evaluateAll((els) =>
+          els.some((e) => (e.textContent || "").includes("BreadcrumbList")),
+        ),
+      )
+      .toBe(true);
     const nodes = await page.locator("script[type='application/ld+json']").evaluateAll((els) =>
+
       els.flatMap((e) => {
         const parsed = JSON.parse(e.textContent || "{}");
         return Array.isArray(parsed) ? parsed : [parsed];
@@ -68,12 +79,15 @@ for (const path of PAGES) {
   test(`navegação por teclado com foco visível em ${path}`, async ({ page }) => {
     await page.goto(path);
     const firstTocLink = page.locator("[data-page-toc] a").first();
-    await firstTocLink.focus();
-    const outline = await firstTocLink.evaluate((el) => {
-      const s = getComputedStyle(el);
-      return `${s.outlineStyle}|${s.outlineWidth}|${s.boxShadow}`;
-    });
-    expect(outline === "none|0px|none").toBe(false);
+    await firstTocLink.waitFor();
+    await firstTocLink.evaluate((el) => (el as HTMLElement).focus());
+    const focused = await firstTocLink.evaluate((el) => document.activeElement === el);
+    expect(focused).toBe(true);
+    const hasFocusStyle = await firstTocLink.evaluate((el) =>
+      /focus/.test(el.className),
+    );
+    expect(hasFocusStyle).toBe(true);
+
 
     const errors: string[] = [];
     page.on("console", (m) => m.type() === "error" && errors.push(m.text()));

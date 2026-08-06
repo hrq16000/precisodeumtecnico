@@ -170,9 +170,13 @@ export function ReviewsModeration() {
               {LABEL[f]}
             </Button>
           ))}
+          <Button size="sm" variant="outline" onClick={exportCsv}>
+            <Download className="w-4 h-4 mr-1" aria-hidden="true" /> Exportar CSV
+          </Button>
           <Button size="sm" variant="ghost" onClick={() => load()} aria-label="Recarregar avaliações">
             <RefreshCw className="w-4 h-4" />
           </Button>
+
         </div>
       </CardHeader>
       <CardContent>

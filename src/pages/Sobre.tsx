@@ -230,6 +230,8 @@ const Sobre = () => {
         </div>
       </section>
 
+      <CommercialTermsBlock />
+
       <CTASection />
     </Layout>
   );

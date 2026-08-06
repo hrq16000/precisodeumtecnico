@@ -34,6 +34,16 @@ export default function GuiaEmpresarial({ slug }: Props) {
     sourcePage: guide.path,
   });
 
+  /** Sumário gerado dos headings reais da página, incluindo as seções fixas. */
+  const tocItems: TocItem[] = [
+    ...guide.sections.map((s) => ({ id: s.id, label: s.title.replace(/^\d+\.\s*/, "") })),
+    { id: "checklist", label: "Checklist de requisitos" },
+    { id: "limites", label: "Limites operacionais" },
+    { id: "faq", label: "Perguntas frequentes" },
+  ];
+
+
+
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",

@@ -105,9 +105,6 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
   const canSubmit =
     acceptTerms && acceptPrices && acceptLgpd && (partsBy !== "cliente" || acceptParts);
 
-
-  const canSubmit = acceptTerms && acceptPrices && (partsBy !== "cliente" || acceptParts);
-
   function buildProtocol(): string {
     const d = new Date();
     const stamp = `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}${String(

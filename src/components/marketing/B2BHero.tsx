@@ -8,6 +8,7 @@
  */
 import { ArrowRight, Building2, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { trackWhatsAppClick } from "@/lib/analytics";
 
 interface Props {
   kicker: string;
@@ -96,6 +97,16 @@ export function B2BHero({
                 rel="noopener noreferrer"
                 data-wa-source={waSource}
                 data-service={waService}
+                data-wa-tracked="b2b_hero"
+                onClick={() =>
+                  trackWhatsAppClick({
+                    source: waSource,
+                    service: waService,
+                    city: triage?.city,
+                    source_component: `b2b_hero_${variant}`,
+                    cta_label: "Descrever o cenário no WhatsApp",
+                  })
+                }
                 aria-label={`Falar no WhatsApp sobre ${waService}`}
                 className={`inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg border border-border bg-background px-4 text-sm font-semibold text-foreground transition-colors hover:bg-muted ${isService ? "sm:w-auto" : ""}`}
               >

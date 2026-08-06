@@ -56,9 +56,15 @@ const Index = () => {
 
       
       <HeroSection />
-      <AuthoritySince />
+      {/* Rodada 3P — sintomas ("o que está acontecendo") antes dos serviços
+          ("como podemos atender"). A prova de autoridade do hero não é repetida
+          imediatamente abaixo: a faixa AuthoritySince passa para depois dos
+          serviços, sem perda de conteúdo. */}
+      <Reveal><HomeSymptomsSection /></Reveal>
       <Reveal><ServicesSection /></Reveal>
+      <AuthoritySince />
       <Reveal><QuickDiagnosisQuiz /></Reveal>
+
       <Reveal><QuickQuoteForm /></Reveal>
       <Reveal><BenefitsSection /></Reveal>
       <Reveal><BrandsSection /></Reveal>

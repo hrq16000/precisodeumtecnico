@@ -1,6 +1,38 @@
+import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { Star, Quote } from "lucide-react";
 import { testimonials } from "@/data/testimonials";
+import { supabase } from "@/integrations/supabase/client";
+import {
+  buildPublishedReviewsSchema,
+  formatReviewLocation,
+  type PublishedReview,
+} from "@/lib/reviews";
+
 export function TestimonialsSection() {
+  // Avaliações reais aprovadas no painel e com autorização de publicação.
+  // Nada é exibido (nem entra no JSON-LD) sem esses dois requisitos.
+  const [approved, setApproved] = useState<PublishedReview[]>([]);
+
+  useEffect(() => {
+    let active = true;
+    supabase
+      .from("reviews")
+      .select("id,name,city,neighborhood,service,rating,comment,created_at")
+      .eq("status", "approved")
+      .eq("publish_consent", true)
+      .order("created_at", { ascending: false })
+      .limit(12)
+      .then(({ data }) => {
+        if (active && data) setApproved(data as PublishedReview[]);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const approvedSchema = buildPublishedReviewsSchema(approved);
+
   return <section className="section-padding bg-secondary/30">
       <div className="container-custom">
         {/* Section Header */}
@@ -16,6 +48,45 @@ export function TestimonialsSection() {
             Milhares de clientes satisfeitos em toda a região. Veja o que eles falam sobre nosso atendimento.
           </p>
         </div>
+
+        {approvedSchema && (
+          <Helmet>
+            <script type="application/ld+json">{JSON.stringify(approvedSchema)}</script>
+          </Helmet>
+        )}
+
+        {approved.length > 0 && (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+            {approved.map((r) => (
+              <div
+                key={r.id}
+                data-approved-review
+                className="bg-card rounded-2xl p-6 card-shadow border border-primary/30"
+              >
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex gap-1" aria-label={`Nota ${r.rating} de 5`}>
+                    {Array.from({ length: r.rating }).map((_, i) => (
+                      <Star key={i} className="w-5 h-5 fill-accent text-accent" aria-hidden="true" />
+                    ))}
+                  </div>
+                  <Quote className="w-8 h-8 text-primary/20" aria-hidden="true" />
+                </div>
+                {r.comment && (
+                  <p className="text-card-foreground mb-6 leading-relaxed">"{r.comment}"</p>
+                )}
+                <div className="border-t border-border pt-4">
+                  <p className="font-semibold text-card-foreground">{r.name}</p>
+                  <p className="text-muted-foreground text-sm">{formatReviewLocation(r)}</p>
+                  {r.service && (
+                    <span className="inline-block mt-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">
+                      {r.service}
+                    </span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* Testimonials Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">

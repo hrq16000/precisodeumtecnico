@@ -147,12 +147,31 @@ export default function KeywordServicePage({ slug }: Props) {
 
       {AUTHORITY_SLUGS.has(page.slug) && <AuthoritySince />}
 
+      {page.slug === VISUAL_PILOT_SLUG && (
+        <section className="pt-8">
+          <div className="container-custom max-w-4xl">
+            <TrustStrip />
+            <PageTableOfContents
+              className="mt-6"
+              items={[
+                { id: "o-que-esta-incluido", label: "O que está incluído" },
+                { id: "como-funciona", label: "Como funciona o atendimento" },
+                { id: "antes-e-depois", label: "Antes e depois do serviço" },
+                { id: "perguntas-frequentes", label: "Perguntas frequentes" },
+                { id: "servicos-relacionados", label: "Serviços relacionados" },
+              ]}
+            />
+          </div>
+        </section>
+      )}
+
       {/* O QUE É */}
       <section className="section-padding">
         <div className="container-custom max-w-4xl">
-          <h2 className="text-2xl md:text-3xl font-display font-bold mb-4">
+          <h2 id="o-que-esta-incluido" data-toc-anchor className="text-2xl md:text-3xl font-display font-bold mb-4">
             O que é {page.keyword} e o que está incluído
           </h2>
+
           <div className="space-y-4 text-base leading-relaxed text-muted-foreground">
             {page.whatIs.map((p) => (
               <p key={p.slice(0, 24)}>{p}</p>

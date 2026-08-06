@@ -214,26 +214,35 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
         <div className="space-y-4">
           <div>
             <label htmlFor="pcq-model" className="block text-sm font-semibold text-card-foreground mb-1">
-              Modelo ou configuração pretendida
+              Modelo ou configuração pretendida <span className="text-destructive">*</span>
             </label>
             <input
               id="pcq-model"
-              className={inputClass}
+              className={inputClass(errors.model)}
               value={model}
               maxLength={200}
+              aria-invalid={!!errors.model}
+              aria-describedby={errors.model ? "pcq-model-err" : undefined}
               onChange={(e) => setModel(e.target.value)}
               placeholder="Ex.: Ryzen 5 + B550 + 16GB + RTX 3060"
             />
-            {errors.model && <p className="text-sm text-destructive mt-1">{errors.model}</p>}
+            {errors.model && (
+              <p id="pcq-model-err" className="flex items-center gap-1 text-sm text-destructive mt-1">
+                <AlertCircle className="w-4 h-4 shrink-0" aria-hidden="true" />
+                {errors.model}
+              </p>
+            )}
           </div>
           <div>
             <label htmlFor="pcq-usage" className="block text-sm font-semibold text-card-foreground mb-1">
-              Uso pretendido
+              Uso pretendido <span className="text-destructive">*</span>
             </label>
             <select
               id="pcq-usage"
-              className={inputClass}
+              className={inputClass(errors.usage)}
               value={usage}
+              aria-invalid={!!errors.usage}
+              aria-describedby={errors.usage ? "pcq-usage-err" : undefined}
               onChange={(e) => setUsage(e.target.value)}
             >
               <option value="">Selecione…</option>
@@ -243,10 +252,16 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
                 </option>
               ))}
             </select>
-            {errors.usage && <p className="text-sm text-destructive mt-1">{errors.usage}</p>}
+            {errors.usage && (
+              <p id="pcq-usage-err" className="flex items-center gap-1 text-sm text-destructive mt-1">
+                <AlertCircle className="w-4 h-4 shrink-0" aria-hidden="true" />
+                {errors.usage}
+              </p>
+            )}
           </div>
         </div>
       )}
+
 
       {step === 1 && (
         <div className="space-y-4">

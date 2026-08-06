@@ -343,6 +343,54 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
               />
             </div>
           </div>
+          <fieldset className="rounded-lg border border-border p-4">
+            <legend className="px-1 text-sm font-semibold text-card-foreground">
+              Quando prefere ser atendido? (opcional)
+            </legend>
+            <div className="grid sm:grid-cols-2 gap-4 mt-2">
+              <div>
+                <label
+                  htmlFor="pcq-periodo"
+                  className="block text-sm font-semibold text-card-foreground mb-1"
+                >
+                  Período preferido
+                </label>
+                <select
+                  id="pcq-periodo"
+                  className={inputClass()}
+                  value={preferredPeriod}
+                  onChange={(e) => setPreferredPeriod(e.target.value)}
+                >
+                  <option value="">Sem preferência</option>
+                  {PERIOD_OPTIONS.map((o) => (
+                    <option key={o} value={o}>
+                      {o}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label
+                  htmlFor="pcq-dia"
+                  className="block text-sm font-semibold text-card-foreground mb-1"
+                >
+                  Dia preferido
+                </label>
+                <input
+                  id="pcq-dia"
+                  className={inputClass()}
+                  value={preferredDay}
+                  maxLength={60}
+                  placeholder="Ex.: segunda-feira ou 12/08"
+                  onChange={(e) => setPreferredDay(e.target.value)}
+                />
+              </div>
+            </div>
+            <p className="text-xs text-muted-foreground mt-3">
+              A preferência vai junto na mensagem do WhatsApp. A confirmação do horário é feita no
+              atendimento, conforme disponibilidade da agenda.
+            </p>
+          </fieldset>
         </div>
       )}
 

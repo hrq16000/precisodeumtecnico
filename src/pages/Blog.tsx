@@ -60,6 +60,13 @@ export default function Blog() {
         </div>
       </section>
 
+      <RelatedGuidesCard
+        title="Guias empresariais"
+        links={[GUIDE_LINKS.ti, GUIDE_LINKS.workstation]}
+      />
+
+
+
       <section className="section-padding">
         <div className="container-custom">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">

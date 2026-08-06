@@ -113,7 +113,9 @@ export const PcAssemblyPolicySections = () => {
           data-print-checklist
           onClick={() => {
             trackEvent("pc_checklist_download", { page_path: window.location.pathname });
+            document.body.setAttribute("data-print-target", "checklist");
             window.print();
+            document.body.removeAttribute("data-print-target");
           }}
           className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-lg border border-border font-semibold text-foreground hover:bg-muted print:hidden"
         >

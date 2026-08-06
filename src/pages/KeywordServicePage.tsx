@@ -333,7 +333,7 @@ export default function KeywordServicePage({ slug }: Props) {
       {page.engagementModels && (
         <section className="section-padding bg-muted/30">
           <div className="container-custom max-w-5xl">
-            <h2 className="text-2xl md:text-3xl font-display font-bold mb-8">
+            <h2 id="avulso-ou-recorrente" data-toc-anchor className="text-2xl md:text-3xl font-display font-bold mb-8">
               Avulso ou recorrente: como funciona cada opção
             </h2>
             <div className="grid md:grid-cols-2 gap-6">
@@ -361,7 +361,7 @@ export default function KeywordServicePage({ slug }: Props) {
       {page.scopeLimits && (
         <section className="section-padding">
           <div className="container-custom max-w-4xl">
-            <h2 className="text-2xl md:text-3xl font-display font-bold mb-3">
+            <h2 id="limites-do-atendimento" data-toc-anchor className="text-2xl md:text-3xl font-display font-bold mb-3">
               Limites do atendimento: o que não fazemos
             </h2>
             <p className="text-muted-foreground mb-6">

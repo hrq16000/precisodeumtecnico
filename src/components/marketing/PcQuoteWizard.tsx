@@ -131,12 +131,22 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
       "",
       "Li e aceito os termos e condições, a política de preços, a política de peças do cliente e o uso dos meus dados conforme a LGPD.",
       "",
+      "Depois do atendimento, avalie por aqui:",
+      buildReviewLink({
+        protocol,
+        service: "montagem-de-pc",
+        city: city.trim() || undefined,
+        neighborhood: neighborhood.trim() || undefined,
+        source: "pc_quote_wizard",
+      }),
+      "",
       "Origem: source=pc_quote_wizard",
       "service=montagem-de-pc",
       "utm_source=whatsapp_cta",
       `page=${page}`,
     );
     return lines.join("\n");
+
   }
 
   function submit() {

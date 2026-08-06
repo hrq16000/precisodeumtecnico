@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { z } from "zod";
-import { ArrowLeft, ArrowRight, MessageCircle } from "lucide-react";
+import { ArrowLeft, ArrowRight, Download, MessageCircle } from "lucide-react";
 import { buildWhatsAppUrlFromText, readStoredLocation, currentSourcePage } from "@/lib/whatsapp";
 import { trackWhatsAppClick, trackEvent } from "@/lib/analytics";
 
@@ -53,6 +53,7 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [acceptPrices, setAcceptPrices] = useState(false);
   const [acceptParts, setAcceptParts] = useState(false);
+  const [orderProtocol, setOrderProtocol] = useState<string | null>(null);
 
   const page = sourcePage ?? currentSourcePage();
 
@@ -80,10 +81,20 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
 
   const canSubmit = acceptTerms && acceptPrices && (partsBy !== "cliente" || acceptParts);
 
-  function buildMessage(): string {
+  function buildProtocol(): string {
+    const d = new Date();
+    const stamp = `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}${String(
+      d.getDate(),
+    ).padStart(2, "0")}`;
+    const rand = Math.floor(1000 + Math.random() * 9000);
+    return `OS-${stamp}-${rand}`;
+  }
+
+  function buildMessage(protocol: string): string {
     const lines = [
       "Olá! Fiz o orçamento de montagem de PC pelo site.",
       "",
+      `Ordem de serviço (pré-abertura): ${protocol}`,
       "Serviço: Montagem/configuração de desktop ou PC Gamer",
       `Modelo/configuração: ${model.trim()}`,
       `Uso pretendido: ${usage}`,
@@ -106,7 +117,9 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
 
   function submit() {
     if (!canSubmit) return;
-    const url = buildWhatsAppUrlFromText(buildMessage());
+    const protocol = orderProtocol ?? buildProtocol();
+    setOrderProtocol(protocol);
+    const url = buildWhatsAppUrlFromText(buildMessage(protocol));
     trackWhatsAppClick({
       source: "pc_quote_wizard",
       service: "montagem-de-pc",
@@ -116,6 +129,13 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
       cta_label: "Enviar orçamento no WhatsApp",
     });
     window.open(url, "_blank", "noopener,noreferrer");
+  }
+
+  function printServiceOrder() {
+    trackEvent("pc_service_order_download", { page_path: page });
+    document.body.setAttribute("data-print-target", "service-order");
+    window.print();
+    document.body.removeAttribute("data-print-target");
   }
 
   const inputClass =
@@ -344,6 +364,55 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
           </button>
         )}
       </div>
+
+      {orderProtocol && (
+        <div
+          id="pc-service-order"
+          data-service-order
+          className="mt-8 pt-6 border-t border-border"
+        >
+          <h3 className="font-display text-xl font-bold text-card-foreground mb-1">
+            Ordem de serviço {orderProtocol}
+          </h3>
+          <p className="text-sm text-muted-foreground mb-4">
+            Pré-abertura gerada pelo site em {new Date().toLocaleString("pt-BR")}. Serve como
+            comprovante da solicitação; o escopo, o valor e o prazo válidos são os do orçamento
+            confirmado por escrito no atendimento.
+          </p>
+          <div className="grid sm:grid-cols-2 gap-3 mb-4">
+            {[
+              ["Serviço", "Montagem/configuração de desktop ou PC Gamer"],
+              ["Modelo/configuração", model.trim()],
+              ["Uso pretendido", usage],
+              ["Peças", PARTS_LABEL[partsBy]],
+              ["Lista de peças", parts.trim() || "—"],
+              ["Cidade", city.trim() || "—"],
+              ["Bairro", neighborhood.trim() || "—"],
+              [
+                "Aceites",
+                "Termos e condições, política de preços" +
+                  (partsBy === "cliente" ? " e política de peças do cliente" : ""),
+              ],
+            ].map(([label, value]) => (
+              <article key={label} className="p-3 rounded-lg bg-muted/40 border border-border/50">
+                <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  {label}
+                </p>
+                <p className="text-sm text-card-foreground break-words">{value}</p>
+              </article>
+            ))}
+          </div>
+          <button
+            type="button"
+            data-print-service-order
+            onClick={printServiceOrder}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border font-semibold text-foreground hover:bg-muted print:hidden"
+          >
+            <Download className="w-4 h-4" aria-hidden="true" />
+            Baixar ordem de serviço em PDF
+          </button>
+        </div>
+      )}
     </section>
   );
 };

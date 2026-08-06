@@ -482,26 +482,31 @@ body[data-triage-open="true"] footer a[href^="tel:"] {
   pointer-events: none !important;
 }
 
-/* Impressão: exporta apenas o checklist final de montagem (PDF via diálogo do navegador). */
+/* Impressão dirigida: exporta só o bloco alvo (checklist ou ordem de serviço). */
 @media print {
-  body:has(#pc-final-checklist) * {
+  body[data-print-target] * {
     visibility: hidden !important;
   }
-  body:has(#pc-final-checklist) #pc-final-checklist,
-  body:has(#pc-final-checklist) #pc-final-checklist * {
+  body[data-print-target="checklist"] #pc-final-checklist,
+  body[data-print-target="checklist"] #pc-final-checklist *,
+  body[data-print-target="service-order"] #pc-service-order,
+  body[data-print-target="service-order"] #pc-service-order * {
     visibility: visible !important;
     color: #000 !important;
   }
-  body:has(#pc-final-checklist) #pc-final-checklist {
+  body[data-print-target="checklist"] #pc-final-checklist,
+  body[data-print-target="service-order"] #pc-service-order {
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
   }
-  #pc-final-checklist .grid {
+  #pc-final-checklist .grid,
+  #pc-service-order .grid {
     display: block !important;
   }
-  #pc-final-checklist article {
+  #pc-final-checklist article,
+  #pc-service-order article {
     break-inside: avoid;
     border: 1px solid #ccc;
     margin-bottom: 12px;

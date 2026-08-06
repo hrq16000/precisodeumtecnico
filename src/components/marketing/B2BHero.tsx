@@ -19,13 +19,37 @@ interface Props {
   waSource: string;
   waService: string;
   triage?: { source: string; category?: string; city?: string };
+  /**
+   * Rodada 3S — hub e serviço compartilham a linguagem, não o layout:
+   * "hub" usa bloco de ação lateral (amplitude), "service" usa faixa de
+   * ação em largura total logo abaixo do resumo (execução).
+   */
+  variant?: "hub" | "service";
+  /** Rótulo do CTA primário (contexto empresarial da página). */
+  ctaLabel?: string;
+  /** Título do bloco de ação. */
+  actionTitle?: string;
 }
 
-export function B2BHero({ kicker, title, intro, chips, waUrl, waSource, waService, triage }: Props) {
+export function B2BHero({
+  kicker,
+  title,
+  intro,
+  chips,
+  waUrl,
+  waSource,
+  waService,
+  triage,
+  variant = "hub",
+  ctaLabel = "Iniciar triagem empresarial",
+  actionTitle = "Avaliação do cenário da empresa",
+}: Props) {
+  const isService = variant === "service";
   return (
     <section
       data-b2b-hero
-      className="relative border-b border-border bg-secondary/40 py-8 md:py-14"
+      data-b2b-variant={variant}
+      className={`relative border-b border-border py-8 md:py-14 ${isService ? "bg-card" : "bg-secondary/40"}`}
     >
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.35] [background-image:linear-gradient(to_right,hsl(var(--border))_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--border))_1px,transparent_1px)] [background-size:56px_56px]"
@@ -37,7 +61,7 @@ export function B2BHero({ kicker, title, intro, chips, waUrl, waSource, waServic
           {kicker}
         </p>
 
-        <div className="grid gap-6 md:grid-cols-[1.35fr_1fr] md:items-start">
+        <div className={isService ? "grid gap-5" : "grid gap-6 md:grid-cols-[1.35fr_1fr] md:items-start"}>
           <div>
             <h1 className="mb-3 text-2xl font-bold leading-tight text-foreground md:text-4xl">
               {title}
@@ -47,22 +71,22 @@ export function B2BHero({ kicker, title, intro, chips, waUrl, waSource, waServic
             </p>
           </div>
 
-          {/* Bloco de ação B2B: fica ao lado no desktop e logo abaixo no mobile. */}
-          <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
-            <p className="mb-3 text-sm font-semibold text-card-foreground">
-              Avaliação do cenário da empresa
-            </p>
-            <div className="flex flex-col gap-2">
+          {/* Bloco de ação B2B: lateral no hub, faixa em largura total no serviço. */}
+          <div
+            className={`rounded-xl border border-border p-4 shadow-sm ${isService ? "bg-background" : "bg-card"}`}
+          >
+            <p className="mb-3 text-sm font-semibold text-card-foreground">{actionTitle}</p>
+            <div className={isService ? "flex flex-col gap-2 sm:flex-row sm:items-center" : "flex flex-col gap-2"}>
               {triage && (
                 <Button
                   size="lg"
-                  className="min-h-11 w-full justify-center"
+                  className={`min-h-11 w-full justify-center ${isService ? "sm:w-auto" : ""}`}
                   data-triage-cta
                   data-triage-source={triage.source}
                   data-triage-category={triage.category}
                   data-triage-city={triage.city}
                 >
-                  Iniciar triagem empresarial
+                  {ctaLabel}
                   <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
                 </Button>
               )}
@@ -73,7 +97,7 @@ export function B2BHero({ kicker, title, intro, chips, waUrl, waSource, waServic
                 data-wa-source={waSource}
                 data-service={waService}
                 aria-label={`Falar no WhatsApp sobre ${waService}`}
-                className="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg border border-border bg-background px-4 text-sm font-semibold text-foreground transition-colors hover:bg-muted"
+                className={`inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg border border-border bg-background px-4 text-sm font-semibold text-foreground transition-colors hover:bg-muted ${isService ? "sm:w-auto" : ""}`}
               >
                 <MessageCircle className="h-4 w-4 text-primary" aria-hidden="true" />
                 Descrever o cenário no WhatsApp

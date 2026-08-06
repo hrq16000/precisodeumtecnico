@@ -138,7 +138,23 @@ const servicesData: Record<string, {
     ],
     category: "Ar-Condicionado",
   },
+  "pc-gamer": {
+    title: SERVICES["pc-gamer"].title,
+    subtitle: SERVICES["pc-gamer"].subtitle,
+    description: SERVICES["pc-gamer"].description,
+    longDescription: [SERVICES["pc-gamer"].longDescription],
+    benefits: [...SERVICES["pc-gamer"].benefits],
+    process: [...SERVICES["pc-gamer"].process],
+    faqs: [...SERVICES["pc-gamer"].faqs],
+    relatedServices: [
+      { name: "Informática", href: "/servicos/informatica" },
+      { name: "Upgrade de SSD", href: "/upgrade-ssd-curitiba" },
+      { name: "Upgrade de Memória RAM", href: "/upgrade-memoria-ram-curitiba" },
+    ],
+    category: "Informática",
+  },
 };
+
 
 // Default data for services not in the mapping
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

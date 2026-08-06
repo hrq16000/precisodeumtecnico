@@ -477,8 +477,11 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
             />
             <span>
               Autorizo o uso dos dados informados (equipamento, peças, cidade e bairro) apenas para
-              atendimento e emissão da ordem de serviço, conforme a LGPD. Posso solicitar correção
-              ou exclusão pelo mesmo canal de atendimento.
+              atendimento e emissão da ordem de serviço, conforme a{" "}
+              <Link to="/politica-privacidade" className="text-primary hover:underline">
+                Política de Privacidade e LGPD
+              </Link>
+              . Posso solicitar correção ou exclusão pelo mesmo canal de atendimento.
             </span>
           </label>
           {showAcceptErrors && !canSubmit && (

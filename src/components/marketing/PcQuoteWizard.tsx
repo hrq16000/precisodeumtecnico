@@ -291,7 +291,8 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
             </label>
             <textarea
               id="pcq-parts"
-              className={inputClass}
+              className={inputClass(errors.parts)}
+
               rows={3}
               maxLength={600}
               value={parts}

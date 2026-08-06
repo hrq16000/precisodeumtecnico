@@ -80,10 +80,20 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
 
   const canSubmit = acceptTerms && acceptPrices && (partsBy !== "cliente" || acceptParts);
 
-  function buildMessage(): string {
+  function buildProtocol(): string {
+    const d = new Date();
+    const stamp = `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}${String(
+      d.getDate(),
+    ).padStart(2, "0")}`;
+    const rand = Math.floor(1000 + Math.random() * 9000);
+    return `OS-${stamp}-${rand}`;
+  }
+
+  function buildMessage(protocol: string): string {
     const lines = [
       "Olá! Fiz o orçamento de montagem de PC pelo site.",
       "",
+      `Ordem de serviço (pré-abertura): ${protocol}`,
       "Serviço: Montagem/configuração de desktop ou PC Gamer",
       `Modelo/configuração: ${model.trim()}`,
       `Uso pretendido: ${usage}`,
@@ -106,7 +116,9 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
 
   function submit() {
     if (!canSubmit) return;
-    const url = buildWhatsAppUrlFromText(buildMessage());
+    const protocol = orderProtocol ?? buildProtocol();
+    setOrderProtocol(protocol);
+    const url = buildWhatsAppUrlFromText(buildMessage(protocol));
     trackWhatsAppClick({
       source: "pc_quote_wizard",
       service: "montagem-de-pc",
@@ -116,6 +128,13 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
       cta_label: "Enviar orçamento no WhatsApp",
     });
     window.open(url, "_blank", "noopener,noreferrer");
+  }
+
+  function printServiceOrder() {
+    trackEvent("pc_service_order_download", { page_path: page });
+    document.body.setAttribute("data-print-target", "service-order");
+    window.print();
+    document.body.removeAttribute("data-print-target");
   }
 
   const inputClass =

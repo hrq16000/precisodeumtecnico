@@ -35,6 +35,8 @@ const Admin = lazy(() => import("./pages/Admin"));
 const TermosOrcamento = lazy(() => import("./pages/TermosOrcamento"));
 const PoliticaPecasCliente = lazy(() => import("./pages/PoliticaPecasCliente"));
 const PoliticaPrivacidade = lazy(() => import("./pages/PoliticaPrivacidade"));
+const ComoAvaliar = lazy(() => import("./pages/ComoAvaliar"));
+
 const ComoFuncionaPcGamer = lazy(() => import("./pages/ComoFuncionaPcGamer"));
 const AvaliarAtendimento = lazy(() => import("./pages/AvaliarAtendimento"));
 const ServicoCidade = lazy(() => import("./pages/ServicoCidade"));
@@ -117,6 +119,8 @@ const App = () => (
                 <Route path="/politica-de-pecas-do-cliente" element={<PoliticaPecasCliente />} />
                 <Route path="/politica-privacidade" element={<PoliticaPrivacidade />} />
                 <Route path="/politica-de-privacidade" element={<PoliticaPrivacidade />} />
+                <Route path="/como-avaliar" element={<ComoAvaliar />} />
+
                 <Route path="/termos-uso" element={<TermosOrcamento />} />
                 <Route path="/servico-em/:city/:service" element={<ServicoCidade />} />
                 <Route path="/precos" element={<Precos />} />

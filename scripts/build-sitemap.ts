@@ -91,6 +91,9 @@ const mainUrls: Url[] = [
   { loc: `${BASE}/status-os`, changefreq: "weekly", priority: 0.6, lastmod: fileDate("src/pages/StatusOrdemServico.tsx") },
   { loc: `${BASE}/exclusao-de-dados`, changefreq: "yearly", priority: 0.4, lastmod: fileDate("src/pages/ExclusaoDeDados.tsx") },
 
+  { loc: `${BASE}/guias/organizacao-de-ti-para-pequenos-escritorios`, changefreq: "monthly", priority: 0.7, lastmod: fileDate("src/data/enterpriseGuides.ts") },
+  { loc: `${BASE}/guias/como-escolher-uma-workstation`, changefreq: "monthly", priority: 0.7, lastmod: fileDate("src/data/enterpriseGuides.ts") },
+
   { loc: `${BASE}/servicos/pc-gamer/como-funciona`, changefreq: "monthly", priority: 0.75, lastmod: fileDate("src/pages/ComoFuncionaPcGamer.tsx") },
   { loc: `${BASE}/blog`, changefreq: "weekly", priority: 0.9, lastmod: blogMtime },
   { loc: `${BASE}/precos`, changefreq: "weekly", priority: 0.85, lastmod: precosMtime },

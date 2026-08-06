@@ -150,6 +150,11 @@ Deno.serve(async (req) => {
 
   const status = sitemapOk && robots.ok ? (indexNow.ok ? "healthy" : "degraded") : "unhealthy";
 
+  // Alertas: disparados apenas quando o status sai de "healthy".
+  // Canais são opcionais — cada um só é usado se o segredo correspondente existir.
+  const alerts = await dispatchAlerts(status, origin, issues);
+
+
   return new Response(
     JSON.stringify({
       status,

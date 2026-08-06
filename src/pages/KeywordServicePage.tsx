@@ -23,6 +23,8 @@ import {
 } from "@/components/ui/accordion";
 import { SmartImage } from "@/components/SmartImage";
 import { InternalLinkCluster } from "@/components/seo/InternalLinkCluster";
+import { RelatedServiceLinks } from "@/components/seo/RelatedServiceLinks";
+
 import { AuthoritySince } from "@/components/marketing/AuthoritySince";
 import { COMPANY } from "@/data/companyInfo";
 import { KEYWORD_SERVICE_BY_SLUG } from "@/data/keywordServices";

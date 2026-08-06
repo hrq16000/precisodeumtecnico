@@ -1,12 +1,24 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { Search, CheckCircle2, Circle, Clock, AlertCircle, MessageCircle } from "lucide-react";
+import {
+  Search,
+  CheckCircle2,
+  Circle,
+  Clock,
+  AlertCircle,
+  MessageCircle,
+  Copy,
+  Check,
+  Star,
+} from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { QrCode } from "@/components/QrCode";
 import { supabase } from "@/integrations/supabase/client";
 import { trackEvent } from "@/lib/analytics";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import {
   OS_STAGES,
   stageIndex,
@@ -14,7 +26,8 @@ import {
   formatEta,
   type ServiceOrderStatus,
 } from "@/lib/serviceOrder";
-import { SITE_ORIGIN } from "@/lib/reviews";
+import { SITE_ORIGIN, buildReviewLink } from "@/lib/reviews";
+
 
 const faq = [
   {
@@ -37,7 +50,19 @@ const faq = [
     answer:
       "Pode, quando depende de peça de terceiros ou de aprovação de escopo adicional. Qualquer alteração de prazo é comunicada no WhatsApp e refletida aqui na consulta por protocolo.",
   },
+  {
+    question: "Qual é o formato correto do número da OS?",
+    answer:
+      "O protocolo segue o formato OS-ANO-NÚMERO, por exemplo OS-2026-0001. A consulta aceita letras minúsculas e espaços, mas não aceita números com menos de 4 caracteres nem apenas o nome do cliente.",
+  },
+  {
+    question: "Como compartilho o acompanhamento com outra pessoa?",
+    answer:
+      "Depois de consultar, use o botão de copiar link ou o QR code exibido junto ao resultado. O link já vem com o número da OS e abre direto na etapa atual, sem cadastro e sem expor dados pessoais.",
+  },
 ];
+
+const PROTOCOL_HINT = "Use o formato OS-ANO-NÚMERO (ex.: OS-2026-0001).";
 
 export default function StatusOrdemServico() {
   const [params, setParams] = useSearchParams();
@@ -45,10 +70,51 @@ export default function StatusOrdemServico() {
   const [loading, setLoading] = useState(false);
   const [order, setOrder] = useState<ServiceOrderStatus | null>(null);
   const [notFound, setNotFound] = useState(false);
+  const [invalid, setInvalid] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const whatsappHelpUrl = buildWhatsAppUrl({
+    service: "acompanhamento de Ordem de Serviço",
+  });
+
+  /** Link público da consulta, preservando os UTMs de origem do usuário. */
+  const shareUrl = useMemo(() => {
+    if (!order) return "";
+    const url = new URL("/status-os", SITE_ORIGIN);
+    url.searchParams.set("os", order.protocol);
+    params.forEach((value, key) => {
+      if (key.startsWith("utm_")) url.searchParams.set(key, value);
+    });
+    return url.toString();
+  }, [order, params]);
+
+  /** Link de avaliação reenviado mantendo os mesmos UTMs da origem. */
+  const reviewUrl = useMemo(() => {
+    if (!order) return "";
+    const base = new URL(
+      buildReviewLink({
+        protocol: order.protocol,
+        service: order.service ?? undefined,
+        city: order.city ?? undefined,
+        neighborhood: order.neighborhood ?? undefined,
+        source: "status_os",
+      }),
+    );
+    params.forEach((value, key) => {
+      if (key.startsWith("utm_")) base.searchParams.set(key, value);
+    });
+    return base.toString();
+  }, [order, params]);
 
   async function lookup(value: string) {
     const normalized = normalizeProtocol(value);
-    if (normalized.length < 4) return;
+    if (normalized.length < 4) {
+      setInvalid(true);
+      setNotFound(false);
+      setOrder(null);
+      return;
+    }
+    setInvalid(false);
     setLoading(true);
     setNotFound(false);
     setOrder(null);
@@ -72,7 +138,26 @@ export default function StatusOrdemServico() {
     void lookup(normalized);
   }
 
+  async function copyShareLink() {
+    if (!shareUrl) return;
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopied(true);
+      trackEvent("os_status_share_copy", { has_utm: shareUrl.includes("utm_") });
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setCopied(false);
+    }
+  }
+
   const current = order ? stageIndex(order.status) : -1;
+  const stampFor = (i: number) => {
+    if (!order) return null;
+    if (i === 0) return new Date(order.created_at);
+    if (i === current) return new Date(order.updated_at);
+    return null;
+  };
+
 
   return (
     <Layout>
@@ -119,23 +204,56 @@ export default function StatusOrdemServico() {
             </Button>
           </form>
 
-          {notFound && (
+          {invalid && (
             <div
-              role="status"
+              role="alert"
               className="flex gap-3 rounded-lg border border-destructive/40 bg-destructive/5 p-4 mb-10"
             >
               <AlertCircle className="w-5 h-5 text-destructive shrink-0 mt-0.5" />
               <div className="text-sm">
-                <p className="font-semibold text-foreground mb-1">
-                  Não encontramos nenhuma OS com esse número.
-                </p>
-                <p className="text-muted-foreground">
-                  Confira o protocolo enviado no WhatsApp (formato OS-ANO-NÚMERO). Se o atendimento
-                  foi solicitado há poucos minutos, o registro pode ainda não estar publicado.
-                </p>
+                <p className="font-semibold text-foreground mb-1">Número de OS inválido.</p>
+                <p className="text-muted-foreground">{PROTOCOL_HINT}</p>
               </div>
             </div>
           )}
+
+          {notFound && (
+            <div
+              role="status"
+              className="rounded-lg border border-destructive/40 bg-destructive/5 p-4 mb-10"
+            >
+              <div className="flex gap-3">
+                <AlertCircle className="w-5 h-5 text-destructive shrink-0 mt-0.5" />
+                <div className="text-sm">
+                  <p className="font-semibold text-foreground mb-1">
+                    Não encontramos nenhuma OS com esse número.
+                  </p>
+                  <p className="text-muted-foreground">
+                    {PROTOCOL_HINT} Se o atendimento foi solicitado há poucos minutos, o registro
+                    pode ainda não estar publicado.
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-3 mt-4">
+                <Button variant="whatsapp" size="sm" asChild>
+                  <a
+                    href={whatsappHelpUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-wa-source="status-os-notfound"
+                    data-service="acompanhamento de Ordem de Serviço"
+                  >
+                    <MessageCircle className="w-4 h-4 mr-2" />
+                    Confirmar minha OS no WhatsApp
+                  </a>
+                </Button>
+                <Button variant="outline" size="sm" asChild>
+                  <Link to="/contato">Outros canais de contato</Link>
+                </Button>
+              </div>
+            </div>
+          )}
+
 
           {order && (
             <div className="rounded-xl border border-border bg-card p-6 mb-10">
@@ -183,6 +301,14 @@ export default function StatusOrdemServico() {
                         </p>
                         <p className="text-sm text-muted-foreground">{stage.description}</p>
                         <p className="text-xs text-muted-foreground/80 mt-0.5">{stage.slaText}</p>
+                        {stampFor(i) && (
+                          <p className="text-xs font-medium text-foreground/80 mt-1">
+                            {i === 0 ? "Registrado em" : "Atualizado em"}{" "}
+                            <time dateTime={stampFor(i)!.toISOString()}>
+                              {stampFor(i)!.toLocaleString("pt-BR")}
+                            </time>
+                          </p>
+                        )}
                       </div>
                     </li>
                   );
@@ -195,8 +321,43 @@ export default function StatusOrdemServico() {
                   {order.public_note}
                 </p>
               )}
+
+              <div className="mt-6 border-t border-border pt-6 flex flex-col sm:flex-row gap-6 sm:items-center">
+                <QrCode
+                  value={shareUrl}
+                  alt={`QR code para acompanhar a OS ${order.protocol}`}
+                  size={128}
+                  className="rounded-lg border border-border bg-background p-2"
+                />
+                <div className="flex-1">
+                  <p className="text-sm text-muted-foreground mb-3">
+                    Aponte a câmera do celular para acompanhar esta OS, ou copie o link para enviar a
+                    quem estiver acompanhando o atendimento.
+                  </p>
+                  <div className="flex flex-wrap gap-3">
+                    <Button type="button" variant="outline" size="sm" onClick={copyShareLink}>
+                      {copied ? (
+                        <Check className="w-4 h-4 mr-2" />
+                      ) : (
+                        <Copy className="w-4 h-4 mr-2" />
+                      )}
+                      {copied ? "Link copiado" : "Copiar link da OS"}
+                    </Button>
+                    <Button variant="outline" size="sm" asChild>
+                      <a
+                        href={reviewUrl}
+                        onClick={() => trackEvent("os_review_link_resend", { source: "status_os" })}
+                      >
+                        <Star className="w-4 h-4 mr-2" />
+                        Reenviar link de avaliação
+                      </a>
+                    </Button>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
+
 
           <div className="rounded-xl border border-border p-6">
             <h2 className="font-display text-xl font-bold text-foreground mb-4">

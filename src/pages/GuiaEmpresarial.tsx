@@ -34,6 +34,9 @@ export default function GuiaEmpresarial({ slug }: Props) {
     sourcePage: guide.path,
   });
 
+  /** Landings B2B usam template próprio; guias mantêm o layout editorial. */
+  const isB2BLanding = ENTERPRISE_LANDINGS.some((l) => l.slug === guide.slug);
+
   /** Sumário gerado dos headings reais da página, incluindo as seções fixas. */
   const tocItems: TocItem[] = [
     ...guide.sections.map((s) => ({ id: s.id, label: s.title.replace(/^\d+\.\s*/, "") })),
@@ -42,7 +45,8 @@ export default function GuiaEmpresarial({ slug }: Props) {
     { id: "faq", label: "Perguntas frequentes" },
   ];
 
-
+  /** Chips de escopo derivados das primeiras seções reais (sem claim novo). */
+  const heroChips = guide.sections.slice(0, 4).map((s) => s.title.replace(/^\d+\.\s*/, ""));
 
   const articleSchema = {
     "@context": "https://schema.org",
@@ -56,6 +60,30 @@ export default function GuiaEmpresarial({ slug }: Props) {
     articleSection: "Guias empresariais",
   };
 
+  /** WebPage canônica das landings B2B (evita Article fora de contexto). */
+  const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `${canonical}#webpage`,
+    name: guide.title,
+    description: guide.metaDescription,
+    url: canonical,
+    inLanguage: "pt-BR",
+    isPartOf: { "@type": "WebSite", name: "Preciso de um Técnico", url: `${BASE}/` },
+  };
+
+  /** Breadcrumb padronizado: Início › Empresas › página. */
+  const breadcrumbs = isB2BLanding
+    ? [
+        { name: "Início", url: `${BASE}/` },
+        { name: "Empresas", url: `${BASE}/servicos/suporte-tecnico-empresarial` },
+        { name: guide.title, url: canonical },
+      ]
+    : [
+        { name: "Início", url: `${BASE}/` },
+        { name: guide.title, url: canonical },
+      ];
+
   return (
     <Layout>
       <SEOHead
@@ -63,14 +91,12 @@ export default function GuiaEmpresarial({ slug }: Props) {
         description={guide.metaDescription}
         canonical={canonical}
         type={guide.serviceSchema ? "service" : "article"}
-        breadcrumbs={[
-          { name: "Início", url: `${BASE}/` },
-          { name: guide.title, url: canonical },
-        ]}
+        breadcrumbs={breadcrumbs}
         faq={guide.faq}
         service={guide.serviceSchema}
-        structuredData={guide.serviceSchema ? [] : [articleSchema]}
+        structuredData={isB2BLanding ? [webPageSchema] : guide.serviceSchema ? [] : [articleSchema]}
       />
+
 
       <article>
         {/* Hero compacto no mobile para manter o CTA visível na primeira dobra. */}

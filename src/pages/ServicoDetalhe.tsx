@@ -336,6 +336,9 @@ const ServicoDetalhe = () => {
               {slug === "pc-gamer" && (
                 <div className="mb-12">
                   <PcAssemblyPolicySections />
+                  <div className="mt-8">
+                    <PcQuoteWizard sourcePage="/servicos/pc-gamer" />
+                  </div>
                   <div className="mt-8 p-5 rounded-xl border border-border bg-card">
                     <p className="font-bold text-card-foreground mb-1">
                       Vai fornecer as peças?

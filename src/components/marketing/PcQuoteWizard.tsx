@@ -564,6 +564,8 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
               ["Lista de peças", parts.trim() || "—"],
               ["Cidade", city.trim() || "—"],
               ["Bairro", neighborhood.trim() || "—"],
+              ["Período preferido", preferredPeriod || "Sem preferência"],
+              ["Dia preferido", preferredDay.trim() || "—"],
               [
                 "Aceites",
                 "Termos e condições, política de preços, consentimento LGPD" +

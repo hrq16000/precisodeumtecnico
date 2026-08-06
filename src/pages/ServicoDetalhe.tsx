@@ -336,6 +336,21 @@ const ServicoDetalhe = () => {
               {slug === "pc-gamer" && (
                 <div className="mb-12">
                   <PcAssemblyPolicySections />
+                  <div className="mt-8 p-5 rounded-xl border border-border bg-card">
+                    <p className="font-bold text-card-foreground mb-1">
+                      Vai fornecer as peças?
+                    </p>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      Leia a política completa de compatibilidade, procedência, integridade,
+                      prazos de troca e garantia da peça versus mão de obra.
+                    </p>
+                    <Link
+                      to="/politica-de-pecas-do-cliente"
+                      className="inline-flex items-center gap-2 font-semibold text-primary hover:underline"
+                    >
+                      Ver política de peças do cliente →
+                    </Link>
+                  </div>
                 </div>
               )}
 

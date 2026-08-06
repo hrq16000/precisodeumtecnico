@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
-import { ArrowRight, ShieldCheck, Home, Clock, Wifi, CheckCircle2, HelpCircle, Router } from "lucide-react";
+import { ArrowRight, ShieldCheck, Home, Clock, Wifi, CheckCircle2, HelpCircle, Router, Printer, AlertTriangle } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import {
@@ -51,6 +51,44 @@ const INCLUDES = [
   "Análise e mudança de canal Wi-Fi (2,4 e 5 GHz)",
   "Recomendações por escrito de upgrade, se necessário",
 ];
+/**
+ * Escopo de impressoras/periféricos tratado nesta página: exclusivamente
+ * conectividade e compartilhamento em rede. Reparo mecânico ou eletrônico
+ * está explicitamente fora e é sinalizado na própria seção.
+ */
+const PRINTER_NETWORK_SCOPE = [
+  {
+    title: "Impressora sumiu depois de trocar o roteador",
+    description:
+      "Reconexão do equipamento ao SSID correto e ajuste do endereço IP para ele não mudar a cada reinício da rede.",
+  },
+  {
+    title: "Compartilhamento entre computadores",
+    description:
+      "Configuração para que todas as máquinas da casa ou do escritório enxerguem e usem a mesma impressora.",
+  },
+  {
+    title: "Driver oficial e fila de impressão",
+    description:
+      "Instalação do driver do fabricante no computador e liberação de trabalhos travados na fila de impressão.",
+  },
+  {
+    title: "Descoberta na rede e comunicação",
+    description:
+      "Verificação de por que o dispositivo não aparece: faixa de IP diferente, isolamento de clientes no roteador ou rede de visitantes.",
+  },
+  {
+    title: "Scanner em rede, quando suportado",
+    description:
+      "Configuração da digitalização para o computador nos modelos que oferecem esse recurso de fábrica.",
+  },
+  {
+    title: "Armazenamento simples em rede",
+    description:
+      "Compartilhamento de pastas entre computadores da mesma rede, dentro do que o equipamento existente permite.",
+  },
+];
+
 
 function openTriage() {
   window.dispatchEvent(
@@ -243,6 +281,100 @@ export default function ConfiguracaoWifiCuritiba() {
         intro="Exemplos ilustrativos de cobertura por cômodo e da configuração de mesh integrado. Não são fotos de atendimentos reais."
         items={GALLERY}
       />
+
+      <section
+        id="impressoras-e-perifericos-em-rede"
+        aria-labelledby="impressoras-rede-titulo"
+        className="py-16 md:py-20 border-t border-border"
+      >
+        <div className="container-custom max-w-4xl">
+          <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-semibold text-primary">
+            <Printer className="w-3.5 h-3.5" /> Dispositivos conectados à rede
+          </span>
+          <h2
+            id="impressoras-rede-titulo"
+            className="mt-4 text-2xl md:text-3xl font-extrabold tracking-tight text-foreground"
+          >
+            Impressoras e periféricos em rede
+          </h2>
+          <p className="mt-3 text-muted-foreground">
+            Impressora que some da rede depois de trocar o roteador, computador novo que não
+            enxerga a multifuncional, digitalização que parou de chegar no PC, trabalho que fica
+            preso na fila. São problemas de <strong className="text-foreground">rede e
+            configuração</strong>, não de peça — e é exatamente esse recorte que atendemos aqui,
+            junto com a visita de Wi-Fi.
+          </p>
+
+          <div className="mt-8 grid gap-4 md:grid-cols-2">
+            {PRINTER_NETWORK_SCOPE.map((item) => (
+              <div key={item.title} className="rounded-lg border border-border bg-card p-5">
+                <h3 className="font-bold text-foreground">{item.title}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{item.description}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-8 rounded-lg border border-warning/40 bg-warning/5 p-5 flex gap-3">
+            <AlertTriangle className="w-5 h-5 text-warning shrink-0 mt-0.5" aria-hidden="true" />
+            <div>
+              <h3 className="font-bold text-foreground">Até onde vai esse atendimento</h3>
+              <p className="mt-2 text-sm text-muted-foreground">
+                O atendimento de impressoras e periféricos nesta página se limita à configuração,
+                comunicação e compartilhamento em rede. Defeitos mecânicos ou eletrônicos dependem
+                de assistência específica para o equipamento.
+              </p>
+              <p className="mt-3 text-sm text-muted-foreground">
+                Não fazemos, nesta modalidade: reparo mecânico, troca de cabeçote, recarga de
+                cartucho ou toner, manutenção de fusor, reparo eletrônico, conserto de placa,
+                manutenção de plotter nem fornecimento de suprimentos. Equipamentos muito antigos
+                podem não ter driver compatível com o sistema atual — quando for o caso, avisamos
+                antes de qualquer cobrança adicional.
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-8 rounded-lg border border-border bg-muted/30 p-5">
+            <h3 className="font-bold text-foreground">O que a visita costuma resolver</h3>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Na prática, a maior parte dos chamados de impressora que chegam junto com Wi-Fi se
+              resolve reconectando o equipamento à rede correta, fixando o endereço IP para ele não
+              mudar a cada reinício do roteador, reinstalando o driver oficial do fabricante no
+              computador e liberando a fila de impressão travada. Em escritórios, acrescenta-se o
+              compartilhamento entre as máquinas e a verificação de que a rede permite a descoberta
+              do dispositivo. Tudo isso entra na mesma visita de rede, sem cobrança de um
+              atendimento separado.
+            </p>
+          </div>
+
+          <div className="mt-6 flex flex-wrap gap-3 text-sm">
+            <Link to="/suporte-tecnico-remoto" className="text-primary font-semibold hover:underline">
+              Suporte técnico remoto
+            </Link>
+            <span className="text-muted-foreground" aria-hidden="true">·</span>
+            <Link
+              to="/assistencia-tecnica-empresas-curitiba"
+              className="text-primary font-semibold hover:underline"
+            >
+              Suporte técnico para empresas em Curitiba
+            </Link>
+            <span className="text-muted-foreground" aria-hidden="true">·</span>
+            <Link to="/servicos" className="text-primary font-semibold hover:underline">
+              Equipamentos e serviços atendidos
+            </Link>
+          </div>
+
+          <div className="mt-6">
+            <Button
+              onClick={openTriage}
+              data-triage-source="servicos_configuracao_wifi_curitiba_impressora"
+              data-triage-category="pc"
+            >
+              Descrever o problema na triagem <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
+          </div>
+        </div>
+      </section>
+
 
       <section className="py-12 md:py-16 border-t border-border bg-muted/30">
         <div className="container-custom max-w-5xl">

@@ -9,6 +9,7 @@ import {
   ArrowRight, MapPin, Star
 } from "lucide-react";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
+import NotFound from "@/pages/NotFound";
 import {
   getTestimonialsForService,
   buildServiceReviewsSchema,
@@ -140,6 +141,7 @@ const servicesData: Record<string, {
 };
 
 // Default data for services not in the mapping
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const defaultServiceData = {
   title: "Serviço Técnico Especializado",
   subtitle: "Assistência técnica de qualidade",
@@ -182,12 +184,15 @@ const defaultServiceData = {
 const ServicoDetalhe = () => {
   const { slug } = useParams<{ slug: string }>();
   const hasCuratedEntry = !!(slug && servicesData[slug]);
-  const service = hasCuratedEntry ? servicesData[slug!] : defaultServiceData;
 
-  // Generate title from slug if not in database
-  const displayTitle = slug && !servicesData[slug]
-    ? slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
-    : service.title;
+  // Rodada 3L — anti soft-404: slug fora do catálogo curado não pode render
+  // uma página genérica indexável (era assim que /servicos/<qualquer-coisa>
+  // "existia"). Sem entrada curada, a rota responde como não encontrada.
+  if (!hasCuratedEntry) return <NotFound />;
+
+  const service = servicesData[slug!];
+  const displayTitle = service.title;
+
 
   const whatsappLink = buildWhatsAppUrl({ service: displayTitle, sourcePage: `/servicos/${slug ?? ""}` });
 

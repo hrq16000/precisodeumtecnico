@@ -87,6 +87,9 @@ const mainUrls: Url[] = [
   { loc: `${BASE}/politica-de-pecas-do-cliente`, changefreq: "monthly", priority: 0.6, lastmod: fileDate("src/pages/PoliticaPecasCliente.tsx") },
   { loc: `${BASE}/politica-privacidade`, changefreq: "yearly", priority: 0.4, lastmod: fileDate("src/pages/PoliticaPrivacidade.tsx") },
   { loc: `${BASE}/como-avaliar`, changefreq: "monthly", priority: 0.5, lastmod: fileDate("src/pages/ComoAvaliar.tsx") },
+  { loc: `${BASE}/avaliacoes`, changefreq: "weekly", priority: 0.75, lastmod: fileDate("src/pages/Avaliacoes.tsx") },
+  { loc: `${BASE}/status-os`, changefreq: "weekly", priority: 0.6, lastmod: fileDate("src/pages/StatusOrdemServico.tsx") },
+  { loc: `${BASE}/exclusao-de-dados`, changefreq: "yearly", priority: 0.4, lastmod: fileDate("src/pages/ExclusaoDeDados.tsx") },
 
   { loc: `${BASE}/servicos/pc-gamer/como-funciona`, changefreq: "monthly", priority: 0.75, lastmod: fileDate("src/pages/ComoFuncionaPcGamer.tsx") },
   { loc: `${BASE}/blog`, changefreq: "weekly", priority: 0.9, lastmod: blogMtime },

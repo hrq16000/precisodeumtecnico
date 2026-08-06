@@ -36,6 +36,9 @@ const TermosOrcamento = lazy(() => import("./pages/TermosOrcamento"));
 const PoliticaPecasCliente = lazy(() => import("./pages/PoliticaPecasCliente"));
 const PoliticaPrivacidade = lazy(() => import("./pages/PoliticaPrivacidade"));
 const ComoAvaliar = lazy(() => import("./pages/ComoAvaliar"));
+const Avaliacoes = lazy(() => import("./pages/Avaliacoes"));
+const StatusOrdemServico = lazy(() => import("./pages/StatusOrdemServico"));
+const ExclusaoDeDados = lazy(() => import("./pages/ExclusaoDeDados"));
 
 const ComoFuncionaPcGamer = lazy(() => import("./pages/ComoFuncionaPcGamer"));
 const AvaliarAtendimento = lazy(() => import("./pages/AvaliarAtendimento"));
@@ -120,6 +123,10 @@ const App = () => (
                 <Route path="/politica-privacidade" element={<PoliticaPrivacidade />} />
                 <Route path="/politica-de-privacidade" element={<PoliticaPrivacidade />} />
                 <Route path="/como-avaliar" element={<ComoAvaliar />} />
+                <Route path="/avaliacoes" element={<Avaliacoes />} />
+                <Route path="/status-os" element={<StatusOrdemServico />} />
+                <Route path="/status-da-ordem-de-servico" element={<StatusOrdemServico />} />
+                <Route path="/exclusao-de-dados" element={<ExclusaoDeDados />} />
 
                 <Route path="/termos-uso" element={<TermosOrcamento />} />
                 <Route path="/servico-em/:city/:service" element={<ServicoCidade />} />

@@ -101,7 +101,7 @@ interface Props {
 export function EnterpriseLinkCluster({
   currentPath,
   title = "Continue pelo contexto empresarial",
-  limit = 8,
+  limit = 12,
 }: Props) {
   const links = ENTERPRISE_LINKS.filter((l) => l.to !== currentPath).slice(0, limit);
   if (!links.length) return null;

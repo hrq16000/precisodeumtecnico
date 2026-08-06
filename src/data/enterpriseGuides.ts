@@ -142,7 +142,97 @@ export const IT_OFFICE_GUIDE: EnterpriseGuide = {
         "Servidor ou storage inacessível para mais de um posto ao mesmo tempo.",
       ],
     },
+    {
+      id: "sistemas-terceiros",
+      title: "7. Sistemas, licenças e fornecedores externos",
+      paragraphs: [
+        "Boa parte do que trava o dia a dia de um escritório não roda no computador: roda em sistema de gestão, emissor fiscal, plataforma contábil ou serviço de e-mail mantido por outra empresa. Quando esse tipo de sistema apresenta erro, o caminho de solução passa pelo fornecedor responsável, e não pela máquina do usuário.",
+        "Ter acesso ao computador não significa ter controle sobre sistemas mantidos por terceiros. Falhas internas da plataforma podem depender do fornecedor responsável. Registrar essa camada com antecedência encurta o tempo de resposta, porque evita a busca por contato e senha no momento da parada.",
+      ],
+      bullets: [
+        "Nome do sistema e para que ele é usado dentro do escritório.",
+        "Fornecedor, canal oficial de suporte e horário de atendimento.",
+        "Responsável interno pelo relacionamento com aquele fornecedor.",
+        "Licença contratada, forma de renovação e data aproximada de vencimento.",
+        "E-mail de recuperação da conta e quem tem acesso a ele.",
+        "Restrições de acesso: quem pode alterar cadastro, emitir documento ou excluir registro.",
+        "Documentação ou manual disponibilizado pelo fornecedor.",
+      ],
+    },
+    {
+      id: "continuidade",
+      title: "8. Continuidade enquanto o problema não é resolvido",
+      paragraphs: [
+        "Nenhum escritório para por inteiro: normalmente um posto, um sistema ou um equipamento sai do ar. O que define o tamanho do prejuízo é ter decidido antes o que fazer nesse intervalo, em vez de decidir no meio da urgência.",
+        "O exercício é curto e pode ser feito em uma reunião: liste os equipamentos mais críticos, quem fica impedido de trabalhar quando cada um falha e qual alternativa temporária existe. Isso não elimina a parada e não substitui um plano corporativo de continuidade — apenas reduz o improviso.",
+      ],
+      bullets: [
+        "Equipamentos e sistemas cuja falha impede o trabalho de mais de uma pessoa.",
+        "Usuário mais impactado em cada cenário e quem pode assumir a tarefa temporariamente.",
+        "Alternativa provisória: outro posto, acesso pelo celular, uso de notebook reserva quando existir.",
+        "Contatos de fornecedores que precisam ser acionados no mesmo dia.",
+        "Onde está o backup e quem sabe iniciar uma restauração.",
+        "Registro do erro (mensagem exata, horário e o que estava sendo feito) antes de reiniciar.",
+      ],
+    },
+    {
+      id: "registrar-antes",
+      title: "9. O que registrar antes de solicitar suporte",
+      paragraphs: [
+        "Chamado bem descrito reduz o tempo de diagnóstico e evita deslocamento desnecessário. Na maioria dos casos, o que falta não é conhecimento técnico do usuário: é informação básica sobre quando e como o problema aparece.",
+        "Não envie senha, código de autenticação em duas etapas ou dado bancário por mensagem. Essas informações não são necessárias para abrir um chamado e não devem circular em conversa.",
+      ],
+      bullets: [
+        "Identificação do equipamento (a etiqueta do inventário) e quem o utiliza.",
+        "Mensagem de erro copiada por escrito ou fotografada por inteiro.",
+        "Data e horário aproximados em que o problema começou.",
+        "O que estava sendo feito no momento da falha.",
+        "Se o problema atinge um posto, vários postos ou todos.",
+        "Se algo mudou antes: atualização, instalação, mudança de layout, queda de energia.",
+        "Se o sintoma é constante ou intermitente, e em quais horários aparece.",
+        "O que já foi tentado internamente e qual foi o resultado.",
+      ],
+    },
+    {
+      id: "avulso-recorrente",
+      title: "10. Atendimento avulso ou acompanhamento recorrente",
+      paragraphs: [
+        "As duas formas resolvem problemas diferentes. O atendimento avulso responde a um sintoma existente; o acompanhamento recorrente organiza verificações antes que o sintoma apareça. Um escritório pequeno começa quase sempre pelo avulso e passa a considerar o recorrente quando os chamados se repetem no mesmo conjunto de causas.",
+      ],
+      table: {
+        head: ["Critério", "Atendimento avulso", "Acompanhamento recorrente"],
+        rows: [
+          ["Motivo típico", "Falha já em curso", "Verificação antes da falha"],
+          ["Escopo", "Definido por chamado", "Definido por rotina combinada"],
+          ["Inventário", "Levantado no atendimento", "Mantido atualizado entre visitas"],
+          ["Backup", "Verificado quando é o tema do chamado", "Conferido na rotina programada"],
+          ["Histórico", "Registro do chamado", "Histórico acumulado por equipamento"],
+          ["Quando faz sentido", "Poucos postos, problemas isolados", "Chamados repetidos e parada com custo alto"],
+        ],
+      },
+      bullets: [
+        "Nenhum dos formatos garante ausência de paradas — o recorrente reduz o improviso, não elimina o risco.",
+        "Escopo, valores e forma de execução são definidos por escrito antes de qualquer atendimento.",
+      ],
+    },
+    {
+      id: "prioridades",
+      title: "11. Por onde começar quando não dá para fazer tudo",
+      paragraphs: [
+        "Organizar tudo de uma vez raramente é possível. A sequência abaixo prioriza o que reduz mais risco por esforço investido, e cada etapa continua válida mesmo que a seguinte demore.",
+      ],
+      bullets: [
+        "1. Backup listado, configurado e com uma restauração de teste registrada.",
+        "2. Contas nominais e duas etapas em e-mail e sistemas financeiros.",
+        "3. Inventário mínimo dos equipamentos e dos sistemas de terceiros.",
+        "4. Rede: postos críticos cabeados, Wi-Fi de visitantes separado e IP fixo em impressora e storage.",
+        "5. Energia: nobreak nos postos e equipamentos que não podem desligar de forma abrupta.",
+        "6. Calendário de manutenção preventiva com responsável definido.",
+        "7. Renovação de hardware, por último — trocar máquina antes de resolver backup aumenta a exposição.",
+      ],
+    },
   ],
+
   checklist: [
     { label: "Inventário atualizado", detail: "Lista de máquinas, responsáveis e histórico de intervenções revisada no trimestre." },
     { label: "Rede segmentada", detail: "Postos críticos cabeados, Wi-Fi de visitantes isolado e IP fixo em impressora e storage." },
@@ -188,7 +278,38 @@ export const IT_OFFICE_GUIDE: EnterpriseGuide = {
       answer:
         "A ordem que mais reduz risco por real investido é: backup testado, depois contas e acessos, depois rede e energia, e por último renovação de hardware. Trocar máquinas antes de resolver backup só aumenta a exposição.",
     },
+    {
+      question: "Quais informações devem ser registradas no inventário?",
+      answer:
+        "Equipamento e categoria, usuário responsável, local dentro do escritório, configuração relevante, sistema operacional, programas principais, data aproximada de entrada em uso, situação de garantia, problema já conhecido e o quanto aquele posto é importante para a operação.",
+    },
+    {
+      question: "Preciso guardar senhas junto com o inventário?",
+      answer:
+        "Não. Inventário registra equipamento e responsabilidade. Senhas, códigos de autenticação, CPF, dados bancários, chaves privadas e dados de clientes ficam fora dessa lista e devem estar em um gerenciador de senhas com acesso controlado.",
+    },
+    {
+      question: "Quem deve ser responsável pela informática do escritório?",
+      answer:
+        "Mesmo sem equipe de TI, é preciso haver uma pessoa interna que centralize inventário, contatos de fornecedores e abertura de chamados. Sem esse ponto único, cada problema recomeça do zero e a informação se perde entre pessoas.",
+    },
+    {
+      question: "Atendimento avulso é suficiente para uma empresa pequena?",
+      answer:
+        "Em muitos casos sim, principalmente com poucos postos e problemas isolados. O atendimento avulso resolve o sintoma existente, com escopo definido por chamado.",
+    },
+    {
+      question: "Quando vale considerar acompanhamento recorrente?",
+      answer:
+        "Quando os chamados passam a se repetir pelas mesmas causas, quando a parada de um posto impede o trabalho de várias pessoas ou quando ninguém internamente consegue manter inventário, backup e atualizações em dia.",
+    },
+    {
+      question: "Como registrar um problema antes de pedir suporte?",
+      answer:
+        "Anote a identificação do equipamento, a mensagem de erro por inteiro, data e horário do início, o que estava sendo feito, se atinge um ou vários postos, o que mudou antes e o que já foi tentado. Não envie senha nem código de autenticação por mensagem.",
+    },
   ],
+
   whatsappService: "organização de TI para escritório",
 };
 
@@ -218,6 +339,27 @@ export const WORKSTATION_GUIDE: EnterpriseGuide = {
       ],
     },
     {
+      id: "requisitos",
+      title: "1b. Levantamento de requisitos: o que registrar antes de decidir",
+      paragraphs: [
+        "Nenhuma configuração deve ser definida pela profissão de quem vai usar a máquina. Duas pessoas com o mesmo cargo podem ter necessidades opostas dependendo do tamanho dos arquivos, da quantidade de programas abertos e do tipo de projeto. O levantamento abaixo é o que permite discutir componentes com base em fatos.",
+        "Nomes de aplicações aparecem aqui apenas como exemplo de contexto. O critério de decisão é sempre o requisito oficial publicado pelo fornecedor do software somado ao comportamento real do arquivo em uso.",
+      ],
+      bullets: [
+        "Programas utilizados e a versão instalada de cada um.",
+        "Tipo de projeto: desenho técnico, modelagem, render, edição, análise de dados ou virtualização.",
+        "Tamanho típico dos arquivos e tamanho do maior arquivo já aberto.",
+        "Quantidade de arquivos e de programas abertos ao mesmo tempo.",
+        "Resolução de trabalho e quantidade de monitores.",
+        "Tempo diário de uso e duração das tarefas mais pesadas.",
+        "Necessidade de mobilidade ou uso fixo em um posto.",
+        "Armazenamento já em uso hoje e crescimento esperado.",
+        "Necessidade de expansão futura de memória, disco ou vídeo.",
+        "Orçamento disponível e prazo esperado de utilização da máquina.",
+      ],
+    },
+
+    {
       id: "cpu",
       title: "2. Processador: clock por núcleo x quantidade de núcleos",
       paragraphs: [
@@ -235,7 +377,7 @@ export const WORKSTATION_GUIDE: EnterpriseGuide = {
       id: "memoria",
       title: "3. Memória: capacidade primeiro, ECC quando o erro custa caro",
       paragraphs: [
-        "Falta de memória é o gargalo mais visível em workstation: o sistema passa a usar disco como memória e o desempenho cai de forma abrupta, não gradual. Como referência prática, 32 GB é um piso confortável para CAD e edição leve, 64 GB para 3D e vídeo em resoluções altas, e 128 GB ou mais para simulação, grandes conjuntos de dados e virtualização.",
+        "Falta de memória é o gargalo mais visível em workstation: o sistema passa a usar disco como memória e o desempenho cai de forma abrupta, não gradual. Não existe quantidade universal — a definição vem do tamanho dos arquivos abertos, da quantidade de programas simultâneos, do requisito recomendado pelo fornecedor do software e da folga desejada para os próximos anos.",
         "Memória ECC corrige erros de bit em tempo real. Ela faz diferença quando um resultado silenciosamente errado é pior que uma parada — simulação, cálculo estrutural, finanças e processamento longo de dados. Exige processador e placa-mãe compatíveis, o que muda a plataforma inteira.",
       ],
       bullets: [
@@ -287,7 +429,53 @@ export const WORKSTATION_GUIDE: EnterpriseGuide = {
         "Filtros de poeira acessíveis, porque limpeza difícil é limpeza que não acontece.",
       ],
     },
+    {
+      id: "monitores-rede-backup",
+      title: "7. Monitores, rede e backup do posto",
+      paragraphs: [
+        "A workstation raramente trabalha sozinha. Monitores, ponto de rede e destino de backup fazem parte do dimensionamento e costumam ser lembrados depois da compra, quando já não há saída de vídeo suficiente ou o arquivo de projeto não cabe no destino previsto.",
+        "Projeto ativo em rede exige avaliar a velocidade do enlace e o comportamento do armazenamento compartilhado. Arquivo grande aberto diretamente do servidor pode transformar a rede no gargalo, mesmo com a máquina bem dimensionada.",
+      ],
+      bullets: [
+        "Quantidade, resolução e tipo de conexão dos monitores, conferidos contra as saídas da GPU escolhida.",
+        "Ponto de rede cabeado no posto quando o projeto ativo fica em servidor ou NAS.",
+        "Destino de backup do projeto ativo definido antes da entrega da máquina.",
+        "Periféricos específicos (mesa digitalizadora, leitor, dispositivos com driver próprio) validados quanto à compatibilidade.",
+      ],
+    },
+    {
+      id: "upgrade",
+      title: "8. Possibilidade de upgrade e prioridades de orçamento",
+      paragraphs: [
+        "Uma workstation bem escolhida deixa caminhos abertos: slots de memória livres, baias e portas de armazenamento disponíveis, fonte com margem e espaço físico para uma placa maior. Quando o orçamento aperta, é preferível reduzir o que é fácil de ampliar depois e preservar o que define a plataforma.",
+        "Componentes difíceis de trocar depois — placa-mãe, processador, fonte e gabinete — merecem prioridade. Memória e armazenamento costumam aceitar ampliação posterior sem substituir a máquina.",
+      ],
+      bullets: [
+        "Priorize plataforma (placa-mãe, processador, fonte) sobre quantidade inicial de memória e disco.",
+        "Confirme quantos slots e portas ficam livres após a montagem inicial.",
+        "Confira se a fonte comporta uma GPU maior no futuro sem precisar ser trocada.",
+        "Reaproveitar componentes existentes é possível quando há compatibilidade confirmada e estado de conservação verificado.",
+      ],
+    },
+    {
+      id: "testes",
+      title: "9. Testes de validação após a montagem",
+      paragraphs: [
+        "A validação depende do escopo confirmado no atendimento, mas a lógica é sempre a mesma: confirmar que os componentes são reconhecidos, que a máquina se mantém estável sob carga e que todas as portas e conexões respondem.",
+        "A montagem correta não garante desempenho específico em um programa. O resultado depende da configuração completa, da versão do software, do tipo de projeto e dos requisitos oficiais.",
+      ],
+      bullets: [
+        "Reconhecimento de todos os componentes instalados.",
+        "Inicialização e conclusão da instalação do sistema.",
+        "Verificação de memória e de armazenamento.",
+        "Acompanhamento de temperatura sob carga.",
+        "Teste de estabilidade pelo período combinado.",
+        "Conferência de portas, saídas de vídeo e rede.",
+        "Reinicializações sucessivas para confirmar consistência.",
+      ],
+    },
   ],
+
   checklist: [
     { label: "Carga de trabalho descrita", detail: "Softwares, tamanho dos arquivos, tarefas simultâneas e horizonte de uso definidos por escrito." },
     { label: "Processador coerente com o perfil", detail: "Clock por núcleo para CAD e modelagem; contagem de núcleos para render e simulação." },
@@ -321,20 +509,51 @@ export const WORKSTATION_GUIDE: EnterpriseGuide = {
         "Compensa quando o fabricante do software exige configuração homologada para dar suporte, ou quando a estabilidade de viewport é crítica. Para render por GPU e edição, placas de consumo de gama alta costumam entregar mais desempenho por real.",
     },
     {
-      question: "Quanta memória é suficiente?",
+      question: "Quanta memória RAM é necessária?",
       answer:
-        "Como referência prática: 32 GB para CAD e edição leve, 64 GB para 3D e vídeo em resolução alta, 128 GB ou mais para simulação, grandes conjuntos de dados e virtualização. Deixe slots livres para expansão.",
+        "Depende do tamanho dos arquivos abertos, da quantidade de programas simultâneos e do requisito recomendado pelo fornecedor do software. Não existe número universal: o levantamento de requisitos é o que define a capacidade, a quantidade de módulos e a folga para expansão.",
     },
     {
-      question: "Posso comprar as peças e pedir só a montagem?",
+      question: "Toda workstation precisa de placa de vídeo dedicada?",
       answer:
-        "Sim. As peças passam por conferência de compatibilidade e registro de estado na entrada, e a garantia do serviço cobre a montagem e a configuração — a garantia da peça permanece com o fornecedor dela.",
+        "Não necessariamente. A relevância da GPU depende do tipo de aceleração que a aplicação suporta, da resolução, do peso da visualização e de haver ou não exigência de certificação por parte do fornecedor do software.",
     },
     {
-      question: "Vale mais atualizar a máquina atual ou comprar uma nova?",
+      question: "É melhor usar um ou mais SSDs?",
       answer:
-        "Se o gargalo é memória ou armazenamento e a plataforma ainda suporta expansão, o upgrade costuma resolver por uma fração do custo. Se o gargalo é o processador ou a plataforma não suporta a memória necessária, a substituição tende a ser mais econômica no total.",
+        "Separar sistema, projeto ativo e arquivo morto reduz a disputa de acesso durante exportações e facilita o backup, porque o volume de projeto ativo fica menor e previsível. Um único disco funciona, mas concentra tudo no mesmo ponto de falha.",
     },
+    {
+      question: "É possível aproveitar componentes antigos?",
+      answer:
+        "É possível quando a compatibilidade com a nova plataforma é confirmada e o estado de conservação da peça é verificado. Peças fornecidas pelo cliente seguem a política de peças do cliente, com registro de estado na entrada.",
+    },
+    {
+      question: "Como saber se as peças são compatíveis?",
+      answer:
+        "A conferência considera plataforma, soquete, memória suportada, conectores da fonte, espaço físico no gabinete e saídas de vídeo. Incompatibilidade identificada na conferência interrompe o processo até a definição do cliente.",
+    },
+    {
+      question: "O desempenho em um programa pode ser garantido?",
+      answer:
+        "Não. A montagem correta não garante desempenho específico em um programa: o resultado depende da configuração completa, da versão do software, do tipo de projeto e dos requisitos oficiais publicados pelo fornecedor.",
+    },
+    {
+      question: "É possível fazer upgrade futuramente?",
+      answer:
+        "Sim, quando a plataforma escolhida deixa slots de memória, portas de armazenamento e margem de fonte disponíveis. Por isso a plataforma tem prioridade sobre a quantidade inicial de memória e disco.",
+    },
+    {
+      question: "Os testes estão incluídos?",
+      answer:
+        "A validação segue o escopo confirmado no atendimento e costuma abranger reconhecimento de componentes, inicialização, memória, armazenamento, temperatura, estabilidade, portas, vídeo e rede.",
+    },
+    {
+      question: "O valor pode ser informado sem conhecer os requisitos?",
+      answer:
+        "Não de forma responsável. Sem saber programas, tamanho de arquivos, quantidade de monitores e expectativa de uso, qualquer número seria um chute que muda por completo depois do levantamento.",
+    },
+
   ],
   whatsappService: "dimensionamento de workstation",
 };

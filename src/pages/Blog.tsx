@@ -6,6 +6,8 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { allBlogPosts as blogPosts, blogCategories } from "@/data/blog";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
+import { RelatedGuidesCard, GUIDE_LINKS } from "@/components/seo/RelatedGuidesCard";
+
 
 export default function Blog() {
   const sorted = [...blogPosts].sort((a, b) => (a.publishedAt < b.publishedAt ? 1 : -1));
@@ -59,6 +61,13 @@ export default function Blog() {
           </div>
         </div>
       </section>
+
+      <RelatedGuidesCard
+        title="Guias empresariais"
+        links={[GUIDE_LINKS.ti, GUIDE_LINKS.workstation]}
+      />
+
+
 
       <section className="section-padding">
         <div className="container-custom">

@@ -162,23 +162,16 @@ export default function KeywordServicePage({ slug }: Props) {
 
       {AUTHORITY_SLUGS.has(page.slug) && <AuthoritySince />}
 
-      {page.slug === VISUAL_PILOT_SLUG && (
+      {visual && (
         <section className="pt-8">
           <div className="container-custom max-w-4xl">
+            <p className="text-base font-medium text-foreground mb-5">{visual.summary}</p>
             <TrustStrip />
-            <PageTableOfContents
-              className="mt-6"
-              items={[
-                { id: "o-que-esta-incluido", label: "O que está incluído" },
-                { id: "como-funciona", label: "Como funciona o atendimento" },
-                { id: "antes-e-depois", label: "Antes e depois do serviço" },
-                { id: "perguntas-frequentes", label: "Perguntas frequentes" },
-                { id: "servicos-relacionados", label: "Serviços relacionados" },
-              ]}
-            />
+            <PageTableOfContents className="mt-6" items={tocItems} />
           </div>
         </section>
       )}
+
 
       {/* O QUE É */}
       <section className="section-padding">

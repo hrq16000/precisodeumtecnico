@@ -12,6 +12,7 @@ import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import NotFound from "@/pages/NotFound";
 import { servicesData as SERVICES_CATALOG } from "@/data/services";
 import { PcAssemblyPolicySections } from "@/components/marketing/PcAssemblyPolicySections";
+import { RelatedServiceLinks } from "@/components/seo/RelatedServiceLinks";
 
 const PC_GAMER = SERVICES_CATALOG["pc-gamer"];
 import {

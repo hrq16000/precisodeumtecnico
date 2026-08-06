@@ -141,6 +141,7 @@ const servicesData: Record<string, {
 };
 
 // Default data for services not in the mapping
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const defaultServiceData = {
   title: "Serviço Técnico Especializado",
   subtitle: "Assistência técnica de qualidade",

@@ -204,23 +204,56 @@ export default function StatusOrdemServico() {
             </Button>
           </form>
 
-          {notFound && (
+          {invalid && (
             <div
-              role="status"
+              role="alert"
               className="flex gap-3 rounded-lg border border-destructive/40 bg-destructive/5 p-4 mb-10"
             >
               <AlertCircle className="w-5 h-5 text-destructive shrink-0 mt-0.5" />
               <div className="text-sm">
-                <p className="font-semibold text-foreground mb-1">
-                  Não encontramos nenhuma OS com esse número.
-                </p>
-                <p className="text-muted-foreground">
-                  Confira o protocolo enviado no WhatsApp (formato OS-ANO-NÚMERO). Se o atendimento
-                  foi solicitado há poucos minutos, o registro pode ainda não estar publicado.
-                </p>
+                <p className="font-semibold text-foreground mb-1">Número de OS inválido.</p>
+                <p className="text-muted-foreground">{PROTOCOL_HINT}</p>
               </div>
             </div>
           )}
+
+          {notFound && (
+            <div
+              role="status"
+              className="rounded-lg border border-destructive/40 bg-destructive/5 p-4 mb-10"
+            >
+              <div className="flex gap-3">
+                <AlertCircle className="w-5 h-5 text-destructive shrink-0 mt-0.5" />
+                <div className="text-sm">
+                  <p className="font-semibold text-foreground mb-1">
+                    Não encontramos nenhuma OS com esse número.
+                  </p>
+                  <p className="text-muted-foreground">
+                    {PROTOCOL_HINT} Se o atendimento foi solicitado há poucos minutos, o registro
+                    pode ainda não estar publicado.
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-3 mt-4">
+                <Button variant="whatsapp" size="sm" asChild>
+                  <a
+                    href={whatsappHelpUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-wa-source="status-os-notfound"
+                    data-service="acompanhamento de Ordem de Serviço"
+                  >
+                    <MessageCircle className="w-4 h-4 mr-2" />
+                    Confirmar minha OS no WhatsApp
+                  </a>
+                </Button>
+                <Button variant="outline" size="sm" asChild>
+                  <Link to="/contato">Outros canais de contato</Link>
+                </Button>
+              </div>
+            </div>
+          )}
+
 
           {order && (
             <div className="rounded-xl border border-border bg-card p-6 mb-10">

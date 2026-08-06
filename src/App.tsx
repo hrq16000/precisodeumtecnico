@@ -86,6 +86,7 @@ const App = () => (
                 <Route path="/gestor-responsavel" element={<GestorResponsavel />} />
 
                 <Route path="/servicos" element={<Servicos />} />
+                <Route path="/servicos/pc-gamer/como-funciona" element={<ComoFuncionaPcGamer />} />
                 <Route path="/servicos/troca-de-tela-tv-curitiba" element={<TrocaDeTelaTVCuritiba />} />
                 <Route path="/servicos/reparo-smart-tv-curitiba" element={<ReparoSmartTVCuritiba />} />
                 <Route path="/servicos/configuracao-wifi-curitiba" element={<ConfiguracaoWifiCuritiba />} />

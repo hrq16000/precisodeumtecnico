@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { citiesData, getCityBySlug, formatNeighborhoodSlug, formatNameFromSlug, curitibaBairros } from "@/data/regions";
 import { getBairroContent } from "@/data/sjpBairroContent";
+import { buildBairroFaqs } from "@/data/localFaq";
 import {
   Accordion,
   AccordionContent,
@@ -77,6 +78,15 @@ export default function BairroDetalhe() {
 
   const bairroContent = getBairroContent(city!, neighborhood, neighborhoodName);
 
+  // FAQ específica do bairro (Rodada 32): derivada do texto curado (tempo médio
+  // e serviços citados) + vizinhança real + termos comerciais oficiais.
+  const localFaqs = buildBairroFaqs({
+    bairroName: neighborhoodName,
+    cityName: cityData.name,
+    intro: bairroContent.intro,
+    nearby: nearbyNeighborhoods,
+  });
+
   const localBusinessSchema = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
@@ -106,7 +116,7 @@ export default function BairroDetalhe() {
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: bairroContent.faqs.map((f) => ({
+    mainEntity: localFaqs.map((f) => ({
       "@type": "Question",
       name: f.question,
       acceptedAnswer: { "@type": "Answer", text: f.answer },
@@ -341,7 +351,7 @@ export default function BairroDetalhe() {
             Perguntas frequentes — {neighborhoodName}
           </h2>
           <Accordion type="single" collapsible>
-            {bairroContent.faqs.map((f, i) => (
+            {localFaqs.map((f, i) => (
               <AccordionItem key={i} value={`faq-${i}`}>
                 <AccordionTrigger className="text-left">{f.question}</AccordionTrigger>
                 <AccordionContent>{f.answer}</AccordionContent>

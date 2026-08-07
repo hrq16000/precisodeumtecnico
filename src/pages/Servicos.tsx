@@ -19,6 +19,8 @@ import {
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { COMMERCIAL_TERMS } from "@/data/commercialTerms";
 import { PRICING, SLA } from "@/data/pricingPolicy";
+import { servicesData } from "@/data/services";
+import { buildLocalBusinessSchema } from "@/lib/schema/localBusiness";
 
 /**
  * FAQ de /servicos — fonte única: COMMERCIAL_TERMS + PRICING.

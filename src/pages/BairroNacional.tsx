@@ -18,6 +18,9 @@ import { trackWhatsAppClick, trackCtaClick } from "@/lib/analytics";
 import { RegionalSymptomFAQ } from "@/components/seo/RegionalSymptomFAQ";
 import { InternalLinkCluster } from "@/components/seo/InternalLinkCluster";
 import { buildLocalBusinessSchema } from "@/lib/schema/localBusiness";
+import { buildBairroFaqs } from "@/data/localFaq";
+import { PublicPhotoBand } from "@/components/media/PublicPhotoBand";
+import { pickLocalityPhotos } from "@/data/publicPhotos";
 // FAQ regional (Rodada 27+): derivada de src/data/symptoms.ts, adaptada
 // automaticamente por cidade/bairro sem inventar preços ou prazos.
 

@@ -322,6 +322,7 @@ export default function StatusOrdemServico() {
           href={whatsappHelpUrl}
           target="_blank"
           rel="noopener noreferrer"
+          aria-label="Falar no WhatsApp sobre a Ordem de Serviço"
           data-wa-source="status-os-fallback"
           data-service="acompanhamento de Ordem de Serviço"
           onClick={() =>

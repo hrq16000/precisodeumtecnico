@@ -112,6 +112,7 @@ for (const path of PAGES) {
 
     test("âncoras do sumário navegam para blocos existentes", async ({ page }) => {
       await page.goto(path);
+      await page.waitForSelector("[data-page-toc]");
       const anchors = page.locator('[data-page-toc] a[href^="#"]');
       const count = await anchors.count();
       expect(count).toBeGreaterThan(3);
@@ -120,6 +121,7 @@ for (const path of PAGES) {
         const id = (href || "").replace("#", "");
         expect(id.length).toBeGreaterThan(0);
         await expect(page.locator(`#${id}`)).toHaveCount(1);
+        await expect(page.locator(`#${id}`)).toBeAttached();
       }
     });
 

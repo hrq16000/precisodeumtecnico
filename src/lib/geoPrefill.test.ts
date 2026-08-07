@@ -9,7 +9,7 @@ describe("readGeoPrefill", () => {
       "user_location_full_v1",
       JSON.stringify({ city: "Curitiba", uf: "PR", neighborhood: "Boqueirão", source: "gps" }),
     );
-    const r = readGeoPrefill("/curitiba/santa-felicidade");
+    const r = readGeoPrefill("/atendimento-nacional/curitiba/santa-felicidade");
     expect(r.source).toBe("route");
     expect(r.neighborhood).toBe("Santa Felicidade");
   });

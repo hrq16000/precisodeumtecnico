@@ -1,36 +1,34 @@
 {
   "base": "http://localhost:4173",
-  "checked": 50,
+  "checked": 120,
   "dupTitles": [],
   "dupDescs": [],
   "failing": [
     {
-      "url": "https://precisodeumtecnico.com/assistencia-tecnica",
+      "url": "https://precisodeumtecnico.com/blog/categoria/eletrica",
+      "shard": "sitemap-main.xml",
+      "title": "Elétrica Residencial — Blog | Preciso de Um Técnico",
+      "description": "Disjuntores, quadros, instalações e segurança elétrica.",
+      "problems": [
+        "description com 55 chars (esperado 70–160)"
+      ]
+    },
+    {
+      "url": "https://precisodeumtecnico.com/servicos/troca-de-tela-tv-curitiba",
       "shard": "sitemap-servicos.xml",
-      "title": "Assistência Técnica em Todo o Brasil | Consoles, GPU, PC, Notebook, TV e Som",
-      "description": "Assistência técnica especializada com atendimento em todo o Brasil. Reparo de PS5, Xbox, Nintendo, placas de vídeo, notebooks, celulares, TVs e som. Central em Curitiba, parceiros em todos os estados. WhatsApp WhatsApp 24h.",
+      "title": "Troca de Tela de TV em Curitiba | Diagnóstico Honesto e Coleta",
+      "description": "Troca de tela (painel) de TV LED, LCD, QLED e OLED em Curitiba e Região Metropolitana. Coleta a partir de R$ 299,99, diagnóstico de viabilidade antes do orçamento e garantia de 90 dias na mão de obra.",
       "problems": [
-        "title com 76 chars (esperado 25–65)",
-        "description com 223 chars (esperado 70–160)"
+        "description com 200 chars (esperado 70–160)"
       ]
     },
     {
-      "url": "https://precisodeumtecnico.com/servicos/reparo-smart-tv/curitiba/batel",
-      "shard": "sitemap-bairros.xml",
-      "title": "Reparo de Smart TV no Batel, Curitiba — Preciso de um Técnico",
-      "description": "Reparo de Smart TV no bairro Batel em Curitiba. Coletas de Smart TV no Batel são majoritariamente em edifícios com portaria 24h e elevador de serviço — nossa logística já está adaptada a esse fluxo. Triagem online e orçamento fechado.",
+      "url": "https://precisodeumtecnico.com/servicos/configuracao-wifi-curitiba",
+      "shard": "sitemap-servicos.xml",
+      "title": "Configuração de Wi-Fi em Curitiba | Rede, Mesh e Troubleshooting",
+      "description": "Configuração e troubleshooting de Wi-Fi em Curitiba e Região Metropolitana. Visita técnica a partir de R$ 99,99, análise de sinal por cômodo, instalação de mesh e integração de TV, câmeras e impressora. Toda visita começa pela triagem online.",
       "problems": [
-        "description com 234 chars (esperado 70–160)"
-      ]
-    },
-    {
-      "url": "https://precisodeumtecnico.com/servicos/configuracao-wifi/curitiba/bacacheri",
-      "shard": "sitemap-bairros.xml",
-      "title": "Configuração de Wi-Fi no Bacacheri, Curitiba — Preciso de um Técnico",
-      "description": "Configuração de Wi-Fi no bairro Bacacheri em Curitiba. No Bacacheri, casas de esquina com muros altos e cercas eletrificadas próximas ao roteador causam interferência frequente. Triagem online e orçamento fechado.",
-      "problems": [
-        "title com 68 chars (esperado 25–65)",
-        "description com 213 chars (esperado 70–160)"
+        "description com 242 chars (esperado 70–160)"
       ]
     }
   ]

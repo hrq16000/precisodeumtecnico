@@ -127,10 +127,11 @@ const ComoFuncionaPcGamer = () => {
             </h2>
             <div className="space-y-4">
               {PC_ASSEMBLY_PROCESS.faq.map((item) => (
-                <article key={item.question} className="p-5 rounded-xl bg-card border border-border/50">
-                  <h3 className="font-bold text-card-foreground mb-2">{item.question}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{item.answer}</p>
+                <article key={item.question} data-faq-item className="p-5 rounded-xl bg-card border border-border/50">
+                  <h3 className="font-bold text-card-foreground mb-2" data-faq-question data-testid="faq-question">{item.question}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed" data-faq-answer>{item.answer}</p>
                 </article>
+
               ))}
             </div>
           </section>

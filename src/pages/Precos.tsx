@@ -320,9 +320,9 @@ export default function Precos() {
             <h2 id="perguntas-frequentes" data-toc-anchor className="font-display text-2xl md:text-3xl font-bold mt-16 mb-4">Perguntas frequentes</h2>
             <Accordion type="single" collapsible>
               {faqs.map((f, i) => (
-                <AccordionItem key={i} value={`p-${i}`}>
-                  <AccordionTrigger className="text-left">{f.question}</AccordionTrigger>
-                  <AccordionContent>{f.answer}</AccordionContent>
+                <AccordionItem data-faq-item key={i} value={`p-${i}`}>
+                  <AccordionTrigger data-faq-question data-testid="faq-question" className="text-left">{f.question}</AccordionTrigger>
+                  <AccordionContent data-faq-answer>{f.answer}</AccordionContent>
                 </AccordionItem>
               ))}
             </Accordion>

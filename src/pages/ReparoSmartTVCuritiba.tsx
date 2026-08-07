@@ -292,9 +292,9 @@ export default function ReparoSmartTVCuritiba() {
           </div>
           <Accordion type="single" collapsible className="mt-8">
             {symptom.faq.map((f, i) => (
-              <AccordionItem key={f.q} value={`faq-${i}`}>
-                <AccordionTrigger className="text-left">{f.q}</AccordionTrigger>
-                <AccordionContent className="text-muted-foreground">{f.a}</AccordionContent>
+              <AccordionItem data-faq-item key={f.q} value={`faq-${i}`}>
+                <AccordionTrigger data-faq-question data-testid="faq-question" className="text-left">{f.q}</AccordionTrigger>
+                <AccordionContent data-faq-answer className="text-muted-foreground">{f.a}</AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>

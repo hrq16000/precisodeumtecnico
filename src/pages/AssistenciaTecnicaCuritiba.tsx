@@ -831,11 +831,11 @@ export default function AssistenciaTecnicaCuritiba() {
           >
             <Accordion type="single" collapsible className="w-full">
               {faqs.map((f, i) => (
-                <AccordionItem key={f.q} value={`faq-${i}`}>
-                  <AccordionTrigger className="text-left text-base font-semibold">
+                <AccordionItem data-faq-item key={f.q} value={`faq-${i}`}>
+                  <AccordionTrigger data-faq-question data-testid="faq-question" className="text-left text-base font-semibold">
                     {f.q}
                   </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground leading-relaxed">
+                  <AccordionContent data-faq-answer className="text-muted-foreground leading-relaxed">
                     {f.a}
                   </AccordionContent>
                 </AccordionItem>

@@ -20,6 +20,7 @@ import {
 } from "@/lib/triage/engine";
 import { WHATSAPP_NUMBER } from "@/lib/whatsapp";
 import { pushLocalAnalyticsEvent } from "@/lib/localAnalytics";
+import { readGeoPrefill, GEO_PREFILL_LABEL } from "@/lib/geoPrefill";
 import { persistTriageEvent } from "@/lib/triageEventBuffer";
 
 import { trackWhatsAppClick } from "@/lib/analytics";

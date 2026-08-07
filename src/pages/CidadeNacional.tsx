@@ -12,6 +12,10 @@ import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { RegionalSymptomFAQ } from "@/components/seo/RegionalSymptomFAQ";
 import { InternalLinkCluster } from "@/components/seo/InternalLinkCluster";
 import { buildLocalBusinessSchema } from "@/lib/schema/localBusiness";
+import { buildCityFaqs } from "@/data/localFaq";
+import { PublicPhotoBand } from "@/components/media/PublicPhotoBand";
+import { pickLocalityPhotos } from "@/data/publicPhotos";
+import { nationalBairrosByCity } from "@/data/nationalBairros";
 
 
 const services = [

@@ -48,7 +48,11 @@ export function PublicPhotoBand({ title, intro, photos, eagerFirst = false }: Pr
   return (
     <section className="py-12 md:py-16 border-t border-border" aria-labelledby="fotos-heading">
       <Helmet>
-        <script type="application/ld+json">{JSON.stringify(imageSchema)}</script>
+        {imageSchema.map((schema) => (
+          <script key={schema.contentUrl} type="application/ld+json">
+            {JSON.stringify(schema)}
+          </script>
+        ))}
       </Helmet>
       <div className="container mx-auto px-4 max-w-5xl">
         <div className="flex items-center gap-2 text-sm font-semibold text-primary">

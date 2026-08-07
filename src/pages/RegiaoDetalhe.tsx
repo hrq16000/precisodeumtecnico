@@ -15,8 +15,8 @@ import { buildReviewsSchema } from "@/data/testimonials";
 import { trackCtaClick, trackWhatsAppClick } from "@/lib/analytics";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { buildCityFaqs } from "@/data/localFaq";
-import {
 import { LocalityPhotoBand } from "@/components/media/LocalityPhotoBand";
+import {
   Accordion,
   AccordionContent,
   AccordionItem,

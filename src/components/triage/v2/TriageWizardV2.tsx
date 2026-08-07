@@ -122,6 +122,26 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
     }
   }, [source]);
 
+  // ---------- prefill geográfico (rota > GPS/manual > IP)
+  const geoPrefill = useMemo(() => readGeoPrefill(), []);
+  const geoAppliedRef = useRef(false);
+  useEffect(() => {
+    if (geoAppliedRef.current) return;
+    const nb = geoPrefill.neighborhood?.trim();
+    if (!nb) return;
+    if (state.contact.neighborhood.trim()) return;
+    geoAppliedRef.current = true;
+    rawDispatch({ type: "SET_CONTACT", field: "neighborhood", value: nb });
+    pushLocalAnalyticsEvent({
+      event: "triage_geo_prefill",
+      source,
+      city: geoPrefill.city,
+      neighborhood: nb,
+      geo_source: geoPrefill.source,
+      page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+    });
+  }, [geoPrefill, state.contact.neighborhood, source]);
+
   // ---------- foco automático no primeiro campo inválido
   useEffect(() => {
     const id = getFirstIncompleteField(state);
@@ -131,6 +151,7 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
       window.setTimeout(() => (el as HTMLElement).focus({ preventScroll: true }), 30);
     }
   }, [state.currentStep]); // eslint-disable-line react-hooks/exhaustive-deps
+
 
   // ---------- helpers de navegação com trava
   const goNext = useCallback(() => {

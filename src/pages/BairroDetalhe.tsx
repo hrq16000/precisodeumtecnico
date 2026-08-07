@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { citiesData, getCityBySlug, formatNeighborhoodSlug, formatNameFromSlug, curitibaBairros } from "@/data/regions";
 import { getBairroContent } from "@/data/sjpBairroContent";
+import { buildBairroFaqs } from "@/data/localFaq";
 import {
   Accordion,
   AccordionContent,

@@ -20,6 +20,7 @@ import {
 } from "@/lib/triage/engine";
 import { WHATSAPP_NUMBER } from "@/lib/whatsapp";
 import { pushLocalAnalyticsEvent } from "@/lib/localAnalytics";
+import { readGeoPrefill, GEO_PREFILL_LABEL } from "@/lib/geoPrefill";
 import { persistTriageEvent } from "@/lib/triageEventBuffer";
 
 import { trackWhatsAppClick } from "@/lib/analytics";
@@ -122,6 +123,25 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
     }
   }, [source]);
 
+  // ---------- prefill geográfico (rota > GPS/manual > IP)
+  const geoPrefill = useMemo(() => readGeoPrefill(), []);
+  const geoAppliedRef = useRef(false);
+  useEffect(() => {
+    if (geoAppliedRef.current) return;
+    const nb = geoPrefill.neighborhood?.trim();
+    if (!nb) return;
+    if (state.contact.neighborhood.trim()) return;
+    geoAppliedRef.current = true;
+    rawDispatch({ type: "SET_CONTACT", field: "neighborhood", value: nb });
+    pushLocalAnalyticsEvent({
+      event: "triage_geo_prefill",
+      source: `${source}:geo-${geoPrefill.source}`,
+      city: geoPrefill.city,
+      neighborhood: nb,
+      page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+    });
+  }, [geoPrefill, state.contact.neighborhood, source]);
+
   // ---------- foco automático no primeiro campo inválido
   useEffect(() => {
     const id = getFirstIncompleteField(state);
@@ -131,6 +151,7 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
       window.setTimeout(() => (el as HTMLElement).focus({ preventScroll: true }), 30);
     }
   }, [state.currentStep]); // eslint-disable-line react-hooks/exhaustive-deps
+
 
   // ---------- helpers de navegação com trava
   const goNext = useCallback(() => {
@@ -718,6 +739,11 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
                   onChange={(e) => dispatch({ type: "SET_CONTACT", field: "neighborhood", value: e.target.value })}
                   aria-invalid={!!errors.neighborhood} placeholder="Ex.: Centro, Boqueirão, Portão" />
                 {errors.neighborhood && <p role="alert" className="text-xs text-destructive">{errors.neighborhood}</p>}
+                {!errors.neighborhood && geoAppliedRef.current && geoPrefill.source !== "none" && (
+                  <p data-testid="triage-geo-hint" className="text-xs text-muted-foreground mt-1">
+                    {GEO_PREFILL_LABEL[geoPrefill.source]} — edite se precisar.
+                  </p>
+                )}
               </div>
               <div className="sm:col-span-2">
                 <Label htmlFor="triage-field-email">E-mail</Label>

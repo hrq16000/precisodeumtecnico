@@ -249,7 +249,10 @@ export function SEOHead({
       <meta property="og:description" content={description} />
       <meta property="og:type" content={type} />
       <meta property="og:url" content={canonical} />
-      {/* og:image / twitter:image são injetados pela hospedagem — não emitir aqui. */}
+      <meta property="og:image" content={socialImage} />
+      <meta property="og:image:secure_url" content={socialImage} />
+      <meta property="og:image:alt" content={fullTitle} />
+      <meta name="twitter:image" content={socialImage} />
       <meta property="og:locale" content="pt_BR" />
       <meta property="og:site_name" content="Preciso de Um Técnico" />
 

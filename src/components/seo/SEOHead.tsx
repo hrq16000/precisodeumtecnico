@@ -42,6 +42,17 @@ interface ServiceInfo {
   areaServed?: string;
 }
 interface FAQItem { question: string; answer: string; }
+/** Imagem real (Wikimedia Commons) com crédito/licença — vira ImageObject. */
+export interface SEOImageCredit {
+  contentUrl: string;
+  caption: string;
+  license: string;
+  licenseUrl?: string;
+  author: string;
+  source: string;
+  width?: number;
+  height?: number;
+}
 
 interface SEOHeadProps {
   title: string;
@@ -59,6 +70,8 @@ interface SEOHeadProps {
   service?: ServiceInfo;
   /** Se presente, emite FAQPage schema. Deve corresponder às FAQs visíveis. */
   faq?: FAQItem[];
+  /** Fotos reais exibidas na página; emitem ImageObject com crédito/licença. */
+  images?: SEOImageCredit[];
   /** Article publication metadata for blog posts */
   article?: {
     publishedTime?: string;
@@ -76,10 +89,10 @@ export function SEOHead({
   title,
   description,
   canonical = "https://precisodeumtecnico.com",
-  // ogImage é ignorado no Helmet: a hospedagem Lovable injeta og:image /
-  // twitter:image server-side (fallback ou imagem do projeto). Emitir aqui
-  // duplicaria a tag no <head>. Mantido no tipo para compat com callers.
-  ogImage: _ogImage,
+  // Imagem social: sempre emitida e sempre absoluta. Sem valor do caller,
+  // usa DEFAULT_OG_IMAGE — assim qualquer citação de qualquer URL do portal
+  // (WhatsApp, Slack, X, LinkedIn) mostra uma prévia com imagem.
+  ogImage,
   type = "website",
   schema,
   structuredData,
@@ -87,9 +100,11 @@ export function SEOHead({
   breadcrumbs,
   service,
   faq,
+  images,
   article,
   noindex = false,
 }: SEOHeadProps) {
+  const socialImage = absoluteUrl(ogImage ?? DEFAULT_OG_IMAGE);
 
   const fullTitle = title.includes("Preciso de Um Técnico")
     ? title

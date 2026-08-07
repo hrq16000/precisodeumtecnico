@@ -128,8 +128,9 @@ export function Header() {
             />
 
           {/* Desktop Navigation */}
-          <nav className="hidden xl:flex items-center gap-1">
-            <NavigationMenu>
+          <nav ref={desktopNavRef} className="hidden xl:flex items-center gap-1">
+            <NavigationMenu value={navValue} onValueChange={setNavValue}>
+
               <NavigationMenuList className="gap-1">
                 {[
                   { to: "/", label: "Início", icon: Home, match: (p: string) => p === "/" },

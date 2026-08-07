@@ -437,7 +437,7 @@ export default function GuiaEmpresarial({ slug }: Props) {
               </ul>
             </section>
 
-            {!isPilot && guide.triage && (
+            {!isPilot && !isInstitutional && guide.triage && (
               <InlineTriageCTA
                 className="mb-12"
                 label="Iniciar triagem do cenário"

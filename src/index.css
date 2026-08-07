@@ -184,6 +184,15 @@ html { scroll-behavior: smooth; }
     background: linear-gradient(135deg, hsl(217 91% 45%) 0%, hsl(200 85% 50%) 100%);
   }
 
+  /* Skip link: invisível até receber foco por teclado. */
+  .skip-link {
+    @apply sr-only;
+  }
+  .skip-link:focus-visible,
+  .skip-link:focus {
+    @apply not-sr-only fixed left-4 top-4 z-[100] rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-lg outline-none ring-2 ring-ring;
+  }
+
   .whatsapp-btn {
     @apply bg-success text-success-foreground hover:opacity-90 transition-all duration-300;
   }

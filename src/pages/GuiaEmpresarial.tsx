@@ -465,37 +465,39 @@ export default function GuiaEmpresarial({ slug }: Props) {
 
             <EnterpriseLinkCluster currentPath={guide.path} />
 
-            <div className="rounded-xl border border-border/50 bg-card p-6 text-center">
-              <h2 className="font-display text-xl md:text-2xl font-bold text-card-foreground mb-2">
-                Quer aplicar isso no seu escritório?
-              </h2>
-              <p className="text-muted-foreground mb-5">
-                Descreva o cenário atual (quantidade de postos, softwares e principais travas) e
-                recebemos o contexto já organizado para a avaliação técnica.
-              </p>
-              <a
-                href={waUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                data-wa-source={`guia-${guide.slug}-final`}
-                data-service={guide.whatsappService}
-                data-wa-tracked="b2b_final"
-                onClick={() =>
-                  trackWhatsAppClick({
-                    source: `guia-${guide.slug}-final`,
-                    service: guide.whatsappService,
-                    city: guide.triage?.city,
-                    source_component: "b2b_cta_final",
-                    cta_label: "Falar sobre o meu cenário",
-                  })
-                }
-                aria-label={`Falar no WhatsApp sobre ${guide.whatsappService}`}
-                className="inline-flex items-center gap-2 min-h-[48px] bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold px-6 py-3 rounded-xl transition-colors"
-              >
-                <MessageCircle className="h-5 w-5" aria-hidden="true" />
-                Falar sobre o meu cenário
-              </a>
-            </div>
+            {!isInstitutional && (
+              <div className="rounded-xl border border-border/50 bg-card p-6 text-center">
+                <h2 className="font-display text-xl md:text-2xl font-bold text-card-foreground mb-2">
+                  Quer aplicar isso no seu escritório?
+                </h2>
+                <p className="text-muted-foreground mb-5">
+                  Descreva o cenário atual (quantidade de postos, softwares e principais travas) e
+                  recebemos o contexto já organizado para a avaliação técnica.
+                </p>
+                <a
+                  href={waUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-wa-source={`guia-${guide.slug}-final`}
+                  data-service={guide.whatsappService}
+                  data-wa-tracked="b2b_final"
+                  onClick={() =>
+                    trackWhatsAppClick({
+                      source: `guia-${guide.slug}-final`,
+                      service: guide.whatsappService,
+                      city: guide.triage?.city,
+                      source_component: "b2b_cta_final",
+                      cta_label: "Falar sobre o meu cenário",
+                    })
+                  }
+                  aria-label={`Falar no WhatsApp sobre ${guide.whatsappService}`}
+                  className="inline-flex items-center gap-2 min-h-[48px] bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold px-6 py-3 rounded-xl transition-colors"
+                >
+                  <MessageCircle className="h-5 w-5" aria-hidden="true" />
+                  Falar sobre o meu cenário
+                </a>
+              </div>
+            )}
           </div>
         </section>
       </article>

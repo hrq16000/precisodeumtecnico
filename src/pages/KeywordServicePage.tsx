@@ -41,6 +41,8 @@ import { COMPANY } from "@/data/companyInfo";
 import { KEYWORD_SERVICE_BY_SLUG } from "@/data/keywordServices";
 import { SERVICE_VISUAL_BY_SLUG } from "@/data/serviceVisualWave";
 import { PRICING } from "@/data/pricingPolicy";
+import { PublicPhotoBand } from "@/components/media/PublicPhotoBand";
+import { pickServicePhotos } from "@/data/publicPhotos";
 
 /**
  * Rodada 3K — faixa de autoridade apenas nas páginas comerciais aprovadas.
@@ -482,6 +484,11 @@ export default function KeywordServicePage({ slug }: Props) {
         citySlug="curitiba"
       />
 
+      <PublicPhotoBand
+        title="Referências visuais do serviço"
+        intro="Fotos reais licenciadas livremente que ilustram o tipo de equipamento e intervenção descritos nesta página."
+        photos={pickServicePhotos("keyword-service", 3)}
+      />
     </Layout>
   );
 }

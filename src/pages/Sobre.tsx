@@ -8,6 +8,8 @@ import {
   Zap, MessageCircle, Building, ThumbsUp
 } from "lucide-react";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
+import { PublicPhotoBand } from "@/components/media/PublicPhotoBand";
+import { pickServicePhotos } from "@/data/publicPhotos";
 
 const stats = [
   { number: "Rede", label: "Técnicos parceiros verificados", icon: Users },
@@ -233,6 +235,11 @@ const Sobre = () => {
       <CommercialTermsBlock />
 
       <CTASection />
+      <PublicPhotoBand
+        title="O tipo de trabalho que executamos"
+        intro="Imagens reais de terceiros sob licença livre, escolhidas para ilustrar as frentes técnicas descritas aqui — não são registros de atendimentos nossos."
+        photos={pickServicePhotos("sobre-nos", 3)}
+      />
     </Layout>
   );
 };

@@ -28,6 +28,8 @@ import {
   NetworkScopeLimits,
 } from "@/components/marketing/B2BPageBlocks";
 import {
+import { PublicPhotoBand } from "@/components/media/PublicPhotoBand";
+import { pickServicePhotos } from "@/data/publicPhotos";
   SecurityPrinciple,
   SecurityPillars,
   ResponsibilityMatrix,
@@ -510,6 +512,11 @@ export default function GuiaEmpresarial({ slug }: Props) {
           </div>
         </section>
       </article>
+      <PublicPhotoBand
+        title="Infraestrutura e ambientes de TI"
+        intro="Fotos reais (Creative Commons) de racks, cabeamento e bancadas — referência visual dos ambientes tratados neste guia."
+        photos={pickServicePhotos("guia-empresarial", 3)}
+      />
     </Layout>
   );
 }

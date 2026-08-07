@@ -31,6 +31,8 @@ import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { trackWhatsAppClick } from "@/lib/analytics";
 import { buildWhatsAppUrl, buildWhatsAppUrlFromText } from "@/lib/whatsapp";
+import { PublicPhotoBand } from "@/components/media/PublicPhotoBand";
+import { pickServicePhotos } from "@/data/publicPhotos";
 
 const WHATSAPP_DISPLAY = "WhatsApp 24h";
 const waLink = (text?: string) =>
@@ -502,6 +504,11 @@ export default function AssistenciaTecnica() {
           </motion.div>
         </div>
       </section>
+      <PublicPhotoBand
+        title="Referências visuais do atendimento técnico"
+        intro="Fotos reais licenciadas livremente que representam os equipamentos e serviços cobertos pelo atendimento nacional."
+        photos={pickServicePhotos("assistencia-nacional", 3)}
+      />
     </Layout>
   );
 }

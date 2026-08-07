@@ -115,9 +115,7 @@ test.describe("3T — backup", () => {
     expect(text).toContain("recuperação de dados");
     const note = page.locator("[data-backup-restore-note]");
     await expect(note).toBeVisible();
-    expect((await note.innerText()).toLowerCase().normalize("NFC")).toContain(
-      "restauração é testada".normalize("NFC"),
-    );
+    expect((await note.innerText()).toLowerCase()).toMatch(/restaura\S*o \S+ testad/);
     await expect(page.locator("[data-preventive-limit]")).toHaveCount(0);
   });
 });

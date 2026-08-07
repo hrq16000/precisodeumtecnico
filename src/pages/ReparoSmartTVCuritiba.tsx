@@ -75,7 +75,7 @@ export default function ReparoSmartTVCuritiba() {
 
   const metaTitle = "Reparo de Smart TV em Curitiba | Travando, App não abre, Wi-Fi";
   const metaDescription =
-    "Reparo de Smart TV em Curitiba e Região Metropolitana. TV travando, apps que não abrem, reinicialização, firmware e módulo Wi-Fi. A partir de R$ 250 em bancada, com coleta, diagnóstico honesto e garantia de 90 dias.";
+    "Reparo de Smart TV em Curitiba: TV travando, apps que não abrem, firmware e módulo Wi-Fi. Coleta, diagnóstico honesto e garantia de 90 dias.";
 
   const serviceSchema = {
     "@context": "https://schema.org",

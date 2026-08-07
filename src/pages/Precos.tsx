@@ -104,7 +104,7 @@ export default function Precos() {
   return (
     <Layout>
       <SEOHead
-        title="Tabela de Preços de Assistência Técnica em Curitiba"
+        title="Preços de Assistência Técnica em Curitiba"
         description="Tabela completa e transparente de preços: informática, redes Wi-Fi, CFTV, elétrica, ar-condicionado e celulares. Visita a partir de R$ 99,99."
         canonical={url}
         ogImage={ogImage}

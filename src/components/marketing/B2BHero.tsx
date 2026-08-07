@@ -30,6 +30,11 @@ interface Props {
   ctaLabel?: string;
   /** Título do bloco de ação. */
   actionTitle?: string;
+  /**
+   * Rodada 3U — páginas institucionais limitam a densidade de conversão:
+   * o hero mantém apenas o CTA de triagem.
+   */
+  showWhatsApp?: boolean;
 }
 
 export function B2BHero({
@@ -44,6 +49,7 @@ export function B2BHero({
   variant = "hub",
   ctaLabel = "Iniciar triagem empresarial",
   actionTitle = "Avaliação do cenário da empresa",
+  showWhatsApp = true,
 }: Props) {
   const isService = variant === "service";
   return (

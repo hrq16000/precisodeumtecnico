@@ -159,11 +159,19 @@ export default function GuiaEmpresarial({ slug }: Props) {
         title={guide.metaTitle}
         description={guide.metaDescription}
         canonical={canonical}
-        type={guide.serviceSchema ? "service" : "article"}
+        type={isInstitutional ? "website" : guide.serviceSchema ? "service" : "article"}
         breadcrumbs={breadcrumbs}
         faq={guide.faq}
-        service={guide.serviceSchema}
-        structuredData={isB2BLanding ? [webPageSchema] : guide.serviceSchema ? [] : [articleSchema]}
+        service={isInstitutional ? undefined : guide.serviceSchema}
+        structuredData={
+          isInstitutional
+            ? [webPageSchema]
+            : isB2BLanding
+              ? [webPageSchema]
+              : guide.serviceSchema
+                ? []
+                : [articleSchema]
+        }
       />
 
 

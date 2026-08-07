@@ -304,6 +304,34 @@ export default function GuiaEmpresarial({ slug }: Props) {
               </section>
             )}
 
+            {/* Rodada 3T — bloco de diferenciação por página. */}
+            {isPreventiva && (
+              <section id="prioridades" className="mb-10 scroll-mt-24">
+                <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-4">
+                  Riscos e prioridades no registro
+                </h2>
+                <PreventivePriorityMatrix />
+              </section>
+            )}
+
+            {isBackup && (
+              <section id="conceitos-backup" className="mb-10 scroll-mt-24">
+                <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-4">
+                  Sincronização, backup e recuperação
+                </h2>
+                <BackupConceptsBlock />
+              </section>
+            )}
+
+            {isRedes && (
+              <section id="limites-externos" className="mb-10 scroll-mt-24">
+                <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-4">
+                  Cobertura, operadora e impressoras
+                </h2>
+                <NetworkScopeLimits />
+              </section>
+            )}
+
             {isServicePilot && (
               <section id="fluxo" className="mb-10 scroll-mt-24">
                 <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-4">

@@ -19,6 +19,7 @@ import { COMMERCIAL_TERMS } from "@/data/commercialTerms";
 import { PRICING, SLA } from "@/data/pricingPolicy";
 import { TrustStrip } from "@/components/marketing/TrustStrip";
 import { PageTableOfContents } from "@/components/layout/PageTableOfContents";
+import { buildLocalBusinessSchema } from "@/lib/schema/localBusiness";
 
 
 const whatsappLink = buildWhatsAppUrl({ service: "preços e condições de assistência técnica", sourcePage: "/precos" });

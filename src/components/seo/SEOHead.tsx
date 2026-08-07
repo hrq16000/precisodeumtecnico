@@ -39,6 +39,33 @@ function absoluteUrl(u: string): string {
   return `https://precisodeumtecnico.com${u.startsWith("/") ? "" : "/"}${u}`;
 }
 
+/** Limites práticos de SERP (Google trunca acima disso). */
+const TITLE_MAX = 65;
+const DESC_MAX = 160;
+
+/** Corta na última palavra inteira antes do limite, sem cortar no meio. */
+function clampAtWord(text: string, max: number): string {
+  const clean = text.replace(/\s+/g, " ").trim();
+  if (clean.length <= max) return clean;
+  const slice = clean.slice(0, max - 1);
+  const cut = slice.lastIndexOf(" ");
+  return `${(cut > max * 0.6 ? slice.slice(0, cut) : slice).replace(/[\s,;:·—-]+$/, "")}…`;
+}
+
+export function clampTitle(title: string): string {
+  return clampAtWord(title, TITLE_MAX);
+}
+
+/** Prefere terminar em fim de frase; se não houver, corta na palavra. */
+export function clampDescription(description: string): string {
+  const clean = description.replace(/\s+/g, " ").trim();
+  if (clean.length <= DESC_MAX) return clean;
+  const head = clean.slice(0, DESC_MAX);
+  const stop = Math.max(head.lastIndexOf(". "), head.lastIndexOf("! "), head.lastIndexOf("? "));
+  if (stop > DESC_MAX * 0.6) return head.slice(0, stop + 1).trim();
+  return clampAtWord(clean, DESC_MAX);
+}
+
 interface Breadcrumb { name: string; url: string; }
 interface ServiceInfo {
   name: string;
@@ -231,7 +258,7 @@ export function SEOHead({
     "@id": `${canonical}#webpage`,
     url: canonical,
     name: fullTitle,
-    description,
+    description: metaDescription,
     inLanguage: "pt-BR",
     isPartOf: {
       "@type": "WebSite",
@@ -249,12 +276,12 @@ export function SEOHead({
   return (
     <Helmet>
       <title>{fullTitle}</title>
-      <meta name="description" content={description} />
+      <meta name="description" content={metaDescription} />
       {keywords && <meta name="keywords" content={keywords} />}
       <link rel="canonical" href={canonical} />
 
       <meta property="og:title" content={fullTitle} />
-      <meta property="og:description" content={description} />
+      <meta property="og:description" content={metaDescription} />
       <meta property="og:type" content={type} />
       <meta property="og:url" content={canonical} />
       {/* og:image / twitter:image: fonte única estática em index.html — todo
@@ -264,7 +291,7 @@ export function SEOHead({
 
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={fullTitle} />
-      <meta name="twitter:description" content={description} />
+      <meta name="twitter:description" content={metaDescription} />
 
 
 

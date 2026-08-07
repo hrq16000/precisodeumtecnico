@@ -17,6 +17,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
+import { LocalityPhotoBand } from "@/components/media/LocalityPhotoBand";
 
 // whatsappLink personalizado por rota dentro do componente
 
@@ -259,6 +260,11 @@ export default function ServicoCidade() {
           </Reveal>
         </div>
       </section>
+      <LocalityPhotoBand
+        title={"Como o serviço é executado na prática"}
+        intro={"Fotos reais de bancada, redes e infraestrutura — referência visual do escopo atendido nesta cidade."}
+      />
+
     </Layout>
   );
 }

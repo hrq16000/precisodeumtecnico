@@ -16,6 +16,7 @@ import {
   type CidadeServicoKey,
 } from "@/data/cidadesRegiao";
 import { getSymptomBySlug } from "@/data/symptoms";
+import { LocalityPhotoBand } from "@/components/media/LocalityPhotoBand";
 
 interface Props {
   service: CidadeServicoKey;
@@ -265,6 +266,11 @@ export default function ServicoCidadeRegiao({ service }: Props) {
           </ul>
         </div>
       </section>
+      <LocalityPhotoBand
+        title={"Como o serviço é executado na prática"}
+        intro={"Fotos reais de bancada, redes e infraestrutura — referência visual do escopo atendido nesta cidade."}
+      />
+
     </Layout>
   );
 }

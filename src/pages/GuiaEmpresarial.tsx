@@ -60,11 +60,14 @@ export default function GuiaEmpresarial({ slug }: Props) {
   ]);
   const isServicePilot = B2B_SERVICE_SLUGS.has(guide.slug);
   const isPilot = isHubPilot || isServicePilot;
-  const pilotCtaLabel = isHubPilot
-    ? "Descrever a necessidade da empresa"
-    : guide.slug === "suporte-tecnico-empresarial"
-      ? "Solicitar suporte para a empresa"
-      : "Solicitar avaliação para a empresa";
+  const CTA_LABEL_BY_SLUG: Record<string, string> = {
+    "empresa-de-ti-curitiba": "Descrever a necessidade da empresa",
+    "suporte-tecnico-empresarial": "Solicitar suporte para a empresa",
+    "manutencao-preventiva-empresas": "Descrever os equipamentos da empresa",
+    "backup-para-empresas": "Descrever como os arquivos são armazenados",
+    "redes-e-wifi": "Descrever o ambiente de rede",
+  };
+  const pilotCtaLabel = CTA_LABEL_BY_SLUG[guide.slug] ?? "Solicitar avaliação para a empresa";
 
   /** Rodada 3T — bloco de diferenciação por página. */
   const isPreventiva = guide.slug === "manutencao-preventiva-empresas";

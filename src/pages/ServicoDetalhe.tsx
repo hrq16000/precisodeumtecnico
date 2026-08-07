@@ -365,7 +365,7 @@ const ServicoDetalhe = () => {
                   <PcAssemblyPolicySections />
 
 
-                  <div className="mt-8">
+                  <div className="mt-8" id="orcamento-da-montagem">
                     <PcQuoteWizard sourcePage="/servicos/pc-gamer" />
                   </div>
                   <div className="mt-8 p-5 rounded-xl border border-border bg-card">

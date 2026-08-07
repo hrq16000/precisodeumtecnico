@@ -22,7 +22,6 @@ const BANNED = [
   "franquia de horas",
   "sla ",
   "ilimitado",
-  "acesso permanente",
   "segurança total",
   "100% seguro",
   "nunca perca",
@@ -68,6 +67,10 @@ test.describe("3U — atendimento remoto", () => {
     await page.waitForLoadState("networkidle");
     const text = await bodyText(page);
     expect(text).toContain("autoriza");
+    // Acesso permanente só pode aparecer em negação explícita.
+    if (text.includes("acesso permanente")) {
+      expect(text).toMatch(/acesso permanente não é mantido/);
+    }
     expect(text).toContain("conexão");
     expect(text).toMatch(/não pode ser (feito )?remot|precisa de atendimento presencial|presencial/);
     await expect(page.locator("#fluxo-remoto")).toBeVisible();

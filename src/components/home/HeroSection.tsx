@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { MessageCircle, CheckCircle, Clock, Shield, MapPin, Users, CalendarCheck } from "lucide-react";
 import { OfferHighlight } from "@/components/marketing/OfferHighlight";
+import { GeoStatusChip } from "@/components/layout/GeoStatusChip";
 import { SLA } from "@/data/pricingPolicy";
 import { COMPANY } from "@/data/companyInfo";
 import { buildWhatsAppUrl, readStoredLocation, currentSourcePage } from "@/lib/whatsapp";
+
 
 export function HeroSection() {
   const whatsappLink = buildWhatsAppUrl({

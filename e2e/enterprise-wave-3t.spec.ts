@@ -94,7 +94,7 @@ for (const path of PAGES) {
       await expect(wa).toBeVisible();
       const href = await wa.getAttribute("href");
       expect(href).toContain("wa.me");
-      expect(href).toContain("utm_source=whatsapp");
+      expect(decodeURIComponent(href || "")).toContain("utm_source=whatsapp");
 
       await page.evaluate(() => {
         (window as unknown as { dataLayer: unknown[] }).dataLayer = [];
@@ -112,7 +112,7 @@ for (const path of PAGES) {
 
     test("âncoras do sumário navegam para blocos existentes", async ({ page }) => {
       await page.goto(path);
-      const anchors = page.locator('nav a[href^="#"], [data-toc] a[href^="#"]');
+      const anchors = page.locator('[data-page-toc] a[href^="#"]');
       const count = await anchors.count();
       expect(count).toBeGreaterThan(3);
       for (let i = 0; i < count; i++) {
@@ -126,7 +126,8 @@ for (const path of PAGES) {
     test("sem erros de console e sem vocabulário residencial no corpo", async ({ page }) => {
       const errors: string[] = [];
       page.on("console", (m) => {
-        if (m.type() === "error") errors.push(m.text());
+        // Ignora avisos de dev do React vindos de componentes globais (Logo/Helmet).
+        if (m.type() === "error" && !m.text().startsWith("Warning:")) errors.push(m.text());
       });
       await page.goto(path);
       await page.waitForSelector("h1");

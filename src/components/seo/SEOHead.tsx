@@ -188,6 +188,26 @@ export function SEOHead({
       })),
     });
   }
+  if (images && images.length > 0) {
+    for (const img of images) {
+      extra.push({
+        "@context": "https://schema.org",
+        "@type": "ImageObject",
+        contentUrl: absoluteUrl(img.contentUrl),
+        url: absoluteUrl(img.contentUrl),
+        caption: img.caption,
+        description: img.caption,
+        creator: { "@type": "Person", name: img.author },
+        creditText: `${img.author} — ${img.license} (Wikimedia Commons)`,
+        copyrightNotice: `${img.author} · ${img.license}`,
+        license: img.licenseUrl || img.source,
+        acquireLicensePage: img.source,
+        isPartOf: { "@id": `${canonical}#webpage` },
+        ...(img.width ? { width: img.width } : {}),
+        ...(img.height ? { height: img.height } : {}),
+      });
+    }
+  }
 
   const baseSchemas = structuredData ?? (schema ? [schema] : [localBusinessSchema]);
   const merged = [...baseSchemas, ...extra];

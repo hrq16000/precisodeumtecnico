@@ -21,6 +21,12 @@ import { BusinessServiceMap } from "@/components/marketing/BusinessServiceMap";
 import { BusinessScopeIndicators } from "@/components/marketing/BusinessScopeIndicators";
 import { BusinessSupportFlow } from "@/components/marketing/BusinessSupportFlow";
 import { PageTableOfContents, type TocItem } from "@/components/layout/PageTableOfContents";
+import {
+  PreventivePriorityMatrix,
+  BackupConceptsBlock,
+  NetworkAudienceBlocks,
+  NetworkScopeLimits,
+} from "@/components/marketing/B2BPageBlocks";
 
 
 const BASE = "https://precisodeumtecnico.com";

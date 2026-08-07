@@ -65,11 +65,21 @@ export default function KeywordServicePage({ slug }: Props) {
 
   /** Rodada 3Q — padrão visual comum, com conteúdo próprio por serviço. */
   const visual = SERVICE_VISUAL_BY_SLUG[page.slug];
+  /** Rodada 3U — atendimento remoto é modalidade: blocos exclusivos. */
+  const isRemote = page.slug === "suporte-tecnico-remoto";
   const tocItems = visual
     ? [
         { id: "o-que-esta-incluido", label: "O que está incluído" },
+        ...(isRemote ? [{ id: "requisitos", label: "Requisitos" }] : []),
         { id: "pontos-de-decisao", label: "Pontos de decisão" },
+        ...(isRemote ? [{ id: "fluxo-remoto", label: "Como funciona a sessão" }] : []),
         { id: "como-funciona", label: "Como funciona o atendimento" },
+        ...(isRemote
+          ? [
+              { id: "seguranca-remota", label: "Segurança e autorização" },
+              { id: "limites-remoto", label: "O que não pode ser remoto" },
+            ]
+          : []),
         ...(page.scopeLimits ? [{ id: "limites-do-atendimento", label: "Limites do atendimento" }] : []),
         ...(page.engagementModels ? [{ id: "avulso-ou-recorrente", label: "Avulso ou recorrente" }] : []),
         { id: "perguntas-frequentes", label: "Perguntas frequentes" },

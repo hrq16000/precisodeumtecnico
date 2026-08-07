@@ -5,7 +5,11 @@
     <lastmod>2026-08-07</lastmod>
   </sitemap>
   <sitemap>
-    <loc>https://precisodeumtecnico.com/sitemap-regions.xml</loc>
+    <loc>https://precisodeumtecnico.com/sitemap-servicos.xml</loc>
+    <lastmod>2026-08-07</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://precisodeumtecnico.com/sitemap-cidades.xml</loc>
     <lastmod>2026-08-07</lastmod>
   </sitemap>
   <sitemap>

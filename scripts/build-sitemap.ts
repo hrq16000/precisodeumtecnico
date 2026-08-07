@@ -271,10 +271,6 @@ const matrixUrls: Url[] = matrixCombos.slice(0, NATIONAL_MATRIX_MAX).map((c) => 
 }));
 const matrixDeduped = dedupe(matrixUrls);
 
-// Consolidação: todas as URLs por-cidade e por-bairro em dois shards únicos.
-const regionsConsolidated = cityDeduped.flatMap((s) => s.urls);
-const bairrosConsolidated = bairroDeduped.flatMap((s) => s.urls);
-
 // ---- Segmentação por tipo de rota (Rodada 32.2) ----
 // Shards temáticos ajudam o Google a diagnosticar cobertura por categoria:
 //   serviços · cidades · bairros. Um shard por tipo, sem duplicar URL.

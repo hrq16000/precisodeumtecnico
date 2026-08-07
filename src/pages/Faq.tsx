@@ -65,9 +65,9 @@ export default function Faq() {
         </header>
         <Accordion type="single" collapsible className="max-w-3xl">
           {FAQ.map((f, i) => (
-            <AccordionItem key={i} value={`q-${i}`}>
-              <AccordionTrigger className="text-left">{f.q}</AccordionTrigger>
-              <AccordionContent>{f.a}</AccordionContent>
+            <AccordionItem data-faq-item key={i} value={`q-${i}`}>
+              <AccordionTrigger data-faq-question data-testid="faq-question" className="text-left">{f.q}</AccordionTrigger>
+              <AccordionContent data-faq-answer>{f.a}</AccordionContent>
             </AccordionItem>
           ))}
         </Accordion>

@@ -429,9 +429,9 @@ export default function KeywordServicePage({ slug }: Props) {
           </h2>
           <Accordion type="single" collapsible className="w-full">
             {page.faq.map((f, i) => (
-              <AccordionItem key={f.question} value={`faq-${i}`}>
-                <AccordionTrigger className="text-left">{f.question}</AccordionTrigger>
-                <AccordionContent className="text-muted-foreground">{f.answer}</AccordionContent>
+              <AccordionItem data-faq-item key={f.question} value={`faq-${i}`}>
+                <AccordionTrigger data-faq-question data-testid="faq-question" className="text-left">{f.question}</AccordionTrigger>
+                <AccordionContent data-faq-answer className="text-muted-foreground">{f.answer}</AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>

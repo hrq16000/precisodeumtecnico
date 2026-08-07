@@ -373,9 +373,9 @@ const Servicos = () => {
           </h2>
           <Accordion type="single" collapsible>
             {servicosFaqs.map((f, i) => (
-              <AccordionItem key={i} value={`s-${i}`}>
-                <AccordionTrigger className="text-left">{f.question}</AccordionTrigger>
-                <AccordionContent>{f.answer}</AccordionContent>
+              <AccordionItem data-faq-item key={i} value={`s-${i}`}>
+                <AccordionTrigger data-faq-question data-testid="faq-question" className="text-left">{f.question}</AccordionTrigger>
+                <AccordionContent data-faq-answer>{f.answer}</AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>

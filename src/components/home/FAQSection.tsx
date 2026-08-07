@@ -31,15 +31,15 @@ export function FAQSection() {
         <div className="max-w-3xl mx-auto">
           <Accordion type="single" collapsible className="space-y-4">
             {faqs.map((faq, index) => (
-              <AccordionItem
+              <AccordionItem data-faq-item
                 key={index}
                 value={`item-${index}`}
                 className="bg-card border border-border rounded-xl px-6 data-[state=open]:shadow-md transition-shadow"
               >
-                <AccordionTrigger className="text-left font-semibold text-foreground hover:text-primary hover:no-underline py-5">
+                <AccordionTrigger data-faq-question data-testid="faq-question" className="text-left font-semibold text-foreground hover:text-primary hover:no-underline py-5">
                   {faq.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground pb-5 leading-relaxed">
+                <AccordionContent data-faq-answer className="text-muted-foreground pb-5 leading-relaxed">
                   {faq.answer}
                 </AccordionContent>
               </AccordionItem>

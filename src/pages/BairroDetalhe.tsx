@@ -353,9 +353,9 @@ export default function BairroDetalhe() {
           </h2>
           <Accordion type="single" collapsible>
             {localFaqs.map((f, i) => (
-              <AccordionItem key={i} value={`faq-${i}`}>
-                <AccordionTrigger className="text-left">{f.question}</AccordionTrigger>
-                <AccordionContent>{f.answer}</AccordionContent>
+              <AccordionItem data-faq-item key={i} value={`faq-${i}`}>
+                <AccordionTrigger data-faq-question data-testid="faq-question" className="text-left">{f.question}</AccordionTrigger>
+                <AccordionContent data-faq-answer>{f.answer}</AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>

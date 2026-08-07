@@ -215,9 +215,9 @@ export default function ServicoCidade() {
             <h2 className="font-display text-2xl md:text-3xl font-bold mb-6 mt-12">Perguntas frequentes — {serviceData.title} em {cityData.name}</h2>
             <Accordion type="single" collapsible>
               {serviceFaqs.map((faq, i) => (
-                <AccordionItem key={i} value={`item-${i}`}>
-                  <AccordionTrigger className="text-left">{faq.question}</AccordionTrigger>
-                  <AccordionContent>{faq.answer}</AccordionContent>
+                <AccordionItem data-faq-item key={i} value={`item-${i}`}>
+                  <AccordionTrigger data-faq-question data-testid="faq-question" className="text-left">{faq.question}</AccordionTrigger>
+                  <AccordionContent data-faq-answer>{faq.answer}</AccordionContent>
                 </AccordionItem>
               ))}
             </Accordion>

@@ -147,9 +147,9 @@ export default function BlogPost() {
               <h2 className="font-display text-2xl md:text-3xl font-bold mt-12 mb-4">Perguntas frequentes</h2>
               <Accordion type="single" collapsible>
                 {post.faqs.map((f, i) => (
-                  <AccordionItem key={i} value={`f-${i}`}>
-                    <AccordionTrigger className="text-left">{f.question}</AccordionTrigger>
-                    <AccordionContent>{f.answer}</AccordionContent>
+                  <AccordionItem data-faq-item key={i} value={`f-${i}`}>
+                    <AccordionTrigger data-faq-question data-testid="faq-question" className="text-left">{f.question}</AccordionTrigger>
+                    <AccordionContent data-faq-answer>{f.answer}</AccordionContent>
                   </AccordionItem>
                 ))}
               </Accordion>

@@ -432,9 +432,9 @@ export default function AssistenciaTecnica() {
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={fadeUp} className="mt-10">
             <Accordion type="single" collapsible className="w-full">
               {faqs.map((f, i) => (
-                <AccordionItem key={f.q} value={`faq-${i}`}>
-                  <AccordionTrigger className="text-left text-base font-semibold">{f.q}</AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground leading-relaxed">{f.a}</AccordionContent>
+                <AccordionItem data-faq-item key={f.q} value={`faq-${i}`}>
+                  <AccordionTrigger data-faq-question data-testid="faq-question" className="text-left text-base font-semibold">{f.q}</AccordionTrigger>
+                  <AccordionContent data-faq-answer className="text-muted-foreground leading-relaxed">{f.a}</AccordionContent>
                 </AccordionItem>
               ))}
             </Accordion>

@@ -311,7 +311,7 @@ export const SEGURANCA_DOS_DADOS: EnterpriseGuide = {
   path: "/seguranca-dos-dados",
   kicker: "Backup, acessos e continuidade",
   title: "Segurança dos dados da sua empresa",
-  metaTitle: "Segurança dos Dados na Empresa | Backup e LGPD",
+  metaTitle: "Segurança dos Dados na Empresa: Backup e LGPD",
   metaDescription:
     "Proteja os dados da empresa: backup 3-2-1 testado, contas nominais, duas etapas, resposta a ransomware e retenção conforme a LGPD.",
   intro:

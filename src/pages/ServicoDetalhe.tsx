@@ -311,9 +311,24 @@ const ServicoDetalhe = () => {
           <div className="grid lg:grid-cols-3 gap-12">
             {/* Main Content */}
             <div className="lg:col-span-2">
+              {/* Sumário navegável — apenas na montagem de PC (página longa) */}
+              {slug === "pc-gamer" && (
+                <PageTableOfContents
+                  className="mb-10"
+                  items={[
+                    { id: "sobre-o-servico", label: "Sobre o serviço" },
+                    { id: "o-que-esta-incluido", label: "O que está incluído" },
+                    { id: "escopo-da-montagem", label: "Escopo da montagem" },
+                    { id: "orcamento-da-montagem", label: "Orçamento da montagem" },
+                    { id: "como-funciona", label: "Como funciona" },
+                    { id: "perguntas-frequentes", label: "Perguntas frequentes" },
+                  ]}
+                />
+              )}
+
               {/* Description */}
               <div className="mb-12">
-                <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-6">
+                <h2 id="sobre-o-servico" className="font-display text-2xl md:text-3xl font-bold text-foreground mb-6">
                   Sobre o Serviço
                 </h2>
                 <div className="space-y-4 text-muted-foreground leading-relaxed">
@@ -325,7 +340,7 @@ const ServicoDetalhe = () => {
 
               {/* Benefits */}
               <div className="mb-12">
-                <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-6">
+                <h2 id="o-que-esta-incluido" className="font-display text-2xl md:text-3xl font-bold text-foreground mb-6">
                   O Que Está Incluído
                 </h2>
                 <div className="grid sm:grid-cols-2 gap-3">
@@ -341,9 +356,14 @@ const ServicoDetalhe = () => {
               {/* Montagem/PC Gamer: escopo, peças do cliente, garantia e checklist */}
               {slug === "pc-gamer" && (
                 <div className="mb-12">
+                  <h2 id="escopo-da-montagem" className="font-display text-2xl md:text-3xl font-bold text-foreground mb-6">
+                    Escopo da montagem
+                  </h2>
+                  <AssemblyScopeBand className="mb-8" />
                   <WorkstationRequirements />
                   <RelatedGuidesCard links={[GUIDE_LINKS.workstation, GUIDE_LINKS.ti]} />
                   <PcAssemblyPolicySections />
+
 
                   <div className="mt-8">
                     <PcQuoteWizard sourcePage="/servicos/pc-gamer" />

@@ -89,6 +89,59 @@ jobs:
           path: canonical-parity-report.json
           if-no-files-found: ignore
           retention-days: 14
+      - name: Gate — title/description únicos, no limite e com og:image
+        run: bunx tsx scripts/check-meta-uniqueness.ts
+        env:
+          META_BASE_URL: http://localhost:4173
+          META_SAMPLE: "30"
+          META_BATCH: "8"
+      - name: Relatório público — paridade FAQ x JSON-LD por localidade
+        run: bunx tsx scripts/report-faq-parity.ts
+        env:
+          FAQ_BASE_URL: http://localhost:4173
+          FAQ_SAMPLE: "40"
+          FAQ_STRICT: "1"
+      - name: Upload relatórios de meta e FAQ
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seo-reports
+          path: |
+            meta-uniqueness-report.json
+            public/relatorios/faq-parity.csv
+            public/relatorios/faq-parity.json
+          if-no-files-found: ignore
+          retention-days: 30
+
+  performance-localidades:
+    # Lighthouse por página de bairro/cidade + alerta de regressão após
+    # mudanças de imagem ou layout.
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    needs: verify
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+      - name: Build
+        run: bun run build
+      - name: Lighthouse — bairros e cidades
+        run: bunx @lhci/cli autorun --config=./lighthouserc.locality.cjs
+      - name: Alerta de regressão (LCP/CLS/TBT/peso de imagens)
+        env:
+          PERF_SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: bunx tsx scripts/check-perf-regression.ts
+      - name: Upload relatórios Lighthouse
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-localidades
+          path: lighthouse-reports/locality
+          if-no-files-found: ignore
+          retention-days: 14
 
   post-deploy-smoke:
     # Smoke pós-deploy contra produção: index + todos os shards + amostra de

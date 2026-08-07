@@ -3,6 +3,8 @@ import { Layout } from "@/components/layout/Layout";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { PRICING, SLA, COMMERCIAL } from "@/data/pricingPolicy";
 import { COMPANY } from "@/data/companyInfo";
+import { PublicPhotoBand } from "@/components/media/PublicPhotoBand";
+import { pickServicePhotos } from "@/data/publicPhotos";
 
 const FAQ: { q: string; a: string }[] = [
   { q: "Como funciona o atendimento?", a: `Você preenche a triagem online (fotos e vídeos obrigatórios). Nossa equipe avalia, retorna com escopo, prazo e valor pré-aprovado. ${COMMERCIAL.triageRequirement}` },
@@ -70,6 +72,11 @@ export default function Faq() {
           ))}
         </Accordion>
       </section>
+      <PublicPhotoBand
+        title="Referências visuais"
+        intro="Fotos reais de domínio público / Creative Commons ilustrando os equipamentos citados nas respostas."
+        photos={pickServicePhotos("faq-geral", 2)}
+      />
     </Layout>
   );
 }

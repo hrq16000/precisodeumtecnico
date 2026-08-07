@@ -1,7 +1,10 @@
+import { Helmet } from "react-helmet-async";
 import { ImageIcon } from "lucide-react";
 import { PublicPhotoFigure } from "@/components/media/PublicPhotoFigure";
 import type { PublicPhoto } from "@/data/publicPhotos";
 
+
+const ORIGIN = "https://precisodeumtecnico.com";
 
 interface Props {
   title: string;
@@ -21,8 +24,36 @@ interface Props {
 export function PublicPhotoBand({ title, intro, photos, eagerFirst = false }: Props) {
   if (photos.length === 0) return null;
 
+  // ImageObject por foto: relaciona cada arquivo servido ao autor, licença e
+  // página de origem — o buscador nunca precisa inferir o crédito.
+  const imageSchema = photos.map((photo) => {
+    const largest = photo.variants[photo.variants.length - 1] ?? 800;
+    return {
+      "@context": "https://schema.org",
+      "@type": "ImageObject",
+      contentUrl: `${ORIGIN}/photos/${photo.slug}-${largest}.jpg`,
+      url: `${ORIGIN}/photos/${photo.slug}-${largest}.jpg`,
+      caption: photo.caption,
+      description: photo.alt,
+      width: photo.width,
+      height: photo.height,
+      creator: { "@type": "Person", name: photo.author },
+      creditText: `${photo.author} — ${photo.license} (Wikimedia Commons)`,
+      copyrightNotice: `${photo.author} · ${photo.license}`,
+      license: photo.licenseUrl || photo.source,
+      acquireLicensePage: photo.source,
+    };
+  });
+
   return (
     <section className="py-12 md:py-16 border-t border-border" aria-labelledby="fotos-heading">
+      <Helmet>
+        {imageSchema.map((schema) => (
+          <script key={schema.contentUrl} type="application/ld+json">
+            {JSON.stringify(schema)}
+          </script>
+        ))}
+      </Helmet>
       <div className="container mx-auto px-4 max-w-5xl">
         <div className="flex items-center gap-2 text-sm font-semibold text-primary">
           <ImageIcon className="w-4 h-4" aria-hidden="true" /> Referências visuais

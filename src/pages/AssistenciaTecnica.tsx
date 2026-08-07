@@ -31,6 +31,8 @@ import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { trackWhatsAppClick } from "@/lib/analytics";
 import { buildWhatsAppUrl, buildWhatsAppUrlFromText } from "@/lib/whatsapp";
+import { PublicPhotoBand } from "@/components/media/PublicPhotoBand";
+import { pickServicePhotos } from "@/data/publicPhotos";
 
 const WHATSAPP_DISPLAY = "WhatsApp 24h";
 const waLink = (text?: string) =>
@@ -148,10 +150,10 @@ export default function AssistenciaTecnica() {
   return (
     <Layout>
       <Helmet>
-        <title>Assistência Técnica em Todo o Brasil | Consoles, GPU, PC, Notebook, TV e Som</title>
+        <title>Assistência Técnica em Todo o Brasil | PCs, Consoles e TVs</title>
         <meta
           name="description"
-          content="Assistência técnica especializada com atendimento em todo o Brasil. Reparo de PS5, Xbox, Nintendo, placas de vídeo, notebooks, celulares, TVs e som. Central em Curitiba, parceiros em todos os estados. WhatsApp WhatsApp 24h."
+          content="Reparo de PS5, Xbox, placas de vídeo, notebooks, celulares, TVs e som com atendimento em todo o Brasil. Central em Curitiba e WhatsApp 24h."
         />
         <meta
           name="keywords"
@@ -502,6 +504,11 @@ export default function AssistenciaTecnica() {
           </motion.div>
         </div>
       </section>
+      <PublicPhotoBand
+        title="Referências visuais do atendimento técnico"
+        intro="Fotos reais licenciadas livremente que representam os equipamentos e serviços cobertos pelo atendimento nacional."
+        photos={pickServicePhotos("assistencia-nacional", 3)}
+      />
     </Layout>
   );
 }

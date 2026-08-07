@@ -112,9 +112,13 @@ export function RegionalSymptomFAQ({
               <h3 className="font-semibold text-foreground mb-3">{localFaqsHeading}</h3>
               <dl className="space-y-4">
                 {localItems.map((qa, i) => (
-                  <div key={`local-${i}`}>
-                    <dt className="font-medium text-foreground">{qa.q}</dt>
-                    <dd className="mt-1 text-sm text-muted-foreground leading-relaxed">{qa.a}</dd>
+                  <div key={`local-${i}`} data-faq-item>
+                    <dt className="font-medium text-foreground" data-testid="faq-question" data-faq-question>
+                      {qa.q}
+                    </dt>
+                    <dd className="mt-1 text-sm text-muted-foreground leading-relaxed" data-faq-answer>
+                      {qa.a}
+                    </dd>
                   </div>
                 ))}
               </dl>
@@ -125,11 +129,11 @@ export function RegionalSymptomFAQ({
               <h3 className="font-semibold text-foreground mb-3">{s.label}</h3>
               <dl className="space-y-4">
                 {s.faq.map((qa, i) => (
-                  <div key={i}>
-                    <dt className="font-medium text-foreground">
+                  <div key={i} data-faq-item>
+                    <dt className="font-medium text-foreground" data-testid="faq-question" data-faq-question>
                       {localize(qa.q, cityName, neighborhoodName)}
                     </dt>
-                    <dd className="mt-1 text-sm text-muted-foreground leading-relaxed">
+                    <dd className="mt-1 text-sm text-muted-foreground leading-relaxed" data-faq-answer>
                       {localize(qa.a, cityName, neighborhoodName)}
                     </dd>
                   </div>

@@ -21,6 +21,8 @@ import { COMMERCIAL_TERMS } from "@/data/commercialTerms";
 import { PRICING, SLA } from "@/data/pricingPolicy";
 import { servicesData } from "@/data/services";
 import { buildLocalBusinessSchema } from "@/lib/schema/localBusiness";
+import { PublicPhotoBand } from "@/components/media/PublicPhotoBand";
+import { pickServicePhotos } from "@/data/publicPhotos";
 
 /**
  * FAQ de /servicos — fonte única: COMMERCIAL_TERMS + PRICING.
@@ -381,6 +383,11 @@ const Servicos = () => {
       </section>
 
       <CTASection />
+      <PublicPhotoBand
+        title="Referências visuais dos serviços"
+        intro="Fotos reais de bancadas, redes, CFTV e instalações elétricas — imagens de terceiros sob licença livre, usadas para ilustrar o tipo de trabalho descrito nesta página."
+        photos={pickServicePhotos("todos-os-servicos", 3)}
+      />
     </Layout>
   );
 };

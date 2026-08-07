@@ -26,6 +26,46 @@ function safeStringify(schema: unknown, idx: number): string | null {
   }
 }
 
+/**
+ * Imagem social: a tag og:image/twitter:image é ESTÁTICA em index.html (fonte
+ * única), porque crawlers de prévia (WhatsApp, LinkedIn, Slack, Facebook) não
+ * executam JS e só leem o HTML servido. Emitir aqui criaria tag duplicada —
+ * o gate scripts/check-seo-dedup.ts falha o build nesse caso.
+ */
+export const DEFAULT_OG_IMAGE = "https://precisodeumtecnico.com/og/default.jpg";
+
+function absoluteUrl(u: string): string {
+  if (/^https?:\/\//i.test(u)) return u;
+  return `https://precisodeumtecnico.com${u.startsWith("/") ? "" : "/"}${u}`;
+}
+
+/** Limites práticos de SERP (Google trunca acima disso). */
+const TITLE_MAX = 65;
+const DESC_MAX = 160;
+
+/** Corta na última palavra inteira antes do limite, sem cortar no meio. */
+function clampAtWord(text: string, max: number): string {
+  const clean = text.replace(/\s+/g, " ").trim();
+  if (clean.length <= max) return clean;
+  const slice = clean.slice(0, max - 1);
+  const cut = slice.lastIndexOf(" ");
+  return `${(cut > max * 0.6 ? slice.slice(0, cut) : slice).replace(/[\s,;:·—-]+$/, "")}…`;
+}
+
+export function clampTitle(title: string): string {
+  return clampAtWord(title, TITLE_MAX);
+}
+
+/** Prefere terminar em fim de frase; se não houver, corta na palavra. */
+export function clampDescription(description: string): string {
+  const clean = description.replace(/\s+/g, " ").trim();
+  if (clean.length <= DESC_MAX) return clean;
+  const head = clean.slice(0, DESC_MAX);
+  const stop = Math.max(head.lastIndexOf(". "), head.lastIndexOf("! "), head.lastIndexOf("? "));
+  if (stop > DESC_MAX * 0.6) return head.slice(0, stop + 1).trim();
+  return clampAtWord(clean, DESC_MAX);
+}
+
 interface Breadcrumb { name: string; url: string; }
 interface ServiceInfo {
   name: string;
@@ -34,6 +74,17 @@ interface ServiceInfo {
   areaServed?: string;
 }
 interface FAQItem { question: string; answer: string; }
+/** Imagem real (Wikimedia Commons) com crédito/licença — vira ImageObject. */
+export interface SEOImageCredit {
+  contentUrl: string;
+  caption: string;
+  license: string;
+  licenseUrl?: string;
+  author: string;
+  source: string;
+  width?: number;
+  height?: number;
+}
 
 interface SEOHeadProps {
   title: string;
@@ -51,6 +102,8 @@ interface SEOHeadProps {
   service?: ServiceInfo;
   /** Se presente, emite FAQPage schema. Deve corresponder às FAQs visíveis. */
   faq?: FAQItem[];
+  /** Fotos reais exibidas na página; emitem ImageObject com crédito/licença. */
+  images?: SEOImageCredit[];
   /** Article publication metadata for blog posts */
   article?: {
     publishedTime?: string;
@@ -68,9 +121,7 @@ export function SEOHead({
   title,
   description,
   canonical = "https://precisodeumtecnico.com",
-  // ogImage é ignorado no Helmet: a hospedagem Lovable injeta og:image /
-  // twitter:image server-side (fallback ou imagem do projeto). Emitir aqui
-  // duplicaria a tag no <head>. Mantido no tipo para compat com callers.
+  // og:image é servido estaticamente em index.html (ver nota acima).
   ogImage: _ogImage,
   type = "website",
   schema,
@@ -79,13 +130,20 @@ export function SEOHead({
   breadcrumbs,
   service,
   faq,
+  images,
   article,
   noindex = false,
 }: SEOHeadProps) {
 
-  const fullTitle = title.includes("Preciso de Um Técnico")
-    ? title
-    : `${title} | Preciso de Um Técnico`;
+  // Limites de SERP: título ≤ 65 e descrição ≤ 160 caracteres. As páginas
+  // programáticas (serviço × cidade × bairro) geram textos longos; aqui o
+  // corte é feito na fronteira de palavra/frase, preservando a unicidade —
+  // o gate scripts/check-meta-uniqueness.ts falha o build se algo escapar.
+  const withBrand =
+    title.includes("Preciso de Um Técnico") ? title : `${title} | Preciso de Um Técnico`;
+  const fullTitle = withBrand.length <= TITLE_MAX ? withBrand : clampTitle(title);
+  const metaDescription = clampDescription(description);
+
 
   const localBusinessSchema = {
     "@context": "https://schema.org",
@@ -165,6 +223,26 @@ export function SEOHead({
       })),
     });
   }
+  if (images && images.length > 0) {
+    for (const img of images) {
+      extra.push({
+        "@context": "https://schema.org",
+        "@type": "ImageObject",
+        contentUrl: absoluteUrl(img.contentUrl),
+        url: absoluteUrl(img.contentUrl),
+        caption: img.caption,
+        description: img.caption,
+        creator: { "@type": "Person", name: img.author },
+        creditText: `${img.author} — ${img.license} (Wikimedia Commons)`,
+        copyrightNotice: `${img.author} · ${img.license}`,
+        license: img.licenseUrl || img.source,
+        acquireLicensePage: img.source,
+        isPartOf: { "@id": `${canonical}#webpage` },
+        ...(img.width ? { width: img.width } : {}),
+        ...(img.height ? { height: img.height } : {}),
+      });
+    }
+  }
 
   const baseSchemas = structuredData ?? (schema ? [schema] : [localBusinessSchema]);
   const merged = [...baseSchemas, ...extra];
@@ -180,7 +258,7 @@ export function SEOHead({
     "@id": `${canonical}#webpage`,
     url: canonical,
     name: fullTitle,
-    description,
+    description: metaDescription,
     inLanguage: "pt-BR",
     isPartOf: {
       "@type": "WebSite",
@@ -198,21 +276,22 @@ export function SEOHead({
   return (
     <Helmet>
       <title>{fullTitle}</title>
-      <meta name="description" content={description} />
+      <meta name="description" content={metaDescription} />
       {keywords && <meta name="keywords" content={keywords} />}
       <link rel="canonical" href={canonical} />
 
       <meta property="og:title" content={fullTitle} />
-      <meta property="og:description" content={description} />
+      <meta property="og:description" content={metaDescription} />
       <meta property="og:type" content={type} />
       <meta property="og:url" content={canonical} />
-      {/* og:image / twitter:image são injetados pela hospedagem — não emitir aqui. */}
+      {/* og:image / twitter:image: fonte única estática em index.html — todo
+          compartilhamento de qualquer URL do portal exibe prévia com imagem. */}
       <meta property="og:locale" content="pt_BR" />
       <meta property="og:site_name" content="Preciso de Um Técnico" />
 
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={fullTitle} />
-      <meta name="twitter:description" content={description} />
+      <meta name="twitter:description" content={metaDescription} />
 
 
 

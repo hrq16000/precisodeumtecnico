@@ -118,6 +118,7 @@ async function runLimited<T>(items: T[], limit: number, fn: (t: T) => Promise<vo
 
 const targets = new Set<string>();
 targets.add("/og-image.jpg");
+targets.add("/og/default.jpg");
 targets.add("/og/blog.jpg");
 targets.add("/og/precos.jpg");
 for (const c of blogCategories) targets.add(`/og/${c.slug}.jpg`);

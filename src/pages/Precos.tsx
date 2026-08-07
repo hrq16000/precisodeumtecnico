@@ -20,6 +20,7 @@ import { PRICING, SLA } from "@/data/pricingPolicy";
 import { TrustStrip } from "@/components/marketing/TrustStrip";
 import { PageTableOfContents } from "@/components/layout/PageTableOfContents";
 import { buildLocalBusinessSchema } from "@/lib/schema/localBusiness";
+import { parsePriceBRL } from "@/lib/priceSpec";
 
 
 const whatsappLink = buildWhatsAppUrl({ service: "preços e condições de assistência técnica", sourcePage: "/precos" });
@@ -88,19 +89,37 @@ export default function Precos() {
     })),
   };
 
+  // PriceSpecification derivado do MESMO array renderizado na tabela — o gate
+  // scripts/check-price-schema.ts falha o build se os números divergirem.
   const offerCatalog = {
     "@context": "https://schema.org",
     "@type": "OfferCatalog",
     name: "Tabela de Preços — Preciso de Um Técnico",
-    itemListElement: priceTable.slice(0, 12).map((r, i) => ({
-      "@type": "Offer",
-      position: i + 1,
-      name: r.service,
-      description: r.example,
-      priceCurrency: "BRL",
-      priceSpecification: { "@type": "PriceSpecification", priceCurrency: "BRL", price: r.price },
-    })),
+    itemListElement: priceTable
+      .map((r, i) => {
+        const spec = parsePriceBRL(r.price);
+        if (!spec) return null;
+        return {
+          "@type": "Offer",
+          position: i + 1,
+          name: r.service,
+          description: r.example,
+          priceCurrency: "BRL",
+          availability: "https://schema.org/InStock",
+          areaServed: "Curitiba e Região Metropolitana",
+          priceSpecification: {
+            "@type": "PriceSpecification",
+            priceCurrency: "BRL",
+            ...(spec.min === spec.max
+              ? { price: spec.min }
+              : { minPrice: spec.min, maxPrice: spec.max }),
+            valueAddedTaxIncluded: true,
+          },
+        };
+      })
+      .filter(Boolean),
   };
+
 
   return (
     <Layout>

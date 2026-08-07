@@ -27,6 +27,8 @@ import { RelatedGuidesCard, GUIDE_LINKS } from "@/components/seo/RelatedGuidesCa
 import { RelatedServiceLinks } from "@/components/seo/RelatedServiceLinks";
 
 const PC_GAMER = SERVICES_CATALOG["pc-gamer"];
+import { PublicPhotoBand } from "@/components/media/PublicPhotoBand";
+import { pickServicePhotos } from "@/data/publicPhotos";
 import {
   getTestimonialsForService,
   buildServiceReviewsSchema,
@@ -559,6 +561,11 @@ const ServicoDetalhe = () => {
       </section>
 
       <CTASection />
+      <PublicPhotoBand
+        title="Como esse tipo de serviço se parece na prática"
+        intro="Imagens reais de domínio público / Creative Commons ilustrando equipamentos e bancadas semelhantes aos atendidos neste serviço."
+        photos={pickServicePhotos("servico-detalhe", 3)}
+      />
     </Layout>
   );
 };

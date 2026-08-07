@@ -20,6 +20,10 @@ interface RegionalSymptomFAQProps {
   seedSlug: string;
   /** Quantos sintomas exibir (default 3). */
   count?: number;
+  /** Perguntas específicas da localidade (src/data/localFaq.ts). */
+  localFaqs?: ReadonlyArray<{ question: string; answer: string }>;
+  /** Título do bloco de perguntas locais. */
+  localFaqsHeading?: string;
 }
 
 const CURITIBA_REGION_TOKENS = [

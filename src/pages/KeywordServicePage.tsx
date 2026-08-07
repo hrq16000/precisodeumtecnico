@@ -29,6 +29,12 @@ import { AuthoritySince } from "@/components/marketing/AuthoritySince";
 import { TrustStrip } from "@/components/marketing/TrustStrip";
 import { InlineTriageCTA } from "@/components/marketing/InlineTriageCTA";
 import { EditorialCallout } from "@/components/marketing/EditorialCallout";
+import {
+  RemoteEligibility,
+  RemoteSessionFlow,
+  RemoteAuthorizationBox,
+  RemoteNotSuitable,
+} from "@/components/marketing/RemoteSupportBlocks";
 import { PageTableOfContents } from "@/components/layout/PageTableOfContents";
 
 import { COMPANY } from "@/data/companyInfo";

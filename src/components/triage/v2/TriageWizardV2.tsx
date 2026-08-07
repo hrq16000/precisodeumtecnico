@@ -134,10 +134,9 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
     rawDispatch({ type: "SET_CONTACT", field: "neighborhood", value: nb });
     pushLocalAnalyticsEvent({
       event: "triage_geo_prefill",
-      source,
+      source: `${source}:geo-${geoPrefill.source}`,
       city: geoPrefill.city,
       neighborhood: nb,
-      geo_source: geoPrefill.source,
       page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
     });
   }, [geoPrefill, state.contact.neighborhood, source]);

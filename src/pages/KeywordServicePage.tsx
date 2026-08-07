@@ -218,6 +218,15 @@ export default function KeywordServicePage({ slug }: Props) {
         </div>
       </section>
 
+      {/* Rodada 3U — elegibilidade da modalidade remota */}
+      {isRemote && (
+        <section className="pb-4">
+          <div className="container-custom max-w-4xl">
+            <RemoteEligibility />
+          </div>
+        </section>
+      )}
+
       {/* PONTOS DE DECISÃO — caixas editoriais próprias de cada serviço */}
       {visual && (
         <section className="pb-4">

@@ -41,7 +41,9 @@
     "check:b2b-cta": "playwright test e2e/enterprise-cta-tracking.spec.ts",
     "check:enterprise-3t": "playwright test e2e/enterprise-wave-3t.spec.ts",
     "check:visual-wave-3t": "playwright test e2e/visual-wave-3t.spec.ts",
-    "check:visual-wave-3u": "playwright test e2e/visual-wave-3u.spec.ts"
+    "check:visual-wave-3u": "playwright test e2e/visual-wave-3u.spec.ts",
+    "seo:monitor": "bun scripts/seo-monitor.ts",
+    "seo:monitor:all": "bun scripts/seo-monitor.ts --all"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

@@ -39,16 +39,12 @@ export function PublicPhotoBand({ title, intro, photos, eagerFirst = false }: Pr
             <li key={photo.slug} className="rounded-lg overflow-hidden border border-border bg-card">
               <figure>
                 <picture>
-                  <source
-                    type="image/webp"
-                    srcSet={`/photos/${photo.slug}-800.webp 800w, /photos/${photo.slug}-1200.webp 1200w, /photos/${photo.slug}-1600.webp 1600w`}
-                    sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 92vw"
-                  />
+                  <source type="image/webp" srcSet={`/photos/${photo.slug}-800.webp`} />
                   <img
                     src={`/photos/${photo.slug}-800.jpg`}
                     alt={photo.alt}
-                    width={photo.width}
-                    height={photo.height}
+                    width={800}
+                    height={Math.round((800 * photo.height) / photo.width)}
                     loading={eagerFirst && i === 0 ? "eager" : "lazy"}
                     decoding="async"
                     className="w-full h-48 object-cover bg-muted"

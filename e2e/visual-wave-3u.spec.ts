@@ -31,8 +31,25 @@ const BANNED = [
   "em conformidade com a lgpd",
 ];
 
+/**
+ * Cláusulas de negação são conteúdo desejado (limite explícito), não claim.
+ * São removidas antes da varredura para evitar falso positivo.
+ */
+const NEGATIONS = [
+  /não é plano mensal[^.·]*/g,
+  /acesso permanente não é mantido[^.·]*/g,
+  /não prometemos[^.·]*/g,
+  /sem promessa de[^.·]*/g,
+];
+
 async function bodyText(page: import("@playwright/test").Page) {
   return (await page.locator("body").innerText()).toLowerCase().replace(/\s+/g, " ");
+}
+
+async function claimText(page: import("@playwright/test").Page) {
+  let text = await bodyText(page);
+  for (const re of NEGATIONS) text = text.replace(re, " ");
+  return text;
 }
 
 test.describe("3U — governança comum", () => {
@@ -40,7 +57,7 @@ test.describe("3U — governança comum", () => {
     test(`${path}: sem claim proibido e sem preço novo`, async ({ page }) => {
       await page.goto(path);
       await page.waitForLoadState("networkidle");
-      const text = await bodyText(page);
+      const text = await claimText(page);
       for (const term of BANNED) {
         expect(text, `termo proibido em ${path}: ${term}`).not.toContain(term);
       }

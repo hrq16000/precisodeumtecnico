@@ -108,9 +108,15 @@ export function SEOHead({
   noindex = false,
 }: SEOHeadProps) {
 
-  const fullTitle = title.includes("Preciso de Um Técnico")
-    ? title
-    : `${title} | Preciso de Um Técnico`;
+  // Limites de SERP: título ≤ 65 e descrição ≤ 160 caracteres. As páginas
+  // programáticas (serviço × cidade × bairro) geram textos longos; aqui o
+  // corte é feito na fronteira de palavra/frase, preservando a unicidade —
+  // o gate scripts/check-meta-uniqueness.ts falha o build se algo escapar.
+  const withBrand =
+    title.includes("Preciso de Um Técnico") ? title : `${title} | Preciso de Um Técnico`;
+  const fullTitle = withBrand.length <= TITLE_MAX ? withBrand : clampTitle(title);
+  const metaDescription = clampDescription(description);
+
 
   const localBusinessSchema = {
     "@context": "https://schema.org",

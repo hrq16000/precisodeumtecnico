@@ -141,6 +141,7 @@ const PoliticaPecasCliente = () => {
               href={waUrl}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Falar no WhatsApp sobre montagem com peças do cliente"
               data-wa-source="parts-policy-footer"
               data-service="montagem de PC com peças do cliente"
               className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold px-6 py-3 rounded-xl transition-colors"

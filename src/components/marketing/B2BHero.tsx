@@ -104,6 +104,7 @@ export function B2BHero({
                   rel="noopener noreferrer"
                   data-wa-source={waSource}
                   data-service={waService}
+                  aria-label="Falar no WhatsApp com a equipe empresarial"
                   data-wa-tracked="b2b_hero"
                   onClick={() =>
                     trackWhatsAppClick({

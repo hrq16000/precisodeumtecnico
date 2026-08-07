@@ -286,6 +286,17 @@ export default function KeywordServicePage({ slug }: Props) {
         </div>
       </section>
 
+      {/* Rodada 3U — fluxo da sessão, autorização e limites do remoto */}
+      {isRemote && (
+        <section className="section-padding">
+          <div className="container-custom max-w-4xl space-y-12">
+            <RemoteSessionFlow />
+            <RemoteAuthorizationBox />
+            <RemoteNotSuitable />
+          </div>
+        </section>
+      )}
+
       {/* ANTES x DEPOIS */}
       <section className="section-padding">
         <div className="container-custom max-w-4xl">

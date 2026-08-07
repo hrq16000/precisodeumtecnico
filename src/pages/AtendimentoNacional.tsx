@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { MessageCircle, MapPin, ShieldCheck, Clock, Users, ArrowRight, Globe2 } from "lucide-react";
 import { nationalCities, groupedByRegion } from "@/data/nationalCities";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
+import { buildLocalBusinessSchema } from "@/lib/schema/localBusiness";
 
 const regionOrder: Array<keyof ReturnType<typeof groupedByRegion>> = [
   "Sudeste",

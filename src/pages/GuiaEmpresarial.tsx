@@ -27,9 +27,9 @@ import {
   NetworkAudienceBlocks,
   NetworkScopeLimits,
 } from "@/components/marketing/B2BPageBlocks";
-import {
 import { PublicPhotoBand } from "@/components/media/PublicPhotoBand";
 import { pickServicePhotos } from "@/data/publicPhotos";
+import {
   SecurityPrinciple,
   SecurityPillars,
   ResponsibilityMatrix,

@@ -27,9 +27,9 @@ import { RelatedGuidesCard, GUIDE_LINKS } from "@/components/seo/RelatedGuidesCa
 import { RelatedServiceLinks } from "@/components/seo/RelatedServiceLinks";
 
 const PC_GAMER = SERVICES_CATALOG["pc-gamer"];
-import {
 import { PublicPhotoBand } from "@/components/media/PublicPhotoBand";
 import { pickServicePhotos } from "@/data/publicPhotos";
+import {
   getTestimonialsForService,
   buildServiceReviewsSchema,
 } from "@/data/testimonials";

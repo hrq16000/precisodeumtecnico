@@ -12,6 +12,7 @@ import {
 import { getSymptomBySlug } from "@/data/symptoms";
 import { ServiceGallery } from "@/components/service/ServiceGallery";
 import { BAIRROS_CURITIBA_SERVICO } from "@/data/bairrosCuritibaServico";
+import { clampTitle, clampDescription } from "@/components/seo/SEOHead";
 
 const GALLERY = [
   {
@@ -165,11 +166,11 @@ export default function ConfiguracaoWifiCuritiba() {
   return (
     <Layout>
       <Helmet>
-        <title>{metaTitle}</title>
-        <meta name="description" content={metaDescription} />
+        <title>{clampTitle(metaTitle)}</title>
+        <meta name="description" content={clampDescription(metaDescription)} />
         <link rel="canonical" href={PAGE_URL} />
         <meta property="og:title" content={metaTitle} />
-        <meta property="og:description" content={metaDescription} />
+        <meta property="og:description" content={clampDescription(metaDescription)} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={PAGE_URL} />
         <script type="application/ld+json">{JSON.stringify(serviceSchema)}</script>

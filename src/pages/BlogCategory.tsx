@@ -18,7 +18,7 @@ export default function BlogCategory() {
     <Layout>
       <SEOHead
         title={`${category.name} — Blog | Preciso de Um Técnico`}
-        description={category.description}
+        description={`${category.description} Guias, tutoriais e artigos de ${category.name.toLowerCase()} escritos pelos técnicos do Preciso de Um Técnico em Curitiba e Região Metropolitana.`}
         canonical={`https://precisodeumtecnico.com/blog/categoria/${category.slug}`}
         ogImage={`https://precisodeumtecnico.com/og/${category.slug}.jpg`}
       />

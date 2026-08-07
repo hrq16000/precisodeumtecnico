@@ -56,7 +56,9 @@ export default function GuiaEmpresarial({ slug }: Props) {
   const isPilot = isHubPilot || isServicePilot;
   const pilotCtaLabel = isHubPilot
     ? "Descrever a necessidade da empresa"
-    : "Solicitar avaliação para a empresa";
+    : guide.slug === "suporte-tecnico-empresarial"
+      ? "Solicitar suporte para a empresa"
+      : "Solicitar avaliação para a empresa";
 
   /** Sumário gerado dos headings reais da página, incluindo as seções fixas. */
   const tocItems: TocItem[] = [

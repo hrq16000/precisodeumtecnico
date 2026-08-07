@@ -14,9 +14,9 @@ export const EMPRESA_TI_CURITIBA: EnterpriseGuide = {
   path: "/empresa-de-ti-curitiba",
   kicker: "Curitiba e Região Metropolitana",
   title: "Empresa de TI em Curitiba para escritórios e comércios",
-  metaTitle: "Empresa de TI em Curitiba | Suporte, Redes e Backup",
+  metaTitle: "Empresa de TI em Curitiba: Suporte e Redes",
   metaDescription:
-    "Empresa de TI em Curitiba para escritórios e comércios: suporte por posto, redes, servidores, backup testado e manutenção preventiva. Descreva o cenário e receba a avaliação.",
+    "TI para escritórios e comércios em Curitiba: suporte por posto, redes, servidores, backup testado e manutenção preventiva. Descreva o cenário.",
   intro:
     "Atendimento de TI para empresas em Curitiba e Região Metropolitana: computadores, notebooks, rede cabeada e Wi-Fi, impressão em rede, servidores e storage, backup e organização de acessos. O foco é reduzir parada em posto crítico — não vender estrutura maior do que o escritório precisa.",
   triage: { source: "empresa_ti_curitiba", category: "pc", city: "Curitiba" },

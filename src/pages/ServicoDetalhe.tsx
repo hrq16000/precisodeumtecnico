@@ -393,7 +393,7 @@ const ServicoDetalhe = () => {
 
               {/* Process */}
               <div className="mb-12">
-                <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-6">
+                <h2 id="como-funciona" className="font-display text-2xl md:text-3xl font-bold text-foreground mb-6">
                   Como Funciona
                 </h2>
                 <div className="space-y-6">

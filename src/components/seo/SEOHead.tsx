@@ -26,7 +26,12 @@ function safeStringify(schema: unknown, idx: number): string | null {
   }
 }
 
-/** Imagem social padrão — garante og:image absoluto em QUALQUER rota. */
+/**
+ * Imagem social: a tag og:image/twitter:image é ESTÁTICA em index.html (fonte
+ * única), porque crawlers de prévia (WhatsApp, LinkedIn, Slack, Facebook) não
+ * executam JS e só leem o HTML servido. Emitir aqui criaria tag duplicada —
+ * o gate scripts/check-seo-dedup.ts falha o build nesse caso.
+ */
 export const DEFAULT_OG_IMAGE = "https://precisodeumtecnico.com/og/default.jpg";
 
 function absoluteUrl(u: string): string {
@@ -89,10 +94,8 @@ export function SEOHead({
   title,
   description,
   canonical = "https://precisodeumtecnico.com",
-  // Imagem social: sempre emitida e sempre absoluta. Sem valor do caller,
-  // usa DEFAULT_OG_IMAGE — assim qualquer citação de qualquer URL do portal
-  // (WhatsApp, Slack, X, LinkedIn) mostra uma prévia com imagem.
-  ogImage,
+  // og:image é servido estaticamente em index.html (ver nota acima).
+  ogImage: _ogImage,
   type = "website",
   schema,
   structuredData,
@@ -104,7 +107,6 @@ export function SEOHead({
   article,
   noindex = false,
 }: SEOHeadProps) {
-  const socialImage = absoluteUrl(ogImage ?? DEFAULT_OG_IMAGE);
 
   const fullTitle = title.includes("Preciso de Um Técnico")
     ? title
@@ -249,10 +251,8 @@ export function SEOHead({
       <meta property="og:description" content={description} />
       <meta property="og:type" content={type} />
       <meta property="og:url" content={canonical} />
-      <meta property="og:image" content={socialImage} />
-      <meta property="og:image:secure_url" content={socialImage} />
-      <meta property="og:image:alt" content={fullTitle} />
-      <meta name="twitter:image" content={socialImage} />
+      {/* og:image / twitter:image: fonte única estática em index.html — todo
+          compartilhamento de qualquer URL do portal exibe prévia com imagem. */}
       <meta property="og:locale" content="pt_BR" />
       <meta property="og:site_name" content="Preciso de Um Técnico" />
 

@@ -20,6 +20,7 @@ import { PRICING, SLA } from "@/data/pricingPolicy";
 import { TrustStrip } from "@/components/marketing/TrustStrip";
 import { PageTableOfContents } from "@/components/layout/PageTableOfContents";
 import { buildLocalBusinessSchema } from "@/lib/schema/localBusiness";
+import { parsePriceBRL } from "@/lib/priceSpec";
 
 
 const whatsappLink = buildWhatsAppUrl({ service: "preços e condições de assistência técnica", sourcePage: "/precos" });

@@ -35,6 +35,7 @@ const Auth = lazy(() => import("./pages/Auth"));
 const Admin = lazy(() => import("./pages/Admin"));
 const TermosOrcamento = lazy(() => import("./pages/TermosOrcamento"));
 const PoliticaPecasCliente = lazy(() => import("./pages/PoliticaPecasCliente"));
+const CreditosDeImagens = lazy(() => import("./pages/CreditosDeImagens"));
 const PoliticaPrivacidade = lazy(() => import("./pages/PoliticaPrivacidade"));
 const ComoAvaliar = lazy(() => import("./pages/ComoAvaliar"));
 const Avaliacoes = lazy(() => import("./pages/Avaliacoes"));
@@ -123,6 +124,7 @@ const App = () => (
                 <Route path="/termos-orcamento-pre-aprovado" element={<TermosOrcamento />} />
                 <Route path="/termos-orcamento" element={<TermosOrcamento />} />
                 <Route path="/politica-de-pecas-do-cliente" element={<PoliticaPecasCliente />} />
+                <Route path="/creditos-de-imagens" element={<CreditosDeImagens />} />
                 <Route path="/politica-privacidade" element={<PoliticaPrivacidade />} />
                 <Route path="/politica-de-privacidade" element={<PoliticaPrivacidade />} />
                 <Route path="/como-avaliar" element={<ComoAvaliar />} />

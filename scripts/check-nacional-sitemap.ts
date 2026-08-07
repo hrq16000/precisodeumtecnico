@@ -18,7 +18,15 @@ import { nationalCities } from "../src/data/nationalCities";
 import { nationalBairrosByCity } from "../src/data/nationalBairros";
 
 const BASE = "https://precisodeumtecnico.com";
-const MAIN = resolve("public/sitemap-main.xml");
+// Após a segmentação (Rodada 32.2) as rotas nacionais vivem em shards temáticos
+// (cidades/bairros), então a verificação varre TODOS os shards do index.
+const SHARDS = [
+  "public/sitemap-main.xml",
+  "public/sitemap-servicos.xml",
+  "public/sitemap-cidades.xml",
+  "public/sitemap-bairros.xml",
+].map((p) => resolve(p));
+const MAIN = SHARDS[0];
 const INDEX = resolve("public/sitemap.xml");
 
 if (!existsSync(MAIN)) {
@@ -30,7 +38,7 @@ if (!existsSync(INDEX)) {
   process.exit(1);
 }
 
-const mainXml = readFileSync(MAIN, "utf8");
+const mainXml = SHARDS.filter((p) => existsSync(p)).map((p) => readFileSync(p, "utf8")).join("\n");
 const indexXml = readFileSync(INDEX, "utf8");
 
 if (!indexXml.includes(`${BASE}/sitemap-main.xml`)) {
@@ -70,7 +78,7 @@ for (const loc of locs) {
 
 if (missing.length || invalidBase.length) {
   if (missing.length) {
-    console.error(`[nacional-sitemap] FALHOU — ${missing.length} rota(s) ausentes no sitemap-main.xml:`);
+    console.error(`[nacional-sitemap] FALHOU — ${missing.length} rota(s) ausentes nos shards do sitemap:`);
     for (const m of missing.slice(0, 10)) console.error(`  ✗ ${m}`);
     if (missing.length > 10) console.error(`  … +${missing.length - 10}`);
   }
@@ -82,5 +90,5 @@ if (missing.length || invalidBase.length) {
 }
 
 console.log(
-  `[nacional-sitemap] OK — ${nationalCities.length} cidades + ${bairroCount} bairros nacionais no sitemap-main.xml; index consolidado.`,
+  `[nacional-sitemap] OK — ${nationalCities.length} cidades + ${bairroCount} bairros nacionais nos shards do sitemap; index consolidado.`,
 );

@@ -2,8 +2,9 @@
 //
 // Emite um sitemap-index consolidado em public/sitemap.xml com poucos shards:
 //   - public/sitemap-main.xml                       (estáticas + serviços + blog + nacional)
-//   - public/sitemap-regions.xml                    (rotas de cidades + service×city)
-//   - public/sitemap-bairros.xml                    (todos os bairros de todas as cidades)
+//   - public/sitemap-servicos.xml                   (páginas de serviço)
+//   - public/sitemap-cidades.xml                    (rotas de cidade + service×city)
+//   - public/sitemap-bairros.xml                    (todos os bairros, locais e nacionais)
 //   - public/sitemap-nacional-servicos-piloto.xml   (matriz piloto)
 //
 // Cada URL tem canonical == loc. Consolidação reduz número de arquivos
@@ -36,12 +37,15 @@ const today = new Date().toISOString().split("T")[0];
 // and the guard `check-sitemap-dates.ts` fails the build.
 const clampLastmod = (d: string): string => (d > today ? today : d);
 
-const fileDate = (path: string): string => {
+// lastmod só é emitido quando existe uma data específica da página (mtime do
+// arquivo-fonte que gera aquela rota). Sem fonte confiável, o campo é OMITIDO —
+// nunca preenchido com a data do build.
+const fileDate = (path: string): string | undefined => {
   try {
-    if (!existsSync(path)) return today;
+    if (!existsSync(path)) return undefined;
     return clampLastmod(statSync(path).mtime.toISOString().split("T")[0]);
   } catch {
-    return today;
+    return undefined;
   }
 };
 
@@ -85,6 +89,7 @@ const mainUrls: Url[] = [
   { loc: `${BASE}/contato`, changefreq: "monthly", priority: 0.7, lastmod: fileDate("src/pages/Contato.tsx") },
   { loc: `${BASE}/termos-orcamento-pre-aprovado`, changefreq: "yearly", priority: 0.5, lastmod: fileDate("src/pages/TermosOrcamento.tsx") },
   { loc: `${BASE}/politica-de-pecas-do-cliente`, changefreq: "monthly", priority: 0.6, lastmod: fileDate("src/pages/PoliticaPecasCliente.tsx") },
+  { loc: `${BASE}/creditos-de-imagens`, changefreq: "monthly", priority: 0.3, lastmod: fileDate("src/pages/CreditosDeImagens.tsx") },
   { loc: `${BASE}/politica-privacidade`, changefreq: "yearly", priority: 0.4, lastmod: fileDate("src/pages/PoliticaPrivacidade.tsx") },
   { loc: `${BASE}/como-avaliar`, changefreq: "monthly", priority: 0.5, lastmod: fileDate("src/pages/ComoAvaliar.tsx") },
   { loc: `${BASE}/avaliacoes`, changefreq: "weekly", priority: 0.75, lastmod: fileDate("src/pages/Avaliacoes.tsx") },
@@ -160,7 +165,7 @@ for (const cat of blogCategories)
 for (const post of blogPosts) {
   const postDate = post.updatedAt ?? post.publishedAt;
   const fileBased = post.slug.includes("-em-") ? satMtime : blogMtime;
-  const lastmod = clampLastmod(postDate > fileBased ? postDate : fileBased);
+  const lastmod = clampLastmod(postDate > (fileBased ?? "") ? postDate : (fileBased as string));
   mainUrls.push({ loc: `${BASE}/blog/${post.slug}`, changefreq: "monthly", priority: 0.75, lastmod });
 }
 
@@ -189,7 +194,7 @@ for (const c of nationalCities)
 
 // Por-cidade (rota + service×city)
 const cityShards: { city: string; urls: Url[] }[] = [];
-const matrixLastmod = servicesMtime > regionsMtime ? servicesMtime : regionsMtime;
+const matrixLastmod = (servicesMtime ?? "") > (regionsMtime ?? "") ? servicesMtime : regionsMtime;
 for (const cityKey of Object.keys(citiesData)) {
   const urls: Url[] = [
     { loc: `${BASE}/regioes/${cityKey}`, changefreq: "weekly", priority: 0.85, lastmod: regionsMtime },
@@ -242,13 +247,16 @@ ${urls.map(urlXml).join("\n")}
 </urlset>
 `;
 
-const shardLastmod = (urls: Url[]) =>
-  clampLastmod(urls.map((u) => u.lastmod ?? today).sort().at(-1) ?? today);
+/** lastmod do shard = maior lastmod real das URLs; undefined se nenhuma tiver. */
+const shardLastmod = (urls: Url[]): string | undefined => {
+  const dates = urls.map((u) => u.lastmod).filter((d): d is string => Boolean(d)).sort();
+  return dates.length > 0 ? clampLastmod(dates[dates.length - 1]) : undefined;
+};
 
 // Limpa shards antigos (per-city e per-bairro do modelo antigo, além dos
 // consolidados atuais e do shard piloto nacional).
 for (const f of readdirSync("public")) {
-  if (/^sitemap-(main|city-|bairros-?|regions|nacional-servicos-piloto).*\.xml$/.test(f)) {
+  if (/^sitemap-(main|city-|bairros-?|regions|servicos|cidades|nacional-servicos-piloto).*\.xml$/.test(f)) {
     try { unlinkSync(`public/${f}`); } catch {}
   }
 }
@@ -264,40 +272,72 @@ const matrixUrls: Url[] = matrixCombos.slice(0, NATIONAL_MATRIX_MAX).map((c) => 
 }));
 const matrixDeduped = dedupe(matrixUrls);
 
-// Consolidação: todas as URLs por-cidade e por-bairro em dois shards únicos.
-const regionsConsolidated = cityDeduped.flatMap((s) => s.urls);
-const bairrosConsolidated = bairroDeduped.flatMap((s) => s.urls);
+// ---- Segmentação por tipo de rota (Rodada 32.2) ----
+// Shards temáticos ajudam o Google a diagnosticar cobertura por categoria:
+//   serviços · cidades · bairros. Um shard por tipo, sem duplicar URL.
+const path = (loc: string) => loc.replace(BASE, "");
+const segs = (loc: string) => path(loc).split("/").filter(Boolean);
 
-const shardIndex: { name: string; lastmod: string }[] = [];
+type Bucket = "servicos" | "cidades" | "bairros" | "main";
 
-writeFileSync("public/sitemap-main.xml", buildUrlset(mainDeduped));
-shardIndex.push({ name: "sitemap-main.xml", lastmod: shardLastmod(mainDeduped) });
+const classify = (loc: string): Bucket => {
+  const p = segs(loc);
+  if (p.length === 0) return "main";
+  const [a, b, c] = p;
 
-if (regionsConsolidated.length > 0) {
-  writeFileSync("public/sitemap-regions.xml", buildUrlset(regionsConsolidated));
-  shardIndex.push({ name: "sitemap-regions.xml", lastmod: shardLastmod(regionsConsolidated) });
-}
+  // /regioes/:cidade/:bairro · /atendimento-nacional/:cidade/:bairro
+  if ((a === "regioes" || a === "atendimento-nacional") && c) return "bairros";
+  // /regioes/:cidade · /atendimento-nacional/:cidade
+  if ((a === "regioes" || a === "atendimento-nacional") && b) return "cidades";
 
-if (bairrosConsolidated.length > 0) {
-  writeFileSync("public/sitemap-bairros.xml", buildUrlset(bairrosConsolidated));
-  shardIndex.push({ name: "sitemap-bairros.xml", lastmod: shardLastmod(bairrosConsolidated) });
-}
+  // /servicos/:servico/:cidade/:bairro
+  if (a === "servicos" && p.length >= 4) return "bairros";
+  // /servicos/:servico/:cidade
+  if (a === "servicos" && p.length === 3) return "cidades";
+  // /servicos/:slug
+  if (a === "servicos") return "servicos";
+
+  // /servico-em/:cidade/:servico
+  if (a === "servico-em") return "cidades";
+
+  // Landings de serviço com keyword (ex.: /formatacao-de-computador-curitiba)
+  if (p.length === 1 && /(conserto|formatacao|reparo|instalacao|manutencao|suporte|assistencia|configuracao|troca|empresa-de-ti|seguranca-dos-dados)/.test(a)) {
+    return "servicos";
+  }
+  return "main";
+};
+
+const allUrls: Url[] = [
+  ...mainDeduped,
+  ...cityDeduped.flatMap((s) => s.urls),
+  ...bairroDeduped.flatMap((s) => s.urls),
+];
+
+const buckets: Record<Bucket, Url[]> = { servicos: [], cidades: [], bairros: [], main: [] };
+for (const u of allUrls) buckets[classify(u.loc)].push(u);
+
+const shardIndex: { name: string; lastmod?: string }[] = [];
+
+const emit = (name: string, urls: Url[]) => {
+  if (urls.length === 0) return;
+  writeFileSync(`public/${name}`, buildUrlset(urls));
+  shardIndex.push({ name, lastmod: shardLastmod(urls) });
+};
+
+emit("sitemap-main.xml", buckets.main);
+emit("sitemap-servicos.xml", buckets.servicos);
+emit("sitemap-cidades.xml", buckets.cidades);
+emit("sitemap-bairros.xml", buckets.bairros);
 
 // Shard piloto — matriz nacional serviços.
-if (matrixDeduped.length > 0) {
-  const name = "sitemap-nacional-servicos-piloto.xml";
-  writeFileSync(`public/${name}`, buildUrlset(matrixDeduped));
-  shardIndex.push({ name, lastmod: shardLastmod(matrixDeduped) });
-}
-
+emit("sitemap-nacional-servicos-piloto.xml", matrixDeduped);
 
 const indexXml = `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${shardIndex
   .map(
     (s) => `  <sitemap>
-    <loc>${BASE}/${s.name}</loc>
-    <lastmod>${s.lastmod}</lastmod>
+    <loc>${BASE}/${s.name}</loc>${s.lastmod ? `\n    <lastmod>${s.lastmod}</lastmod>` : ""}
   </sitemap>`,
   )
   .join("\n")}
@@ -305,6 +345,6 @@ ${shardIndex
 `;
 writeFileSync("public/sitemap.xml", indexXml);
 
-const total = mainDeduped.length + cityDeduped.reduce((a, s) => a + s.urls.length, 0) + bairroDeduped.reduce((a, s) => a + s.urls.length, 0) + matrixDeduped.length;
+const total = allUrls.length + matrixDeduped.length;
 console.log(`✓ sitemap-index escrito com ${shardIndex.length} shards, ${total} URLs únicas`);
 for (const s of shardIndex) console.log(`  • ${s.name}`);

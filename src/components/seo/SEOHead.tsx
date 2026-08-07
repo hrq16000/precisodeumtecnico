@@ -26,6 +26,14 @@ function safeStringify(schema: unknown, idx: number): string | null {
   }
 }
 
+/** Imagem social padrão — garante og:image absoluto em QUALQUER rota. */
+export const DEFAULT_OG_IMAGE = "https://precisodeumtecnico.com/og/default.jpg";
+
+function absoluteUrl(u: string): string {
+  if (/^https?:\/\//i.test(u)) return u;
+  return `https://precisodeumtecnico.com${u.startsWith("/") ? "" : "/"}${u}`;
+}
+
 interface Breadcrumb { name: string; url: string; }
 interface ServiceInfo {
   name: string;

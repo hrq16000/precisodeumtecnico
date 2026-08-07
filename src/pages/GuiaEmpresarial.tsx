@@ -21,6 +21,12 @@ import { BusinessServiceMap } from "@/components/marketing/BusinessServiceMap";
 import { BusinessScopeIndicators } from "@/components/marketing/BusinessScopeIndicators";
 import { BusinessSupportFlow } from "@/components/marketing/BusinessSupportFlow";
 import { PageTableOfContents, type TocItem } from "@/components/layout/PageTableOfContents";
+import {
+  PreventivePriorityMatrix,
+  BackupConceptsBlock,
+  NetworkAudienceBlocks,
+  NetworkScopeLimits,
+} from "@/components/marketing/B2BPageBlocks";
 
 
 const BASE = "https://precisodeumtecnico.com";
@@ -54,16 +60,28 @@ export default function GuiaEmpresarial({ slug }: Props) {
   ]);
   const isServicePilot = B2B_SERVICE_SLUGS.has(guide.slug);
   const isPilot = isHubPilot || isServicePilot;
-  const pilotCtaLabel = isHubPilot
-    ? "Descrever a necessidade da empresa"
-    : guide.slug === "suporte-tecnico-empresarial"
-      ? "Solicitar suporte para a empresa"
-      : "Solicitar avaliação para a empresa";
+  const CTA_LABEL_BY_SLUG: Record<string, string> = {
+    "empresa-de-ti-curitiba": "Descrever a necessidade da empresa",
+    "suporte-tecnico-empresarial": "Solicitar suporte para a empresa",
+    "manutencao-preventiva-empresas": "Descrever os equipamentos da empresa",
+    "backup-para-empresas": "Descrever como os arquivos são armazenados",
+    "redes-e-wifi": "Descrever o ambiente de rede",
+  };
+  const pilotCtaLabel = CTA_LABEL_BY_SLUG[guide.slug] ?? "Solicitar avaliação para a empresa";
+
+  /** Rodada 3T — bloco de diferenciação por página. */
+  const isPreventiva = guide.slug === "manutencao-preventiva-empresas";
+  const isBackup = guide.slug === "backup-para-empresas";
+  const isRedes = guide.slug === "redes-e-wifi";
 
   /** Sumário gerado dos headings reais da página, incluindo as seções fixas. */
   const tocItems: TocItem[] = [
     ...(isHubPilot ? [{ id: "pilares", label: "Pilares operacionais" }] : []),
+    ...(isRedes ? [{ id: "contextos-rede", label: "Casa, home office e escritório" }] : []),
     ...guide.sections.map((s) => ({ id: s.id, label: s.title.replace(/^\d+\.\s*/, "") })),
+    ...(isPreventiva ? [{ id: "prioridades", label: "Riscos e prioridades" }] : []),
+    ...(isBackup ? [{ id: "conceitos-backup", label: "Sincronização, backup e recuperação" }] : []),
+    ...(isRedes ? [{ id: "limites-externos", label: "Cobertura, operadora e impressoras" }] : []),
     ...(isHubPilot ? [{ id: "mapa-servicos", label: "Mapa de serviços empresariais" }] : []),
     ...(isServicePilot ? [{ id: "fluxo", label: "Fluxo de atendimento e impacto" }] : []),
     { id: "checklist", label: "Checklist de requisitos" },
@@ -212,8 +230,19 @@ export default function GuiaEmpresarial({ slug }: Props) {
               </section>
             )}
 
-
-
+            {/* Rodada 3T — redes: público misto declarado antes do conteúdo. */}
+            {isRedes && (
+              <section id="contextos-rede" className="mb-10 scroll-mt-24">
+                <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-4">
+                  Casa, home office e escritório
+                </h2>
+                <p className="text-muted-foreground leading-relaxed mb-4">
+                  O atendimento de rede cobre contextos diferentes. Os dois cenários abaixo usam as
+                  mesmas verificações internas, mudando a escala e o que está em jogo.
+                </p>
+                <NetworkAudienceBlocks />
+              </section>
+            )}
 
 
             {guide.sections.map((s) => (
@@ -275,6 +304,34 @@ export default function GuiaEmpresarial({ slug }: Props) {
                   Mapa de serviços empresariais
                 </h2>
                 <BusinessServiceMap />
+              </section>
+            )}
+
+            {/* Rodada 3T — bloco de diferenciação por página. */}
+            {isPreventiva && (
+              <section id="prioridades" className="mb-10 scroll-mt-24">
+                <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-4">
+                  Riscos e prioridades no registro
+                </h2>
+                <PreventivePriorityMatrix />
+              </section>
+            )}
+
+            {isBackup && (
+              <section id="conceitos-backup" className="mb-10 scroll-mt-24">
+                <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-4">
+                  Sincronização, backup e recuperação
+                </h2>
+                <BackupConceptsBlock />
+              </section>
+            )}
+
+            {isRedes && (
+              <section id="limites-externos" className="mb-10 scroll-mt-24">
+                <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-4">
+                  Cobertura, operadora e impressoras
+                </h2>
+                <NetworkScopeLimits />
               </section>
             )}
 

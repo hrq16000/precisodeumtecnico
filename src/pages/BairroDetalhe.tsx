@@ -116,7 +116,7 @@ export default function BairroDetalhe() {
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: bairroContent.faqs.map((f) => ({
+    mainEntity: localFaqs.map((f) => ({
       "@type": "Question",
       name: f.question,
       acceptedAnswer: { "@type": "Answer", text: f.answer },
@@ -351,7 +351,7 @@ export default function BairroDetalhe() {
             Perguntas frequentes — {neighborhoodName}
           </h2>
           <Accordion type="single" collapsible>
-            {bairroContent.faqs.map((f, i) => (
+            {localFaqs.map((f, i) => (
               <AccordionItem key={i} value={`faq-${i}`}>
                 <AccordionTrigger className="text-left">{f.question}</AccordionTrigger>
                 <AccordionContent>{f.answer}</AccordionContent>

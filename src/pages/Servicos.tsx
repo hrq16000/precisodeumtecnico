@@ -228,6 +228,29 @@ const Servicos = () => {
           { name: "Serviços", url: "https://precisodeumtecnico.com/servicos" },
         ]}
         faq={servicosFaqs}
+        structuredData={[
+          buildLocalBusinessSchema({ url: "https://precisodeumtecnico.com/servicos" }),
+          {
+            "@context": "https://schema.org",
+            "@type": "OfferCatalog",
+            name: "Catálogo de serviços técnicos — Curitiba e Região",
+            url: "https://precisodeumtecnico.com/servicos",
+            itemListElement: Object.entries(servicesData)
+              .slice(0, 24)
+              .map(([slug, s], i) => ({
+                "@type": "Offer",
+                position: i + 1,
+                itemOffered: {
+                  "@type": "Service",
+                  name: s.title,
+                  description: s.description,
+                  url: `https://precisodeumtecnico.com/servicos/${slug}`,
+                  areaServed: "Curitiba e Região Metropolitana",
+                  provider: { "@type": "LocalBusiness", name: "Preciso de Um Técnico" },
+                },
+              })),
+          },
+        ]}
       />
 
       {/* Hero */}

@@ -32,6 +32,11 @@ if (!KEY) {
   process.exit(0);
 }
 
+if (!/^[a-f0-9]{8,128}$/i.test(KEY) && !process.env.CI) {
+  console.warn("[check:indexnow] BING_INDEXNOW_KEY com formato inválido — verificação pulada fora do CI.");
+  process.exit(0);
+}
+
 if (!isRemote) {
   const filePath = join(process.cwd(), "public", `${KEY}.txt`);
   if (!existsSync(filePath)) fail(`arquivo de verificação ausente: public/${KEY}.txt (rode 'bun run indexnow:key').`);

@@ -187,13 +187,22 @@ export default function GuiaEmpresarial({ slug }: Props) {
             waService={guide.whatsappService}
             triage={guide.triage}
             variant={isServicePilot ? "service" : "hub"}
-            ctaLabel={isPilot ? pilotCtaLabel : undefined}
-            actionTitle={
-              isServicePilot
-                ? "Abertura de chamado empresarial"
-                : isHubPilot
-                  ? "Necessidade da empresa"
+            ctaLabel={
+              isInstitutional
+                ? "Descrever uma situação relacionada aos dados"
+                : isPilot
+                  ? pilotCtaLabel
                   : undefined
+            }
+            showWhatsApp={!isInstitutional}
+            actionTitle={
+              isInstitutional
+                ? "Situação envolvendo dados"
+                : isServicePilot
+                  ? "Abertura de chamado empresarial"
+                  : isHubPilot
+                    ? "Necessidade da empresa"
+                    : undefined
             }
           />
         ) : (

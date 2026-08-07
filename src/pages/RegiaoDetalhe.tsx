@@ -14,6 +14,13 @@ import { buildOfferSchema } from "@/components/seo/OfferSchema";
 import { buildReviewsSchema } from "@/data/testimonials";
 import { trackCtaClick, trackWhatsAppClick } from "@/lib/analytics";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
+import { buildCityFaqs } from "@/data/localFaq";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 const services = [
   { icon: Monitor, name: "Informática", href: "/servicos/informatica", desc: "Formatação, manutenção, upgrade" },
@@ -79,6 +86,17 @@ const RegiaoDetalhe = () => {
   });
   const reviewsSchema = buildReviewsSchema();
 
+  // Rodada 32 — FAQ da cidade: só em páginas de cidade (não em bairro, que tem
+  // sua própria FAQ curada), montada a partir da cobertura real de bairros.
+  const cityFaqs = !neighborhood && cityData
+    ? buildCityFaqs({
+        cityName: cityData.name,
+        neighborhoods: cityData.neighborhoods,
+        serviceAreas: cityData.serviceAreas,
+        description: cityData.description,
+      })
+    : [];
+
   // Rodada 25.1 — Bloco 0: FAQ regional removida.
   // Era template que só trocava nome de bairro/cidade em 200+ páginas.
   // FAQPage só será reemitido em páginas com curadoria real.
@@ -102,6 +120,7 @@ const RegiaoDetalhe = () => {
           priceMinBRL: 99.99,
           areaServed: neighborhood ? `${neighborhoodName}, ${cityName}` : cityName,
         }}
+        faq={cityFaqs.length > 0 ? cityFaqs : undefined}
         structuredData={[localSchema, offerSchema, reviewsSchema].filter(Boolean) as object[]}
 
       />
@@ -436,8 +455,24 @@ const RegiaoDetalhe = () => {
         </div>
       </section>
 
-      {/* FAQ Section */}
-      {/* FAQ regional removida (Rodada 25.1 — Bloco 0): era template puro. */}
+      {/* FAQ Section — específica da cidade (Rodada 32) */}
+      {cityFaqs.length > 0 && (
+        <section className="py-16 bg-muted/30">
+          <div className="container-custom max-w-3xl">
+            <h2 className="text-3xl font-bold text-foreground mb-6 text-center">
+              Perguntas frequentes — {cityName}
+            </h2>
+            <Accordion type="single" collapsible>
+              {cityFaqs.map((f, i) => (
+                <AccordionItem key={i} value={`city-faq-${i}`}>
+                  <AccordionTrigger className="text-left">{f.question}</AccordionTrigger>
+                  <AccordionContent>{f.answer}</AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
+        </section>
+      )}
 
 
       <CTASection />

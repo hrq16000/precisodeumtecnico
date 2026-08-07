@@ -27,6 +27,14 @@ import {
   NetworkAudienceBlocks,
   NetworkScopeLimits,
 } from "@/components/marketing/B2BPageBlocks";
+import {
+  SecurityPrinciple,
+  SecurityPillars,
+  ResponsibilityMatrix,
+  NeverSendBox,
+  SecurityRemoteAccessNote,
+} from "@/components/marketing/DataSecurityBlocks";
+
 
 
 const BASE = "https://precisodeumtecnico.com";

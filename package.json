@@ -38,7 +38,8 @@
     "check:os-consent": "playwright test e2e/status-os-consent.spec.ts",
     "check:visual-wave-3r": "playwright test e2e/visual-wave-3r.spec.ts",
     "check:visual-wave-3s": "playwright test e2e/visual-wave-3s.spec.ts",
-    "check:b2b-cta": "playwright test e2e/enterprise-cta-tracking.spec.ts"
+    "check:b2b-cta": "playwright test e2e/enterprise-cta-tracking.spec.ts",
+    "check:enterprise-3t": "playwright test e2e/enterprise-wave-3t.spec.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

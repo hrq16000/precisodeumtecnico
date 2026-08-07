@@ -739,6 +739,11 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
                   onChange={(e) => dispatch({ type: "SET_CONTACT", field: "neighborhood", value: e.target.value })}
                   aria-invalid={!!errors.neighborhood} placeholder="Ex.: Centro, Boqueirão, Portão" />
                 {errors.neighborhood && <p role="alert" className="text-xs text-destructive">{errors.neighborhood}</p>}
+                {!errors.neighborhood && geoAppliedRef.current && geoPrefill.source !== "none" && (
+                  <p data-testid="triage-geo-hint" className="text-xs text-muted-foreground mt-1">
+                    {GEO_PREFILL_LABEL[geoPrefill.source]} — edite se precisar.
+                  </p>
+                )}
               </div>
               <div className="sm:col-span-2">
                 <Label htmlFor="triage-field-email">E-mail</Label>

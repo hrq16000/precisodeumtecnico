@@ -463,7 +463,7 @@ const ServicoDetalhe = () => {
 
               {/* FAQs */}
               <div>
-                <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-6">
+                <h2 id="perguntas-frequentes" className="font-display text-2xl md:text-3xl font-bold text-foreground mb-6">
                   Perguntas Frequentes
                 </h2>
                 <div className="space-y-4">

@@ -15,8 +15,12 @@ import {
 } from "@/data/nationalServiceCoverage";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { trackWhatsAppClick, trackCtaClick } from "@/lib/analytics";
-// FAQ removida (Rodada 25.1 — Bloco 0): builder era template puro.
-// FAQPage voltará por combinação apenas com curadoria (Bloco D).
+// FAQ (Rodada 32.1): perguntas ancoradas na localidade + termos comerciais
+// oficiais, com paridade 1:1 entre DOM e FAQPage (RegionalSymptomFAQ).
+import { RegionalSymptomFAQ } from "@/components/seo/RegionalSymptomFAQ";
+import { buildBairroFaqs } from "@/data/localFaq";
+import { PublicPhotoBand } from "@/components/media/PublicPhotoBand";
+import { pickLocalityPhotos } from "@/data/publicPhotos";
 
 /**
  * Rodada 24.1 — Página nacional serviço × cidade × bairro.

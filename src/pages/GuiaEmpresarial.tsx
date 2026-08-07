@@ -66,10 +66,19 @@ export default function GuiaEmpresarial({ slug }: Props) {
       ? "Solicitar suporte para a empresa"
       : "Solicitar avaliação para a empresa";
 
+  /** Rodada 3T — bloco de diferenciação por página. */
+  const isPreventiva = guide.slug === "manutencao-preventiva-empresas";
+  const isBackup = guide.slug === "backup-para-empresas";
+  const isRedes = guide.slug === "redes-e-wifi";
+
   /** Sumário gerado dos headings reais da página, incluindo as seções fixas. */
   const tocItems: TocItem[] = [
     ...(isHubPilot ? [{ id: "pilares", label: "Pilares operacionais" }] : []),
+    ...(isRedes ? [{ id: "contextos-rede", label: "Casa, home office e escritório" }] : []),
     ...guide.sections.map((s) => ({ id: s.id, label: s.title.replace(/^\d+\.\s*/, "") })),
+    ...(isPreventiva ? [{ id: "prioridades", label: "Riscos e prioridades" }] : []),
+    ...(isBackup ? [{ id: "conceitos-backup", label: "Sincronização, backup e recuperação" }] : []),
+    ...(isRedes ? [{ id: "limites-externos", label: "Cobertura, operadora e impressoras" }] : []),
     ...(isHubPilot ? [{ id: "mapa-servicos", label: "Mapa de serviços empresariais" }] : []),
     ...(isServicePilot ? [{ id: "fluxo", label: "Fluxo de atendimento e impacto" }] : []),
     { id: "checklist", label: "Checklist de requisitos" },

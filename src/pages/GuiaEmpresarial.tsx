@@ -46,11 +46,19 @@ export default function GuiaEmpresarial({ slug }: Props) {
 
   /** Rodada 3S — piloto do sistema empresarial: hub × serviço. */
   const isHubPilot = guide.slug === "empresa-de-ti-curitiba";
-  const isServicePilot = guide.slug === "suporte-tecnico-empresarial";
+  const B2B_SERVICE_SLUGS = new Set([
+    "suporte-tecnico-empresarial",
+    "manutencao-preventiva-empresas",
+    "backup-para-empresas",
+    "redes-e-wifi",
+  ]);
+  const isServicePilot = B2B_SERVICE_SLUGS.has(guide.slug);
   const isPilot = isHubPilot || isServicePilot;
   const pilotCtaLabel = isHubPilot
     ? "Descrever a necessidade da empresa"
-    : "Solicitar suporte para a empresa";
+    : guide.slug === "suporte-tecnico-empresarial"
+      ? "Solicitar suporte para a empresa"
+      : "Solicitar avaliação para a empresa";
 
   /** Sumário gerado dos headings reais da página, incluindo as seções fixas. */
   const tocItems: TocItem[] = [

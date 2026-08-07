@@ -36,6 +36,24 @@ export const ENTERPRISE_LINKS: EnterpriseLink[] = [
       "Backup 3-2-1 testado, contas nominais, duas etapas e resposta aos primeiros minutos de um incidente.",
   },
   {
+    to: "/servicos/manutencao-preventiva-empresas",
+    label: "Manutenção preventiva para empresas",
+    description:
+      "Rotina agendada de verificação de discos, energia, atualizações e backup, com registro por equipamento.",
+  },
+  {
+    to: "/servicos/backup-para-empresas",
+    label: "Backup para empresas",
+    description:
+      "Cópia local e externa com versionamento e teste de restauração registrado por ciclo.",
+  },
+  {
+    to: "/servicos/redes-e-wifi",
+    label: "Redes e Wi-Fi para empresas",
+    description:
+      "Postos críticos cabeados, IP fixo para impressora e storage e correção de instabilidade recorrente.",
+  },
+  {
     to: "/assistencia-tecnica-empresas-curitiba",
     label: "Assistência técnica para empresas em Curitiba",
     description:

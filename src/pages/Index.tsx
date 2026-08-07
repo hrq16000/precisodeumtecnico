@@ -46,6 +46,13 @@ const Index = () => {
         // Rodada 25.1 — Bloco 0: FAQ da home passa a ter fonte única
         // (src/data/homeFaqs.ts), consumida também pela seção visível.
         faq={homeFaqs}
+        service={{
+          name: "Assistência técnica em Curitiba e Região Metropolitana",
+          description:
+            "Informática, notebooks, redes Wi-Fi, CFTV, elétrica e ar-condicionado com orçamento informado antes da execução.",
+          priceMinBRL: 99.99,
+          areaServed: "Curitiba e Região Metropolitana",
+        }}
         structuredData={(() => {
           const reviews = buildReviewsSchema();
           return [

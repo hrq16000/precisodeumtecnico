@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { MessageCircle, MapPin, ShieldCheck, Clock, Users, ArrowRight, Globe2 } from "lucide-react";
 import { nationalCities, groupedByRegion } from "@/data/nationalCities";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
+import { buildLocalBusinessSchema } from "@/lib/schema/localBusiness";
 
 const regionOrder: Array<keyof ReturnType<typeof groupedByRegion>> = [
   "Sudeste",
@@ -34,7 +35,23 @@ const AtendimentoNacional = () => {
         description={`Rede nacional com técnicos parceiros em ${nationalCities.length}+ cidades do Brasil: São Paulo, Rio, BH, Brasília, Salvador, Recife, Porto Alegre, Manaus e muito mais. Informática, redes, CFTV, elétrica. Orçamento via WhatsApp.`}
         canonical="https://precisodeumtecnico.com/atendimento-nacional"
         keywords="técnico em todo brasil, assistência técnica nacional, técnico informática são paulo, técnico rio de janeiro, suporte de ti brasil"
-        structuredData={[breadcrumb]}
+        service={{
+          name: "Assistência técnica em todo o Brasil",
+          description:
+            "Atendimento técnico em informática, redes, CFTV e elétrica com rede de prestadores parceiros homologados em mais de " +
+            nationalCities.length +
+            " cidades brasileiras.",
+          areaServed: "Brasil",
+        }}
+        structuredData={[
+          buildLocalBusinessSchema({
+            url: "https://precisodeumtecnico.com/atendimento-nacional",
+            description:
+              "Sede em Curitiba (PR) com rede nacional de técnicos parceiros homologados para atendimento em todo o Brasil.",
+            extraAreas: nationalCities.slice(0, 12).map((c) => c.name),
+          }),
+          breadcrumb,
+        ]}
       />
 
       {/* Hero */}

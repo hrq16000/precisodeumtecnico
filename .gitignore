@@ -30,3 +30,6 @@ public/*.txt
 # Relatórios de sitemap gerados no CI
 sitemap-diff.md
 canonical-parity-report.json
+
+# Estado do monitoramento contínuo de SEO
+.seo-monitor/

@@ -19,6 +19,7 @@ import { COMMERCIAL_TERMS } from "@/data/commercialTerms";
 import { PRICING, SLA } from "@/data/pricingPolicy";
 import { TrustStrip } from "@/components/marketing/TrustStrip";
 import { PageTableOfContents } from "@/components/layout/PageTableOfContents";
+import { buildLocalBusinessSchema } from "@/lib/schema/localBusiness";
 
 
 const whatsappLink = buildWhatsAppUrl({ service: "preços e condições de assistência técnica", sourcePage: "/precos" });
@@ -109,7 +110,7 @@ export default function Precos() {
         canonical={url}
         ogImage={ogImage}
         keywords="preço técnico curitiba, tabela de preços assistência técnica, quanto custa técnico"
-        structuredData={[breadcrumb, faqSchema, offerCatalog]}
+        structuredData={[buildLocalBusinessSchema({ url }), breadcrumb, faqSchema, offerCatalog]}
       />
 
       <section className="bg-gradient-to-br from-foreground to-primary/20 text-background py-16">

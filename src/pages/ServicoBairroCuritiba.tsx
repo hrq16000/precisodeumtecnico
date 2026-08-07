@@ -17,6 +17,7 @@ import {
   type ServiceKey,
 } from "@/data/bairrosCuritibaServico";
 import { getSymptomBySlug } from "@/data/symptoms";
+import { LocalityPhotoBand } from "@/components/media/LocalityPhotoBand";
 
 interface Props {
   service: ServiceKey;
@@ -257,6 +258,11 @@ export default function ServicoBairroCuritiba({ service }: Props) {
           </div>
         </div>
       </section>
+      <LocalityPhotoBand
+        title={"Como o serviço é executado na prática"}
+        intro={"Fotos reais de bancada, redes e infraestrutura — referência visual do tipo de trabalho descrito nesta página."}
+      />
+
     </Layout>
   );
 }

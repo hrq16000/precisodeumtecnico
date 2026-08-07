@@ -18,6 +18,9 @@ import { trackWhatsAppClick, trackCtaClick } from "@/lib/analytics";
 import { RegionalSymptomFAQ } from "@/components/seo/RegionalSymptomFAQ";
 import { InternalLinkCluster } from "@/components/seo/InternalLinkCluster";
 import { buildLocalBusinessSchema } from "@/lib/schema/localBusiness";
+import { buildBairroFaqs } from "@/data/localFaq";
+import { PublicPhotoBand } from "@/components/media/PublicPhotoBand";
+import { pickLocalityPhotos } from "@/data/publicPhotos";
 // FAQ regional (Rodada 27+): derivada de src/data/symptoms.ts, adaptada
 // automaticamente por cidade/bairro sem inventar preços ou prazos.
 
@@ -328,12 +331,26 @@ export default function BairroNacional() {
         </div>
       </section>
 
+      <PublicPhotoBand
+        title={`Como é o trabalho técnico que atende ${bairro.name}`}
+        intro={`Fotos reais de bancada, rede e infraestrutura — o mesmo tipo de serviço que a rede executa em ${bairro.name}, ${city.name}.`}
+        photos={pickLocalityPhotos(city.slug, `${city.slug}-${bairro.slug}`, 3)}
+      />
+
       <RegionalSymptomFAQ
         cityName={city.name}
         neighborhoodName={bairro.name}
         seedSlug={`${city.slug}-${bairro.slug}`}
         count={3}
+        localFaqs={buildBairroFaqs({
+          bairroName: bairro.name,
+          cityName: city.name,
+          intro: bairro.descriptor,
+          nearby: nearby.map((b) => b.name),
+        })}
+        localFaqsHeading={`Atendimento em ${bairro.name}`}
       />
+
 
       <InternalLinkCluster
         city={city.name}

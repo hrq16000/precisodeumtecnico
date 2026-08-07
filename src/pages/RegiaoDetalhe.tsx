@@ -15,6 +15,7 @@ import { buildReviewsSchema } from "@/data/testimonials";
 import { trackCtaClick, trackWhatsAppClick } from "@/lib/analytics";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { buildCityFaqs } from "@/data/localFaq";
+import { LocalityPhotoBand } from "@/components/media/LocalityPhotoBand";
 import {
   Accordion,
   AccordionContent,
@@ -476,6 +477,11 @@ const RegiaoDetalhe = () => {
 
 
       <CTASection />
+      <LocalityPhotoBand
+        title={"Referências visuais do atendimento nesta região"}
+        intro={"Fotos reais de bancada, redes, CFTV e elétrica — o mesmo escopo técnico atendido aqui."}
+      />
+
     </Layout>
   );
 };

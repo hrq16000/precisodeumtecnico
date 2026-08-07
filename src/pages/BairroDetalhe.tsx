@@ -24,6 +24,7 @@ import { buildReviewsSchema } from "@/data/testimonials";
 import { trackWhatsAppClick, trackCtaClick } from "@/lib/analytics";
 import NotFound from "./NotFound";
 import { buildWhatsAppUrlFromText } from "@/lib/whatsapp";
+import { LocalityPhotoBand } from "@/components/media/LocalityPhotoBand";
 
 const serviceIcons: Record<string, any> = {
   "Informática": Monitor,
@@ -408,6 +409,11 @@ export default function BairroDetalhe() {
           </Button>
         </div>
       </section>
+      <LocalityPhotoBand
+        title={"Referências visuais do atendimento neste bairro"}
+        intro={"Fotos reais de bancada, redes, CFTV e elétrica — o mesmo escopo técnico atendido aqui."}
+      />
+
     </Layout>
   );
 }

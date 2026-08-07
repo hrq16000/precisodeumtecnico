@@ -15,8 +15,12 @@ import {
 } from "@/data/nationalServiceCoverage";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { trackWhatsAppClick, trackCtaClick } from "@/lib/analytics";
-// FAQ removida (Rodada 25.1 — Bloco 0): builder era template puro.
-// FAQPage voltará por combinação apenas com curadoria (Bloco D).
+// FAQ (Rodada 32.1): perguntas ancoradas na localidade + termos comerciais
+// oficiais, com paridade 1:1 entre DOM e FAQPage (RegionalSymptomFAQ).
+import { RegionalSymptomFAQ } from "@/components/seo/RegionalSymptomFAQ";
+import { buildBairroFaqs } from "@/data/localFaq";
+import { PublicPhotoBand } from "@/components/media/PublicPhotoBand";
+import { pickLocalityPhotos } from "@/data/publicPhotos";
 
 /**
  * Rodada 24.1 — Página nacional serviço × cidade × bairro.
@@ -426,7 +430,26 @@ export default function ServicoBairroNacional() {
         </Card>
       </section>
 
-      {/* FAQ removida (Rodada 25.1). Voltará com curadoria por combinação (Bloco D). */}
+      <PublicPhotoBand
+        title={`${service.label}: como o serviço é executado`}
+        intro={`Referências visuais reais do tipo de trabalho envolvido em ${service.seoNoun} para quem está em ${bairro.name}, ${city.name}.`}
+        photos={pickLocalityPhotos(city.slug, `${service.slug}-${city.slug}-${bairro.slug}`, 3)}
+      />
+
+      <RegionalSymptomFAQ
+        cityName={city.name}
+        neighborhoodName={bairro.name}
+        seedSlug={`${service.slug}-${city.slug}-${bairro.slug}`}
+        count={2}
+        localFaqs={buildBairroFaqs({
+          bairroName: bairro.name,
+          cityName: city.name,
+          intro: bairro.descriptor,
+          nearby: otherBairros.map((b) => b.name),
+        })}
+        localFaqsHeading={`${service.label} em ${bairro.name}`}
+      />
+
 
     </Layout>
   );

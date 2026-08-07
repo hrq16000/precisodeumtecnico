@@ -12,6 +12,10 @@ import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { RegionalSymptomFAQ } from "@/components/seo/RegionalSymptomFAQ";
 import { InternalLinkCluster } from "@/components/seo/InternalLinkCluster";
 import { buildLocalBusinessSchema } from "@/lib/schema/localBusiness";
+import { buildCityFaqs } from "@/data/localFaq";
+import { PublicPhotoBand } from "@/components/media/PublicPhotoBand";
+import { pickLocalityPhotos } from "@/data/publicPhotos";
+import { nationalBairrosByCity } from "@/data/nationalBairros";
 
 
 const services = [
@@ -259,7 +263,31 @@ const CidadeNacional = () => {
         </div>
       </section>
 
-      <RegionalSymptomFAQ cityName={city.name} seedSlug={city.slug} count={3} />
+      <PublicPhotoBand
+        title={`Serviços técnicos que a rede executa em ${city.name}`}
+        intro={`Referências visuais reais de bancada, redes e infraestrutura — o mesmo escopo atendido em ${city.name} (${city.stateName}).`}
+        photos={pickLocalityPhotos(city.slug, city.slug, 3)}
+      />
+
+      <RegionalSymptomFAQ
+        cityName={city.name}
+        seedSlug={city.slug}
+        count={3}
+        localFaqs={buildCityFaqs({
+          cityName: city.name,
+          neighborhoods: (nationalBairrosByCity[city.slug] ?? []).map((b) => b.name),
+          serviceAreas: [
+            "manutenção e formatação de computadores",
+            "conserto de notebooks",
+            "redes e Wi-Fi",
+            "CFTV e câmeras",
+            "pequenos serviços elétricos",
+          ],
+          description: city.highlights?.[0],
+        })}
+        localFaqsHeading={`Atendimento em ${city.name}`}
+      />
+
 
       <InternalLinkCluster city={city.name} citySlug={city.slug} />
 

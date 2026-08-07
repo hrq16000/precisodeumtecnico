@@ -18,6 +18,7 @@ import {
 } from "@/data/bairrosCidadesRegiao";
 import { CIDADE_SERVICO_META } from "@/data/cidadesRegiao";
 import { getSymptomBySlug } from "@/data/symptoms";
+import { LocalityPhotoBand } from "@/components/media/LocalityPhotoBand";
 
 interface Props {
   cidade: CidadeRegiaoBairroSlug;
@@ -283,6 +284,11 @@ export default function ServicoBairroCidadeRegiao({ cidade, service }: Props) {
           </div>
         </div>
       </section>
+      <LocalityPhotoBand
+        title={"Como o serviço é executado na prática"}
+        intro={"Fotos reais de bancada, redes e infraestrutura — referência visual do trabalho realizado neste bairro."}
+      />
+
     </Layout>
   );
 }

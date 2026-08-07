@@ -430,7 +430,26 @@ export default function ServicoBairroNacional() {
         </Card>
       </section>
 
-      {/* FAQ removida (Rodada 25.1). Voltará com curadoria por combinação (Bloco D). */}
+      <PublicPhotoBand
+        title={`${service.label}: como o serviço é executado`}
+        intro={`Referências visuais reais do tipo de trabalho envolvido em ${service.seoNoun} para quem está em ${bairro.name}, ${city.name}.`}
+        photos={pickLocalityPhotos(city.slug, `${service.slug}-${city.slug}-${bairro.slug}`, 3)}
+      />
+
+      <RegionalSymptomFAQ
+        cityName={city.name}
+        neighborhoodName={bairro.name}
+        seedSlug={`${service.slug}-${city.slug}-${bairro.slug}`}
+        count={2}
+        localFaqs={buildBairroFaqs({
+          bairroName: bairro.name,
+          cityName: city.name,
+          intro: bairro.descriptor,
+          nearby: otherBairros.map((b) => b.name),
+        })}
+        localFaqsHeading={`${service.label} em ${bairro.name}`}
+      />
+
 
     </Layout>
   );

@@ -72,10 +72,10 @@ export default function KeywordServicePage({ slug }: Props) {
         { id: "o-que-esta-incluido", label: "O que está incluído" },
         ...(isRemote ? [{ id: "requisitos", label: "Requisitos" }] : []),
         { id: "pontos-de-decisao", label: "Pontos de decisão" },
-        ...(isRemote ? [{ id: "fluxo-remoto", label: "Como funciona a sessão" }] : []),
         { id: "como-funciona", label: "Como funciona o atendimento" },
         ...(isRemote
           ? [
+              { id: "fluxo-remoto", label: "Como funciona a sessão" },
               { id: "seguranca-remota", label: "Segurança e autorização" },
               { id: "limites-remoto", label: "O que não pode ser remoto" },
             ]

@@ -14,6 +14,8 @@ import { servicesData as SERVICES_CATALOG } from "@/data/services";
 import { PcAssemblyPolicySections } from "@/components/marketing/PcAssemblyPolicySections";
 import { PcQuoteWizard } from "@/components/marketing/PcQuoteWizard";
 import { WorkstationRequirements } from "@/components/marketing/WorkstationRequirements";
+import { AssemblyScopeBand } from "@/components/marketing/AssemblyScopeBand";
+import { PageTableOfContents } from "@/components/layout/PageTableOfContents";
 import { RelatedGuidesCard, GUIDE_LINKS } from "@/components/seo/RelatedGuidesCard";
 
 import { RelatedServiceLinks } from "@/components/seo/RelatedServiceLinks";

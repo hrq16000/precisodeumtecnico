@@ -243,7 +243,7 @@ const ServicoDetalhe = () => {
       )}
       <SEOHead
         title={`${displayTitle} em Curitiba | Preciso de Um Técnico`}
-        description={service.description}
+        description={(service as { metaDescription?: string }).metaDescription ?? service.description}
         canonical={`https://precisodeumtecnico.com/servicos/${slug}`}
         breadcrumbs={[
           { name: "Início", url: "https://precisodeumtecnico.com/" },

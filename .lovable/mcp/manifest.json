@@ -1,0 +1,133 @@
+{
+  "version": 1,
+  "sdk_version": "0.26.1",
+  "path": "/functions/v1/mcp",
+  "auth": {
+    "type": "none"
+  },
+  "mcp": {
+    "server": {
+      "name": "preciso-de-um-tecnico",
+      "version": "0.1.0",
+      "title": "Preciso de um técnico"
+    },
+    "tools": [
+      {
+        "name": "list_services",
+        "title": "Listar serviços",
+        "description": "Lista o catálogo público de serviços de assistência técnica oferecidos (slug, título, resumo e palavras-chave). Use para descobrir quais serviços existem antes de pedir detalhes.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "search": {
+              "type": "string",
+              "description": "Filtro opcional por texto no título, descrição ou palavras-chave."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_service",
+        "title": "Detalhes de um serviço",
+        "description": "Retorna os detalhes públicos completos de um serviço: descrição longa, benefícios, o que está incluso, etapas do processo, faixas de preço de tabela e FAQ.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "slug": {
+              "type": "string",
+              "description": "Slug do serviço, por exemplo 'informatica'. Use list_services para descobrir."
+            }
+          },
+          "required": [
+            "slug"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_pricing_and_terms",
+        "title": "Preços e termos comerciais",
+        "description": "Retorna a política oficial de preços (diagnóstico em bancada, visita técnica, coleta e entrega), prazos/SLA e os termos comerciais públicos (orçamento pré-aprovado, taxa de cancelamento, fila mínima). Fonte única de verdade do site.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_coverage",
+        "title": "Cobertura de atendimento",
+        "description": "Lista as áreas atendidas: cidades de atendimento direto em Curitiba e Região Metropolitana (com bairros) e as cidades da rede nacional de prestadores parceiros.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "scope": {
+              "type": "string",
+              "enum": [
+                "curitiba",
+                "nacional",
+                "todos"
+              ],
+              "description": "Escopo da cobertura. Padrão: 'todos'."
+            },
+            "city": {
+              "type": "string",
+              "description": "Filtro opcional por nome ou slug de cidade."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_faqs",
+        "title": "Perguntas frequentes",
+        "description": "Retorna as perguntas frequentes públicas do site sobre atendimento, prazos, garantia, orçamento e formas de pagamento.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "search": {
+              "type": "string",
+              "description": "Filtro opcional por texto na pergunta ou resposta."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}

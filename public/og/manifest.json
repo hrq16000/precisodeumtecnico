@@ -2,7 +2,7 @@
   "manifestVersion": 1,
   "templateVersion": "2026-og-v1",
   "commercialValue": "R$ 99,99",
-  "generatedAtUtc": "2026-07-12T06:35:50Z",
+  "generatedAtUtc": "2026-08-07T06:05:49Z",
   "generatorScripts": [
     {
       "path": "scripts/build-city-images.py",
@@ -2017,6 +2017,14 @@
       "height": 630,
       "bytes": 24000,
       "sha256": "d016522188b04c48cbbe1560cc3f51568244fc6ecade3f7dc3a09e73acb899f8"
+    },
+    {
+      "path": "public/og/default.jpg",
+      "format": "jpeg",
+      "width": 1200,
+      "height": 630,
+      "bytes": 24120,
+      "sha256": "6b7683b05ba13be646856b44f3b8ada481a07f2ce302acf9717b49abfb1cedc1"
     },
     {
       "path": "public/og/eletrica.jpg",

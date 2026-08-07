@@ -356,13 +356,23 @@ const ServicoDetalhe = () => {
               {/* Montagem/PC Gamer: escopo, peças do cliente, garantia e checklist */}
               {slug === "pc-gamer" && (
                 <div className="mb-12">
+                  <h2 id="para-quem-e" className="font-display text-2xl md:text-3xl font-bold text-foreground mb-6">
+                    Para quem é a montagem
+                  </h2>
+                  <AssemblyUseContexts className="mb-10" />
+
                   <h2 id="escopo-da-montagem" className="font-display text-2xl md:text-3xl font-bold text-foreground mb-6">
                     Escopo da montagem
                   </h2>
                   <AssemblyScopeBand className="mb-8" />
+                  <AssemblyFlow className="mb-10" />
+                  <AssemblyCompatibility className="mb-10" />
+                  <AssemblyBiosBlock className="mb-10" />
                   <WorkstationRequirements />
                   <RelatedGuidesCard links={[GUIDE_LINKS.workstation, GUIDE_LINKS.ti]} />
                   <PcAssemblyPolicySections />
+
+
 
 
                   <div className="mt-8" id="orcamento-da-montagem">

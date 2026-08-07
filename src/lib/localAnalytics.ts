@@ -23,6 +23,7 @@ export type CanonicalEvent =
   | "triage_cta_dedupe_skip"
   | "triage_back"
   | "triage_auto_advance"
+  | "triage_geo_prefill"
   | "triage_qualification";
 
 export type RouteType =

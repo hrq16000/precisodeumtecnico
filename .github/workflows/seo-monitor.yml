@@ -1,0 +1,47 @@
+name: SEO Monitor
+
+# Monitoramento contínuo de SEO em produção: 404, redirects, canônicos,
+# bloqueios de robots.txt e variação no sitemap. Alerta via Slack
+# (SLACK_WEBHOOK_URL) e falha o job quando há problema crítico.
+
+on:
+  schedule:
+    - cron: "0 6 * * *" # diário, 03h (BRT)
+  workflow_dispatch:
+    inputs:
+      all:
+        description: "Verificar todas as URLs do sitemap (mais lento)"
+        type: boolean
+        default: false
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      # Snapshot anterior do sitemap para detectar variação abrupta de URLs.
+      - name: Restore sitemap state
+        uses: actions/cache@v4
+        with:
+          path: .seo-monitor
+          key: seo-monitor-state-${{ github.run_id }}
+          restore-keys: seo-monitor-state-
+
+      - name: Run SEO monitor
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: bun scripts/seo-monitor.ts ${{ inputs.all && '--all' || '' }}
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seo-monitor-report
+          path: .seo-monitor/report.json
+          if-no-files-found: warn
+          retention-days: 30

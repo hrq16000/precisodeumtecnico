@@ -63,19 +63,26 @@ export function RegionalSymptomFAQ({
   neighborhoodName,
   seedSlug,
   count = 3,
+  localFaqs = [],
+  localFaqsHeading = "Sobre o atendimento nesta localidade",
 }: RegionalSymptomFAQProps) {
   const chosen = pickSymptoms(seedSlug, count);
   const heading = neighborhoodName
     ? `Perguntas frequentes — ${neighborhoodName}, ${cityName}`
     : `Perguntas frequentes — ${cityName}`;
 
-  const faqItems = chosen.flatMap((s) =>
+  const symptomItems = chosen.flatMap((s) =>
     s.faq.map((qa) => ({
       q: localize(qa.q, cityName, neighborhoodName),
       a: localize(qa.a, cityName, neighborhoodName),
       symptomLabel: s.label,
     })),
   );
+
+  // Perguntas ancoradas na localidade (tempo médio, cobertura, condições
+  // comerciais oficiais) — entram no mesmo FAQPage para manter paridade 1:1.
+  const localItems = localFaqs.map((f) => ({ q: f.question, a: f.answer }));
+  const faqItems = [...localItems, ...symptomItems];
 
   if (faqItems.length === 0) return null;
 
@@ -95,7 +102,20 @@ export function RegionalSymptomFAQ({
           quem procura técnico em {neighborhoodName ? `${neighborhoodName}, ` : ""}
           {cityName}.
         </p>
-        <div className="space-y-6">
+        <div className="space-y-6" data-testid="regional-faq-items">
+          {localItems.length > 0 && (
+            <div className="border-l-4 border-primary/40 pl-4">
+              <h3 className="font-semibold text-foreground mb-3">{localFaqsHeading}</h3>
+              <dl className="space-y-4">
+                {localItems.map((qa, i) => (
+                  <div key={`local-${i}`}>
+                    <dt className="font-medium text-foreground">{qa.q}</dt>
+                    <dd className="mt-1 text-sm text-muted-foreground leading-relaxed">{qa.a}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          )}
           {chosen.map((s) => (
             <div key={s.slug} className="border-l-4 border-primary/40 pl-4">
               <h3 className="font-semibold text-foreground mb-3">{s.label}</h3>
@@ -123,3 +143,4 @@ export function RegionalSymptomFAQ({
     </section>
   );
 }
+

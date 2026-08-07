@@ -275,6 +275,24 @@ export default function GuiaEmpresarial({ slug }: Props) {
               </section>
             )}
 
+            {/* Rodada 3U — segurança dos dados: princípio, responsabilidades e limites. */}
+            {isInstitutional && (
+              <div className="mb-10 space-y-10">
+                <SecurityPrinciple />
+                <ResponsibilityMatrix />
+                {guide.triage && (
+                  <InlineTriageCTA
+                    label="Descrever uma situação relacionada aos dados"
+                    description="A triagem registra equipamento, contexto e o que está em risco antes de qualquer procedimento."
+                    source={`${guide.triage.source}_meio`}
+                    category={guide.triage.category}
+                  />
+                )}
+                <SecurityPillars />
+                <NeverSendBox />
+                <SecurityRemoteAccessNote />
+              </div>
+            )}
 
             {guide.sections.map((s) => (
               <section key={s.id} id={s.id} className="mb-10 scroll-mt-24">

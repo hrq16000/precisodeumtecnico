@@ -19,6 +19,7 @@ import {
 import { CIDADE_SERVICO_META } from "@/data/cidadesRegiao";
 import { getSymptomBySlug } from "@/data/symptoms";
 import { LocalityPhotoBand } from "@/components/media/LocalityPhotoBand";
+import { clampTitle, clampDescription } from "@/components/seo/SEOHead";
 
 interface Props {
   cidade: CidadeRegiaoBairroSlug;
@@ -129,11 +130,11 @@ export default function ServicoBairroCidadeRegiao({ cidade, service }: Props) {
   return (
     <Layout>
       <Helmet>
-        <title>{title}</title>
-        <meta name="description" content={description} />
+        <title>{clampTitle(title)}</title>
+        <meta name="description" content={clampDescription(description)} />
         <link rel="canonical" href={canonical} />
-        <meta property="og:title" content={title} />
-        <meta property="og:description" content={description} />
+        <meta property="og:title" content={clampTitle(title)} />
+        <meta property="og:description" content={clampDescription(description)} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={canonical} />
         <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>

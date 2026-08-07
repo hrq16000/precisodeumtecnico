@@ -150,10 +150,10 @@ export default function AssistenciaTecnica() {
   return (
     <Layout>
       <Helmet>
-        <title>Assistência Técnica em Todo o Brasil | Consoles, GPU, PC, Notebook, TV e Som</title>
+        <title>Assistência Técnica em Todo o Brasil | PCs, Consoles e TVs</title>
         <meta
           name="description"
-          content="Assistência técnica especializada com atendimento em todo o Brasil. Reparo de PS5, Xbox, Nintendo, placas de vídeo, notebooks, celulares, TVs e som. Central em Curitiba, parceiros em todos os estados. WhatsApp WhatsApp 24h."
+          content="Reparo de PS5, Xbox, placas de vídeo, notebooks, celulares, TVs e som com atendimento em todo o Brasil. Central em Curitiba e WhatsApp 24h."
         />
         <meta
           name="keywords"

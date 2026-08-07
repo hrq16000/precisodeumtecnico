@@ -361,6 +361,10 @@ const ServicoDetalhe = () => {
                 </div>
               </div>
 
+              {/* Rodada 34 — ficha padrão obrigatória (fonte única serviceStandards.ts) */}
+              {serviceStandard && <ServiceStandardBand standard={serviceStandard} />}
+
+
               {/* Montagem/PC Gamer: escopo, peças do cliente, garantia e checklist */}
               {slug === "pc-gamer" && (
                 <div className="mb-12">

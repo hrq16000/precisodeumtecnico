@@ -29,6 +29,12 @@ import { AuthoritySince } from "@/components/marketing/AuthoritySince";
 import { TrustStrip } from "@/components/marketing/TrustStrip";
 import { InlineTriageCTA } from "@/components/marketing/InlineTriageCTA";
 import { EditorialCallout } from "@/components/marketing/EditorialCallout";
+import {
+  RemoteEligibility,
+  RemoteSessionFlow,
+  RemoteAuthorizationBox,
+  RemoteNotSuitable,
+} from "@/components/marketing/RemoteSupportBlocks";
 import { PageTableOfContents } from "@/components/layout/PageTableOfContents";
 
 import { COMPANY } from "@/data/companyInfo";
@@ -59,11 +65,21 @@ export default function KeywordServicePage({ slug }: Props) {
 
   /** Rodada 3Q — padrão visual comum, com conteúdo próprio por serviço. */
   const visual = SERVICE_VISUAL_BY_SLUG[page.slug];
+  /** Rodada 3U — atendimento remoto é modalidade: blocos exclusivos. */
+  const isRemote = page.slug === "suporte-tecnico-remoto";
   const tocItems = visual
     ? [
         { id: "o-que-esta-incluido", label: "O que está incluído" },
+        ...(isRemote ? [{ id: "requisitos", label: "Requisitos" }] : []),
         { id: "pontos-de-decisao", label: "Pontos de decisão" },
         { id: "como-funciona", label: "Como funciona o atendimento" },
+        ...(isRemote
+          ? [
+              { id: "fluxo-remoto", label: "Como funciona a sessão" },
+              { id: "seguranca-remota", label: "Segurança e autorização" },
+              { id: "limites-remoto", label: "O que não pode ser remoto" },
+            ]
+          : []),
         ...(page.scopeLimits ? [{ id: "limites-do-atendimento", label: "Limites do atendimento" }] : []),
         ...(page.engagementModels ? [{ id: "avulso-ou-recorrente", label: "Avulso ou recorrente" }] : []),
         { id: "perguntas-frequentes", label: "Perguntas frequentes" },
@@ -202,6 +218,15 @@ export default function KeywordServicePage({ slug }: Props) {
         </div>
       </section>
 
+      {/* Rodada 3U — elegibilidade da modalidade remota */}
+      {isRemote && (
+        <section className="pb-4">
+          <div className="container-custom max-w-4xl">
+            <RemoteEligibility />
+          </div>
+        </section>
+      )}
+
       {/* PONTOS DE DECISÃO — caixas editoriais próprias de cada serviço */}
       {visual && (
         <section className="pb-4">
@@ -260,6 +285,17 @@ export default function KeywordServicePage({ slug }: Props) {
 
         </div>
       </section>
+
+      {/* Rodada 3U — fluxo da sessão, autorização e limites do remoto */}
+      {isRemote && (
+        <section className="section-padding">
+          <div className="container-custom max-w-4xl space-y-12">
+            <RemoteSessionFlow />
+            <RemoteAuthorizationBox />
+            <RemoteNotSuitable />
+          </div>
+        </section>
+      )}
 
       {/* ANTES x DEPOIS */}
       <section className="section-padding">

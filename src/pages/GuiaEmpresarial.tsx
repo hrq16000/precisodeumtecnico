@@ -27,6 +27,14 @@ import {
   NetworkAudienceBlocks,
   NetworkScopeLimits,
 } from "@/components/marketing/B2BPageBlocks";
+import {
+  SecurityPrinciple,
+  SecurityPillars,
+  ResponsibilityMatrix,
+  NeverSendBox,
+  SecurityRemoteAccessNote,
+} from "@/components/marketing/DataSecurityBlocks";
+
 
 
 const BASE = "https://precisodeumtecnico.com";
@@ -74,10 +82,25 @@ export default function GuiaEmpresarial({ slug }: Props) {
   const isBackup = guide.slug === "backup-para-empresas";
   const isRedes = guide.slug === "redes-e-wifi";
 
+  /**
+   * Rodada 3U — segurança dos dados é página institucional/educativa:
+   * WebPage + BreadcrumbList + FAQPage, sem Service/Offer e com no máximo
+   * dois CTAs (hero + um CTA discreto após a matriz de responsabilidades).
+   */
+  const isInstitutional = guide.slug === "seguranca-dos-dados";
+
   /** Sumário gerado dos headings reais da página, incluindo as seções fixas. */
   const tocItems: TocItem[] = [
     ...(isHubPilot ? [{ id: "pilares", label: "Pilares operacionais" }] : []),
     ...(isRedes ? [{ id: "contextos-rede", label: "Casa, home office e escritório" }] : []),
+    ...(isInstitutional
+      ? [
+          { id: "responsabilidades", label: "Responsabilidades" },
+          { id: "pilares-seguranca", label: "Pilares" },
+          { id: "credenciais", label: "Credenciais" },
+          { id: "acesso-remoto", label: "Acesso remoto" },
+        ]
+      : []),
     ...guide.sections.map((s) => ({ id: s.id, label: s.title.replace(/^\d+\.\s*/, "") })),
     ...(isPreventiva ? [{ id: "prioridades", label: "Riscos e prioridades" }] : []),
     ...(isBackup ? [{ id: "conceitos-backup", label: "Sincronização, backup e recuperação" }] : []),
@@ -136,11 +159,19 @@ export default function GuiaEmpresarial({ slug }: Props) {
         title={guide.metaTitle}
         description={guide.metaDescription}
         canonical={canonical}
-        type={guide.serviceSchema ? "service" : "article"}
+        type={isInstitutional ? "website" : guide.serviceSchema ? "service" : "article"}
         breadcrumbs={breadcrumbs}
         faq={guide.faq}
-        service={guide.serviceSchema}
-        structuredData={isB2BLanding ? [webPageSchema] : guide.serviceSchema ? [] : [articleSchema]}
+        service={isInstitutional ? undefined : guide.serviceSchema}
+        structuredData={
+          isInstitutional
+            ? [webPageSchema]
+            : isB2BLanding
+              ? [webPageSchema]
+              : guide.serviceSchema
+                ? []
+                : [articleSchema]
+        }
       />
 
 
@@ -156,13 +187,22 @@ export default function GuiaEmpresarial({ slug }: Props) {
             waService={guide.whatsappService}
             triage={guide.triage}
             variant={isServicePilot ? "service" : "hub"}
-            ctaLabel={isPilot ? pilotCtaLabel : undefined}
-            actionTitle={
-              isServicePilot
-                ? "Abertura de chamado empresarial"
-                : isHubPilot
-                  ? "Necessidade da empresa"
+            ctaLabel={
+              isInstitutional
+                ? "Descrever uma situação relacionada aos dados"
+                : isPilot
+                  ? pilotCtaLabel
                   : undefined
+            }
+            showWhatsApp={!isInstitutional}
+            actionTitle={
+              isInstitutional
+                ? "Situação envolvendo dados"
+                : isServicePilot
+                  ? "Abertura de chamado empresarial"
+                  : isHubPilot
+                    ? "Necessidade da empresa"
+                    : undefined
             }
           />
         ) : (
@@ -244,6 +284,24 @@ export default function GuiaEmpresarial({ slug }: Props) {
               </section>
             )}
 
+            {/* Rodada 3U — segurança dos dados: princípio, responsabilidades e limites. */}
+            {isInstitutional && (
+              <div className="mb-10 space-y-10">
+                <SecurityPrinciple />
+                <ResponsibilityMatrix />
+                {guide.triage && (
+                  <InlineTriageCTA
+                    label="Descrever uma situação relacionada aos dados"
+                    description="A triagem registra equipamento, contexto e o que está em risco antes de qualquer procedimento."
+                    source={`${guide.triage.source}_meio`}
+                    category={guide.triage.category}
+                  />
+                )}
+                <SecurityPillars />
+                <NeverSendBox />
+                <SecurityRemoteAccessNote />
+              </div>
+            )}
 
             {guide.sections.map((s) => (
               <section key={s.id} id={s.id} className="mb-10 scroll-mt-24">
@@ -388,7 +446,7 @@ export default function GuiaEmpresarial({ slug }: Props) {
               </ul>
             </section>
 
-            {!isPilot && guide.triage && (
+            {!isPilot && !isInstitutional && guide.triage && (
               <InlineTriageCTA
                 className="mb-12"
                 label="Iniciar triagem do cenário"
@@ -416,37 +474,39 @@ export default function GuiaEmpresarial({ slug }: Props) {
 
             <EnterpriseLinkCluster currentPath={guide.path} />
 
-            <div className="rounded-xl border border-border/50 bg-card p-6 text-center">
-              <h2 className="font-display text-xl md:text-2xl font-bold text-card-foreground mb-2">
-                Quer aplicar isso no seu escritório?
-              </h2>
-              <p className="text-muted-foreground mb-5">
-                Descreva o cenário atual (quantidade de postos, softwares e principais travas) e
-                recebemos o contexto já organizado para a avaliação técnica.
-              </p>
-              <a
-                href={waUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                data-wa-source={`guia-${guide.slug}-final`}
-                data-service={guide.whatsappService}
-                data-wa-tracked="b2b_final"
-                onClick={() =>
-                  trackWhatsAppClick({
-                    source: `guia-${guide.slug}-final`,
-                    service: guide.whatsappService,
-                    city: guide.triage?.city,
-                    source_component: "b2b_cta_final",
-                    cta_label: "Falar sobre o meu cenário",
-                  })
-                }
-                aria-label={`Falar no WhatsApp sobre ${guide.whatsappService}`}
-                className="inline-flex items-center gap-2 min-h-[48px] bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold px-6 py-3 rounded-xl transition-colors"
-              >
-                <MessageCircle className="h-5 w-5" aria-hidden="true" />
-                Falar sobre o meu cenário
-              </a>
-            </div>
+            {!isInstitutional && (
+              <div className="rounded-xl border border-border/50 bg-card p-6 text-center">
+                <h2 className="font-display text-xl md:text-2xl font-bold text-card-foreground mb-2">
+                  Quer aplicar isso no seu escritório?
+                </h2>
+                <p className="text-muted-foreground mb-5">
+                  Descreva o cenário atual (quantidade de postos, softwares e principais travas) e
+                  recebemos o contexto já organizado para a avaliação técnica.
+                </p>
+                <a
+                  href={waUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-wa-source={`guia-${guide.slug}-final`}
+                  data-service={guide.whatsappService}
+                  data-wa-tracked="b2b_final"
+                  onClick={() =>
+                    trackWhatsAppClick({
+                      source: `guia-${guide.slug}-final`,
+                      service: guide.whatsappService,
+                      city: guide.triage?.city,
+                      source_component: "b2b_cta_final",
+                      cta_label: "Falar sobre o meu cenário",
+                    })
+                  }
+                  aria-label={`Falar no WhatsApp sobre ${guide.whatsappService}`}
+                  className="inline-flex items-center gap-2 min-h-[48px] bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold px-6 py-3 rounded-xl transition-colors"
+                >
+                  <MessageCircle className="h-5 w-5" aria-hidden="true" />
+                  Falar sobre o meu cenário
+                </a>
+              </div>
+            )}
           </div>
         </section>
       </article>

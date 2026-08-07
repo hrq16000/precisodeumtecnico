@@ -30,6 +30,11 @@ interface Props {
   ctaLabel?: string;
   /** Título do bloco de ação. */
   actionTitle?: string;
+  /**
+   * Rodada 3U — páginas institucionais limitam a densidade de conversão:
+   * o hero mantém apenas o CTA de triagem.
+   */
+  showWhatsApp?: boolean;
 }
 
 export function B2BHero({
@@ -44,6 +49,7 @@ export function B2BHero({
   variant = "hub",
   ctaLabel = "Iniciar triagem empresarial",
   actionTitle = "Avaliação do cenário da empresa",
+  showWhatsApp = true,
 }: Props) {
   const isService = variant === "service";
   return (
@@ -91,28 +97,30 @@ export function B2BHero({
                   <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
                 </Button>
               )}
-              <a
-                href={waUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                data-wa-source={waSource}
-                data-service={waService}
-                data-wa-tracked="b2b_hero"
-                onClick={() =>
-                  trackWhatsAppClick({
-                    source: waSource,
-                    service: waService,
-                    city: triage?.city,
-                    source_component: `b2b_hero_${variant}`,
-                    cta_label: "Descrever o cenário no WhatsApp",
-                  })
-                }
-                aria-label={`Falar no WhatsApp sobre ${waService}`}
-                className={`inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg border border-border bg-background px-4 text-sm font-semibold text-foreground transition-colors hover:bg-muted ${isService ? "sm:w-auto" : ""}`}
-              >
-                <MessageCircle className="h-4 w-4 text-primary" aria-hidden="true" />
-                Descrever o cenário no WhatsApp
-              </a>
+              {showWhatsApp && (
+                <a
+                  href={waUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-wa-source={waSource}
+                  data-service={waService}
+                  data-wa-tracked="b2b_hero"
+                  onClick={() =>
+                    trackWhatsAppClick({
+                      source: waSource,
+                      service: waService,
+                      city: triage?.city,
+                      source_component: `b2b_hero_${variant}`,
+                      cta_label: "Descrever o cenário no WhatsApp",
+                    })
+                  }
+                  aria-label={`Falar no WhatsApp sobre ${waService}`}
+                  className={`inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg border border-border bg-background px-4 text-sm font-semibold text-foreground transition-colors hover:bg-muted ${isService ? "sm:w-auto" : ""}`}
+                >
+                  <MessageCircle className="h-4 w-4 text-primary" aria-hidden="true" />
+                  Descrever o cenário no WhatsApp
+                </a>
+              )}
             </div>
             <p className="mt-3 text-xs text-muted-foreground">
               O escopo e o valor são informados antes de qualquer execução.

@@ -1,5 +1,7 @@
 import { ImageIcon } from "lucide-react";
+import { PublicPhotoFigure } from "@/components/media/PublicPhotoFigure";
 import type { PublicPhoto } from "@/data/publicPhotos";
+
 
 interface Props {
   title: string;

@@ -15,6 +15,12 @@ import { PcAssemblyPolicySections } from "@/components/marketing/PcAssemblyPolic
 import { PcQuoteWizard } from "@/components/marketing/PcQuoteWizard";
 import { WorkstationRequirements } from "@/components/marketing/WorkstationRequirements";
 import { AssemblyScopeBand } from "@/components/marketing/AssemblyScopeBand";
+import {
+  AssemblyUseContexts,
+  AssemblyFlow,
+  AssemblyCompatibility,
+  AssemblyBiosBlock,
+} from "@/components/marketing/AssemblyContextBlocks";
 import { PageTableOfContents } from "@/components/layout/PageTableOfContents";
 import { RelatedGuidesCard, GUIDE_LINKS } from "@/components/seo/RelatedGuidesCard";
 

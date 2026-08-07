@@ -95,6 +95,9 @@ const mainUrls: Url[] = [
   { loc: `${BASE}/empresa-de-ti-curitiba`, changefreq: "weekly", priority: 0.9, lastmod: fileDate("src/data/enterpriseLandings.ts") },
   { loc: `${BASE}/servicos/suporte-tecnico-empresarial`, changefreq: "weekly", priority: 0.85, lastmod: fileDate("src/data/enterpriseLandings.ts") },
   { loc: `${BASE}/seguranca-dos-dados`, changefreq: "monthly", priority: 0.75, lastmod: fileDate("src/data/enterpriseLandings.ts") },
+  { loc: `${BASE}/servicos/manutencao-preventiva-empresas`, changefreq: "monthly", priority: 0.8, lastmod: fileDate("src/data/enterpriseLandings.ts") },
+  { loc: `${BASE}/servicos/backup-para-empresas`, changefreq: "monthly", priority: 0.8, lastmod: fileDate("src/data/enterpriseLandings.ts") },
+  { loc: `${BASE}/servicos/redes-e-wifi`, changefreq: "monthly", priority: 0.8, lastmod: fileDate("src/data/enterpriseLandings.ts") },
   { loc: `${BASE}/guias/como-escolher-uma-workstation`, changefreq: "monthly", priority: 0.7, lastmod: fileDate("src/data/enterpriseGuides.ts") },
 
   { loc: `${BASE}/servicos/pc-gamer/como-funciona`, changefreq: "monthly", priority: 0.75, lastmod: fileDate("src/pages/ComoFuncionaPcGamer.tsx") },

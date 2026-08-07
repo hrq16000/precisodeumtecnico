@@ -80,7 +80,7 @@ export const KEYWORD_SERVICE_PAGES: KeywordServicePage[] = [
     slug: "formatacao-de-computador-curitiba",
     keyword: "formatação de computador em Curitiba",
     h1: "Formatação de computador em Curitiba com backup e garantia",
-    title: `Formatação de Computador em Curitiba a partir de ${BENCH}`,
+    title: `Formatação de PC em Curitiba desde ${BENCH}`,
     description: `Formate seu computador em Curitiba a partir de ${BENCH}: backup dos arquivos, sistema licenciado, drivers atualizados e 90 dias de garantia.`,
     intro:
       "Se o PC demora minutos para ligar, trava no meio do trabalho ou vive com telas de erro, a formatação de computador em Curitiba resolve o problema pela raiz — desde que seja feita com backup verificado, sistema licenciado e drivers corretos. É exatamente esse o protocolo que aplicamos em bancada e em visita técnica na capital e na Região Metropolitana.",
@@ -299,7 +299,7 @@ export const KEYWORD_SERVICE_PAGES: KeywordServicePage[] = [
     slug: "conserto-de-notebook-curitiba",
     keyword: "conserto de notebook em Curitiba",
     h1: "Conserto de notebook em Curitiba com diagnóstico antes do orçamento",
-    title: `Conserto de Notebook em Curitiba a partir de ${BENCH}`,
+    title: `Conserto de Notebook em Curitiba | ${BENCH}`,
     description: `Conserte seu notebook em Curitiba a partir de ${BENCH}: diagnóstico em bancada, orçamento fechado antes do reparo e 90 dias de garantia.`,
     intro:
       "Notebook que não liga, desliga sozinho, esquenta demais, não carrega ou está com a tela quebrada tem solução — e o conserto de notebook em Curitiba começa sempre pelo diagnóstico em bancada, para que você saiba o custo real do reparo antes de autorizar qualquer peça.",
@@ -355,7 +355,7 @@ export const KEYWORD_SERVICE_PAGES: KeywordServicePage[] = [
     slug: "suporte-tecnico-remoto",
     keyword: "suporte técnico remoto",
     h1: "Suporte técnico remoto com atendimento no mesmo dia",
-    title: `Suporte Técnico Remoto a partir de ${BENCH} — Atendimento no Mesmo Dia`,
+    title: `Suporte Técnico Remoto em Curitiba`,
     description: `Resolva problemas de computador com suporte técnico remoto a partir de ${BENCH}: acesso autorizado por você, atendimento no mesmo dia e garantia de 90 dias.`,
     intro:
       "Nem todo problema exige visita: configuração de e-mail, impressora que sumiu da rede, lentidão por software, atualização travada e instalação de programas se resolvem por suporte técnico remoto, com acesso autorizado por você e acompanhamento da tela do início ao fim.",

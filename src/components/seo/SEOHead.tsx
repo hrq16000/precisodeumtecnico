@@ -167,7 +167,32 @@ export function SEOHead({
   }
 
   const baseSchemas = structuredData ?? (schema ? [schema] : [localBusinessSchema]);
-  const schemas = [...baseSchemas, ...extra];
+  const merged = [...baseSchemas, ...extra];
+
+  // WebPage canônico da rota (uma única vez, se ainda não fornecido pelo caller).
+  const hasWebPage = merged.some((s) => {
+    const t = (s as Record<string, unknown>)?.["@type"];
+    return t === "WebPage" || (Array.isArray(t) && t.includes("WebPage"));
+  });
+  const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `${canonical}#webpage`,
+    url: canonical,
+    name: fullTitle,
+    description,
+    inLanguage: "pt-BR",
+    isPartOf: {
+      "@type": "WebSite",
+      name: "Preciso de Um Técnico",
+      url: "https://precisodeumtecnico.com",
+    },
+    ...(breadcrumbs && breadcrumbs.length > 0
+      ? { breadcrumb: { "@type": "BreadcrumbList", name: fullTitle } }
+      : {}),
+  };
+
+  const schemas = hasWebPage ? merged : [...merged, webPageSchema];
 
 
   return (

@@ -41,6 +41,11 @@ function inspect(file: string) {
     const hasAria = /aria-label\s*=/.test(chunk) || /['"]aria-label['"]\s*:/.test(chunk);
     if (!hasService) missing.push("data-service");
     if (!hasAria) missing.push("aria-label");
+    // TS17001: atributo JSX duplicado na mesma tag.
+    for (const attr of ["aria-label", "data-service", "data-wa-source", "href", "onClick", "className"]) {
+      const dup = chunk.match(new RegExp(`(?<![\\w-])${attr}\\s*=`, "g"));
+      if (dup && dup.length > 1) missing.push(`${attr} duplicado (${dup.length}x)`);
+    }
     if (missing.length) {
       const line = src.slice(0, m.index).split("\n").length;
       problems.push({

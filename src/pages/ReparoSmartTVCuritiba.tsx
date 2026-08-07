@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet-async";
+import { buildWebPageSchema } from "@/lib/seo/webPageSchema";
 import { Link } from "react-router-dom";
 import { ArrowRight, ShieldCheck, Truck, Clock, AlertTriangle, CheckCircle2, HelpCircle, Tv } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
@@ -140,6 +141,7 @@ export default function ReparoSmartTVCuritiba() {
         <meta property="og:description" content={metaDescription} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={PAGE_URL} />
+        <script type="application/ld+json">{JSON.stringify(buildWebPageSchema({ url: PAGE_URL, name: metaTitle, description: metaDescription }))}</script>
         <script type="application/ld+json">{JSON.stringify(serviceSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>

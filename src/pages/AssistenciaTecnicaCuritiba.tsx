@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet-async";
+import { buildWebPageSchema } from "@/lib/seo/webPageSchema";
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -359,6 +360,7 @@ export default function AssistenciaTecnicaCuritiba() {
         />
 
 
+        <script type="application/ld+json">{JSON.stringify(buildWebPageSchema({ url: pageUrl, name: "Assistência Técnica de Consoles em Curitiba | PS5, Xbox e Switch", description: "Reparo de consoles em Curitiba: PlayStation, Xbox, Nintendo Switch, placas de vídeo, PCs e notebooks. Orçamento rápido pelo WhatsApp, 24h." }))}</script>
         <script type="application/ld+json">{JSON.stringify(localBusinessSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>

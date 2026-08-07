@@ -12,6 +12,8 @@ import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import NotFound from "@/pages/NotFound";
 import { servicesData as SERVICES_CATALOG } from "@/data/services";
 import { PcAssemblyPolicySections } from "@/components/marketing/PcAssemblyPolicySections";
+import { ServiceStandardBand } from "@/components/service/ServiceStandardBand";
+import { getServiceStandard } from "@/data/serviceStandards";
 import { PcQuoteWizard } from "@/components/marketing/PcQuoteWizard";
 import { WorkstationRequirements } from "@/components/marketing/WorkstationRequirements";
 import { AssemblyScopeBand } from "@/components/marketing/AssemblyScopeBand";
@@ -227,6 +229,7 @@ const ServicoDetalhe = () => {
 
   const service = servicesData[slug!];
   const displayTitle = service.title;
+  const serviceStandard = getServiceStandard(slug);
 
 
   const whatsappLink = buildWhatsAppUrl({ service: displayTitle, sourcePage: `/servicos/${slug ?? ""}` });
@@ -360,6 +363,10 @@ const ServicoDetalhe = () => {
                   ))}
                 </div>
               </div>
+
+              {/* Rodada 34 — ficha padrão obrigatória (fonte única serviceStandards.ts) */}
+              {serviceStandard && <ServiceStandardBand standard={serviceStandard} />}
+
 
               {/* Montagem/PC Gamer: escopo, peças do cliente, garantia e checklist */}
               {slug === "pc-gamer" && (

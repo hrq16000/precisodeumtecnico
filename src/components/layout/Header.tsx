@@ -66,6 +66,8 @@ const regions = [
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [navValue, setNavValue] = useState("");
+  const desktopNavRef = React.useRef<HTMLElement | null>(null);
   const location = useLocation();
   const whatsappLink = buildWhatsAppUrl({ service: "assistência técnica", sourcePage: typeof window !== "undefined" ? window.location.pathname : "" });
 
@@ -85,6 +87,31 @@ export function Header() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Fecha o menu desktop ao clicar fora ou pressionar Esc.
+  useEffect(() => {
+    if (!navValue) return;
+    const onPointerDown = (e: PointerEvent) => {
+      const el = desktopNavRef.current;
+      if (el && e.target instanceof Node && !el.contains(e.target)) setNavValue("");
+    };
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setNavValue("");
+    };
+    document.addEventListener("pointerdown", onPointerDown, true);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown, true);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [navValue]);
+
+  // Fecha o menu ao navegar (SPA).
+  useEffect(() => {
+    setNavValue("");
+  }, [location.pathname]);
+
+
 
   return (
     <header className="sticky top-0 z-50 w-full bg-background shadow-sm">
@@ -128,8 +155,9 @@ export function Header() {
             />
 
           {/* Desktop Navigation */}
-          <nav className="hidden xl:flex items-center gap-1">
-            <NavigationMenu>
+          <nav ref={desktopNavRef} className="hidden xl:flex items-center gap-1">
+            <NavigationMenu value={navValue} onValueChange={setNavValue}>
+
               <NavigationMenuList className="gap-1">
                 {[
                   { to: "/", label: "Início", icon: Home, match: (p: string) => p === "/" },

@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { MessageCircle, CheckCircle, Clock, Shield, MapPin, Users, CalendarCheck } from "lucide-react";
 import { OfferHighlight } from "@/components/marketing/OfferHighlight";
+import { GeoStatusChip } from "@/components/layout/GeoStatusChip";
 import { SLA } from "@/data/pricingPolicy";
 import { COMPANY } from "@/data/companyInfo";
 import { buildWhatsAppUrl, readStoredLocation, currentSourcePage } from "@/lib/whatsapp";
+
 
 export function HeroSection() {
   const whatsappLink = buildWhatsAppUrl({
@@ -29,6 +31,13 @@ export function HeroSection() {
               Atuação em informática desde {COMPANY.foundingYear}
             </span>
           </div>
+
+          {/* Status de localização — Detectado (IP) / Confirmado (GPS ou manual) */}
+          <div className="mb-3 flex justify-center animate-fade-up">
+            <GeoStatusChip />
+          </div>
+
+
 
           {/* Main Headline */}
           <h1 className="font-display text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold mb-3 animate-fade-up tracking-tight leading-tight">

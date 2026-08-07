@@ -78,6 +78,15 @@ export default function BairroDetalhe() {
 
   const bairroContent = getBairroContent(city!, neighborhood, neighborhoodName);
 
+  // FAQ específica do bairro (Rodada 32): derivada do texto curado (tempo médio
+  // e serviços citados) + vizinhança real + termos comerciais oficiais.
+  const localFaqs = buildBairroFaqs({
+    bairroName: neighborhoodName,
+    cityName: cityData.name,
+    intro: bairroContent.intro,
+    nearby: nearbyNeighborhoods,
+  });
+
   const localBusinessSchema = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",

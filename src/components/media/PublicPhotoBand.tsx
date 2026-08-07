@@ -38,18 +38,13 @@ export function PublicPhotoBand({ title, intro, photos, eagerFirst = false }: Pr
           {photos.map((photo, i) => (
             <li key={photo.slug} className="rounded-lg overflow-hidden border border-border bg-card">
               <figure>
-                <picture>
-                  <source type="image/webp" srcSet={`/photos/${photo.slug}-800.webp`} />
-                  <img
-                    src={`/photos/${photo.slug}-800.jpg`}
-                    alt={photo.alt}
-                    width={800}
-                    height={Math.round((800 * photo.height) / photo.width)}
-                    loading={eagerFirst && i === 0 ? "eager" : "lazy"}
-                    decoding="async"
-                    className="w-full h-48 object-cover bg-muted"
-                  />
-                </picture>
+                <PublicPhotoFigure
+                  photo={photo}
+                  eager={eagerFirst && i === 0}
+                  sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 92vw"
+                  className="w-full h-48 object-cover bg-muted"
+                />
+
                 <figcaption className="p-3 text-xs text-muted-foreground">
                   <span className="block text-sm text-foreground font-medium">{photo.caption}</span>
                   <span className="block mt-1">

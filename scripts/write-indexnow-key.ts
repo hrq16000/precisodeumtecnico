@@ -28,9 +28,17 @@ if (!KEY) {
   process.exit(0);
 }
 if (!/^[a-f0-9]{8,128}$/i.test(KEY)) {
-  console.error(`[indexnow] BING_INDEXNOW_KEY inválida (esperado 8-128 hex chars).`);
-  process.exit(1);
+  // Fora do CI (dev/preview) a chave pode ser um placeholder: avisa e segue,
+  // sem bloquear o build. No CI a chave precisa ser válida.
+  const msg = "[indexnow] BING_INDEXNOW_KEY inválida (esperado 8-128 hex chars).";
+  if (process.env.CI) {
+    console.error(msg);
+    process.exit(1);
+  }
+  console.warn(`${msg} Ignorando fora do CI.`);
+  process.exit(0);
 }
+
 
 const filePath = join(PUBLIC_DIR, `${KEY}.txt`);
 writeFileSync(filePath, KEY, "utf8");

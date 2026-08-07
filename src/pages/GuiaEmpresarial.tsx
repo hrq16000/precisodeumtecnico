@@ -82,10 +82,25 @@ export default function GuiaEmpresarial({ slug }: Props) {
   const isBackup = guide.slug === "backup-para-empresas";
   const isRedes = guide.slug === "redes-e-wifi";
 
+  /**
+   * Rodada 3U — segurança dos dados é página institucional/educativa:
+   * WebPage + BreadcrumbList + FAQPage, sem Service/Offer e com no máximo
+   * dois CTAs (hero + um CTA discreto após a matriz de responsabilidades).
+   */
+  const isInstitutional = guide.slug === "seguranca-dos-dados";
+
   /** Sumário gerado dos headings reais da página, incluindo as seções fixas. */
   const tocItems: TocItem[] = [
     ...(isHubPilot ? [{ id: "pilares", label: "Pilares operacionais" }] : []),
     ...(isRedes ? [{ id: "contextos-rede", label: "Casa, home office e escritório" }] : []),
+    ...(isInstitutional
+      ? [
+          { id: "responsabilidades", label: "Responsabilidades" },
+          { id: "pilares-seguranca", label: "Pilares" },
+          { id: "credenciais", label: "Credenciais" },
+          { id: "acesso-remoto", label: "Acesso remoto" },
+        ]
+      : []),
     ...guide.sections.map((s) => ({ id: s.id, label: s.title.replace(/^\d+\.\s*/, "") })),
     ...(isPreventiva ? [{ id: "prioridades", label: "Riscos e prioridades" }] : []),
     ...(isBackup ? [{ id: "conceitos-backup", label: "Sincronização, backup e recuperação" }] : []),

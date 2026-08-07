@@ -109,7 +109,7 @@ export default function Precos() {
         canonical={url}
         ogImage={ogImage}
         keywords="preço técnico curitiba, tabela de preços assistência técnica, quanto custa técnico"
-        structuredData={[breadcrumb, faqSchema, offerCatalog]}
+        structuredData={[buildLocalBusinessSchema({ url }), breadcrumb, faqSchema, offerCatalog]}
       />
 
       <section className="bg-gradient-to-br from-foreground to-primary/20 text-background py-16">

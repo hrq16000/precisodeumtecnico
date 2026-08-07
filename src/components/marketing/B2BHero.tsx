@@ -115,7 +115,7 @@ export function B2BHero({
                       cta_label: "Descrever o cenário no WhatsApp",
                     })
                   }
-                  aria-label={`Falar no WhatsApp sobre ${waService}`}
+                  
                   className={`inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg border border-border bg-background px-4 text-sm font-semibold text-foreground transition-colors hover:bg-muted ${isService ? "sm:w-auto" : ""}`}
                 >
                   <MessageCircle className="h-4 w-4 text-primary" aria-hidden="true" />

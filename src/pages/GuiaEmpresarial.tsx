@@ -500,7 +500,6 @@ export default function GuiaEmpresarial({ slug }: Props) {
                       cta_label: "Falar sobre o meu cenário",
                     })
                   }
-                  aria-label={`Falar no WhatsApp sobre ${guide.whatsappService}`}
                   className="inline-flex items-center gap-2 min-h-[48px] bg-[#25D366] hover:bg-[#20BD5A] text-white font-semibold px-6 py-3 rounded-xl transition-colors"
                 >
                   <MessageCircle className="h-5 w-5" aria-hidden="true" />

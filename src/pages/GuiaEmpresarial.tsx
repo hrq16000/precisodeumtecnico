@@ -487,6 +487,7 @@ export default function GuiaEmpresarial({ slug }: Props) {
                   href={waUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="Falar no WhatsApp sobre este guia empresarial"
                   data-wa-source={`guia-${guide.slug}-final`}
                   data-service={guide.whatsappService}
                   data-wa-tracked="b2b_final"

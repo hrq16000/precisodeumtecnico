@@ -698,6 +698,7 @@ export default function StatusOrdemServico() {
                         href={shareWhatsAppUrl}
                         target="_blank"
                         rel="noopener noreferrer"
+                        aria-label="Compartilhar a Ordem de Serviço no WhatsApp"
                         data-wa-source="status-os-share"
                         data-service="acompanhamento de Ordem de Serviço"
                         onClick={() =>

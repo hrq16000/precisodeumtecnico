@@ -227,8 +227,19 @@ export default function GuiaEmpresarial({ slug }: Props) {
               </section>
             )}
 
-
-
+            {/* Rodada 3T — redes: público misto declarado antes do conteúdo. */}
+            {isRedes && (
+              <section id="contextos-rede" className="mb-10 scroll-mt-24">
+                <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-4">
+                  Casa, home office e escritório
+                </h2>
+                <p className="text-muted-foreground leading-relaxed mb-4">
+                  O atendimento de rede cobre contextos diferentes. Os dois cenários abaixo usam as
+                  mesmas verificações internas, mudando a escala e o que está em jogo.
+                </p>
+                <NetworkAudienceBlocks />
+              </section>
+            )}
 
 
             {guide.sections.map((s) => (

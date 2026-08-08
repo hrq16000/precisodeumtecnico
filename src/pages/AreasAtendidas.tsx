@@ -3,6 +3,7 @@ import { Layout } from "@/components/layout/Layout";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { CTASection } from "@/components/home/CTASection";
 import { PageTableOfContents } from "@/components/layout/PageTableOfContents";
+import { RelatedLinksSection } from "@/components/seo/RelatedLinksSection";
 import { MapPin, Clock, Route as RouteIcon, CheckCircle2, MessageCircle, Quote } from "lucide-react";
 import { getAllCities, formatNeighborhoodSlug } from "@/data/regions";
 import { getEnabledNationalCities } from "@/data/nationalCities";
@@ -296,6 +297,8 @@ const AreasAtendidas = () => {
             </div>
           </div>
         </section>
+
+        <RelatedLinksSection surface="regions_section" items={["precos", "servicos", "faq"]} />
 
         <CTASection />
       </div>

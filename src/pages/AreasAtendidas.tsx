@@ -219,7 +219,8 @@ const AreasAtendidas = () => {
         </section>
 
         <CTASection />
-      </main>
+      </div>
+
     </Layout>
   );
 };

@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { MessageCircle, Mail } from "lucide-react";
 import { buildWhatsAppUrlFromText } from "@/lib/whatsapp";
-import { trackCtaClick, trackEvent } from "@/lib/analytics";
+import { trackCtaClick, trackEvent, type CtaSurface } from "@/lib/analytics";
 import { COMPANY } from "@/data/companyInfo";
 
 const AD_TYPES = [

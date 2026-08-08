@@ -57,20 +57,45 @@ const MensagensProntas = () => {
                     <h2 className="text-xl font-semibold">{s.label}</h2>
                     <p className="text-sm text-muted-foreground">{s.intent}</p>
                   </div>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    data-testid={`copy-${s.id}`}
-                    onClick={() => copy(s.id, s.message)}
-                    className="min-h-11"
-                  >
-                    {copiedId === s.id ? (
-                      <Check className="w-4 h-4 mr-2" aria-hidden="true" />
-                    ) : (
-                      <Copy className="w-4 h-4 mr-2" aria-hidden="true" />
-                    )}
-                    {copiedId === s.id ? "Copiado" : "Copiar mensagem"}
-                  </Button>
+                  <div className="flex flex-wrap gap-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      data-testid={`copy-${s.id}`}
+                      onClick={() => copy(s.id, s.message)}
+                      className="min-h-11"
+                    >
+                      {copiedId === s.id ? (
+                        <Check className="w-4 h-4 mr-2" aria-hidden="true" />
+                      ) : (
+                        <Copy className="w-4 h-4 mr-2" aria-hidden="true" />
+                      )}
+                      {copiedId === s.id ? "Copiado" : "Copiar mensagem"}
+                    </Button>
+                    <Button
+                      asChild
+                      data-testid={`wa-${s.id}`}
+                      className="min-h-11"
+                    >
+                      <a
+                        href={buildWhatsAppUrlFromText(
+                          `${s.message} [service=${s.id} · source=wa_script · utm_source=whatsapp_cta]`,
+                        )}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() =>
+                          trackEvent("whatsapp_click", {
+                            surface: "wa_script",
+                            script_id: s.id,
+                          })
+                        }
+                      >
+                        <MessageCircle className="w-4 h-4 mr-2" aria-hidden="true" />
+                        Abrir no WhatsApp
+                      </a>
+                    </Button>
+                  </div>
+
                 </div>
 
                 <ul className="flex flex-wrap gap-2 mb-4">

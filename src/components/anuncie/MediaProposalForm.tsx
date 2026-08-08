@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { MessageCircle, Mail } from "lucide-react";
 import { buildWhatsAppUrlFromText } from "@/lib/whatsapp";
-import { trackCtaClick, trackEvent } from "@/lib/analytics";
+import { trackCtaClick, trackEvent, type CtaSurface } from "@/lib/analytics";
 import { COMPANY } from "@/data/companyInfo";
 
 const AD_TYPES = [
@@ -56,7 +56,8 @@ export function MediaProposalForm() {
       has_territory: territory.trim().length > 0,
     });
     trackCtaClick({
-      surface: "advertising",
+      surface: "advertising" satisfies CtaSurface,
+
       cta_id: channel === "whatsapp" ? "media_proposal_whatsapp" : "media_proposal_email",
       label: channel === "whatsapp" ? "Enviar por WhatsApp" : "Enviar por e-mail",
       destination: "/anuncie#proposta",

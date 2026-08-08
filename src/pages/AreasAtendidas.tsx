@@ -3,12 +3,47 @@ import { Layout } from "@/components/layout/Layout";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { CTASection } from "@/components/home/CTASection";
 import { PageTableOfContents } from "@/components/layout/PageTableOfContents";
-import { MapPin, Clock, Route as RouteIcon, CheckCircle2 } from "lucide-react";
+import { MapPin, Clock, Route as RouteIcon, CheckCircle2, MessageCircle, Quote } from "lucide-react";
 import { getAllCities, formatNeighborhoodSlug } from "@/data/regions";
 import { getEnabledNationalCities } from "@/data/nationalCities";
-import { trackCtaClick } from "@/lib/analytics";
+import { trackCtaClick, trackEvent } from "@/lib/analytics";
+import { buildWhatsAppUrlFromText } from "@/lib/whatsapp";
+import { testimonials } from "@/data/testimonials";
 
 const CANONICAL = "https://precisodeumtecnico.com/areas-atendidas";
+
+/** Mensagem pré-preenchida consistente por cidade/bairro (encoding no helper). */
+function buildAreaMessage(city: string, bairro?: string): string {
+  return [
+    "Olá! Preciso de um técnico.",
+    `Cidade: ${city}`,
+    bairro ? `Bairro: ${bairro}` : "",
+    "Vim pela página de áreas atendidas do site.",
+  ]
+    .filter(Boolean)
+    .join(" ");
+}
+
+function openAreaWhatsApp(city: string, bairro?: string) {
+  const text = buildAreaMessage(city, bairro);
+  trackEvent("whatsapp_click", {
+    surface: "regions_section",
+    cta_id: bairro ? "areas_wa_bairro" : "areas_wa_city",
+    city,
+    bairro,
+    wa_message: text,
+  });
+  trackCtaClick({
+    surface: "regions_section",
+    cta_id: bairro ? "areas_wa_bairro" : "areas_wa_city",
+    label: "Falar no WhatsApp",
+    destination: "/areas-atendidas",
+    city,
+    bairro,
+  });
+  window.open(buildWhatsAppUrlFromText(text), "_blank", "noopener,noreferrer");
+}
+
 
 const FAQ = [
   {
@@ -101,7 +136,9 @@ const AreasAtendidas = () => {
                 ...(nationalCities.length > 0
                   ? [{ id: "cobertura-nacional", label: "Atendimento nacional" }]
                   : []),
+                { id: "cobertura-prova-social", label: "Quem já foi atendido" },
                 { id: "cobertura-faq", label: "Perguntas sobre cobertura" },
+
               ]}
             />
             <div className="grid gap-6 md:grid-cols-3 mb-12">
@@ -154,11 +191,23 @@ const AreasAtendidas = () => {
                         {city.name} — {city.state}
                       </Link>
                     </h3>
-                    <span className="text-sm text-muted-foreground">
-                      {city.neighborhoods.length} bairros atendidos
-                    </span>
+                    <div className="flex items-center gap-3">
+                      <span className="text-sm text-muted-foreground">
+                        {city.neighborhoods.length} bairros atendidos
+                      </span>
+                      <button
+                        type="button"
+                        data-testid={`areas-wa-${city.slug}`}
+                        onClick={() => openAreaWhatsApp(city.name)}
+                        className="inline-flex items-center gap-2 min-h-11 rounded-full border border-success px-4 py-2 text-sm font-medium text-success transition-colors hover:bg-success hover:text-success-foreground"
+                      >
+                        <MessageCircle className="h-4 w-4" aria-hidden="true" />
+                        Falar no WhatsApp
+                      </button>
+                    </div>
                   </div>
                   <p className="text-muted-foreground text-sm mb-4">{city.description}</p>
+
                   <ul className="flex flex-wrap gap-2">
                     {city.neighborhoods.map((bairro) => (
                       <li key={`${city.slug}-${bairro}`}>
@@ -183,6 +232,24 @@ const AreasAtendidas = () => {
                 </div>
               ))}
             </div>
+
+            <h2 id="cobertura-prova-social" className="text-2xl md:text-3xl font-bold mt-14 mb-6 scroll-mt-24">
+              Quem já foi atendido na região
+            </h2>
+            <div className="grid gap-4 md:grid-cols-3">
+              {testimonials.slice(0, 6).map((t) => (
+                <figure key={`${t.name}-${t.location}`} className="p-5 rounded-xl border border-border bg-card">
+                  <Quote className="w-5 h-5 text-success mb-2" aria-hidden="true" />
+                  <blockquote className="text-sm text-muted-foreground">{t.text}</blockquote>
+                  <figcaption className="mt-3 text-sm font-medium">
+                    {t.name} · <span className="text-muted-foreground">{t.location}</span>
+                    <span className="block text-xs text-muted-foreground">{t.service}</span>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+
+
 
             {nationalCities.length > 0 && (
               <>

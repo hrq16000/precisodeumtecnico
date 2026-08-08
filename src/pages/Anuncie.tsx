@@ -142,15 +142,60 @@ export default function Anuncie() {
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
             <Button asChild className="min-h-11">
-              <a href={`mailto:${COMPANY.email}?subject=Interesse%20em%20anunciar%20no%20portal`}>
+              <a
+                href="#proposta"
+                onClick={() =>
+                  trackCtaClick({
+                    surface: "advertising",
+                    cta_id: "media_proposal_anchor",
+                    label: "Solicitar proposta",
+                    destination: "/anuncie#proposta",
+                  })
+                }
+              >
+                <Megaphone className="mr-2 h-4 w-4" aria-hidden="true" />
+                Solicitar proposta
+              </a>
+            </Button>
+            <Button asChild variant="outline" className="min-h-11">
+              <a
+                href={MEDIA_KIT_PDF}
+                download
+                data-testid="media-kit-download"
+                onClick={() =>
+                  trackCtaClick({
+                    surface: "advertising",
+                    cta_id: "media_kit_pdf_page",
+                    label: "Baixar mídia kit (PDF)",
+                    destination: MEDIA_KIT_PDF,
+                  })
+                }
+              >
+                <FileDown className="mr-2 h-4 w-4" aria-hidden="true" />
+                Baixar mídia kit (PDF)
+              </a>
+            </Button>
+            <Button asChild variant="outline" className="min-h-11">
+              <a
+                href={`mailto:${COMPANY.email}?subject=Interesse%20em%20anunciar%20no%20portal`}
+                onClick={() =>
+                  trackCtaClick({
+                    surface: "advertising",
+                    cta_id: "media_email_hero",
+                    label: "Falar com o comercial",
+                    destination: "mailto",
+                  })
+                }
+              >
                 <Mail className="mr-2 h-4 w-4" aria-hidden="true" />
                 Falar com o comercial
               </a>
             </Button>
-            <Button asChild variant="outline" className="min-h-11">
+            <Button asChild variant="ghost" className="min-h-11">
               <Link to="/politica-de-anuncios">Ver Política de Anúncios</Link>
             </Button>
           </div>
+
         </div>
       </section>
 

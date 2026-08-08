@@ -19,7 +19,7 @@ const OUT = resolve(process.cwd(), "public/ads.txt");
 const PUB_RE = /^pub-\d{16}$/;
 
 function main() {
-  const raw = (process.env.ADSENSE_PUBLISHER_ID ?? "").trim();
+  const raw = (process.env.ADSENSE_PUBLISHER_ID ?? "pub-3762170279587706").trim();
   const pub = raw.replace(/^ca-/, "");
   const extra = (process.env.ADS_TXT_EXTRA_LINES ?? "")
     .split(";")

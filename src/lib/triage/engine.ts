@@ -484,6 +484,7 @@ export type ActionV2 =
   | { type: "TOGGLE_TERM"; key: string; value: boolean }
   | { type: "SET_CONTACT"; field: keyof TriageStateV2["contact"]; value: string }
   | { type: "SET_FINAL_NOTES"; value: string }
+  | { type: "SET_SCHEDULING"; field: "preferredDate" | "preferredSlot"; value: string }
   | { type: "GOTO"; step: StepId }
   | { type: "NEXT" }
   | { type: "BACK" }

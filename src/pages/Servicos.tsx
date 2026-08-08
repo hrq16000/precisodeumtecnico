@@ -346,12 +346,15 @@ const Servicos = () => {
                         <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary ml-auto opacity-0 group-hover:opacity-100 transition-all" />
                       </Link>
                     ) : (
+                      // Item informativo: sem destino real. Visual deliberadamente
+                      // distinto do card clicável (sem borda de hover, sem seta,
+                      // fundo neutro) para não prometer interação inexistente.
                       <div
                         key={service.name}
-                        className="flex items-center gap-3 p-4 rounded-xl bg-card border border-border/50"
+                        className="flex items-center gap-3 p-4 rounded-xl bg-muted/40 border border-transparent cursor-default"
                       >
-                        <CheckCircle className="w-5 h-5 text-success flex-shrink-0" />
-                        <span className="text-card-foreground font-medium">{service.name}</span>
+                        <CheckCircle className="w-5 h-5 text-muted-foreground flex-shrink-0" />
+                        <span className="text-muted-foreground font-medium">{service.name}</span>
                       </div>
                     ),
                   )}

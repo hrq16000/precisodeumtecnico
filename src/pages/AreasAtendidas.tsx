@@ -189,11 +189,23 @@ const AreasAtendidas = () => {
                         {city.name} — {city.state}
                       </Link>
                     </h3>
-                    <span className="text-sm text-muted-foreground">
-                      {city.neighborhoods.length} bairros atendidos
-                    </span>
+                    <div className="flex items-center gap-3">
+                      <span className="text-sm text-muted-foreground">
+                        {city.neighborhoods.length} bairros atendidos
+                      </span>
+                      <button
+                        type="button"
+                        data-testid={`areas-wa-${city.slug}`}
+                        onClick={() => openAreaWhatsApp(city.name)}
+                        className="inline-flex items-center gap-2 min-h-11 rounded-full border border-success px-4 py-2 text-sm font-medium text-success transition-colors hover:bg-success hover:text-success-foreground"
+                      >
+                        <MessageCircle className="h-4 w-4" aria-hidden="true" />
+                        Falar no WhatsApp
+                      </button>
+                    </div>
                   </div>
                   <p className="text-muted-foreground text-sm mb-4">{city.description}</p>
+
                   <ul className="flex flex-wrap gap-2">
                     {city.neighborhoods.map((bairro) => (
                       <li key={`${city.slug}-${bairro}`}>

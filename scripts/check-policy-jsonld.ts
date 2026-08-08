@@ -30,7 +30,7 @@ const PAGES: PolicyPage[] = [
   { file: "src/pages/PoliticaDeCookies.tsx", canonical: "/politica-de-cookies" },
   { file: "src/pages/PoliticaPrivacidade.tsx", canonical: "/politica-privacidade" },
   { file: "src/pages/PoliticaDeAnuncios.tsx", canonical: "/politica-de-anuncios" },
-  { file: "src/pages/TermosDeUso.tsx", canonical: "/termos-de-uso" },
+  { file: "src/pages/TermosDeUso.tsx", canonical: "/termos-uso" },
 ];
 
 let failed = 0;

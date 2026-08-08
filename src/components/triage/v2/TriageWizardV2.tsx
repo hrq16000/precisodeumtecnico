@@ -450,6 +450,7 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
 
   const summary = buildTriageSummary(state);
   const pricing = getPricingRules(state);
+  const schedulingPreference = formatSchedulingPreference(state);
 
   return (
     <div className="mx-auto flex h-full max-h-[100dvh] w-full max-w-[620px] flex-col overflow-hidden rounded-none bg-card sm:h-auto sm:max-h-[92dvh] sm:rounded-2xl sm:border sm:border-border sm:shadow-xl">

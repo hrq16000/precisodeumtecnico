@@ -56,10 +56,12 @@ const servicosFaqs = [
 ];
 
 /**
- * Rodada 4I-P.1 — hub sem 404.
+ * Rodada 4I-P.1 / 4I-P.1R — hub sem 404.
  * `href` só existe quando há destino real e de mesma intenção no HEAD
  * (landing viva ou slug curado de `servicesData`). Sem equivalente, o card
  * permanece como item informativo, sem link — nenhuma rota nova é criada.
+ * Não há link "Ver categoria": os hubs `/servicos/:categoria` não existem
+ * (slug fora de CURATED_SERVICE_SLUGS responde NotFound).
  */
 type HubService = { name: string; href?: string };
 
@@ -67,14 +69,12 @@ const serviceCategories: {
   title: string;
   icon: typeof Monitor;
   color: string;
-  hub?: string;
   services: HubService[];
 }[] = [
   {
     title: "Informática e Computadores",
     icon: Monitor,
     color: "bg-blue-500/10 text-blue-600",
-    hub: "/servicos/informatica",
     services: [
       { name: "Formatação de Computadores", href: "/formatacao-de-computador-curitiba" },
       { name: "Limpeza de Computador" },
@@ -82,7 +82,7 @@ const serviceCategories: {
       { name: "Troca de HD para SSD", href: "/upgrade-ssd-curitiba" },
       { name: "Instalação de Programas" },
       { name: "Remoção de Vírus", href: "/remocao-de-virus-curitiba" },
-      { name: "Recuperação de Dados", href: "/servicos/recuperacao-dados" },
+      { name: "Recuperação de Dados" },
       { name: "Montagem de PC Gamer", href: "/servicos/pc-gamer" },
     ],
   },
@@ -90,7 +90,6 @@ const serviceCategories: {
     title: "Notebooks",
     icon: Laptop,
     color: "bg-indigo-500/10 text-indigo-600",
-    hub: "/servicos/notebooks",
     services: [
       { name: "Conserto de Notebook", href: "/conserto-de-notebook-curitiba" },
       { name: "Troca de Tela de Notebook" },
@@ -106,7 +105,6 @@ const serviceCategories: {
     title: "CFTV e Câmeras de Segurança",
     icon: Camera,
     color: "bg-purple-500/10 text-purple-600",
-    hub: "/servicos/cftv",
     services: [
       { name: "Instalação de Câmeras" },
       { name: "Manutenção de CFTV" },
@@ -122,7 +120,6 @@ const serviceCategories: {
     title: "Elétrica",
     icon: Zap,
     color: "bg-yellow-500/10 text-yellow-600",
-    hub: "/servicos/eletrica",
     services: [
       { name: "Instalação de Tomadas" },
       { name: "Troca de Disjuntores" },
@@ -138,7 +135,6 @@ const serviceCategories: {
     title: "Redes e Wi-Fi",
     icon: Wifi,
     color: "bg-cyan-500/10 text-cyan-600",
-    hub: "/servicos/redes",
     services: [
       { name: "Instalação de Roteador" },
       { name: "Configuração de Wi-Fi", href: "/servicos/configuracao-wifi-curitiba" },
@@ -154,7 +150,6 @@ const serviceCategories: {
     title: "Ar-Condicionado",
     icon: Wind,
     color: "bg-teal-500/10 text-teal-600",
-    hub: "/servicos/ar-condicionado",
     services: [
       { name: "Instalação de Ar-Condicionado" },
       { name: "Limpeza de Ar-Condicionado" },
@@ -168,11 +163,10 @@ const serviceCategories: {
     title: "TV e Eletrônicos",
     icon: Tv,
     color: "bg-rose-500/10 text-rose-600",
-    hub: "/servicos/tvs",
     services: [
-      { name: "Conserto de TV", href: "/servicos/conserto-tv" },
+      { name: "Conserto de TV" },
       { name: "Instalação de TV na Parede" },
-      { name: "Conserto de Videogame", href: "/servicos/games" },
+      { name: "Conserto de Videogame" },
       { name: "Reparo de PlayStation" },
       { name: "Reparo de Xbox" },
       { name: "Conserto de Som" },
@@ -182,7 +176,6 @@ const serviceCategories: {
     title: "Servidores e Data Centers",
     icon: Server,
     color: "bg-slate-500/10 text-slate-600",
-    hub: "/servicos/servidores",
     services: [
       { name: "Instalação de Servidor" },
       { name: "Configuração de Servidor" },
@@ -196,7 +189,6 @@ const serviceCategories: {
     title: "Celulares e Tablets",
     icon: Smartphone,
     color: "bg-emerald-500/10 text-emerald-600",
-    hub: "/servicos/celulares",
     services: [
       { name: "Troca de Tela de Celular" },
       { name: "Troca de Bateria de Celular" },
@@ -209,7 +201,6 @@ const serviceCategories: {
     title: "Impressoras",
     icon: Printer,
     color: "bg-orange-500/10 text-orange-600",
-    hub: "/servicos/impressoras",
     services: [
       { name: "Instalação de Impressora" },
       { name: "Manutenção de Impressora" },
@@ -222,7 +213,6 @@ const serviceCategories: {
     title: "Manutenção Predial",
     icon: Building,
     color: "bg-amber-500/10 text-amber-600",
-    hub: "/servicos/manutencao-predial",
     services: [
       { name: "Manutenção Comercial" },
       { name: "Manutenção Industrial" },
@@ -235,7 +225,6 @@ const serviceCategories: {
     title: "Serviços Gerais",
     icon: Wrench,
     color: "bg-stone-500/10 text-stone-600",
-    hub: "/servicos/servicos-gerais",
     services: [
       { name: "Hidráulica Básica" },
       { name: "Montagem de Móveis" },
@@ -321,14 +310,6 @@ const Servicos = () => {
                   <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground">
                     {category.title}
                   </h2>
-                  {category.hub && (
-                    <Link
-                      to={category.hub}
-                      className="ml-auto text-sm font-medium text-primary hover:underline"
-                    >
-                      Ver categoria
-                    </Link>
-                  )}
                 </div>
                 
                 <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -346,12 +327,15 @@ const Servicos = () => {
                         <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary ml-auto opacity-0 group-hover:opacity-100 transition-all" />
                       </Link>
                     ) : (
+                      // Item informativo: sem destino real. Visual deliberadamente
+                      // distinto do card clicável (sem borda de hover, sem seta,
+                      // fundo neutro) para não prometer interação inexistente.
                       <div
                         key={service.name}
-                        className="flex items-center gap-3 p-4 rounded-xl bg-card border border-border/50"
+                        className="flex items-center gap-3 p-4 rounded-xl bg-muted/40 border border-transparent cursor-default"
                       >
-                        <CheckCircle className="w-5 h-5 text-success flex-shrink-0" />
-                        <span className="text-card-foreground font-medium">{service.name}</span>
+                        <CheckCircle className="w-5 h-5 text-muted-foreground flex-shrink-0" />
+                        <span className="text-muted-foreground font-medium">{service.name}</span>
                       </div>
                     ),
                   )}

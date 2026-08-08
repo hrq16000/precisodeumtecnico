@@ -24,7 +24,10 @@ const NotFound = () => {
         noindex
       />
       
-      <section className="section-padding bg-background min-h-[60vh] flex items-center">
+      <section
+        data-testid="not-found"
+        className="section-padding bg-background min-h-[60vh] flex items-center"
+      >
         <div className="container-custom">
           <div className="max-w-2xl mx-auto text-center">
             <div className="mb-8">

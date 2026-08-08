@@ -404,6 +404,7 @@ export function buildWhatsAppTriageMessage(state: TriageStateV2): string {
     symptomSlug: state.symptom,
     pathname: typeof window !== "undefined" ? window.location.pathname : "",
     neighborhoodFallback: state.contact.neighborhood?.trim() || undefined,
+    cityFallback: state.contact.city?.trim() || undefined,
     urgency: state.urgency,
   });
   if (ctx) lines.push(ctx);

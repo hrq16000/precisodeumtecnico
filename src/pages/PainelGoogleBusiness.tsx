@@ -37,12 +37,12 @@ const SERVICES = [
 const GBP_DESCRIPTION_MAX = 750;
 
 const GoogleBusinessPanel = () => {
-  const [name, setName] = useState(COMPANY.brand);
+  const [name, setName] = useState<string>(COMPANY.brand);
   const [city, setCity] = useState("Curitiba");
   const [region, setRegion] = useState("PR");
   const [phoneLabel, setPhoneLabel] = useState("WhatsApp oficial da central");
-  const [site, setSite] = useState(COMPANY.website);
-  const [hours, setHours] = useState(COMPANY.serviceHours);
+  const [site, setSite] = useState<string>(COMPANY.website);
+  const [hours, setHours] = useState<string>(COMPANY.serviceHours);
 
   const description = useMemo(
     () =>

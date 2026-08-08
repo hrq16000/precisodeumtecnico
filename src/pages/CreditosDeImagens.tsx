@@ -38,7 +38,7 @@ const CreditosDeImagens = () => (
       </div>
     </section>
 
-    <main className="container mx-auto px-4 max-w-5xl py-12 md:py-16">
+    <div className="container mx-auto px-4 max-w-5xl py-12 md:py-16">
       <h2 className="text-2xl font-bold text-foreground mb-6">
         {photos.length} imagens catalogadas
       </h2>

@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { CTASection } from "@/components/home/CTASection";
+import { PageTableOfContents } from "@/components/layout/PageTableOfContents";
 import { MapPin, Clock, Route as RouteIcon, CheckCircle2 } from "lucide-react";
 import { getAllCities, formatNeighborhoodSlug } from "@/data/regions";
 import { getEnabledNationalCities } from "@/data/nationalCities";
@@ -89,10 +90,22 @@ const AreasAtendidas = () => {
         </div>
       </section>
 
-      <main>
+      <div>
         <section className="py-12 lg:py-16 bg-background">
+
           <div className="container-custom">
+            <PageTableOfContents
+              className="mb-10"
+              items={[
+                { id: "cobertura-curitiba-rmc", label: "Curitiba e Região Metropolitana" },
+                ...(nationalCities.length > 0
+                  ? [{ id: "cobertura-nacional", label: "Atendimento nacional" }]
+                  : []),
+                { id: "cobertura-faq", label: "Perguntas sobre cobertura" },
+              ]}
+            />
             <div className="grid gap-6 md:grid-cols-3 mb-12">
+
               {[
                 {
                   icon: Clock,
@@ -118,7 +131,7 @@ const AreasAtendidas = () => {
               ))}
             </div>
 
-            <h2 className="text-2xl md:text-3xl font-bold mb-6">
+            <h2 id="cobertura-curitiba-rmc" className="text-2xl md:text-3xl font-bold mb-6 scroll-mt-24">
               Curitiba e Região Metropolitana
             </h2>
             <div className="space-y-8">
@@ -173,7 +186,7 @@ const AreasAtendidas = () => {
 
             {nationalCities.length > 0 && (
               <>
-                <h2 className="text-2xl md:text-3xl font-bold mt-14 mb-4">
+                <h2 id="cobertura-nacional" className="text-2xl md:text-3xl font-bold mt-14 mb-4 scroll-mt-24">
                   Atendimento nacional
                 </h2>
                 <p className="text-muted-foreground mb-6 max-w-3xl">
@@ -203,7 +216,7 @@ const AreasAtendidas = () => {
               </>
             )}
 
-            <h2 className="text-2xl md:text-3xl font-bold mt-14 mb-6">
+            <h2 id="cobertura-faq" className="text-2xl md:text-3xl font-bold mt-14 mb-6 scroll-mt-24">
               Perguntas sobre cobertura
             </h2>
             <div className="space-y-4 max-w-3xl">
@@ -218,7 +231,8 @@ const AreasAtendidas = () => {
         </section>
 
         <CTASection />
-      </main>
+      </div>
+
     </Layout>
   );
 };

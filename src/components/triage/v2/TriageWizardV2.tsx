@@ -27,6 +27,7 @@ import {
   GEO_PREFILL_CONFIDENCE, GEO_CONFIDENCE_LABEL,
 } from "@/lib/geoPrefill";
 import { persistTriageEvent } from "@/lib/triageEventBuffer";
+import { readTriageDraft, saveTriageDraft, clearTriageDraft, mergeTriageDraft } from "@/lib/triage/draft";
 
 import { trackWhatsAppClick } from "@/lib/analytics";
 import { logWaEvent } from "@/lib/waAudit";

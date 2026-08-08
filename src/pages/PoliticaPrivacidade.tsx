@@ -78,6 +78,18 @@ const SECTIONS = [
       "Registro de auditoria das moderações de avaliação (quem aprovou/rejeitou e quando).",
     ],
   },
+  {
+    id: "publicidade-terceiros",
+    title: "Publicidade e cookies de terceiros",
+    items: [
+      "Algumas páginas podem exibir anúncios de redes de terceiros. Esses fornecedores usam cookies e identificadores próprios para veicular e medir anúncios.",
+      "O Google, como fornecedor terceirizado, pode usar cookies para veicular anúncios neste site. O cookie DoubleClick permite exibir anúncios com base na sua visita a este e a outros sites da internet.",
+      "Você pode desativar a publicidade personalizada do Google nas Configurações de anúncios do Google e a de outras redes em www.aboutads.info/choices.",
+      "No banner de consentimento você decide sobre a telemetria first-party e os cookies de publicidade. Se você negar, nenhum evento de medição é gravado e a publicidade exibida fica não personalizada.",
+      "Não enviamos nome, telefone, e-mail, endereço, anexos da triagem nem número de ordem de serviço para redes de anúncios.",
+      "As regras completas de identificação e posicionamento dos anúncios estão na Política de Anúncios e Patrocínio.",
+    ],
+  },
 ];
 
 const FAQ = [

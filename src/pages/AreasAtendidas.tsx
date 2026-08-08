@@ -89,8 +89,9 @@ const AreasAtendidas = () => {
         </div>
       </section>
 
-      <main>
+      <div>
         <section className="py-12 lg:py-16 bg-background">
+
           <div className="container-custom">
             <div className="grid gap-6 md:grid-cols-3 mb-12">
               {[

@@ -68,6 +68,11 @@ export function readGeoPrefill(pathname?: string): GeoPrefill {
     };
   }
 
+  const persisted = readPersistedTriageGeo();
+  if (persisted) {
+    return { city: persisted.city, neighborhood: persisted.neighborhood, source: "manual" };
+  }
+
   try {
     const raw = localStorage.getItem("user_location_full_v1");
     if (raw) {
@@ -98,4 +103,20 @@ export const GEO_PREFILL_LABEL: Record<GeoPrefill["source"], string> = {
   manual: "Confirmado por você",
   ip: "Detectado automaticamente pelo seu acesso",
   none: "",
+};
+
+/** Indicador de confiança exibido ao lado dos campos de cidade/bairro. */
+export const GEO_PREFILL_CONFIDENCE: Record<GeoPrefill["source"], "alta" | "media" | "baixa" | "nenhuma"> = {
+  manual: "alta",
+  gps: "alta",
+  route: "media",
+  ip: "baixa",
+  none: "nenhuma",
+};
+
+export const GEO_CONFIDENCE_LABEL: Record<"alta" | "media" | "baixa" | "nenhuma", string> = {
+  alta: "Confiança alta",
+  media: "Confiança média",
+  baixa: "Confiança baixa — confirme por favor",
+  nenhuma: "",
 };

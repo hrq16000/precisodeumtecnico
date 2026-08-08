@@ -82,7 +82,7 @@ const serviceCategories: {
       { name: "Troca de HD para SSD", href: "/upgrade-ssd-curitiba" },
       { name: "Instalação de Programas" },
       { name: "Remoção de Vírus", href: "/remocao-de-virus-curitiba" },
-      { name: "Recuperação de Dados", href: "/servicos/recuperacao-dados" },
+      { name: "Recuperação de Dados" },
       { name: "Montagem de PC Gamer", href: "/servicos/pc-gamer" },
     ],
   },

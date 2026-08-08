@@ -56,6 +56,8 @@ const Precos = lazy(() => import("./pages/Precos"));
 const ComoFunciona = lazy(() => import("./pages/ComoFunciona"));
 const Busca = lazy(() => import("./pages/Busca"));
 const MensagensProntas = lazy(() => import("./pages/MensagensProntas"));
+const ManifestoDeProvas = lazy(() => import("./pages/ManifestoDeProvas"));
+const PainelGoogleBusiness = lazy(() => import("./pages/PainelGoogleBusiness"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const BlogCategory = lazy(() => import("./pages/BlogCategory"));

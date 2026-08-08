@@ -188,6 +188,16 @@ export function Footer() {
               <Link to="/anuncie" onClick={() => trackCtaClick({ surface: "footer", cta_id: "media_kit_footer", label: "Anuncie / Mídia Kit", destination: "/anuncie" })} className="text-background/60 hover:text-background text-sm transition-colors">
                 Anuncie / Mídia Kit
               </Link>
+              <a
+                href="/midia-kit.pdf"
+                download
+                data-testid="media-kit-download-footer"
+                onClick={() => trackCtaClick({ surface: "footer", cta_id: "media_kit_pdf_footer", label: "Mídia kit em PDF", destination: "/midia-kit.pdf" })}
+                className="text-background/60 hover:text-background text-sm transition-colors"
+              >
+                Mídia kit em PDF
+              </a>
+
               <Link to="/politica-de-anuncios" className="text-background/60 hover:text-background text-sm transition-colors">
                 Política de Anúncios
               </Link>

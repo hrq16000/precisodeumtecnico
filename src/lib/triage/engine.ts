@@ -362,11 +362,15 @@ export function buildWhatsAppTriageMessage(state: TriageStateV2): string {
   const dt = `${now.toLocaleDateString("pt-BR")} ${now.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}`;
 
   const template = getMessageTemplate(state.equipment);
-  const lines: string[] = [template.intro, ""];
+  const lines: string[] = [];
+  // Sinalização de prioridade — primeira linha, para o time triar na fila.
+  if (s.priority) lines.push("[PRIORIDADE · URGENTE — atendimento em até 3 dias úteis]");
+  lines.push(template.intro, "");
   const push = (label: string, value?: string) => { if (value && value.trim()) lines.push(`${label}: ${value}`); };
 
-  // Qualificação curta (nome, bairro, urgência, sintoma) — primeiro bloco.
+  // Qualificação curta (nome, cidade, bairro, urgência, sintoma) — primeiro bloco.
   push("Nome", state.contact.name?.trim());
+  push("Cidade", s.city);
   push("Bairro", state.contact.neighborhood?.trim());
   push("Equipamento", s.equipment);
   push("Marca/modelo", s.brandModel);
@@ -380,6 +384,11 @@ export function buildWhatsAppTriageMessage(state: TriageStateV2): string {
   push("Modalidade indicada", s.route);
   push("Valor mínimo informado", s.minimum);
   push("Prazo informado", s.sla);
+  if (s.scheduling) {
+    lines.push("");
+    push("Preferência de agendamento", s.scheduling);
+    lines.push("Se este horário não servir, responda REAGENDAR que eu envio outras opções.");
+  }
   lines.push("");
   lines.push("Confirmo que li e aceitei as condições apresentadas no funil.");
   if (s.notes) push("Observação adicional", s.notes);

@@ -3,12 +3,47 @@ import { Layout } from "@/components/layout/Layout";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { CTASection } from "@/components/home/CTASection";
 import { PageTableOfContents } from "@/components/layout/PageTableOfContents";
-import { MapPin, Clock, Route as RouteIcon, CheckCircle2 } from "lucide-react";
+import { MapPin, Clock, Route as RouteIcon, CheckCircle2, MessageCircle, Quote } from "lucide-react";
 import { getAllCities, formatNeighborhoodSlug } from "@/data/regions";
 import { getEnabledNationalCities } from "@/data/nationalCities";
-import { trackCtaClick } from "@/lib/analytics";
+import { trackCtaClick, trackEvent } from "@/lib/analytics";
+import { buildWhatsAppUrlFromText } from "@/lib/whatsapp";
+import { testimonials } from "@/data/testimonials";
 
 const CANONICAL = "https://precisodeumtecnico.com/areas-atendidas";
+
+/** Mensagem pré-preenchida consistente por cidade/bairro (encoding no helper). */
+function buildAreaMessage(city: string, bairro?: string): string {
+  return [
+    "Olá! Preciso de um técnico.",
+    `Cidade: ${city}`,
+    bairro ? `Bairro: ${bairro}` : "",
+    "Vim pela página de áreas atendidas do site.",
+  ]
+    .filter(Boolean)
+    .join(" ");
+}
+
+function openAreaWhatsApp(city: string, bairro?: string) {
+  const text = buildAreaMessage(city, bairro);
+  trackEvent("whatsapp_click", {
+    surface: "regions_section",
+    cta_id: bairro ? "areas_wa_bairro" : "areas_wa_city",
+    city,
+    bairro,
+    wa_message: text,
+  });
+  trackCtaClick({
+    surface: "regions_section",
+    cta_id: bairro ? "areas_wa_bairro" : "areas_wa_city",
+    label: "Falar no WhatsApp",
+    destination: "/areas-atendidas",
+    city,
+    bairro,
+  });
+  window.open(buildWhatsAppUrlFromText(text), "_blank", "noopener,noreferrer");
+}
+
 
 const FAQ = [
   {

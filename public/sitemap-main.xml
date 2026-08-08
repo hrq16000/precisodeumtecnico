@@ -148,6 +148,20 @@
     <xhtml:link rel="canonical" href="https://precisodeumtecnico.com/precos"/>
   </url>
   <url>
+    <loc>https://precisodeumtecnico.com/como-funciona</loc>
+    <lastmod>2026-08-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="canonical" href="https://precisodeumtecnico.com/como-funciona"/>
+  </url>
+  <url>
+    <loc>https://precisodeumtecnico.com/busca</loc>
+    <lastmod>2026-08-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.50</priority>
+    <xhtml:link rel="canonical" href="https://precisodeumtecnico.com/busca"/>
+  </url>
+  <url>
     <loc>https://precisodeumtecnico.com/atendimento-nacional</loc>
     <lastmod>2026-08-08</lastmod>
     <changefreq>weekly</changefreq>

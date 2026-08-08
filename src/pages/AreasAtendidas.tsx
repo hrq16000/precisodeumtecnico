@@ -231,6 +231,24 @@ const AreasAtendidas = () => {
               ))}
             </div>
 
+            <h2 id="cobertura-prova-social" className="text-2xl md:text-3xl font-bold mt-14 mb-6 scroll-mt-24">
+              Quem já foi atendido na região
+            </h2>
+            <div className="grid gap-4 md:grid-cols-3">
+              {testimonials.slice(0, 6).map((t) => (
+                <figure key={`${t.name}-${t.location}`} className="p-5 rounded-xl border border-border bg-card">
+                  <Quote className="w-5 h-5 text-success mb-2" aria-hidden="true" />
+                  <blockquote className="text-sm text-muted-foreground">{t.text}</blockquote>
+                  <figcaption className="mt-3 text-sm font-medium">
+                    {t.name} · <span className="text-muted-foreground">{t.location}</span>
+                    <span className="block text-xs text-muted-foreground">{t.service}</span>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+
+
+
             {nationalCities.length > 0 && (
               <>
                 <h2 id="cobertura-nacional" className="text-2xl md:text-3xl font-bold mt-14 mb-4 scroll-mt-24">

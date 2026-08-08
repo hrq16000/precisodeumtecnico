@@ -83,7 +83,15 @@ const Index = () => {
       <Reveal><RegionsSection /></Reveal>
       <Reveal><TestimonialsSection /></Reveal>
       <Reveal><FAQSection /></Reveal>
+      <Reveal>
+        <RelatedLinksSection
+          surface="cta_section"
+          title="Continue por aqui"
+          items={["precos", "areas", "servicos"]}
+        />
+      </Reveal>
       <Reveal><CTASection /></Reveal>
+
     </Layout>
   );
 };

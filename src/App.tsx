@@ -116,7 +116,12 @@ const App = () => (
                 <Route path="/servicos/troca-de-tela-tv/:cidade" element={<ServicoCidadeRegiao service="troca-de-tela-tv" />} />
                 <Route path="/servicos/configuracao-wifi/:cidade" element={<ServicoCidadeRegiao service="configuracao-wifi" />} />
                 <Route path="/servicos/suporte-tecnico-empresarial" element={<GuiaEmpresarial slug="suporte-tecnico-empresarial" />} />
+                {/* Aliases de busca -> rota canônica de TV (evita 404 e concentra sinal de SEO). */}
+                <Route path="/servicos/conserto-tv" element={<Navigate to="/servicos/tvs" replace />} />
+                <Route path="/servicos/conserto-de-tv" element={<Navigate to="/servicos/tvs" replace />} />
+                <Route path="/servicos/conserto-de-televisao" element={<Navigate to="/servicos/tvs" replace />} />
                 <Route path="/servicos/:slug" element={<ServicoDetalhe />} />
+
                 <Route path="/regioes" element={<Regioes />} />
                 <Route path="/regioes/:city" element={<RegiaoDetalhe />} />
                 <Route path="/regioes/:city/:neighborhood" element={<BairroDetalhe />} />

@@ -231,6 +231,8 @@ export function trackWhatsAppClick(opts: {
     source_component: opts.source_component,
     cta_label: opts.cta_label,
     pathname: typeof window !== "undefined" ? window.location.pathname : undefined,
+    device_category: getDeviceCategory(),
+    traffic_channel: getTrafficChannel(),
     ...getAttributionParams(),
   });
 }

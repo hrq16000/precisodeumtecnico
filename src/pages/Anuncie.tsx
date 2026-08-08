@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Megaphone, LayoutPanelTop, MapPin, ShieldCheck, Mail, ArrowRight } from "lucide-react";
 import { COMPANY } from "@/data/companyInfo";
 import { nationalCities } from "@/data/nationalCities";
-import { services } from "@/data/services";
+import { getAllServices } from "@/data/services";
 
 const CANONICAL = "https://precisodeumtecnico.com/anuncie";
 
@@ -83,7 +83,7 @@ const FAQ = [
 
 export default function Anuncie() {
   const cityCount = nationalCities.length;
-  const serviceCount = services.length;
+  const serviceCount = getAllServices().length;
 
   return (
     <Layout>

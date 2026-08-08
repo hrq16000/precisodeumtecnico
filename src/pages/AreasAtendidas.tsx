@@ -93,7 +93,18 @@ const AreasAtendidas = () => {
         <section className="py-12 lg:py-16 bg-background">
 
           <div className="container-custom">
+            <PageTableOfContents
+              className="mb-10"
+              items={[
+                { id: "cobertura-curitiba-rmc", label: "Curitiba e Região Metropolitana" },
+                ...(nationalCities.length > 0
+                  ? [{ id: "cobertura-nacional", label: "Atendimento nacional" }]
+                  : []),
+                { id: "cobertura-faq", label: "Perguntas sobre cobertura" },
+              ]}
+            />
             <div className="grid gap-6 md:grid-cols-3 mb-12">
+
               {[
                 {
                   icon: Clock,

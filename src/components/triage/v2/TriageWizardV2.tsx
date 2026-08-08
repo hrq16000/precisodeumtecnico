@@ -161,6 +161,13 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
     persistTriageGeo({ city: state.contact.city, neighborhood: state.contact.neighborhood });
   }, [state.contact.city, state.contact.neighborhood]);
 
+  // ---------- rascunho do funil (sobrevive a recarregamento, TTL de 6h)
+  useEffect(() => {
+    if (completedRef.current) return;
+    saveTriageDraft(state);
+  }, [state]);
+
+
   // ---------- foco automático no primeiro campo inválido
   useEffect(() => {
     const id = getFirstIncompleteField(state);

@@ -56,7 +56,8 @@ export function MediaProposalForm() {
       has_territory: territory.trim().length > 0,
     });
     trackCtaClick({
-      surface: "advertising",
+      surface: "advertising" satisfies CtaSurface,
+
       cta_id: channel === "whatsapp" ? "media_proposal_whatsapp" : "media_proposal_email",
       label: channel === "whatsapp" ? "Enviar por WhatsApp" : "Enviar por e-mail",
       destination: "/anuncie#proposta",

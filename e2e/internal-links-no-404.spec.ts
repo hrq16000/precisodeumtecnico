@@ -58,13 +58,25 @@ async function collectLinks(page: Page, path: string): Promise<string[]> {
     .filter(Boolean);
 }
 
+/**
+ * Detecção determinística do 404 do app.
+ *
+ * Fonte primária: o marcador estrutural `[data-testid="not-found"]` renderizado
+ * apenas pelo NotFound, lido em um único `evaluate` sobre o DOM já estável
+ * (sem locator com auto-wait). `meta[name="robots"]` é evidência complementar
+ * — não é invariante do projeto (páginas indexáveis podem não emitir a tag),
+ * então esperar por ela causava timeout em página válida, não falha real.
+ */
 async function isNotFound(page: Page): Promise<boolean> {
-  const title = await page.title();
-  if (/Página Não Encontrada/i.test(title)) return true;
-  const robots =
-    (await page.locator('meta[name="robots"]').first().getAttribute("content")) ?? "";
-  const has404 = await page.getByText("Página Não Encontrada", { exact: false }).count();
-  return robots.toLowerCase().includes("noindex") && has404 > 0;
+  const state = await page.evaluate(() => ({
+    title: document.title,
+    marker: document.querySelectorAll('[data-testid="not-found"]').length > 0,
+    robots:
+      document.querySelector('meta[name="robots"]')?.getAttribute("content")?.toLowerCase() ?? "",
+  }));
+  if (state.marker) return true;
+  if (/Página Não Encontrada/i.test(state.title)) return true;
+  return false;
 }
 
 test.describe("links internos", () => {

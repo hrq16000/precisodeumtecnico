@@ -302,7 +302,7 @@ export default function AssistenciaTecnicaCuritiba() {
     { name: "Conserto de TV em Curitiba", type: "Reparo de Eletrônicos" },
     { name: "Manutenção de Notebook e PC em Curitiba", type: "Manutenção de Informática" },
     { name: "Troca de Tela de Celular em Curitiba", type: "Reparo de Smartphone" },
-    { name: "Reparo de Equipamentos de Som em Curitiba", type: "Reparo de Áudio" },
+    
   ];
   const serviceSchemas = serviceCategories.map((s) => ({
     "@context": "https://schema.org",

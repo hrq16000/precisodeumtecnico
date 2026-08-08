@@ -114,6 +114,11 @@ const FAQ = [
       "Usamos medição de páginas em base agregada (quais páginas geram contato) e armazenamento local para lembrar cidade e bairro escolhidos. Não usamos esses dados para identificar você individualmente.",
   },
   {
+    question: "Anunciantes de terceiros recebem meus dados?",
+    answer:
+      "Não. Nome, telefone, e-mail, endereço, anexos e número da ordem de serviço nunca são enviados a redes de anúncios. Fornecedores como o Google podem usar cookies próprios (incluindo o DoubleClick) para exibir anúncios com base na sua visita a este e a outros sites; você pode desativar a personalização nas Configurações de anúncios do Google ou em www.aboutads.info/choices.",
+  },
+  {
     question: "Por quanto tempo a ordem de serviço fica guardada?",
     answer:
       "Cinco anos, prazo compatível com a garantia do serviço e com a defesa em eventual reclamação de consumo.",

@@ -300,6 +300,9 @@ export interface TriageSummary {
   minimum?: string;
   sla?: string;
   notes?: string;
+  city?: string;
+  scheduling?: string;
+  priority?: boolean;
 }
 
 function labelForOption(q: Question | undefined, value: string): string {

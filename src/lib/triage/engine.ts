@@ -346,6 +346,9 @@ export function buildTriageSummary(state: TriageStateV2): TriageSummary {
   }
 
   summary.notes = state.finalNotes || state.contextualAnswers.notes || undefined;
+  summary.city = state.contact.city?.trim() || undefined;
+  summary.scheduling = formatSchedulingPreference(state);
+  summary.priority = isPriorityUrgency(state);
   return summary;
 }
 

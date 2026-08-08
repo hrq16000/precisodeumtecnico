@@ -38,6 +38,7 @@ const TermosDeUso = lazy(() => import("./pages/TermosDeUso"));
 const PoliticaDeAnuncios = lazy(() => import("./pages/PoliticaDeAnuncios"));
 const PoliticaDeCookies = lazy(() => import("./pages/PoliticaDeCookies"));
 const Anuncie = lazy(() => import("./pages/Anuncie"));
+const AreasAtendidas = lazy(() => import("./pages/AreasAtendidas"));
 const StatusAnuncios = lazy(() => import("./pages/StatusAnuncios"));
 const PoliticaPecasCliente = lazy(() => import("./pages/PoliticaPecasCliente"));
 const CreditosDeImagens = lazy(() => import("./pages/CreditosDeImagens"));

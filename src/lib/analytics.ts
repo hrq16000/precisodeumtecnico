@@ -107,6 +107,8 @@ export function trackCtaClick(opts: {
     service: opts.service,
     city: opts.city,
     bairro: opts.bairro,
+    device_category: getDeviceCategory(),
+    traffic_channel: getTrafficChannel(),
   });
   // Fila local isolada (sem PII, sem label/text livre)
   try {
@@ -144,6 +146,43 @@ export function trackWebVital(metric: {
     metric_rating: metric.rating,
     navigation_type: metric.navigationType,
   });
+}
+
+/** Classificação simples do dispositivo para segmentação no GA4. */
+export function getDeviceCategory(): "mobile" | "tablet" | "desktop" {
+  try {
+    if (typeof window === "undefined") return "desktop";
+    const w = window.innerWidth;
+    if (w < 768) return "mobile";
+    if (w < 1024) return "tablet";
+    return "desktop";
+  } catch {
+    return "desktop";
+  }
+}
+
+/**
+ * Origem do tráfego derivada de UTM/gclid e do referrer — usada para separar
+ * Google Ads de SEO local nos eventos de conversão. Sem PII.
+ */
+export function getTrafficChannel(): "google_ads" | "paid" | "organic_search" | "social" | "referral" | "direct" {
+  try {
+    if (typeof window === "undefined") return "direct";
+    const sp = new URLSearchParams(window.location.search);
+    const attr = getAttributionParams();
+    const medium = (sp.get("utm_medium") || attr.utm_medium || "").toLowerCase();
+    if (sp.get("gclid") || attr.gclid || medium === "cpc" || medium === "ppc") return "google_ads";
+    if (medium && /paid|display|cpm/.test(medium)) return "paid";
+    const ref = document.referrer || "";
+    if (!ref) return "direct";
+    const host = new URL(ref).hostname.replace(/^www\./, "");
+    if (host === window.location.hostname) return "direct";
+    if (/google\.|bing\.|duckduckgo\.|yahoo\./.test(host)) return "organic_search";
+    if (/facebook\.|instagram\.|linkedin\.|t\.co|tiktok\./.test(host)) return "social";
+    return "referral";
+  } catch {
+    return "direct";
+  }
 }
 
 export function getAttributionParams(): Record<string, string> {
@@ -194,6 +233,8 @@ export function trackWhatsAppClick(opts: {
     source_component: opts.source_component,
     cta_label: opts.cta_label,
     pathname: typeof window !== "undefined" ? window.location.pathname : undefined,
+    device_category: getDeviceCategory(),
+    traffic_channel: getTrafficChannel(),
     ...getAttributionParams(),
   });
 }

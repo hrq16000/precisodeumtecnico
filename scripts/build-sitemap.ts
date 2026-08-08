@@ -95,6 +95,7 @@ const mainUrls: Url[] = [
   { loc: `${BASE}/politica-de-anuncios`, changefreq: "yearly", priority: 0.4, lastmod: fileDate("src/pages/PoliticaDeAnuncios.tsx") },
   { loc: `${BASE}/politica-de-cookies`, changefreq: "yearly", priority: 0.4, lastmod: fileDate("src/pages/PoliticaDeCookies.tsx") },
   { loc: `${BASE}/anuncie`, changefreq: "monthly", priority: 0.5, lastmod: fileDate("src/pages/Anuncie.tsx") },
+  { loc: `${BASE}/areas-atendidas`, changefreq: "weekly", priority: 0.8, lastmod: fileDate("src/pages/AreasAtendidas.tsx") },
   { loc: `${BASE}/como-avaliar`, changefreq: "monthly", priority: 0.5, lastmod: fileDate("src/pages/ComoAvaliar.tsx") },
   { loc: `${BASE}/avaliacoes`, changefreq: "weekly", priority: 0.75, lastmod: fileDate("src/pages/Avaliacoes.tsx") },
   { loc: `${BASE}/status-os`, changefreq: "weekly", priority: 0.6, lastmod: fileDate("src/pages/StatusOrdemServico.tsx") },

@@ -114,6 +114,7 @@ const mainUrls: Url[] = [
   { loc: `${BASE}/blog`, changefreq: "weekly", priority: 0.9, lastmod: blogMtime },
   { loc: `${BASE}/precos`, changefreq: "weekly", priority: 0.85, lastmod: precosMtime },
   { loc: `${BASE}/como-funciona`, changefreq: "monthly", priority: 0.8, lastmod: fileDate("src/pages/ComoFunciona.tsx") },
+  { loc: `${BASE}/guia-tecnico-informatica`, changefreq: "monthly", priority: 0.85, lastmod: fileDate("src/pages/GuiaTecnicoInformatica.tsx") },
   { loc: `${BASE}/busca`, changefreq: "weekly", priority: 0.5, lastmod: fileDate("src/pages/Busca.tsx") },
   { loc: `${BASE}/assistencia-tecnica-curitiba`, changefreq: "weekly", priority: 0.95, lastmod: fileDate("src/pages/AssistenciaTecnicaCuritiba.tsx") },
   { loc: `${BASE}/assistencia-tecnica`, changefreq: "weekly", priority: 0.95, lastmod: fileDate("src/pages/AssistenciaTecnica.tsx") },

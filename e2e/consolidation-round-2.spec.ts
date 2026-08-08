@@ -129,7 +129,10 @@ test.describe("Quiz — anti-duplicação", () => {
     await cta.waitFor({ state: "visible", timeout: 10_000 });
     await cta.click({ clickCount: 2, delay: 50 });
     await page.waitForTimeout(500);
-    const dialogs = await page.locator('[role="dialog"]').count();
+    // exclui o banner de consentimento de cookies (também role=dialog)
+    const dialogs = await page
+      .locator('[role="dialog"]:not([aria-label="Consentimento de cookies"])')
+      .count();
     expect(dialogs).toBe(1);
   });
 

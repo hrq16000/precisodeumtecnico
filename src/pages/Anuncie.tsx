@@ -2,12 +2,25 @@ import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { Button } from "@/components/ui/button";
-import { Megaphone, LayoutPanelTop, MapPin, ShieldCheck, Mail, ArrowRight } from "lucide-react";
+import { Megaphone, LayoutPanelTop, MapPin, ShieldCheck, Mail, ArrowRight, FileDown } from "lucide-react";
 import { COMPANY } from "@/data/companyInfo";
 import { nationalCities } from "@/data/nationalCities";
 import { getAllServices } from "@/data/services";
+import { MediaProposalForm } from "@/components/anuncie/MediaProposalForm";
+import { trackCtaClick } from "@/lib/analytics";
+import { MEDIA_KIT_PDF } from "@/data/mediaKit";
 
 const CANONICAL = "https://precisodeumtecnico.com/anuncie";
+
+const TERRITORIES = [
+  { area: "Curitiba (por bairro)", formats: "Leaderboard · bloco no conteúdo · patrocínio de bairro", status: "Sob consulta" },
+  { area: "São José dos Pinhais", formats: "Leaderboard · patrocínio de cidade", status: "Sob consulta" },
+  { area: "Pinhais", formats: "Leaderboard · patrocínio de cidade", status: "Sob consulta" },
+  { area: "Colombo", formats: "Leaderboard · patrocínio de cidade", status: "Sob consulta" },
+  { area: "Araucária e demais cidades da RMC", formats: "Leaderboard · bloco no conteúdo", status: "Sob consulta" },
+  { area: "Cobertura nacional (páginas de cidade)", formats: "Bloco no conteúdo · conteúdo patrocinado", status: "Sob consulta" },
+];
+
 
 /**
  * Mídia kit e página comercial de patrocínio.
@@ -79,7 +92,23 @@ const FAQ = [
     answer:
       "Por período (mensal ou trimestral) ou por conjunto de páginas. O escopo, as posições e as regras de veiculação são acordados por escrito antes da publicação.",
   },
+  {
+    question: "Quais formatos de arquivo são aceitos e qual o prazo de subida?",
+    answer:
+      "Imagens estáticas em JPG, PNG ou WebP (peso máximo de 150 KB) e HTML5 responsivo sem áudio automático. Depois do material aprovado, a veiculação começa em até 2 dias úteis.",
+  },
+  {
+    question: "Como funciona a aprovação do anúncio?",
+    answer:
+      "Revisamos criativo, página de destino e conformidade com a Política de Anúncios antes de publicar. Peças com promessa enganosa, claim sem comprovação ou destino quebrado são recusadas, com retorno por escrito para ajuste.",
+  },
+  {
+    question: "Como confirmo datas e posicionamentos?",
+    answer:
+      "Envie o pedido pelo formulário desta página informando cidade/bairro e formato. Respondemos com as posições livres para o território, a data de início possível e a proposta; o agendamento só é considerado fechado após confirmação por escrito.",
+  },
 ];
+
 
 export default function Anuncie() {
   const cityCount = nationalCities.length;
@@ -113,15 +142,60 @@ export default function Anuncie() {
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
             <Button asChild className="min-h-11">
-              <a href={`mailto:${COMPANY.email}?subject=Interesse%20em%20anunciar%20no%20portal`}>
+              <a
+                href="#proposta"
+                onClick={() =>
+                  trackCtaClick({
+                    surface: "advertising",
+                    cta_id: "media_proposal_anchor",
+                    label: "Solicitar proposta",
+                    destination: "/anuncie#proposta",
+                  })
+                }
+              >
+                <Megaphone className="mr-2 h-4 w-4" aria-hidden="true" />
+                Solicitar proposta
+              </a>
+            </Button>
+            <Button asChild variant="outline" className="min-h-11">
+              <a
+                href={MEDIA_KIT_PDF}
+                download
+                data-testid="media-kit-download"
+                onClick={() =>
+                  trackCtaClick({
+                    surface: "advertising",
+                    cta_id: "media_kit_pdf_page",
+                    label: "Baixar mídia kit (PDF)",
+                    destination: MEDIA_KIT_PDF,
+                  })
+                }
+              >
+                <FileDown className="mr-2 h-4 w-4" aria-hidden="true" />
+                Baixar mídia kit (PDF)
+              </a>
+            </Button>
+            <Button asChild variant="outline" className="min-h-11">
+              <a
+                href={`mailto:${COMPANY.email}?subject=Interesse%20em%20anunciar%20no%20portal`}
+                onClick={() =>
+                  trackCtaClick({
+                    surface: "advertising",
+                    cta_id: "media_email_hero",
+                    label: "Falar com o comercial",
+                    destination: "mailto",
+                  })
+                }
+              >
                 <Mail className="mr-2 h-4 w-4" aria-hidden="true" />
                 Falar com o comercial
               </a>
             </Button>
-            <Button asChild variant="outline" className="min-h-11">
+            <Button asChild variant="ghost" className="min-h-11">
               <Link to="/politica-de-anuncios">Ver Política de Anúncios</Link>
             </Button>
           </div>
+
         </div>
       </section>
 
@@ -166,6 +240,48 @@ export default function Anuncie() {
             ))}
           </ul>
         </section>
+
+        <section id="disponibilidade" className="mb-10">
+          <h2 className="text-xl font-semibold md:text-2xl">Disponibilidade por cidade e bairro</h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Cada território tem um número limitado de posições para não poluir a página. O status
+            abaixo é sempre confirmado no momento da proposta — não reservamos espaço sem acordo por
+            escrito.
+          </p>
+          <div className="mt-4 overflow-x-auto">
+            <table className="w-full min-w-[520px] border-collapse text-sm">
+              <caption className="sr-only">Disponibilidade de posições publicitárias por território</caption>
+              <thead>
+                <tr className="border-b border-border text-left">
+                  <th scope="col" className="py-2 pr-3 font-semibold">Território</th>
+                  <th scope="col" className="py-2 pr-3 font-semibold">Formatos</th>
+                  <th scope="col" className="py-2 font-semibold">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {TERRITORIES.map((t) => (
+                  <tr key={t.area} className="border-b border-border/60">
+                    <th scope="row" className="py-2 pr-3 text-left font-medium">{t.area}</th>
+                    <td className="py-2 pr-3 text-muted-foreground">{t.formats}</td>
+                    <td className="py-2 text-muted-foreground">{t.status}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="mt-3 rounded-lg border border-border bg-muted/30 p-3 text-sm text-muted-foreground">
+            <strong className="font-medium text-foreground">Como confirmar datas e posicionamentos:</strong>{" "}
+            envie o formulário abaixo com cidade/bairro, formato e período. Respondemos com as
+            posições livres e a data de início possível; a reserva vale a partir do aceite por
+            escrito da proposta.
+          </p>
+        </section>
+
+        <section className="mb-10">
+          <MediaProposalForm />
+        </section>
+
+
 
         <section id="faq" className="mb-10">
           <h2 className="text-xl font-semibold md:text-2xl">Perguntas frequentes de anunciantes</h2>

@@ -86,6 +86,7 @@ export type CtaSurface =
   | "blog"
   | "quiz"
   | "quick_form"
+  | "advertising"
   | "contact_form";
 
 

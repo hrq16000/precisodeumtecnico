@@ -95,10 +95,14 @@ export function LocalReviewsBand({
   if (relevant.length === 0) return null;
 
   const localeLabel = [targetNeighborhood, targetCity].filter(Boolean).join(" · ");
-  const waUrl = buildWhatsAppUrl(
-    `Olá! Vi as avaliações de ${localeLabel || "clientes da região"} e quero atendimento de ${serviceName}.`,
+  const waUrl = buildWhatsAppUrl({
     source,
-  );
+    source_component: "local-reviews-band",
+    service: serviceName,
+    city: targetCity || undefined,
+    bairro: targetNeighborhood || undefined,
+    cta_label: "depoimentos-locais",
+  });
 
   return (
     <section className={className} aria-labelledby="depoimentos-locais-heading">

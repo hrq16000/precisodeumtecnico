@@ -56,10 +56,12 @@ const servicosFaqs = [
 ];
 
 /**
- * Rodada 4I-P.1 — hub sem 404.
+ * Rodada 4I-P.1 / 4I-P.1R — hub sem 404.
  * `href` só existe quando há destino real e de mesma intenção no HEAD
  * (landing viva ou slug curado de `servicesData`). Sem equivalente, o card
  * permanece como item informativo, sem link — nenhuma rota nova é criada.
+ * Não há link "Ver categoria": os hubs `/servicos/:categoria` não existem
+ * (slug fora de CURATED_SERVICE_SLUGS responde NotFound).
  */
 type HubService = { name: string; href?: string };
 
@@ -67,7 +69,6 @@ const serviceCategories: {
   title: string;
   icon: typeof Monitor;
   color: string;
-  hub?: string;
   services: HubService[];
 }[] = [
   {
@@ -309,14 +310,6 @@ const Servicos = () => {
                   <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground">
                     {category.title}
                   </h2>
-                  {category.hub && (
-                    <Link
-                      to={category.hub}
-                      className="ml-auto text-sm font-medium text-primary hover:underline"
-                    >
-                      Ver categoria
-                    </Link>
-                  )}
                 </div>
                 
                 <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">

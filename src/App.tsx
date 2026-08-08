@@ -139,6 +139,8 @@ const App = () => (
 
                 <Route path="/termos-uso" element={<TermosDeUso />} />
                 <Route path="/politica-de-anuncios" element={<PoliticaDeAnuncios />} />
+                <Route path="/politica-de-cookies" element={<PoliticaDeCookies />} />
+                <Route path="/status-anuncios" element={<StatusAnuncios />} />
                 <Route path="/servico-em/:city/:service" element={<ServicoCidade />} />
                 <Route path="/precos" element={<Precos />} />
                 <Route path="/blog" element={<Blog />} />

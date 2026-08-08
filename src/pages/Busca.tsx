@@ -63,6 +63,7 @@ export default function Busca() {
   const searchSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": "https://precisodeumtecnico.com/#website",
     name: "Preciso de um Técnico",
     url: "https://precisodeumtecnico.com/",
     potentialAction: {

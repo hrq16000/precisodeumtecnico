@@ -170,6 +170,14 @@ export function Footer() {
               <Link to="/precos" className="text-background/60 hover:text-background text-sm transition-colors">
                 Preços
               </Link>
+              <Link
+                to="/como-funciona"
+                onClick={() => trackCtaClick({ surface: "footer", cta_id: "footer_como_funciona", label: "Como funciona", destination: "/como-funciona" })}
+                className="text-background/60 hover:text-background text-sm transition-colors"
+              >
+                Como funciona
+              </Link>
+
               <Link to="/blog" className="text-background/60 hover:text-background text-sm transition-colors">
                 Blog
               </Link>

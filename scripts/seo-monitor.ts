@@ -41,6 +41,8 @@ interface Issue {
   detail: string;
 }
 
+const IMAGE_SHARDS = ["sitemap-images.xml"];
+
 const issues: Issue[] = [];
 const add = (i: Issue) => issues.push(i);
 
@@ -69,7 +71,11 @@ async function collectSitemapUrls(): Promise<string[]> {
     const isIndex = /<sitemapindex/i.test(xml);
     const locs = [...xml.matchAll(/<loc>\s*([^<\s]+)\s*<\/loc>/g)].map((m) => m[1]);
     if (isIndex) queue.push(...locs);
-    else seen.push(...locs);
+    // O shard de imagens (sitemap-images.xml) anota, por definição, as MESMAS
+    // páginas já listadas nos shards de conteúdo — repetir o <loc> ali é o
+    // formato exigido pelo protocolo de image sitemap, não uma duplicidade.
+    // Ele é lido apenas para validação de imagens (scripts/check-image-sitemap.ts).
+    else if (!IMAGE_SHARDS.some((shard) => sm.endsWith(shard))) seen.push(...locs);
   }
   return seen;
 }

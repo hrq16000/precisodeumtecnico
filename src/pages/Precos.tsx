@@ -22,6 +22,7 @@ import { PageTableOfContents } from "@/components/layout/PageTableOfContents";
 import { RelatedLinksSection } from "@/components/seo/RelatedLinksSection";
 import { buildLocalBusinessSchema } from "@/lib/schema/localBusiness";
 import { parsePriceBRL } from "@/lib/priceSpec";
+import { QuickEstimate } from "@/components/precos/QuickEstimate";
 
 
 const whatsappLink = buildWhatsAppUrl({ service: "preços e condições de assistência técnica", sourcePage: "/precos" });
@@ -164,6 +165,7 @@ export default function Precos() {
             <PageTableOfContents
               className="mt-6"
               items={[
+                { id: "estimativa-rapida", label: "Estimativa rápida" },
                 { id: "tabela-de-precos", label: "Tabela de preços" },
                 { id: "coleta-e-entrega", label: "Coleta e entrega" },
                 { id: "precos-por-servico", label: "Preços por serviço" },
@@ -173,6 +175,15 @@ export default function Precos() {
               ]}
             />
           </Reveal>
+        </div>
+      </section>
+
+      <section className="pt-10">
+        <div className="container-custom max-w-5xl">
+          <h2 id="estimativa-rapida" data-toc-anchor className="sr-only">
+            Estimativa rápida de valor e prazo
+          </h2>
+          <Reveal><QuickEstimate /></Reveal>
         </div>
       </section>
 

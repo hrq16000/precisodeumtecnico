@@ -54,6 +54,7 @@ const AvaliarAtendimento = lazy(() => import("./pages/AvaliarAtendimento"));
 const ServicoCidade = lazy(() => import("./pages/ServicoCidade"));
 const Precos = lazy(() => import("./pages/Precos"));
 const ComoFunciona = lazy(() => import("./pages/ComoFunciona"));
+const Busca = lazy(() => import("./pages/Busca"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const BlogCategory = lazy(() => import("./pages/BlogCategory"));
@@ -157,6 +158,7 @@ const App = () => (
                 <Route path="/servico-em/:city/:service" element={<ServicoCidade />} />
                 <Route path="/precos" element={<Precos />} />
                 <Route path="/como-funciona" element={<ComoFunciona />} />
+                <Route path="/busca" element={<Busca />} />
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/blog/categoria/:slug" element={<BlogCategory />} />
                 <Route path="/blog/:slug" element={<BlogPost />} />

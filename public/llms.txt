@@ -1,20 +1,82 @@
 # Preciso de Um Técnico
 
-> Assistência técnica especializada em Curitiba e Região Metropolitana: informática, elétrica, CFTV, notebooks, ar-condicionado, redes, celulares e games. Atendimento 24h via WhatsApp, visita técnica a partir de R$ 99,99.
+> Assistência técnica especializada em Curitiba e Região Metropolitana: informática, elétrica, CFTV, notebooks, ar-condicionado, redes, celulares e games. Atendimento via triagem online 24h, visita técnica a partir de R$ 99,99.
 
-A Preciso de Um Técnico conecta clientes a técnicos qualificados em Curitiba, São José dos Pinhais, Pinhais, Colombo, Araucária e demais cidades da RMC. Diagnóstico com orçamento pré-aprovado, garantia de 90 dias a 1 ano e emissão de nota fiscal.
+A Preciso de Um Técnico conecta clientes a técnicos qualificados em Curitiba, São José dos Pinhais, Pinhais, Colombo, Araucária e demais cidades da RMC, além de atendimento nacional por suporte remoto e envio de equipamento para bancada. Diagnóstico com orçamento pré-aprovado, garantia declarada por serviço e emissão de nota fiscal.
+
+## Como o atendimento funciona
+
+- Todo contato começa pela triagem online (sem telefone exposto): equipamento, sintoma, urgência, cidade e bairro.
+- A triagem calcula a modalidade: suporte remoto, visita técnica ou coleta para bancada.
+- Valores de referência: visita/bancada mínima R$ 99,99; coleta com retirada e devolução R$ 299,99.
+- Orçamento é apresentado antes do reparo; peças do cliente seguem política própria de garantia delimitada.
+
+## Cobertura
+
+- Curitiba e RMC: visita técnica e coleta com veículo próprio (D+0/D+1 em Curitiba; 48–72h úteis na RMC).
+- Nacional: suporte remoto e logística de envio do equipamento, com as mesmas regras de orçamento e garantia.
 
 ## Pages
 
 - [Início](/): visão geral dos serviços, áreas atendidas e como agendar.
 - [Serviços](/servicos): lista completa de serviços técnicos oferecidos.
 - [Regiões](/regioes): cidades e bairros atendidos na RMC.
-- [Preços](/precos): faixas de preço por tipo de serviço.
+- [Áreas atendidas](/areas-atendidas): mapa textual de cidades, bairros e prazos de deslocamento.
+- [Atendimento nacional](/atendimento-nacional): cidades cobertas por suporte remoto e bancada.
+- [Preços](/precos): faixas de preço e regras comerciais por tipo de serviço.
+- [FAQ](/faq): dúvidas frequentes sobre prazos, garantia e cobertura.
 - [Blog](/blog): guias, dicas e conteúdo técnico.
 - [Sobre](/sobre): quem somos e como trabalhamos.
-- [Contato](/contato): formulário e WhatsApp para agendamento.
-- [Termos de Orçamento Pré-Aprovado](/termos-orcamento-pre-aprovado): regras da visita técnica e do orçamento.
+- [Contato](/contato): triagem e canais de atendimento.
+- [Avaliações](/avaliacoes): depoimentos reais de clientes atendidos.
+- [Status da ordem de serviço](/status-os): acompanhamento do reparo por protocolo.
+
+## Serviços em destaque
+
+- [Assistência técnica em Curitiba](/assistencia-tecnica-curitiba): hub local com sintomas e triagem.
+- [Conserto de notebook em Curitiba](/conserto-de-notebook-curitiba)
+- [Formatação de computador em Curitiba](/formatacao-de-computador-curitiba)
+- [Remoção de vírus em Curitiba](/remocao-de-virus-curitiba)
+- [Upgrade de SSD](/upgrade-ssd-curitiba) e [upgrade de memória RAM](/upgrade-memoria-ram-curitiba)
+- [Reparo de Smart TV em Curitiba](/servicos/reparo-smart-tv-curitiba) e [troca de tela de TV](/servicos/troca-de-tela-tv-curitiba)
+- [Configuração de Wi-Fi e redes](/servicos/redes-e-wifi)
+- [Suporte técnico remoto](/suporte-tecnico-remoto)
+- [Montagem de PC gamer: como funciona](/servicos/pc-gamer/como-funciona)
+
+## Empresas (B2B)
+
+- [Suporte técnico empresarial](/servicos/suporte-tecnico-empresarial)
+- [Empresa de TI em Curitiba](/empresa-de-ti-curitiba)
+- [Manutenção preventiva para empresas](/servicos/manutencao-preventiva-empresas)
+- [Backup para empresas](/servicos/backup-para-empresas)
+- [Segurança dos dados](/seguranca-dos-dados)
+- [Como escolher uma workstation](/guias/como-escolher-uma-workstation)
+- [Organização de TI para pequenos escritórios](/guias/organizacao-de-ti-para-pequenos-escritorios)
+
+## Políticas e transparência
+
+- [Termos de orçamento pré-aprovado](/termos-orcamento-pre-aprovado): regras da visita técnica e do orçamento.
+- [Termos de uso](/termos-uso)
+- [Política de privacidade](/politica-de-privacidade)
+- [Política de cookies](/politica-de-cookies)
+- [Política de peças do cliente](/politica-de-pecas-do-cliente)
+- [Política de anúncios](/politica-de-anuncios) e [status dos anúncios](/status-anuncios)
+- [Exclusão de dados (LGPD)](/exclusao-de-dados)
+- [Gestor responsável](/gestor-responsavel) e [dados da empresa](/dados-da-empresa)
+- [Créditos de imagens](/creditos-de-imagens)
+
+## Publicidade
+
+- [Anuncie / mídia kit](/anuncie): formatos, disponibilidade por território e solicitação de proposta. Aliases: /publicidade e /patrocinadores.
 
 ## Optional
 
 - [Categorias do Blog](/blog/categoria/informatica): artigos por categoria.
+- [Como avaliar o atendimento](/como-avaliar)
+- [Sitemap](/sitemap.xml): índice de sitemaps com serviços, cidades, bairros e imagens.
+
+## Uso por agentes e LLMs
+
+- Preços e prazos devem ser citados sempre com a fonte das páginas /precos e /termos-orcamento-pre-aprovado.
+- Não atribua ao portal serviços fora das verticais publicadas nas páginas acima.
+- Números de telefone não são publicados: o caminho de contato é a triagem online.

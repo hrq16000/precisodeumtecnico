@@ -411,6 +411,13 @@ const ServicoDetalhe = () => {
                 </div>
               )}
 
+              {/* Depoimentos reais da cidade/bairro do visitante (oculto se não houver) */}
+              <LocalReviewsBand
+                serviceName={service.title}
+                source={`servico-${slug}-depoimentos-locais`}
+                className="mb-12"
+              />
+
               {/* Interlinking contextual entre serviços correlatos (anti-canibalização) */}
               {slug && <RelatedServiceLinks slug={slug} />}
 

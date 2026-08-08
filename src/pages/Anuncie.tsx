@@ -241,6 +241,48 @@ export default function Anuncie() {
           </ul>
         </section>
 
+        <section id="disponibilidade" className="mb-10">
+          <h2 className="text-xl font-semibold md:text-2xl">Disponibilidade por cidade e bairro</h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Cada território tem um número limitado de posições para não poluir a página. O status
+            abaixo é sempre confirmado no momento da proposta — não reservamos espaço sem acordo por
+            escrito.
+          </p>
+          <div className="mt-4 overflow-x-auto">
+            <table className="w-full min-w-[520px] border-collapse text-sm">
+              <caption className="sr-only">Disponibilidade de posições publicitárias por território</caption>
+              <thead>
+                <tr className="border-b border-border text-left">
+                  <th scope="col" className="py-2 pr-3 font-semibold">Território</th>
+                  <th scope="col" className="py-2 pr-3 font-semibold">Formatos</th>
+                  <th scope="col" className="py-2 font-semibold">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {TERRITORIES.map((t) => (
+                  <tr key={t.area} className="border-b border-border/60">
+                    <th scope="row" className="py-2 pr-3 text-left font-medium">{t.area}</th>
+                    <td className="py-2 pr-3 text-muted-foreground">{t.formats}</td>
+                    <td className="py-2 text-muted-foreground">{t.status}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="mt-3 rounded-lg border border-border bg-muted/30 p-3 text-sm text-muted-foreground">
+            <strong className="font-medium text-foreground">Como confirmar datas e posicionamentos:</strong>{" "}
+            envie o formulário abaixo com cidade/bairro, formato e período. Respondemos com as
+            posições livres e a data de início possível; a reserva vale a partir do aceite por
+            escrito da proposta.
+          </p>
+        </section>
+
+        <section className="mb-10">
+          <MediaProposalForm />
+        </section>
+
+
+
         <section id="faq" className="mb-10">
           <h2 className="text-xl font-semibold md:text-2xl">Perguntas frequentes de anunciantes</h2>
           <dl className="mt-3 space-y-4">

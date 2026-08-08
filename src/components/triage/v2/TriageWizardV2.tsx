@@ -765,28 +765,44 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
               <div>
                 <Label htmlFor="triage-field-name">Nome</Label>
                 <Input id="triage-field-name" value={state.contact.name} maxLength={120}
+                  aria-describedby="triage-hint-name"
                   onChange={(e) => dispatch({ type: "SET_CONTACT", field: "name", value: e.target.value })}
-                  aria-invalid={!!errors.name} />
+                  aria-invalid={!!errors.name} placeholder="Ex.: Ana Paula Ribeiro" />
+                <p id="triage-hint-name" className="text-xs text-muted-foreground mt-1">
+                  Nome e sobrenome, só letras. Ex.: “Ana Paula Ribeiro”.
+                </p>
                 {errors.name && <p role="alert" className="text-xs text-destructive">{errors.name}</p>}
               </div>
               <div>
                 <Label htmlFor="triage-field-phone">WhatsApp (com DDD)</Label>
                 <Input id="triage-field-phone" value={state.contact.phone} inputMode="tel" maxLength={20}
+                  aria-describedby="triage-hint-phone"
                   onChange={(e) => dispatch({ type: "SET_CONTACT", field: "phone", value: e.target.value })}
                   aria-invalid={!!errors.phone} placeholder="(41) 99999-0000" />
+                <p id="triage-hint-phone" className="text-xs text-muted-foreground mt-1">
+                  Formato (DD) 9XXXX-XXXX, 10 ou 11 dígitos. Ex.: “(41) 99999-0000”.
+                </p>
                 {errors.phone && <p role="alert" className="text-xs text-destructive">{errors.phone}</p>}
               </div>
               <div className="sm:col-span-2">
                 <Label htmlFor="triage-field-city">Cidade do atendimento</Label>
                 <Input id="triage-field-city" value={state.contact.city ?? ""} maxLength={120}
+                  aria-describedby="triage-hint-city"
                   onChange={(e) => dispatch({ type: "SET_CONTACT", field: "city", value: e.target.value })}
                   placeholder="Ex.: Curitiba, São José dos Pinhais, Pinhais" />
+                <p id="triage-hint-city" className="text-xs text-muted-foreground mt-1">
+                  Só o nome da cidade, sem estado nem sigla. Ex.: “Curitiba”, “São José dos Pinhais”.
+                </p>
               </div>
               <div className="sm:col-span-2">
                 <Label htmlFor="triage-field-neighborhood">Bairro do atendimento</Label>
                 <Input id="triage-field-neighborhood" value={state.contact.neighborhood} maxLength={120}
+                  aria-describedby="triage-hint-neighborhood"
                   onChange={(e) => dispatch({ type: "SET_CONTACT", field: "neighborhood", value: e.target.value })}
                   aria-invalid={!!errors.neighborhood} placeholder="Ex.: Centro, Boqueirão, Portão" />
+                <p id="triage-hint-neighborhood" className="text-xs text-muted-foreground mt-1">
+                  Nome do bairro, sem rua ou número. Ex.: “Centro”, “Boqueirão”, “Portão”.
+                </p>
                 {errors.neighborhood && <p role="alert" className="text-xs text-destructive">{errors.neighborhood}</p>}
                 {!errors.neighborhood && geoAppliedRef.current && geoPrefill.source !== "none" && (
                   <p data-testid="triage-geo-hint" className="text-xs text-muted-foreground mt-1">

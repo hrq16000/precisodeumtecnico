@@ -163,6 +163,8 @@ const App = () => (
                 <Route path="/como-funciona" element={<ComoFunciona />} />
                 <Route path="/busca" element={<Busca />} />
                 <Route path="/operacao/mensagens-prontas" element={<MensagensProntas />} />
+                <Route path="/operacao/manifesto-de-provas" element={<ManifestoDeProvas />} />
+                <Route path="/operacao/painel-google-business" element={<PainelGoogleBusiness />} />
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/blog/categoria/:slug" element={<BlogCategory />} />
                 <Route path="/blog/:slug" element={<BlogPost />} />

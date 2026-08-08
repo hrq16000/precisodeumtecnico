@@ -748,6 +748,12 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
                 {errors.phone && <p role="alert" className="text-xs text-destructive">{errors.phone}</p>}
               </div>
               <div className="sm:col-span-2">
+                <Label htmlFor="triage-field-city">Cidade do atendimento</Label>
+                <Input id="triage-field-city" value={state.contact.city ?? ""} maxLength={120}
+                  onChange={(e) => dispatch({ type: "SET_CONTACT", field: "city", value: e.target.value })}
+                  placeholder="Ex.: Curitiba, São José dos Pinhais, Pinhais" />
+              </div>
+              <div className="sm:col-span-2">
                 <Label htmlFor="triage-field-neighborhood">Bairro do atendimento</Label>
                 <Input id="triage-field-neighborhood" value={state.contact.neighborhood} maxLength={120}
                   onChange={(e) => dispatch({ type: "SET_CONTACT", field: "neighborhood", value: e.target.value })}
@@ -758,6 +764,15 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
                     {GEO_PREFILL_LABEL[geoPrefill.source]} — edite se precisar.
                   </p>
                 )}
+                {geoPrefill.source !== "none" && (
+                  <p
+                    data-testid="triage-geo-confidence"
+                    data-confidence={GEO_PREFILL_CONFIDENCE[geoPrefill.source]}
+                    className="mt-1 inline-flex items-center rounded-full border border-border bg-muted/40 px-2 py-0.5 text-[11px] text-muted-foreground"
+                  >
+                    {GEO_CONFIDENCE_LABEL[GEO_PREFILL_CONFIDENCE[geoPrefill.source]]}
+                  </p>
+                )}
               </div>
               <div className="sm:col-span-2">
                 <Label htmlFor="triage-field-email">E-mail</Label>
@@ -766,12 +781,62 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
                   aria-invalid={!!errors.email} />
                 {errors.email && <p role="alert" className="text-xs text-destructive">{errors.email}</p>}
               </div>
+
+              {/* Preferência de agendamento (opcional) */}
+              <div>
+                <Label htmlFor="triage-field-preferred-date">Data preferida (opcional)</Label>
+                <Input
+                  id="triage-field-preferred-date"
+                  type="date"
+                  value={state.scheduling?.preferredDate ?? ""}
+                  min={new Date().toISOString().slice(0, 10)}
+                  onChange={(e) => dispatch({ type: "SET_SCHEDULING", field: "preferredDate", value: e.target.value })}
+                />
+              </div>
+              <div>
+                <Label className="text-sm font-medium">Período preferido (opcional)</Label>
+                <div role="radiogroup" aria-label="Período preferido" className="mt-1 grid gap-2">
+                  {SCHEDULING_SLOTS.map((slot) => {
+                    const selected = state.scheduling?.preferredSlot === slot.id;
+                    return (
+                      <button
+                        key={slot.id}
+                        type="button"
+                        role="radio"
+                        aria-checked={selected}
+                        onClick={() =>
+                          dispatch({
+                            type: "SET_SCHEDULING",
+                            field: "preferredSlot",
+                            value: selected ? "" : slot.id,
+                          })
+                        }
+                        className={cn(
+                          "min-h-[44px] rounded-lg border-2 px-3 py-2 text-left text-sm transition",
+                          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                          selected ? "border-primary bg-primary/5 shadow-sm" : "border-border hover:border-primary/40",
+                        )}
+                      >
+                        {slot.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
               <div className="sm:col-span-2">
                 <Label htmlFor="triage-final-notes">Observação adicional (opcional)</Label>
                 <Textarea id="triage-final-notes" value={state.finalNotes ?? ""} maxLength={1000}
                   onChange={(e) => dispatch({ type: "SET_FINAL_NOTES", value: e.target.value })} />
               </div>
             </div>
+
+            {schedulingPreference && (
+              <p data-testid="triage-scheduling-confirm" className="rounded-lg border border-border bg-muted/30 p-3 text-xs text-muted-foreground">
+                Vamos confirmar no WhatsApp a preferência <strong className="text-foreground">{schedulingPreference}</strong>.
+                Se precisar mudar, responda <strong className="text-foreground">REAGENDAR</strong> na conversa que enviamos outras opções.
+              </p>
+            )}
 
             {submitError && <p role="alert" className="text-sm text-destructive">{submitError}</p>}
 

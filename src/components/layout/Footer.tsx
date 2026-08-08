@@ -177,6 +177,15 @@ export function Footer() {
               >
                 Como funciona
               </Link>
+              <Link
+                to="/busca"
+                onClick={() => trackCtaClick({ surface: "footer", cta_id: "footer_busca", label: "Buscar por bairro ou serviço", destination: "/busca" })}
+                className="text-background/60 hover:text-background text-sm transition-colors"
+              >
+                Buscar por bairro ou serviço
+              </Link>
+
+
 
               <Link to="/blog" className="text-background/60 hover:text-background text-sm transition-colors">
                 Blog

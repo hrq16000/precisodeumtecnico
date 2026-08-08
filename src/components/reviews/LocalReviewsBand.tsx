@@ -144,7 +144,16 @@ export function LocalReviewsBand({
               href={waUrl}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => trackWhatsAppClick(source)}
+              onClick={() =>
+                trackWhatsAppClick({
+                  source,
+                  service: serviceName,
+                  city: targetCity || undefined,
+                  bairro: targetNeighborhood || undefined,
+                  source_component: "local-reviews-band",
+                  cta_label: "depoimentos-locais",
+                })
+              }
             >
               <MessageCircle className="mr-2 h-4 w-4" aria-hidden="true" />
               Falar no WhatsApp sobre {serviceName}

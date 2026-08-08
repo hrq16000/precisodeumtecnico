@@ -52,7 +52,9 @@ const prefersReducedMotion = () =>
   window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
 export function TriageWizardV2({ source = "triagem", onClose }: Props) {
-  const [state, rawDispatch] = useReducer(reducerV2, undefined, makeInitialStateV2);
+  const [state, rawDispatch] = useReducer(reducerV2, undefined, () =>
+    mergeTriageDraft(makeInitialStateV2(), readTriageDraft()),
+  );
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [copyFallback, setCopyFallback] = useState<string | null>(null);

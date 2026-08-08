@@ -88,7 +88,7 @@ const CreditosDeImagens = () => (
           Fale com a gente <ArrowRight className="h-3 w-3" aria-hidden="true" />
         </Link>
       </p>
-    </main>
+    </div>
   </Layout>
 );
 

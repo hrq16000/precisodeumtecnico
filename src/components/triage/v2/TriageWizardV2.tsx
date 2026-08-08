@@ -249,6 +249,7 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
         email: state.contact.email.trim(),
         phone: state.contact.phone.trim(),
         neighborhood: state.contact.neighborhood.trim() || undefined,
+        city: state.contact.city?.trim() || undefined,
         category: state.equipment,
         brand: state.deviceDetails.brand || state.deviceDetails.equipment_name,
         model: state.deviceDetails.model,

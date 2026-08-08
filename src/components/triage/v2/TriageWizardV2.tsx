@@ -123,16 +123,22 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
     }
   }, [source]);
 
-  // ---------- prefill geográfico (rota > GPS/manual > IP)
+  // ---------- prefill geográfico (rota > manual persistido > GPS > IP)
   const geoPrefill = useMemo(() => readGeoPrefill(), []);
   const geoAppliedRef = useRef(false);
   useEffect(() => {
     if (geoAppliedRef.current) return;
     const nb = geoPrefill.neighborhood?.trim();
-    if (!nb) return;
-    if (state.contact.neighborhood.trim()) return;
+    const ct = geoPrefill.city?.trim();
+    if (!nb && !ct) return;
+    if (state.contact.neighborhood.trim() && (state.contact.city ?? "").trim()) return;
     geoAppliedRef.current = true;
-    rawDispatch({ type: "SET_CONTACT", field: "neighborhood", value: nb });
+    if (nb && !state.contact.neighborhood.trim()) {
+      rawDispatch({ type: "SET_CONTACT", field: "neighborhood", value: nb });
+    }
+    if (ct && !(state.contact.city ?? "").trim()) {
+      rawDispatch({ type: "SET_CONTACT", field: "city", value: ct });
+    }
     pushLocalAnalyticsEvent({
       event: "triage_geo_prefill",
       source: `${source}:geo-${geoPrefill.source}`,
@@ -140,7 +146,12 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
       neighborhood: nb,
       page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
     });
-  }, [geoPrefill, state.contact.neighborhood, source]);
+  }, [geoPrefill, state.contact.neighborhood, state.contact.city, source]);
+
+  // ---------- persistência de cidade/bairro entre re-renders e reaberturas
+  useEffect(() => {
+    persistTriageGeo({ city: state.contact.city, neighborhood: state.contact.neighborhood });
+  }, [state.contact.city, state.contact.neighborhood]);
 
   // ---------- foco automático no primeiro campo inválido
   useEffect(() => {

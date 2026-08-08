@@ -518,6 +518,8 @@ export function reducerV2(state: TriageStateV2, action: ActionV2): TriageStateV2
       return { ...state, contact: { ...state.contact, [action.field]: action.value } };
     case "SET_FINAL_NOTES":
       return { ...state, finalNotes: action.value };
+    case "SET_SCHEDULING":
+      return { ...state, scheduling: { ...(state.scheduling ?? {}), [action.field]: action.value } };
     case "GOTO":
       return { ...state, currentStep: action.step };
     case "NEXT": {

@@ -2,12 +2,25 @@ import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { Button } from "@/components/ui/button";
-import { Megaphone, LayoutPanelTop, MapPin, ShieldCheck, Mail, ArrowRight } from "lucide-react";
+import { Megaphone, LayoutPanelTop, MapPin, ShieldCheck, Mail, ArrowRight, FileDown } from "lucide-react";
 import { COMPANY } from "@/data/companyInfo";
 import { nationalCities } from "@/data/nationalCities";
 import { getAllServices } from "@/data/services";
+import { MediaProposalForm } from "@/components/anuncie/MediaProposalForm";
+import { trackCtaClick } from "@/lib/analytics";
+import { MEDIA_KIT_PDF } from "@/data/mediaKit";
 
 const CANONICAL = "https://precisodeumtecnico.com/anuncie";
+
+const TERRITORIES = [
+  { area: "Curitiba (por bairro)", formats: "Leaderboard · bloco no conteúdo · patrocínio de bairro", status: "Sob consulta" },
+  { area: "São José dos Pinhais", formats: "Leaderboard · patrocínio de cidade", status: "Sob consulta" },
+  { area: "Pinhais", formats: "Leaderboard · patrocínio de cidade", status: "Sob consulta" },
+  { area: "Colombo", formats: "Leaderboard · patrocínio de cidade", status: "Sob consulta" },
+  { area: "Araucária e demais cidades da RMC", formats: "Leaderboard · bloco no conteúdo", status: "Sob consulta" },
+  { area: "Cobertura nacional (páginas de cidade)", formats: "Bloco no conteúdo · conteúdo patrocinado", status: "Sob consulta" },
+];
+
 
 /**
  * Mídia kit e página comercial de patrocínio.

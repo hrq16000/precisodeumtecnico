@@ -41,7 +41,9 @@ export interface TriageStateV2 {
   termsAccepted: Record<string, boolean>; // { minimum, cancel, sla, remote, visit }
   termsAcceptedAt?: string;
   finalNotes?: string;
-  contact: { name: string; phone: string; email: string; neighborhood: string };
+  contact: { name: string; phone: string; email: string; neighborhood: string; city?: string };
+  /** Preferência opcional de agendamento (não bloqueia o envio). */
+  scheduling?: { preferredDate?: string; preferredSlot?: string };
   validationErrors: Record<string, string>;
 }
 

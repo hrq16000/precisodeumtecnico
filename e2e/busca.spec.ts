@@ -23,6 +23,11 @@ test.describe("/busca — busca interna", () => {
 
   test("expõe SearchAction e breadcrumbs", async ({ page }) => {
     await page.goto("/busca");
+    await page.waitForFunction(() =>
+      Array.from(document.querySelectorAll('script[type="application/ld+json"]')).some((e) =>
+        (e.textContent || "").includes("BreadcrumbList"),
+      ),
+    );
     const types = await page.$$eval('script[type="application/ld+json"]', (els) =>
       els.map((e) => JSON.parse(e.textContent || "{}")["@type"]),
     );

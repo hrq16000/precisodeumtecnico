@@ -27,6 +27,7 @@ import { PageTableOfContents } from "@/components/layout/PageTableOfContents";
 import { RelatedGuidesCard, GUIDE_LINKS } from "@/components/seo/RelatedGuidesCard";
 
 import { RelatedServiceLinks } from "@/components/seo/RelatedServiceLinks";
+import { LocalReviewsBand } from "@/components/reviews/LocalReviewsBand";
 
 const PC_GAMER = SERVICES_CATALOG["pc-gamer"];
 import { PublicPhotoBand } from "@/components/media/PublicPhotoBand";

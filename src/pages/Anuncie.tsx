@@ -92,7 +92,23 @@ const FAQ = [
     answer:
       "Por período (mensal ou trimestral) ou por conjunto de páginas. O escopo, as posições e as regras de veiculação são acordados por escrito antes da publicação.",
   },
+  {
+    question: "Quais formatos de arquivo são aceitos e qual o prazo de subida?",
+    answer:
+      "Imagens estáticas em JPG, PNG ou WebP (peso máximo de 150 KB) e HTML5 responsivo sem áudio automático. Depois do material aprovado, a veiculação começa em até 2 dias úteis.",
+  },
+  {
+    question: "Como funciona a aprovação do anúncio?",
+    answer:
+      "Revisamos criativo, página de destino e conformidade com a Política de Anúncios antes de publicar. Peças com promessa enganosa, claim sem comprovação ou destino quebrado são recusadas, com retorno por escrito para ajuste.",
+  },
+  {
+    question: "Como confirmo datas e posicionamentos?",
+    answer:
+      "Envie o pedido pelo formulário desta página informando cidade/bairro e formato. Respondemos com as posições livres para o território, a data de início possível e a proposta; o agendamento só é considerado fechado após confirmação por escrito.",
+  },
 ];
+
 
 export default function Anuncie() {
   const cityCount = nationalCities.length;

@@ -1,0 +1,32 @@
+import { test, expect } from "@playwright/test";
+
+test.describe("/precos — estimativa rápida em 3 perguntas", () => {
+  test("mostra melhor opção e WhatsApp pré-preenchido", async ({ page }) => {
+    await page.goto("/precos");
+    const card = page.locator("#estimativa-rapida-card");
+    await expect(card).toBeVisible();
+    await expect(card.locator("[data-estimate-result]")).toHaveCount(0);
+
+    await card.locator("[data-estimate-equipment='informatica']").click();
+    await card.locator("[data-estimate-mode='bancada']").click();
+    await card.locator("[data-estimate-urgency='fila']").click();
+
+    const result = card.locator("[data-estimate-result]");
+    await expect(result).toBeVisible();
+    await expect(result.locator("[data-estimate-price]")).toHaveText("R$ 99,99");
+
+    const wa = result.locator("a[data-wa-source='pricing_quick_estimate']");
+    const href = await wa.getAttribute("href");
+    expect(href).toContain("wa.me/");
+    expect(decodeURIComponent(href ?? "")).toContain("Diagnóstico em bancada");
+  });
+
+  test("serviços de instalação são roteados para visita técnica", async ({ page }) => {
+    await page.goto("/precos");
+    const card = page.locator("#estimativa-rapida-card");
+    await card.locator("[data-estimate-equipment='cftv']").click();
+    await card.locator("[data-estimate-mode='bancada']").click();
+    await card.locator("[data-estimate-urgency='prioridade']").click();
+    await expect(card.locator("[data-estimate-result]")).toContainText("Visita técnica");
+  });
+});

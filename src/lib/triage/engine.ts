@@ -62,9 +62,43 @@ export function makeInitialStateV2(): TriageStateV2 {
     deviceDetails: {},
     contextualAnswers: {},
     termsAccepted: {},
-    contact: { name: "", phone: "", email: "", neighborhood: "" },
+    contact: { name: "", phone: "", email: "", neighborhood: "", city: "" },
+    scheduling: {},
     validationErrors: {},
   };
+}
+
+// ---------------------------------------------------------------------------
+// Prioridade de atendimento (urgência)
+// ---------------------------------------------------------------------------
+/** Urgência que aciona sinalização de prioridade para o time. */
+export const PRIORITY_URGENCY: UrgencyId = "72h";
+
+export function isPriorityUrgency(state: TriageStateV2): boolean {
+  return state.urgency === PRIORITY_URGENCY;
+}
+
+/** Faixas de horário oferecidas como preferência (não vinculantes). */
+export const SCHEDULING_SLOTS = [
+  { id: "manha", label: "Manhã (08h–12h)" },
+  { id: "tarde", label: "Tarde (13h–18h)" },
+  { id: "noite", label: "Início da noite (18h–20h)" },
+] as const;
+
+export type SchedulingSlotId = (typeof SCHEDULING_SLOTS)[number]["id"];
+
+/** Texto humano da preferência de agendamento, ou undefined se não informada. */
+export function formatSchedulingPreference(state: TriageStateV2): string | undefined {
+  const date = state.scheduling?.preferredDate?.trim();
+  const slot = state.scheduling?.preferredSlot?.trim();
+  if (!date && !slot) return undefined;
+  const slotLabel = SCHEDULING_SLOTS.find((s) => s.id === slot)?.label ?? slot;
+  let dateLabel: string | undefined;
+  if (date) {
+    const m = date.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    dateLabel = m ? `${m[3]}/${m[2]}/${m[1]}` : date;
+  }
+  return [dateLabel, slotLabel].filter(Boolean).join(" · ");
 }
 
 // ---------------------------------------------------------------------------

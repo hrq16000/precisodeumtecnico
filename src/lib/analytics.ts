@@ -107,6 +107,8 @@ export function trackCtaClick(opts: {
     service: opts.service,
     city: opts.city,
     bairro: opts.bairro,
+    device_category: getDeviceCategory(),
+    traffic_channel: getTrafficChannel(),
   });
   // Fila local isolada (sem PII, sem label/text livre)
   try {

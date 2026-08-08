@@ -17,6 +17,8 @@ import {
   determineServiceRoute, getFirstIncompleteField, getPricingRules,
   makeInitialStateV2, reducerV2, STEP_ORDER, validateCurrentStep,
   type StepId, type TriageStateV2,
+  SCHEDULING_SLOTS,
+  formatSchedulingPreference,
 } from "@/lib/triage/engine";
 import { WHATSAPP_NUMBER } from "@/lib/whatsapp";
 import { pushLocalAnalyticsEvent } from "@/lib/localAnalytics";

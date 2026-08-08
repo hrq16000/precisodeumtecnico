@@ -185,6 +185,12 @@ export function Footer() {
               <Link to="/politica-de-anuncios" className="text-background/60 hover:text-background text-sm transition-colors">
                 Política de Anúncios
               </Link>
+              <Link to="/politica-de-cookies" className="text-background/60 hover:text-background text-sm transition-colors">
+                Política de Cookies
+              </Link>
+              <Link to="/status-anuncios" className="text-background/60 hover:text-background text-sm transition-colors">
+                Status de anúncios e SEO
+              </Link>
               <Link to="/creditos-de-imagens" className="text-background/60 hover:text-background text-sm transition-colors">
                 Créditos de imagens
               </Link>

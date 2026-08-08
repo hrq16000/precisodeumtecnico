@@ -1,0 +1,13 @@
+{
+  "publisher": "pub-3762170279587706",
+  "mode": "local",
+  "checkedAt": "2026-08-08T00:50:40.850Z",
+  "ok": true,
+  "results": [
+    {
+      "check": "public/ads.txt",
+      "ok": true,
+      "detail": "linha DIRECT de pub-3762170279587706 presente"
+    }
+  ]
+}

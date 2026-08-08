@@ -316,6 +316,8 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
 
       // Analytics — qualificação curta (nome, bairro, urgência, sintoma)
       completedRef.current = true;
+      // Funil concluído: descarta o rascunho para não reabrir com dados antigos.
+      clearTriageDraft();
       const pageUrl = typeof window !== "undefined" ? window.location.href : undefined;
       const qualification = {
         lead_name: state.contact.name.trim().split(" ")[0],

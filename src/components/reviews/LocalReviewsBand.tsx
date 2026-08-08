@@ -96,12 +96,10 @@ export function LocalReviewsBand({
 
   const localeLabel = [targetNeighborhood, targetCity].filter(Boolean).join(" · ");
   const waUrl = buildWhatsAppUrl({
-    source,
-    source_component: "local-reviews-band",
     service: serviceName,
     city: targetCity || undefined,
-    bairro: targetNeighborhood || undefined,
-    cta_label: "depoimentos-locais",
+    neighborhood: targetNeighborhood || undefined,
+    sourcePage: typeof window !== "undefined" ? window.location.pathname : undefined,
   });
 
   return (

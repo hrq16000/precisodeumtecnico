@@ -3,9 +3,10 @@ import { Layout } from "@/components/layout/Layout";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { WA_SCRIPTS } from "@/data/waScripts";
 import { Button } from "@/components/ui/button";
-import { Copy, Check, ClipboardList } from "lucide-react";
+import { Copy, Check, ClipboardList, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
 import { trackEvent } from "@/lib/analytics";
+import { buildWhatsAppUrlFromText } from "@/lib/whatsapp";
 
 const CANONICAL = "https://precisodeumtecnico.com/operacao/mensagens-prontas";
 

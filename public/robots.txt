@@ -18,6 +18,7 @@ Disallow: /diagnostics
 Disallow: /diagnostico
 Disallow: /avaliar
 Disallow: /status-anuncios
+Disallow: /operacao
 
 Sitemap: https://precisodeumtecnico.com/sitemap.xml
 Host: https://precisodeumtecnico.com

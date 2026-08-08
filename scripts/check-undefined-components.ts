@@ -55,9 +55,10 @@ function collectLocalNames(source: string): Set<string> {
 /** Componentes usados em JSX: <Foo>, <Foo.Bar>, </Foo>. */
 function collectJsxComponents(source: string): Set<string> {
   const used = new Set<string>();
-  const jsxRe = /<\s*([A-Z][\w$]*)(?:\.[\w$]+)*[\s/>]/g;
+  // (^|[^\w$.)\]>]) evita casar argumentos de tipo (useState<Step>, forwardRef<HTMLDivElement>).
+  const jsxRe = /(^|[^\w$.)\]>])<\s*([A-Z][\w$]*)(?:\.[\w$]+)*[\s/>]/gm;
   let match: RegExpExecArray | null;
-  while ((match = jsxRe.exec(source))) used.add(match[1]);
+  while ((match = jsxRe.exec(source))) used.add(match[2]);
   return used;
 }
 

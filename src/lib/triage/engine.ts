@@ -429,13 +429,16 @@ export function buildTriageContextSuffix(opts: {
   pathname?: string;
   /** Bairro informado na qualificação, usado quando a rota não traz bairro. */
   neighborhoodFallback?: string;
+  /** Cidade informada na qualificação, usada quando a rota não traz cidade. */
+  cityFallback?: string;
   urgency?: string;
 }): string {
   const parts: string[] = [];
   if (opts.equipment) parts.push(`cat=${opts.equipment}`);
   if (opts.symptomSlug) parts.push(`sym=${opts.symptomSlug}`);
   const { city, bairro } = parseCityBairroFromPathname(opts.pathname ?? "");
-  if (city) parts.push(`cidade=${city}`);
+  const cityToken = city ?? (opts.cityFallback ? slugifyToken(opts.cityFallback) : undefined);
+  if (cityToken) parts.push(`cidade=${cityToken}`);
   const nb = bairro ?? (opts.neighborhoodFallback ? slugifyToken(opts.neighborhoodFallback) : undefined);
   if (nb) parts.push(`bairro=${nb}`);
   if (opts.urgency) parts.push(`urg=${opts.urgency}`);

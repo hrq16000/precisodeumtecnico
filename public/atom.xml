@@ -1,0 +1,570 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="pt-BR">
+  <title>Blog — Preciso de Um Técnico</title>
+  <subtitle>Guias de manutenção, diagnóstico e suporte técnico em Curitiba e região.</subtitle>
+  <id>https://precisodeumtecnico.com/atom.xml</id>
+  <link rel="self" type="application/atom+xml" href="https://precisodeumtecnico.com/atom.xml"/>
+  <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog"/>
+  <updated>2026-08-08T12:00:00-03:00</updated>
+  <author><name>Preciso de Um Técnico</name></author>
+  <entry>
+    <title>Computador lento: 7 causas reais e como resolver hoje</title>
+    <id>https://precisodeumtecnico.com/blog/computador-lento-7-causas-e-solucoes</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/computador-lento-7-causas-e-solucoes"/>
+    <published>2026-02-22T12:00:00-03:00</published>
+    <updated>2026-08-08T12:00:00-03:00</updated>
+    <summary type="text">Lentidão raramente é falta de potência. Veja como diagnosticar e acelerar seu computador antes de gastar com upgrade.</summary>
+    <category term="pc lento"/>
+    <category term="ssd"/>
+    <category term="manutenção"/>
+    <category term="windows 11"/>
+    <category term="memória ram"/>
+  </entry>
+  <entry>
+    <title>Notebook não liga: diagnóstico em 8 passos antes de chamar o técnico</title>
+    <id>https://precisodeumtecnico.com/blog/notebook-nao-liga-o-que-fazer</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/notebook-nao-liga-o-que-fazer"/>
+    <published>2026-08-08T12:00:00-03:00</published>
+    <updated>2026-08-08T12:00:00-03:00</updated>
+    <summary type="text">Nem todo notebook que não liga tem defeito grave. Veja como separar problema de fonte, bateria, memória e placa antes de gastar com reparo.</summary>
+    <category term="notebook não liga"/>
+    <category term="conserto de notebook"/>
+    <category term="placa-mãe"/>
+    <category term="bateria"/>
+    <category term="fonte"/>
+  </entry>
+  <entry>
+    <title>Instalação e manutenção de ar-condicionado em Centro, Pinhais: como funciona e preços</title>
+    <id>https://precisodeumtecnico.com/blog/ar-condicionado-em-centro-pinhais</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/ar-condicionado-em-centro-pinhais"/>
+    <published>2026-06-11T12:00:00-03:00</published>
+    <updated>2026-06-11T12:00:00-03:00</updated>
+    <summary type="text">Procurando técnico de ar-condicionado em Centro, Pinhais? Veja como atendemos, o que está incluso e a tabela de preços atualizada.</summary>
+    <category term="técnico de ar-condicionado"/>
+    <category term="centro"/>
+    <category term="pinhais"/>
+  </entry>
+  <entry>
+    <title>Instalação e manutenção de ar-condicionado em Centro, São José dos Pinhais: como funciona e preços</title>
+    <id>https://precisodeumtecnico.com/blog/ar-condicionado-em-centro-sao-jose-dos-pinhais</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/ar-condicionado-em-centro-sao-jose-dos-pinhais"/>
+    <published>2026-06-08T12:00:00-03:00</published>
+    <updated>2026-06-08T12:00:00-03:00</updated>
+    <summary type="text">Procurando técnico de ar-condicionado em Centro, São José dos Pinhais? Veja como atendemos, o que está incluso e a tabela de preços atualizada.</summary>
+    <category term="técnico de ar-condicionado"/>
+    <category term="centro"/>
+    <category term="são josé dos pinhais"/>
+  </entry>
+  <entry>
+    <title>Instalação e manutenção de ar-condicionado em Santa Felicidade, Curitiba: como funciona e preços</title>
+    <id>https://precisodeumtecnico.com/blog/ar-condicionado-em-santa-felicidade-curitiba</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/ar-condicionado-em-santa-felicidade-curitiba"/>
+    <published>2026-06-05T12:00:00-03:00</published>
+    <updated>2026-06-05T12:00:00-03:00</updated>
+    <summary type="text">Procurando técnico de ar-condicionado em Santa Felicidade, Curitiba? Veja como atendemos, o que está incluso e a tabela de preços atualizada.</summary>
+    <category term="técnico de ar-condicionado"/>
+    <category term="santa felicidade"/>
+    <category term="curitiba"/>
+  </entry>
+  <entry>
+    <title>Instalação e manutenção de ar-condicionado em Portão, Curitiba: como funciona e preços</title>
+    <id>https://precisodeumtecnico.com/blog/ar-condicionado-em-portao-curitiba</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/ar-condicionado-em-portao-curitiba"/>
+    <published>2026-06-02T12:00:00-03:00</published>
+    <updated>2026-06-02T12:00:00-03:00</updated>
+    <summary type="text">Procurando técnico de ar-condicionado em Portão, Curitiba? Veja como atendemos, o que está incluso e a tabela de preços atualizada.</summary>
+    <category term="técnico de ar-condicionado"/>
+    <category term="portão"/>
+    <category term="curitiba"/>
+  </entry>
+  <entry>
+    <title>Instalação e manutenção de ar-condicionado em Cabral, Curitiba: como funciona e preços</title>
+    <id>https://precisodeumtecnico.com/blog/ar-condicionado-em-cabral-curitiba</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/ar-condicionado-em-cabral-curitiba"/>
+    <published>2026-05-30T12:00:00-03:00</published>
+    <updated>2026-05-30T12:00:00-03:00</updated>
+    <summary type="text">Procurando técnico de ar-condicionado em Cabral, Curitiba? Veja como atendemos, o que está incluso e a tabela de preços atualizada.</summary>
+    <category term="técnico de ar-condicionado"/>
+    <category term="cabral"/>
+    <category term="curitiba"/>
+  </entry>
+  <entry>
+    <title>Instalação e manutenção de ar-condicionado em Boqueirão, Curitiba: como funciona e preços</title>
+    <id>https://precisodeumtecnico.com/blog/ar-condicionado-em-boqueirao-curitiba</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/ar-condicionado-em-boqueirao-curitiba"/>
+    <published>2026-05-27T12:00:00-03:00</published>
+    <updated>2026-05-27T12:00:00-03:00</updated>
+    <summary type="text">Procurando técnico de ar-condicionado em Boqueirão, Curitiba? Veja como atendemos, o que está incluso e a tabela de preços atualizada.</summary>
+    <category term="técnico de ar-condicionado"/>
+    <category term="boqueirão"/>
+    <category term="curitiba"/>
+  </entry>
+  <entry>
+    <title>Instalação e manutenção de ar-condicionado em Centro, Curitiba: como funciona e preços</title>
+    <id>https://precisodeumtecnico.com/blog/ar-condicionado-em-centro-curitiba</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/ar-condicionado-em-centro-curitiba"/>
+    <published>2026-05-24T12:00:00-03:00</published>
+    <updated>2026-05-24T12:00:00-03:00</updated>
+    <summary type="text">Procurando técnico de ar-condicionado em Centro, Curitiba? Veja como atendemos, o que está incluso e a tabela de preços atualizada.</summary>
+    <category term="técnico de ar-condicionado"/>
+    <category term="centro"/>
+    <category term="curitiba"/>
+  </entry>
+  <entry>
+    <title>Instalação e manutenção de ar-condicionado em Bigorrilho, Curitiba: como funciona e preços</title>
+    <id>https://precisodeumtecnico.com/blog/ar-condicionado-em-bigorrilho-curitiba</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/ar-condicionado-em-bigorrilho-curitiba"/>
+    <published>2026-05-21T12:00:00-03:00</published>
+    <updated>2026-05-21T12:00:00-03:00</updated>
+    <summary type="text">Procurando técnico de ar-condicionado em Bigorrilho, Curitiba? Veja como atendemos, o que está incluso e a tabela de preços atualizada.</summary>
+    <category term="técnico de ar-condicionado"/>
+    <category term="bigorrilho"/>
+    <category term="curitiba"/>
+  </entry>
+  <entry>
+    <title>Instalação e manutenção de ar-condicionado em Água Verde, Curitiba: como funciona e preços</title>
+    <id>https://precisodeumtecnico.com/blog/ar-condicionado-em-agua-verde-curitiba</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/ar-condicionado-em-agua-verde-curitiba"/>
+    <published>2026-05-18T12:00:00-03:00</published>
+    <updated>2026-05-18T12:00:00-03:00</updated>
+    <summary type="text">Procurando técnico de ar-condicionado em Água Verde, Curitiba? Veja como atendemos, o que está incluso e a tabela de preços atualizada.</summary>
+    <category term="técnico de ar-condicionado"/>
+    <category term="água verde"/>
+    <category term="curitiba"/>
+  </entry>
+  <entry>
+    <title>Instalação e manutenção de ar-condicionado em Batel, Curitiba: como funciona e preços</title>
+    <id>https://precisodeumtecnico.com/blog/ar-condicionado-em-batel-curitiba</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/ar-condicionado-em-batel-curitiba"/>
+    <published>2026-05-15T12:00:00-03:00</published>
+    <updated>2026-05-15T12:00:00-03:00</updated>
+    <summary type="text">Procurando técnico de ar-condicionado em Batel, Curitiba? Veja como atendemos, o que está incluso e a tabela de preços atualizada.</summary>
+    <category term="técnico de ar-condicionado"/>
+    <category term="batel"/>
+    <category term="curitiba"/>
+  </entry>
+  <entry>
+    <title>Serviços elétricos residenciais em Centro, Pinhais: como funciona e preços</title>
+    <id>https://precisodeumtecnico.com/blog/eletrica-em-centro-pinhais</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/eletrica-em-centro-pinhais"/>
+    <published>2026-05-12T12:00:00-03:00</published>
+    <updated>2026-05-12T12:00:00-03:00</updated>
+    <summary type="text">Procurando eletricista em Centro, Pinhais? Veja como atendemos, o que está incluso e a tabela de preços atualizada.</summary>
+    <category term="eletricista"/>
+    <category term="centro"/>
+    <category term="pinhais"/>
+  </entry>
+  <entry>
+    <title>Serviços elétricos residenciais em Centro, São José dos Pinhais: como funciona e preços</title>
+    <id>https://precisodeumtecnico.com/blog/eletrica-em-centro-sao-jose-dos-pinhais</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/eletrica-em-centro-sao-jose-dos-pinhais"/>
+    <published>2026-05-09T12:00:00-03:00</published>
+    <updated>2026-05-09T12:00:00-03:00</updated>
+    <summary type="text">Procurando eletricista em Centro, São José dos Pinhais? Veja como atendemos, o que está incluso e a tabela de preços atualizada.</summary>
+    <category term="eletricista"/>
+    <category term="centro"/>
+    <category term="são josé dos pinhais"/>
+  </entry>
+  <entry>
+    <title>Instalar câmeras CFTV em Curitiba: protocolo completo para residências e comércios</title>
+    <id>https://precisodeumtecnico.com/blog/cftv-curitiba-instalar-cameras-protocolo-completo</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/cftv-curitiba-instalar-cameras-protocolo-completo"/>
+    <published>2026-05-07T12:00:00-03:00</published>
+    <updated>2026-05-07T12:00:00-03:00</updated>
+    <summary type="text">Como dimensionar o sistema de CFTV certo para sua casa ou comércio em Curitiba — sem desperdício e com cobertura real.</summary>
+    <category term="cftv curitiba"/>
+    <category term="câmeras de segurança"/>
+    <category term="instalação cftv"/>
+  </entry>
+  <entry>
+    <title>Técnico de informática em Pinhais, Colombo e Araucária (preços e atendimento)</title>
+    <id>https://precisodeumtecnico.com/blog/tecnico-informatica-pinhais-colombo-araucaria</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/tecnico-informatica-pinhais-colombo-araucaria"/>
+    <published>2026-05-06T12:00:00-03:00</published>
+    <updated>2026-05-06T12:00:00-03:00</updated>
+    <summary type="text">Como funciona o atendimento de informática nas cidades vizinhas a Curitiba — preços, tempos e bairros atendidos.</summary>
+    <category term="técnico pinhais"/>
+    <category term="técnico colombo"/>
+    <category term="técnico araucária"/>
+  </entry>
+  <entry>
+    <title>Remoção de vírus em Curitiba: protocolo profissional sem formatar</title>
+    <id>https://precisodeumtecnico.com/blog/remocao-de-virus-curitiba-protocolo-profissional</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/remocao-de-virus-curitiba-protocolo-profissional"/>
+    <published>2026-05-06T12:00:00-03:00</published>
+    <updated>2026-05-06T12:00:00-03:00</updated>
+    <summary type="text">O passo a passo que técnicos sérios em Curitiba aplicam para remover vírus mantendo seus arquivos intactos.</summary>
+    <category term="remoção de vírus curitiba"/>
+    <category term="malware"/>
+    <category term="técnico"/>
+  </entry>
+  <entry>
+    <title>Serviços elétricos residenciais em Santa Felicidade, Curitiba: como funciona e preços</title>
+    <id>https://precisodeumtecnico.com/blog/eletrica-em-santa-felicidade-curitiba</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/eletrica-em-santa-felicidade-curitiba"/>
+    <published>2026-05-06T12:00:00-03:00</published>
+    <updated>2026-05-06T12:00:00-03:00</updated>
+    <summary type="text">Procurando eletricista em Santa Felicidade, Curitiba? Veja como atendemos, o que está incluso e a tabela de preços atualizada.</summary>
+    <category term="eletricista"/>
+    <category term="santa felicidade"/>
+    <category term="curitiba"/>
+  </entry>
+  <entry>
+    <title>Técnico de Informática em Curitiba: o guia definitivo (2026)</title>
+    <id>https://precisodeumtecnico.com/blog/tecnico-de-informatica-curitiba-guia-definitivo</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/tecnico-de-informatica-curitiba-guia-definitivo"/>
+    <published>2026-05-05T12:00:00-03:00</published>
+    <updated>2026-05-05T12:00:00-03:00</updated>
+    <summary type="text">Preços reais, tempo de atendimento por bairro, golpes mais comuns em Curitiba e o que diferencia um técnico profissional de um amador.</summary>
+    <category term="técnico curitiba"/>
+    <category term="assistência técnica curitiba"/>
+    <category term="manutenção pc curitiba"/>
+  </entry>
+  <entry>
+    <title>Wi-Fi fraco em Curitiba: causas e soluções (apartamentos e casas)</title>
+    <id>https://precisodeumtecnico.com/blog/wifi-fraco-curitiba-como-resolver</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/wifi-fraco-curitiba-como-resolver"/>
+    <published>2026-05-05T12:00:00-03:00</published>
+    <updated>2026-05-05T12:00:00-03:00</updated>
+    <summary type="text">Por que apartamentos no Batel, Água Verde e Centro têm Wi-Fi pior — e como resolver com menos de R$ 600.</summary>
+    <category term="wifi curitiba"/>
+    <category term="rede mesh curitiba"/>
+    <category term="sinal fraco"/>
+  </entry>
+  <entry>
+    <title>Suporte de TI para empresas em São José dos Pinhais: o que esperar (2026)</title>
+    <id>https://precisodeumtecnico.com/blog/atendimento-empresarial-informatica-sao-jose-dos-pinhais</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/atendimento-empresarial-informatica-sao-jose-dos-pinhais"/>
+    <published>2026-05-04T12:00:00-03:00</published>
+    <updated>2026-05-04T12:00:00-03:00</updated>
+    <summary type="text">Contrato mensal ou por chamado? SLA de quantas horas? O que tem que estar incluso? Tudo sobre suporte de TI para empresas em SJP, sem enrolação.</summary>
+    <category term="suporte de ti são josé dos pinhais"/>
+    <category term="informática para empresas sjp"/>
+    <category term="manutenção corporativa"/>
+    <category term="atendimento empresarial"/>
+  </entry>
+  <entry>
+    <title>Manutenção preventiva de PC em empresas de São José dos Pinhais</title>
+    <id>https://precisodeumtecnico.com/blog/manutencao-preventiva-pc-empresa-sao-jose-dos-pinhais</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/manutencao-preventiva-pc-empresa-sao-jose-dos-pinhais"/>
+    <published>2026-05-04T12:00:00-03:00</published>
+    <updated>2026-05-04T12:00:00-03:00</updated>
+    <summary type="text">Por que manutenção preventiva sai mais barato que corretiva — com números reais de empresas em SJP.</summary>
+    <category term="manutenção preventiva sjp"/>
+    <category term="ti empresas"/>
+    <category term="contrato"/>
+  </entry>
+  <entry>
+    <title>Configuração de impressora em rede em São José dos Pinhais (escritório e casa)</title>
+    <id>https://precisodeumtecnico.com/blog/configuracao-impressora-rede-sao-jose-dos-pinhais</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/configuracao-impressora-rede-sao-jose-dos-pinhais"/>
+    <published>2026-05-03T12:00:00-03:00</published>
+    <updated>2026-05-03T12:00:00-03:00</updated>
+    <summary type="text">Por que a impressora 'some' da rede toda semana e como deixar configurado de vez em SJP.</summary>
+    <category term="impressora sjp"/>
+    <category term="rede"/>
+    <category term="configuração"/>
+  </entry>
+  <entry>
+    <title>Serviços elétricos residenciais em Portão, Curitiba: como funciona e preços</title>
+    <id>https://precisodeumtecnico.com/blog/eletrica-em-portao-curitiba</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/eletrica-em-portao-curitiba"/>
+    <published>2026-05-03T12:00:00-03:00</published>
+    <updated>2026-05-03T12:00:00-03:00</updated>
+    <summary type="text">Procurando eletricista em Portão, Curitiba? Veja como atendemos, o que está incluso e a tabela de preços atualizada.</summary>
+    <category term="eletricista"/>
+    <category term="portão"/>
+    <category term="curitiba"/>
+  </entry>
+  <entry>
+    <title>Montagem e upgrade de PC gamer em São José dos Pinhais (guia 2026)</title>
+    <id>https://precisodeumtecnico.com/blog/pc-gamer-sao-jose-dos-pinhais-montagem-upgrade</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/pc-gamer-sao-jose-dos-pinhais-montagem-upgrade"/>
+    <published>2026-05-02T12:00:00-03:00</published>
+    <updated>2026-05-02T12:00:00-03:00</updated>
+    <summary type="text">Como montar um PC gamer equilibrado em SJP em 2026, faixas de preço, peças que valem a pena e armadilhas comuns.</summary>
+    <category term="pc gamer sjp"/>
+    <category term="montagem"/>
+    <category term="upgrade placa de vídeo"/>
+  </entry>
+  <entry>
+    <title>Wi-Fi fraco em São José dos Pinhais? Causas, mitos e como resolver de vez</title>
+    <id>https://precisodeumtecnico.com/blog/wifi-fraco-sao-jose-dos-pinhais-como-resolver</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/wifi-fraco-sao-jose-dos-pinhais-como-resolver"/>
+    <published>2026-05-01T12:00:00-03:00</published>
+    <updated>2026-05-01T12:00:00-03:00</updated>
+    <summary type="text">O roteador da operadora não cobre sua casa em SJP. Veja por que, quais soluções funcionam e quais são puro marketing.</summary>
+    <category term="wifi fraco sao jose dos pinhais"/>
+    <category term="instalação wifi sjp"/>
+    <category term="mesh wifi 6"/>
+    <category term="configuração de roteador"/>
+  </entry>
+  <entry>
+    <title>Backup em nuvem em São José dos Pinhais: como fazer certo e quanto custa</title>
+    <id>https://precisodeumtecnico.com/blog/backup-em-nuvem-sao-jose-dos-pinhais-como-fazer-certo</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/backup-em-nuvem-sao-jose-dos-pinhais-como-fazer-certo"/>
+    <published>2026-05-01T12:00:00-03:00</published>
+    <updated>2026-05-01T12:00:00-03:00</updated>
+    <summary type="text">Backup em pendrive já não basta. Veja como configurar backup em nuvem profissional em SJP e dormir tranquilo mesmo com ransomware ou queima de HD.</summary>
+    <category term="backup"/>
+    <category term="nuvem sjp"/>
+    <category term="segurança de dados"/>
+  </entry>
+  <entry>
+    <title>Atacado por ransomware em São José dos Pinhais? O que fazer nas primeiras 2 horas</title>
+    <id>https://precisodeumtecnico.com/blog/ransomware-sao-jose-dos-pinhais-como-agir</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/ransomware-sao-jose-dos-pinhais-como-agir"/>
+    <published>2026-04-30T12:00:00-03:00</published>
+    <updated>2026-04-30T12:00:00-03:00</updated>
+    <summary type="text">Cada minuto conta após um ataque de ransomware. Esse é o protocolo de emergência que aplicamos em empresas e residências em SJP.</summary>
+    <category term="ransomware sjp"/>
+    <category term="segurança"/>
+    <category term="recuperação de dados"/>
+  </entry>
+  <entry>
+    <title>Serviços elétricos residenciais em Cabral, Curitiba: como funciona e preços</title>
+    <id>https://precisodeumtecnico.com/blog/eletrica-em-cabral-curitiba</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/eletrica-em-cabral-curitiba"/>
+    <published>2026-04-30T12:00:00-03:00</published>
+    <updated>2026-04-30T12:00:00-03:00</updated>
+    <summary type="text">Procurando eletricista em Cabral, Curitiba? Veja como atendemos, o que está incluso e a tabela de preços atualizada.</summary>
+    <category term="eletricista"/>
+    <category term="cabral"/>
+    <category term="curitiba"/>
+  </entry>
+  <entry>
+    <title>Rede empresarial em São José dos Pinhais: cabeamento estruturado + Wi-Fi corporativo</title>
+    <id>https://precisodeumtecnico.com/blog/rede-empresarial-sao-jose-dos-pinhais-cabeamento-wifi-corporativo</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/rede-empresarial-sao-jose-dos-pinhais-cabeamento-wifi-corporativo"/>
+    <published>2026-04-29T12:00:00-03:00</published>
+    <updated>2026-04-29T12:00:00-03:00</updated>
+    <summary type="text">Como montar uma rede pronta para crescer em uma empresa de SJP — cabeamento, switches gerenciáveis, controladora Wi-Fi e segurança.</summary>
+    <category term="rede empresarial sjp"/>
+    <category term="cabeamento estruturado"/>
+    <category term="wifi corporativo"/>
+  </entry>
+  <entry>
+    <title>Notebook lento em São José dos Pinhais? 12 causas reais e como resolver hoje</title>
+    <id>https://precisodeumtecnico.com/blog/notebook-lento-sao-jose-dos-pinhais-o-que-fazer</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/notebook-lento-sao-jose-dos-pinhais-o-que-fazer"/>
+    <published>2026-04-28T12:00:00-03:00</published>
+    <updated>2026-04-28T12:00:00-03:00</updated>
+    <summary type="text">Não é &quot;velhice do PC&quot;. Veja as 12 causas reais que deixam um notebook lento em SJP e o que dá para resolver sozinho — e o que exige técnico.</summary>
+    <category term="notebook lento sjp"/>
+    <category term="manutenção de notebook são josé dos pinhais"/>
+    <category term="upgrade ssd"/>
+    <category term="limpeza interna"/>
+  </entry>
+  <entry>
+    <title>Notebook lento em SJP: upgrade SSD + RAM transforma o equipamento (2026)</title>
+    <id>https://precisodeumtecnico.com/blog/notebook-lento-sao-jose-dos-pinhais-upgrade-ssd-ram</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/notebook-lento-sao-jose-dos-pinhais-upgrade-ssd-ram"/>
+    <published>2026-04-28T12:00:00-03:00</published>
+    <updated>2026-04-28T12:00:00-03:00</updated>
+    <summary type="text">Antes de comprar um notebook novo em SJP, faça as duas trocas que fazem mais diferença: SSD e RAM. Custa 1/5 do preço de um equipamento novo.</summary>
+    <category term="notebook lento sjp"/>
+    <category term="upgrade ssd"/>
+    <category term="memória ram"/>
+  </entry>
+  <entry>
+    <title>Wi-Fi fraco em São José dos Pinhais: causas reais e como resolver de vez</title>
+    <id>https://precisodeumtecnico.com/blog/wifi-fraco-sao-jose-dos-pinhais-como-resolver</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/wifi-fraco-sao-jose-dos-pinhais-como-resolver"/>
+    <published>2026-04-27T12:00:00-03:00</published>
+    <updated>2026-04-27T12:00:00-03:00</updated>
+    <summary type="text">Por que o Wi-Fi cai tanto em SJP — interferência de prédios, rede mal posicionada, roteador antigo — e o que fazer para resolver de verdade.</summary>
+    <category term="wifi sjp"/>
+    <category term="rede mesh"/>
+    <category term="roteador são josé dos pinhais"/>
+  </entry>
+  <entry>
+    <title>Serviços elétricos residenciais em Boqueirão, Curitiba: como funciona e preços</title>
+    <id>https://precisodeumtecnico.com/blog/eletrica-em-boqueirao-curitiba</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/eletrica-em-boqueirao-curitiba"/>
+    <published>2026-04-27T12:00:00-03:00</published>
+    <updated>2026-04-27T12:00:00-03:00</updated>
+    <summary type="text">Procurando eletricista em Boqueirão, Curitiba? Veja como atendemos, o que está incluso e a tabela de preços atualizada.</summary>
+    <category term="eletricista"/>
+    <category term="boqueirão"/>
+    <category term="curitiba"/>
+  </entry>
+  <entry>
+    <title>Formatação de notebook em São José dos Pinhais: o passo a passo profissional</title>
+    <id>https://precisodeumtecnico.com/blog/formatacao-de-notebook-sao-jose-dos-pinhais-passo-a-passo</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/formatacao-de-notebook-sao-jose-dos-pinhais-passo-a-passo"/>
+    <published>2026-04-26T12:00:00-03:00</published>
+    <updated>2026-04-26T12:00:00-03:00</updated>
+    <summary type="text">O check-list completo que usamos em cada formatação de notebook em SJP — incluindo o que diferencia uma formatação caseira de uma profissional.</summary>
+    <category term="formatação sjp"/>
+    <category term="notebook"/>
+    <category term="windows 11"/>
+  </entry>
+  <entry>
+    <title>Como saber se fui hackeado? 9 sinais que ninguém te conta (SJP, 2026)</title>
+    <id>https://precisodeumtecnico.com/blog/como-saber-se-fui-hackeado-sao-jose-dos-pinhais</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/como-saber-se-fui-hackeado-sao-jose-dos-pinhais"/>
+    <published>2026-04-25T12:00:00-03:00</published>
+    <updated>2026-04-25T12:00:00-03:00</updated>
+    <summary type="text">Lentidão, propaganda do nada, câmera piscando sozinha: 9 sinais reais de que seu computador foi invadido — e o que fazer antes que a conta bancária seja zerada.</summary>
+    <category term="fui hackeado"/>
+    <category term="remoção de vírus são josé dos pinhais"/>
+    <category term="ransomware sjp"/>
+    <category term="segurança digital"/>
+  </entry>
+  <entry>
+    <title>Como remover vírus do PC em São José dos Pinhais sem precisar formatar (2026)</title>
+    <id>https://precisodeumtecnico.com/blog/remover-virus-pc-sao-jose-dos-pinhais-sem-formatar</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/remover-virus-pc-sao-jose-dos-pinhais-sem-formatar"/>
+    <published>2026-04-25T12:00:00-03:00</published>
+    <updated>2026-04-25T12:00:00-03:00</updated>
+    <summary type="text">Antes de formatar, tente esse protocolo de limpeza usado por técnicos em SJP. Remove 90% dos vírus, mantém arquivos e leva menos de 2 horas.</summary>
+    <category term="remoção de vírus sjp"/>
+    <category term="malware"/>
+    <category term="ransomware"/>
+    <category term="técnico sjp"/>
+  </entry>
+  <entry>
+    <title>Serviços elétricos residenciais em Centro, Curitiba: como funciona e preços</title>
+    <id>https://precisodeumtecnico.com/blog/eletrica-em-centro-curitiba</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/eletrica-em-centro-curitiba"/>
+    <published>2026-04-24T12:00:00-03:00</published>
+    <updated>2026-04-24T12:00:00-03:00</updated>
+    <summary type="text">Procurando eletricista em Centro, Curitiba? Veja como atendemos, o que está incluso e a tabela de preços atualizada.</summary>
+    <category term="eletricista"/>
+    <category term="centro"/>
+    <category term="curitiba"/>
+  </entry>
+  <entry>
+    <title>Técnico de Informática em São José dos Pinhais: o guia definitivo (2026)</title>
+    <id>https://precisodeumtecnico.com/blog/tecnico-de-informatica-sao-jose-dos-pinhais-guia-definitivo</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/tecnico-de-informatica-sao-jose-dos-pinhais-guia-definitivo"/>
+    <published>2026-04-22T12:00:00-03:00</published>
+    <updated>2026-04-22T12:00:00-03:00</updated>
+    <summary type="text">Tudo o que ninguém te conta sobre contratar técnico de informática em SJP: preços reais, prazos, bairros, como identificar golpes e por que pagar barato sai caro.</summary>
+    <category term="técnico de informática são josé dos pinhais"/>
+    <category term="assistência técnica sjp"/>
+    <category term="formatação sjp"/>
+    <category term="manutenção de computador sjp"/>
+  </entry>
+  <entry>
+    <title>Serviços elétricos residenciais em Bigorrilho, Curitiba: como funciona e preços</title>
+    <id>https://precisodeumtecnico.com/blog/eletrica-em-bigorrilho-curitiba</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/eletrica-em-bigorrilho-curitiba"/>
+    <published>2026-04-21T12:00:00-03:00</published>
+    <updated>2026-04-21T12:00:00-03:00</updated>
+    <summary type="text">Procurando eletricista em Bigorrilho, Curitiba? Veja como atendemos, o que está incluso e a tabela de preços atualizada.</summary>
+    <category term="eletricista"/>
+    <category term="bigorrilho"/>
+    <category term="curitiba"/>
+  </entry>
+  <entry>
+    <title>Serviços elétricos residenciais em Água Verde, Curitiba: como funciona e preços</title>
+    <id>https://precisodeumtecnico.com/blog/eletrica-em-agua-verde-curitiba</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/eletrica-em-agua-verde-curitiba"/>
+    <published>2026-04-18T12:00:00-03:00</published>
+    <updated>2026-04-18T12:00:00-03:00</updated>
+    <summary type="text">Procurando eletricista em Água Verde, Curitiba? Veja como atendemos, o que está incluso e a tabela de preços atualizada.</summary>
+    <category term="eletricista"/>
+    <category term="água verde"/>
+    <category term="curitiba"/>
+  </entry>
+  <entry>
+    <title>Serviços elétricos residenciais em Batel, Curitiba: como funciona e preços</title>
+    <id>https://precisodeumtecnico.com/blog/eletrica-em-batel-curitiba</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/eletrica-em-batel-curitiba"/>
+    <published>2026-04-15T12:00:00-03:00</published>
+    <updated>2026-04-15T12:00:00-03:00</updated>
+    <summary type="text">Procurando eletricista em Batel, Curitiba? Veja como atendemos, o que está incluso e a tabela de preços atualizada.</summary>
+    <category term="eletricista"/>
+    <category term="batel"/>
+    <category term="curitiba"/>
+  </entry>
+  <entry>
+    <title>Instalação de câmeras de segurança CFTV em Centro, Pinhais: como funciona e preços</title>
+    <id>https://precisodeumtecnico.com/blog/cftv-em-centro-pinhais</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/cftv-em-centro-pinhais"/>
+    <published>2026-04-12T12:00:00-03:00</published>
+    <updated>2026-04-12T12:00:00-03:00</updated>
+    <summary type="text">Procurando instalador de CFTV em Centro, Pinhais? Veja como atendemos, o que está incluso e a tabela de preços atualizada.</summary>
+    <category term="instalação de câmeras"/>
+    <category term="centro"/>
+    <category term="pinhais"/>
+  </entry>
+  <entry>
+    <title>Instalação de câmeras de segurança CFTV em Centro, São José dos Pinhais: como funciona e preços</title>
+    <id>https://precisodeumtecnico.com/blog/cftv-em-centro-sao-jose-dos-pinhais</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/cftv-em-centro-sao-jose-dos-pinhais"/>
+    <published>2026-04-09T12:00:00-03:00</published>
+    <updated>2026-04-09T12:00:00-03:00</updated>
+    <summary type="text">Procurando instalador de CFTV em Centro, São José dos Pinhais? Veja como atendemos, o que está incluso e a tabela de preços atualizada.</summary>
+    <category term="instalação de câmeras"/>
+    <category term="centro"/>
+    <category term="são josé dos pinhais"/>
+  </entry>
+  <entry>
+    <title>Instalação de câmeras de segurança CFTV em Santa Felicidade, Curitiba: como funciona e preços</title>
+    <id>https://precisodeumtecnico.com/blog/cftv-em-santa-felicidade-curitiba</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/cftv-em-santa-felicidade-curitiba"/>
+    <published>2026-04-06T12:00:00-03:00</published>
+    <updated>2026-04-06T12:00:00-03:00</updated>
+    <summary type="text">Procurando instalador de CFTV em Santa Felicidade, Curitiba? Veja como atendemos, o que está incluso e a tabela de preços atualizada.</summary>
+    <category term="instalação de câmeras"/>
+    <category term="santa felicidade"/>
+    <category term="curitiba"/>
+  </entry>
+  <entry>
+    <title>Instalação de câmeras de segurança CFTV em Portão, Curitiba: como funciona e preços</title>
+    <id>https://precisodeumtecnico.com/blog/cftv-em-portao-curitiba</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/cftv-em-portao-curitiba"/>
+    <published>2026-04-03T12:00:00-03:00</published>
+    <updated>2026-04-03T12:00:00-03:00</updated>
+    <summary type="text">Procurando instalador de CFTV em Portão, Curitiba? Veja como atendemos, o que está incluso e a tabela de preços atualizada.</summary>
+    <category term="instalação de câmeras"/>
+    <category term="portão"/>
+    <category term="curitiba"/>
+  </entry>
+  <entry>
+    <title>Instalação de câmeras de segurança CFTV em Cabral, Curitiba: como funciona e preços</title>
+    <id>https://precisodeumtecnico.com/blog/cftv-em-cabral-curitiba</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/cftv-em-cabral-curitiba"/>
+    <published>2026-03-31T12:00:00-03:00</published>
+    <updated>2026-03-31T12:00:00-03:00</updated>
+    <summary type="text">Procurando instalador de CFTV em Cabral, Curitiba? Veja como atendemos, o que está incluso e a tabela de preços atualizada.</summary>
+    <category term="instalação de câmeras"/>
+    <category term="cabral"/>
+    <category term="curitiba"/>
+  </entry>
+  <entry>
+    <title>Instalação de câmeras de segurança CFTV em Boqueirão, Curitiba: como funciona e preços</title>
+    <id>https://precisodeumtecnico.com/blog/cftv-em-boqueirao-curitiba</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/cftv-em-boqueirao-curitiba"/>
+    <published>2026-03-28T12:00:00-03:00</published>
+    <updated>2026-03-28T12:00:00-03:00</updated>
+    <summary type="text">Procurando instalador de CFTV em Boqueirão, Curitiba? Veja como atendemos, o que está incluso e a tabela de preços atualizada.</summary>
+    <category term="instalação de câmeras"/>
+    <category term="boqueirão"/>
+    <category term="curitiba"/>
+  </entry>
+  <entry>
+    <title>Instalação de câmeras de segurança CFTV em Centro, Curitiba: como funciona e preços</title>
+    <id>https://precisodeumtecnico.com/blog/cftv-em-centro-curitiba</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/cftv-em-centro-curitiba"/>
+    <published>2026-03-25T12:00:00-03:00</published>
+    <updated>2026-03-25T12:00:00-03:00</updated>
+    <summary type="text">Procurando instalador de CFTV em Centro, Curitiba? Veja como atendemos, o que está incluso e a tabela de preços atualizada.</summary>
+    <category term="instalação de câmeras"/>
+    <category term="centro"/>
+    <category term="curitiba"/>
+  </entry>
+  <entry>
+    <title>Guia completo de instalação de câmeras residenciais</title>
+    <id>https://precisodeumtecnico.com/blog/guia-instalacao-camera-residencial</id>
+    <link rel="alternate" type="text/html" href="https://precisodeumtecnico.com/blog/guia-instalacao-camera-residencial"/>
+    <published>2026-03-22T12:00:00-03:00</published>
+    <updated>2026-03-22T12:00:00-03:00</updated>
+    <summary type="text">Quantas câmeras instalar, em que lugares, como mirar e o que evitar para ter cobertura real e respeito à privacidade.</summary>
+    <category term="cftv"/>
+    <category term="câmera"/>
+    <category term="residencial"/>
+  </entry>
+</feed>

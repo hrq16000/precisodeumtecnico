@@ -14,8 +14,10 @@ import {
 import { blogPostsMap, blogCategories, allBlogPosts as blogPosts } from "@/data/blog";
 import { servicesData } from "@/data/services";
 import { citiesData } from "@/data/regions";
-import { Calendar, Clock, MessageCircle, ArrowRight } from "lucide-react";
+import { Calendar, Clock, MessageCircle, ArrowRight, RefreshCw } from "lucide-react";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
+import { PublicPhotoBand } from "@/components/media/PublicPhotoBand";
+import { pickServicePhotos } from "@/data/publicPhotos";
 
 
 
@@ -117,6 +119,11 @@ export default function BlogPost() {
             <div className="flex flex-wrap gap-4 text-sm text-background/70">
               <span className="flex items-center gap-2"><Calendar className="w-4 h-4" /> {new Date(post.publishedAt).toLocaleDateString("pt-BR")}</span>
               <span className="flex items-center gap-2"><Clock className="w-4 h-4" /> {post.readingTime} min de leitura</span>
+              {post.updatedAt && post.updatedAt !== post.publishedAt && (
+                <span className="flex items-center gap-2">
+                  <RefreshCw className="w-4 h-4" /> Revisado em {new Date(post.updatedAt).toLocaleDateString("pt-BR")}
+                </span>
+              )}
             </div>
           </Reveal>
         </div>
@@ -141,6 +148,14 @@ export default function BlogPost() {
               )}
             </Reveal>
           ))}
+
+          <PublicPhotoBand
+            title="Referências visuais do tema"
+            intro="Imagens de bancada e hardware sob licença livre, usadas para ilustrar os procedimentos descritos acima."
+            photos={pickServicePhotos(post.slug, 3)}
+          />
+
+
 
           {post.faqs && post.faqs.length > 0 && (
             <Reveal>

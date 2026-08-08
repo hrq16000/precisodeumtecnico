@@ -46,6 +46,10 @@ import { buildReviewsSchema } from "@/data/testimonials";
 import { trackWhatsAppClick } from "@/lib/analytics";
 import { buildWhatsAppUrl, buildWhatsAppUrlFromText } from "@/lib/whatsapp";
 import { SYMPTOMS } from "@/data/symptoms";
+import { sanitizeServiceSchemas } from "@/lib/schema/serviceCatalog";
+import { PublicPhotoBand } from "@/components/media/PublicPhotoBand";
+import { pickServicePhotos } from "@/data/publicPhotos";
+import { RelatedServiceLinks } from "@/components/seo/RelatedServiceLinks";
 
 
 const WHATSAPP_DISPLAY = "WhatsApp 24h";
@@ -304,18 +308,22 @@ export default function AssistenciaTecnicaCuritiba() {
     { name: "Troca de Tela de Celular em Curitiba", type: "Reparo de Smartphone" },
     
   ];
-  const serviceSchemas = serviceCategories.map((s) => ({
-    "@context": "https://schema.org",
-    "@type": "Service",
-    name: s.name,
-    serviceType: s.type,
-    areaServed: { "@type": "City", name: "Curitiba" },
-    provider: {
-      "@type": "LocalBusiness",
-      name: "Preciso de um Técnico",
-      url: pageUrl,
-    },
-  }));
+  // Fail-closed: verticais recusadas nunca chegam ao JSON-LD (fonte única em
+  // src/lib/schema/serviceCatalog.ts).
+  const serviceSchemas = sanitizeServiceSchemas(
+    serviceCategories.map((s) => ({
+      "@context": "https://schema.org",
+      "@type": "Service",
+      name: s.name,
+      serviceType: s.type,
+      areaServed: { "@type": "City", name: "Curitiba" },
+      provider: {
+        "@type": "LocalBusiness",
+        name: "Preciso de um Técnico",
+        url: pageUrl,
+      },
+    })),
+  );
 
   // Rodada 25.1 — Bloco 0: bloco de instrumentação dev removido
   // (console.log de FAQPage + watchdog de whatsapp_click). O evento
@@ -382,6 +390,17 @@ export default function AssistenciaTecnicaCuritiba() {
         </div>
         <div className="container-custom relative py-16 md:py-24 grid lg:grid-cols-[1.2fr_1fr] gap-12 items-center">
           <div>
+            <nav
+              aria-label="Trilha de navegação"
+              className="mb-5 text-xs sm:text-sm text-muted-foreground flex flex-wrap items-center gap-1"
+            >
+              <Link to="/" className="hover:text-primary">Início</Link>
+              <span aria-hidden="true">/</span>
+              <Link to="/servicos" className="hover:text-primary">Serviços</Link>
+              <span aria-hidden="true">/</span>
+              <span className="text-foreground">Assistência técnica em informática em Curitiba</span>
+            </nav>
+
             <motion.span
               initial="hidden"
               animate="visible"
@@ -881,6 +900,22 @@ export default function AssistenciaTecnicaCuritiba() {
           </ul>
         </div>
       </section>
+
+      <PublicPhotoBand
+        title="Referências visuais de bancada e manutenção"
+        intro="Imagens sob licença livre que ilustram os procedimentos de diagnóstico, limpeza e upgrade citados nesta página."
+        photos={pickServicePhotos("assistencia-tecnica-curitiba", 3)}
+      />
+
+      <section className="py-12 md:py-16 border-t border-border">
+        <div className="container-custom max-w-4xl">
+          <RelatedServiceLinks
+            slug="assistencia-tecnica-curitiba"
+            title="Serviços de informática relacionados"
+          />
+        </div>
+      </section>
+
 
       {/* FINAL CTA */}
 

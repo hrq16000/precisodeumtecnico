@@ -297,6 +297,43 @@ const Servicos = () => {
       <AuthoritySince />
 
 
+      {/* Cluster prioritário de informática — concentra o link equity do hub
+          nas páginas de maior intenção comercial do cluster. */}
+      <section className="section-padding bg-secondary/30 border-y border-border" aria-labelledby="cluster-informatica">
+        <div className="container-custom">
+          <h2 id="cluster-informatica" className="font-display text-2xl md:text-3xl font-bold text-foreground">
+            Informática: comece por aqui
+          </h2>
+          <p className="mt-3 text-muted-foreground max-w-2xl">
+            As páginas mais procuradas do atendimento em computadores e notebooks, com escopo,
+            prazos e faixas de valor descritos em cada uma.
+          </p>
+          <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[
+              { to: "/assistencia-tecnica-curitiba", label: "Assistência técnica em informática em Curitiba", desc: "Hub de atendimento: diagnóstico, manutenção, upgrade e redes." },
+              { to: "/guia-tecnico-informatica", label: "Guia técnico de informática", desc: "Como diagnosticar antes de gastar com peça ou serviço." },
+              { to: "/conserto-de-notebook-curitiba", label: "Conserto de notebook em Curitiba", desc: "Não liga, superaquece, não carrega ou tela danificada." },
+              { to: "/formatacao-de-computador-curitiba", label: "Formatação de computador em Curitiba", desc: "Reinstalação limpa com backup e drivers oficiais." },
+              { to: "/upgrade-ssd-curitiba", label: "Upgrade de SSD em Curitiba", desc: "Troca do disco mecânico com migração do sistema." },
+              { to: "/upgrade-memoria-ram-curitiba", label: "Upgrade de memória RAM em Curitiba", desc: "Ampliação de memória com conferência de compatibilidade." },
+            ].map((item) => (
+              <Link
+                key={item.to}
+                to={item.to}
+                data-testid="hub-service-link"
+                className="group block p-5 rounded-xl bg-card border border-border/50 hover:border-primary/30 hover:bg-primary/5 transition-all duration-300"
+              >
+                <span className="font-semibold text-card-foreground group-hover:text-primary inline-flex items-center gap-2">
+                  {item.label}
+                  <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-all" />
+                </span>
+                <span className="mt-2 block text-sm text-muted-foreground">{item.desc}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Services Grid */}
       <section className="section-padding bg-background">
         <div className="container-custom">
@@ -318,6 +355,7 @@ const Servicos = () => {
                       <Link
                         key={service.name}
                         to={service.href}
+                        data-testid="hub-service-link"
                         className="group flex items-center gap-3 p-4 rounded-xl bg-card border border-border/50 hover:border-primary/30 hover:bg-primary/5 transition-all duration-300"
                       >
                         <CheckCircle className="w-5 h-5 text-success flex-shrink-0" />
@@ -332,6 +370,7 @@ const Servicos = () => {
                       // fundo neutro) para não prometer interação inexistente.
                       <div
                         key={service.name}
+                        data-testid="hub-service-static"
                         className="flex items-center gap-3 p-4 rounded-xl bg-muted/40 border border-transparent cursor-default"
                       >
                         <CheckCircle className="w-5 h-5 text-muted-foreground flex-shrink-0" />

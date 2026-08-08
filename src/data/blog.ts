@@ -47,11 +47,14 @@ function makePost(input: {
   category: string;
   tags: string[];
   publishedAt: string;
+  /** Data da última revisão real do conteúdo (alimenta o atom.xml e o dateModified). */
+  updatedAt?: string;
   readingTime?: number;
   intro: string[];
   sections: { heading: string; paragraphs: string[]; list?: string[] }[];
   faqs?: { question: string; answer: string }[];
   relatedServices?: string[];
+  internalLinks?: { label: string; to: string }[];
 }): BlogPost {
   return {
     slug: input.slug,
@@ -62,11 +65,12 @@ function makePost(input: {
     category: input.category,
     tags: input.tags,
     publishedAt: input.publishedAt,
-    updatedAt: input.publishedAt,
+    updatedAt: input.updatedAt ?? input.publishedAt,
     readingTime: input.readingTime ?? 7,
     sections: [{ paragraphs: input.intro }, ...input.sections],
     faqs: input.faqs,
     relatedServices: input.relatedServices,
+    internalLinks: input.internalLinks,
     relatedCities: baseRelatedCities,
   };
 }
@@ -258,26 +262,215 @@ export const blogPosts: BlogPost[] = [
     slug: "computador-lento-7-causas-e-solucoes",
     title: "Computador lento: 7 causas reais e como resolver hoje",
     metaTitle: "Computador Lento: 7 Causas Reais e Soluções (2026)",
-    metaDescription: "PC ou notebook lento? Veja as 7 causas mais comuns de lentidão e o que fazer hoje para acelerar — sem precisar trocar de máquina.",
+    metaDescription: "PC ou notebook lento? Veja as 7 causas mais comuns de lentidão, o diagnóstico que fazemos na bancada e o que dá para resolver hoje sem trocar de máquina.",
     excerpt: "Lentidão raramente é falta de potência. Veja como diagnosticar e acelerar seu computador antes de gastar com upgrade.",
     category: "informatica",
-    tags: ["pc lento", "ssd", "manutenção"],
+    tags: ["pc lento", "ssd", "manutenção", "windows 11", "memória ram"],
     publishedAt: "2026-02-22",
-    readingTime: 9,
-    intro: ["A maior parte das máquinas lentas que recebemos no atendimento técnico não precisa de upgrade — precisa de cuidado. Veja o que checar."],
+    updatedAt: "2026-08-08",
+    readingTime: 12,
+    intro: [
+      "A maior parte das máquinas lentas que chegam ao atendimento técnico não precisa de upgrade — precisa de diagnóstico. Antes de comprar peça, vale entender onde está o gargalo: disco, memória, temperatura ou software.",
+      "Este guia segue a mesma ordem que usamos na bancada: primeiro medir, depois agir. Cada item traz o sintoma típico, como confirmar a causa no próprio Windows e qual é a correção proporcional ao problema.",
+    ],
     sections: [
-      { heading: "1. HD em vez de SSD", paragraphs: ["A troca por SSD é o upgrade que mais transforma um PC. Boot em segundos, abertura instantânea de programas. Investimento de R$ 250 a R$ 350 que dá vida nova ao equipamento."] },
-      { heading: "2. Memória RAM insuficiente", paragraphs: ["Para Windows 11, o mínimo confortável é 8GB. Acima de 16GB para uso intenso (edição, jogos, abas pesadas)."] },
-      { heading: "3. Excesso de programas na inicialização", paragraphs: ["Abra o Gerenciador de Tarefas, aba 'Inicializar', e desative o que não usa."] },
-      { heading: "4. Vírus e adware", paragraphs: ["Faça uma varredura completa com Microsoft Defender + Malwarebytes. Anúncios pop-up no navegador são quase sempre adware."] },
-      { heading: "5. Disco cheio", paragraphs: ["Discos com mais de 90% de uso ficam lentos. Mantenha pelo menos 20% livre."] },
-      { heading: "6. Pasta térmica seca / superaquecimento", paragraphs: ["CPU passando de 90°C reduz desempenho automaticamente. Limpeza interna e troca da pasta térmica resolvem."] },
-      { heading: "7. Sistema operacional desatualizado / corrompido", paragraphs: ["Windows com erros não corrigidos é causa frequente de travamentos. Em casos graves, formatação é mais eficiente que reparar."] },
+      {
+        heading: "Antes de tudo: como medir o gargalo em 5 minutos",
+        paragraphs: [
+          "Abra o Gerenciador de Tarefas (Ctrl + Shift + Esc), vá em Desempenho e observe o comportamento nos primeiros minutos após ligar. O componente que fica travado em 100% durante a lentidão é o gargalo — e é nele que o dinheiro deve ser investido.",
+          "Sem essa leitura, é comum trocar a peça errada: instalar mais memória num equipamento que sofre por disco mecânico, por exemplo, muda pouco na prática.",
+        ],
+        list: [
+          "Disco em 100% com fila alta: gargalo de armazenamento (item 1).",
+          "Memória acima de 85% em uso normal: falta de RAM (item 2).",
+          "CPU alta logo no login: excesso de programas na inicialização (item 3).",
+          "CPU alta sem motivo, com ventoinha acelerada: possível infecção ou superaquecimento (itens 4 e 6).",
+        ],
+      },
+      {
+        heading: "1. HD mecânico em vez de SSD",
+        paragraphs: [
+          "É a causa número um de lentidão em máquinas de 4 anos ou mais. O disco mecânico entrega uma fração da velocidade de leitura aleatória de um SSD, e o Windows 11 depende justamente desse tipo de acesso o tempo todo.",
+          "O sintoma clássico: a máquina liga, mostra a área de trabalho e fica alguns minutos inutilizável, com o disco em 100%. A troca por SSD é o upgrade que mais transforma a percepção de velocidade — boot em segundos e abertura quase instantânea dos programas.",
+          "Faixa de investimento de mercado para a peça: cerca de R$ 250 a R$ 350 em SSD SATA de 480GB a 512GB. O disco antigo pode continuar na máquina como armazenamento secundário.",
+        ],
+      },
+      {
+        heading: "2. Memória RAM insuficiente",
+        paragraphs: [
+          "Para Windows 11, o mínimo confortável hoje é 8GB. Acima de 16GB para uso intenso: edição, jogos, planilhas grandes ou muitas abas abertas ao mesmo tempo.",
+          "Quando falta memória, o sistema passa a usar o disco como memória virtual — e a lentidão aparece mesmo com SSD. Confirme em Gerenciador de Tarefas > Desempenho > Memória: se o valor 'Comprometida' vive acima da memória física, o upgrade se justifica.",
+          "Antes de comprar, confira o tipo (DDR3, DDR4, DDR5), a frequência e o número de slots livres. Módulos incompatíveis simplesmente não inicializam a máquina.",
+        ],
+      },
+      {
+        heading: "3. Excesso de programas na inicialização",
+        paragraphs: [
+          "Abra o Gerenciador de Tarefas, aba 'Aplicativos de inicialização', e desative tudo que não precisa subir junto com o sistema: atualizadores de impressora, clientes de nuvem duplicados, lojas de jogos, barras de fabricante.",
+          "Mantenha ativos apenas antivírus, drivers de áudio/vídeo e o serviço de nuvem que você realmente usa. Essa limpeza costuma devolver 30 a 90 segundos de tempo até a máquina ficar utilizável.",
+        ],
+      },
+      {
+        heading: "4. Vírus, adware e mineradores",
+        paragraphs: [
+          "Faça uma varredura completa com o Microsoft Defender e uma segunda opinião com Malwarebytes. Pop-ups no navegador, página inicial trocada e resultados de busca redirecionados são quase sempre adware.",
+          "Um sinal específico de minerador: CPU ou placa de vídeo em uso alto com a máquina parada, caindo assim que o Gerenciador de Tarefas é aberto. Nesse caso, a limpeza precisa ser feita fora do sistema em uso.",
+        ],
+      },
+      {
+        heading: "5. Disco cheio",
+        paragraphs: [
+          "Discos com mais de 90% de uso ficam lentos, e o Windows perde espaço para arquivos temporários e atualizações. Mantenha ao menos 20% livre na unidade do sistema.",
+          "Use Configurações > Sistema > Armazenamento > Sensor de Armazenamento para limpar temporários, e revise pastas de downloads e backups antigos antes de pensar em disco novo.",
+        ],
+      },
+      {
+        heading: "6. Pasta térmica seca e superaquecimento",
+        paragraphs: [
+          "CPU passando de 90 °C entra em redução automática de desempenho para se proteger. O sintoma é a máquina rápida nos primeiros minutos e lenta depois de meia hora, com ventoinha barulhenta.",
+          "Limpeza interna, troca da pasta térmica e revisão do fluxo de ar resolvem a maior parte dos casos. Em notebooks, o entupimento do dissipador por poeira é ainda mais frequente do que em desktops.",
+        ],
+      },
+      {
+        heading: "7. Sistema operacional corrompido ou desatualizado",
+        paragraphs: [
+          "Windows com componentes corrompidos gera travamentos que nenhum upgrade resolve. Rode `sfc /scannow` e, em seguida, `DISM /Online /Cleanup-Image /RestoreHealth` em um prompt como administrador.",
+          "Se os erros persistirem, a reinstalação limpa costuma ser mais rápida e mais barata do que insistir no reparo — com backup feito antes e drivers oficiais reinstalados depois.",
+        ],
+      },
+      {
+        heading: "Quando compensa upgrade e quando compensa trocar",
+        paragraphs: [
+          "Regra prática: se o custo do upgrade ficar abaixo de um terço do valor de um equipamento equivalente novo e a placa-mãe ainda suportar SSD e memória adicional, o upgrade se paga.",
+          "Máquinas com placa-mãe sem suporte a SSD, memória no limite máximo e fonte já sobrecarregada tendem a consumir mais em peças do que entregam em ganho real.",
+        ],
+      },
     ],
     faqs: [
-      { question: "Vale upgrade ou trocar de PC?", answer: "Para máquinas com 4 a 7 anos, upgrade de SSD + RAM costuma render mais 3 a 5 anos de vida útil por uma fração do preço de um equipamento novo." },
+      { question: "Vale upgrade ou trocar de PC?", answer: "Para máquinas com 4 a 7 anos, upgrade de SSD + RAM costuma render mais 3 a 5 anos de vida útil por uma fração do preço de um equipamento novo. Acima disso, avalie o custo total das peças antes de decidir." },
+      { question: "SSD ou mais memória: qual dá mais resultado?", answer: "Se a máquina ainda usa HD mecânico, o SSD vem primeiro — a diferença é perceptível já no boot. Memória entra depois, quando o uso passa de 85% com poucos programas abertos." },
+      { question: "Formatar deixa o computador mais rápido?", answer: "Deixa quando a lentidão é de software: inicialização carregada, infecções ou sistema corrompido. Se o gargalo for disco mecânico ou falta de memória, a máquina volta a ficar lenta em pouco tempo." },
+      { question: "Quanto tempo leva uma manutenção de lentidão?", answer: "Diagnóstico e limpeza de software costumam ficar no mesmo dia. Troca de SSD com migração do sistema e testes normalmente ocupa de um a dois dias úteis, dependendo do volume de dados." },
+      { question: "Dá para resolver sem levar o computador?", answer: "Boa parte dos casos de software (inicialização, temporários, malware, atualizações) é resolvida por suporte remoto assistido. Troca de peça e limpeza interna exigem atendimento presencial ou bancada." },
     ],
     relatedServices: ["informatica", "notebooks"],
+    internalLinks: [
+      { label: "Guia técnico de informática (pilar)", to: "/guia-tecnico-informatica" },
+      { label: "Upgrade de SSD em Curitiba", to: "/upgrade-ssd-curitiba" },
+      { label: "Upgrade de memória RAM em Curitiba", to: "/upgrade-memoria-ram-curitiba" },
+      { label: "Formatação de computador em Curitiba", to: "/formatacao-de-computador-curitiba" },
+      { label: "Remoção de vírus em Curitiba", to: "/remocao-de-virus-curitiba" },
+      { label: "Assistência técnica em informática em Curitiba", to: "/assistencia-tecnica-curitiba" },
+    ],
+  }),
+  makePost({
+    slug: "notebook-nao-liga-o-que-fazer",
+    title: "Notebook não liga: diagnóstico em 8 passos antes de chamar o técnico",
+    metaTitle: "Notebook Não Liga? Diagnóstico em 8 Passos (Guia 2026)",
+    metaDescription: "Notebook não liga, não dá vídeo ou desliga sozinho? Siga o diagnóstico em 8 passos que usamos na bancada e descubra o que é fonte, bateria, memória ou placa-mãe.",
+    excerpt: "Nem todo notebook que não liga tem defeito grave. Veja como separar problema de fonte, bateria, memória e placa antes de gastar com reparo.",
+    category: "informatica",
+    tags: ["notebook não liga", "conserto de notebook", "placa-mãe", "bateria", "fonte"],
+    publishedAt: "2026-08-08",
+    readingTime: 11,
+    intro: [
+      "\"Notebook não liga\" é um sintoma, não um defeito. Ele cobre desde carregador com mau contato até falha de placa-mãe — e o custo entre um extremo e outro é muito diferente.",
+      "Os passos abaixo são o mesmo roteiro de triagem usado na bancada, na ordem do mais simples e barato para o mais complexo. Todos podem ser feitos em casa, sem abrir o equipamento.",
+    ],
+    sections: [
+      {
+        heading: "Primeiro: classifique o sintoma corretamente",
+        paragraphs: [
+          "Antes de qualquer teste, identifique em qual dos quatro grupos o seu caso se encaixa. Isso muda completamente a investigação — e é a primeira pergunta que o técnico vai fazer.",
+        ],
+        list: [
+          "Morto total: nenhum LED, nenhum som, nenhuma ventoinha.",
+          "Liga mas não dá vídeo: LED acende, ventoinha gira, tela permanece preta.",
+          "Liga e desliga sozinho: acende por alguns segundos e apaga, às vezes em ciclo.",
+          "Liga e trava na logo: chega ao logotipo do fabricante e não avança para o sistema.",
+        ],
+      },
+      {
+        heading: "1. Teste o carregador e a tomada",
+        paragraphs: [
+          "Comece pelo mais provável. Verifique se o LED de carga acende ao conectar, teste outra tomada sem extensão e observe se o cabo tem dobras ou emendas próximas ao conector.",
+          "Carregadores genéricos com tensão ou amperagem diferentes da original são causa frequente de 'não liga' intermitente. Confira os valores impressos na etiqueta do carregador contra os da etiqueta do notebook.",
+        ],
+      },
+      {
+        heading: "2. Faça a descarga de energia residual",
+        paragraphs: [
+          "Desligue o carregador, remova a bateria (quando for removível) e mantenha o botão de ligar pressionado por 30 segundos. Recoloque a bateria, conecte o carregador e tente ligar.",
+          "Esse procedimento resolve travamentos de placa causados por carga residual e é o primeiro passo padrão em qualquer atendimento. Em modelos com bateria interna, o mesmo efeito é obtido com 30 a 60 segundos de botão pressionado sem o carregador conectado.",
+        ],
+      },
+      {
+        heading: "3. Teste sem a bateria, só na tomada",
+        paragraphs: [
+          "Se o notebook liga apenas com o carregador conectado e a bateria removida, o problema está na bateria — que pode estar em curto e derrubando a alimentação da placa.",
+          "Baterias inchadas são caso de substituição imediata: além de não segurar carga, forçam o teclado e o touchpad por dentro e representam risco. Não continue usando.",
+        ],
+      },
+      {
+        heading: "4. Verifique se há sinal de vídeo",
+        paragraphs: [
+          "Com o notebook ligado, aponte uma lanterna para a tela em ângulo. Se der para enxergar a imagem fracamente, a placa está funcionando e o defeito é de iluminação da tela (backlight ou flat).",
+          "Se a tela estiver totalmente preta, conecte um monitor externo por HDMI. Imagem no monitor externo confirma que o problema está no conjunto de tela, não na placa-mãe.",
+        ],
+      },
+      {
+        heading: "5. Reassente a memória RAM",
+        paragraphs: [
+          "Notebook que liga, ventoinha gira e não dá vídeo em nenhuma saída é sintoma clássico de contato ruim na memória. Em modelos com tampa de acesso, remover o módulo, limpar os contatos e reencaixar resolve boa parte dos casos.",
+          "Com dois módulos instalados, teste um de cada vez e alterne os slots — isso identifica tanto módulo defeituoso quanto slot com problema.",
+        ],
+      },
+      {
+        heading: "6. Escute e observe os sinais de erro",
+        paragraphs: [
+          "Bipes na inicialização e piscadas do LED de energia são códigos de diagnóstico do fabricante. A sequência (por exemplo, três piscadas curtas e uma longa) tem significado documentado no manual de serviço do modelo.",
+          "Anote o padrão exato antes de levar o equipamento: ele encurta bastante o tempo de diagnóstico.",
+        ],
+      },
+      {
+        heading: "7. Desconecte periféricos e teste o boot",
+        paragraphs: [
+          "Remova pen drives, HDs externos, cartões de memória, docas e adaptadores. Um dispositivo com defeito na porta USB pode impedir a inicialização.",
+          "Se o notebook chegar à tela do fabricante mas não carregar o sistema, o problema provavelmente está no disco ou no sistema operacional — situação bem menos grave que falha de placa.",
+        ],
+      },
+      {
+        heading: "8. Sinais de que o caso é de bancada",
+        paragraphs: [
+          "Cheiro de queimado, líquido derramado, queda recente, curto visível ou ausência absoluta de reação após todos os testes acima indicam necessidade de análise em bancada, com medição da placa.",
+          "Nesses casos, o diagnóstico envolve medir tensões de alimentação, checar o circuito de carga e avaliar componentes específicos — não é algo que se resolva por tentativa e erro em casa.",
+        ],
+      },
+      {
+        heading: "O que costuma custar mais e o que costuma custar menos",
+        paragraphs: [
+          "Do mais simples ao mais complexo: carregador e bateria são substituições diretas; teclado, flat de vídeo e dissipador são serviços de média complexidade; reparo de circuito de carga e de trilhas na placa-mãe é o extremo mais caro e nem sempre é viável.",
+          "Antes de aprovar qualquer serviço, exija a descrição do defeito encontrado, o que será feito e a garantia do que for executado — por escrito.",
+        ],
+      },
+    ],
+    faqs: [
+      { question: "Notebook não liga e nem acende LED. O que é?", answer: "Ausência total de reação aponta para alimentação: carregador, conector de energia (jack) ou circuito de carga na placa-mãe. Teste outro carregador compatível antes de concluir que é a placa." },
+      { question: "Notebook liga mas a tela fica preta. É a placa de vídeo?", answer: "Nem sempre. Se um monitor externo mostrar imagem, o defeito está no conjunto de tela, no flat ou na iluminação. Sem imagem em nenhuma saída, o próximo passo é reassentar a memória e, depois, avaliar a placa." },
+      { question: "Vale a pena consertar um notebook antigo?", answer: "Depende da relação entre o custo do reparo e o valor de um equipamento equivalente. Troca de bateria, carregador ou SSD costuma compensar; reparo de placa em modelos muito antigos raramente compensa." },
+      { question: "Bateria inchada é perigosa?", answer: "Sim. Além de deformar a carcaça e o teclado, representa risco de vazamento e superaquecimento. O uso deve ser interrompido e a bateria substituída." },
+      { question: "Quanto custa o diagnóstico?", answer: "O diagnóstico é feito mediante taxa mínima informada antes do atendimento, e o valor é sempre apresentado e aprovado por você antes de qualquer serviço. Nada é executado sem aprovação prévia." },
+      { question: "Dá para recuperar meus arquivos se o notebook não ligar?", answer: "Na maioria dos casos sim: se o defeito for de alimentação, tela ou placa, o disco permanece íntegro e os dados podem ser copiados. Informe essa necessidade logo na abertura do atendimento." },
+    ],
+    relatedServices: ["notebooks", "informatica"],
+    internalLinks: [
+      { label: "Guia técnico de informática (pilar)", to: "/guia-tecnico-informatica" },
+      { label: "Conserto de notebook em Curitiba", to: "/conserto-de-notebook-curitiba" },
+      { label: "Upgrade de SSD em Curitiba", to: "/upgrade-ssd-curitiba" },
+      { label: "Upgrade de memória RAM em Curitiba", to: "/upgrade-memoria-ram-curitiba" },
+      { label: "Assistência técnica em informática em Curitiba", to: "/assistencia-tecnica-curitiba" },
+      { label: "Computador lento: 7 causas e soluções", to: "/blog/computador-lento-7-causas-e-solucoes" },
+    ],
   }),
   makePost({
     slug: "como-escolher-eletricista-confiavel",

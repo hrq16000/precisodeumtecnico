@@ -54,6 +54,7 @@ const AvaliarAtendimento = lazy(() => import("./pages/AvaliarAtendimento"));
 const ServicoCidade = lazy(() => import("./pages/ServicoCidade"));
 const Precos = lazy(() => import("./pages/Precos"));
 const ComoFunciona = lazy(() => import("./pages/ComoFunciona"));
+const GuiaTecnicoInformatica = lazy(() => import("./pages/GuiaTecnicoInformatica"));
 const Busca = lazy(() => import("./pages/Busca"));
 const MensagensProntas = lazy(() => import("./pages/MensagensProntas"));
 const ManifestoDeProvas = lazy(() => import("./pages/ManifestoDeProvas"));
@@ -161,6 +162,8 @@ const App = () => (
                 <Route path="/servico-em/:city/:service" element={<ServicoCidade />} />
                 <Route path="/precos" element={<Precos />} />
                 <Route path="/como-funciona" element={<ComoFunciona />} />
+                <Route path="/guia-tecnico-informatica" element={<GuiaTecnicoInformatica />} />
+
                 <Route path="/busca" element={<Busca />} />
                 <Route path="/operacao/mensagens-prontas" element={<MensagensProntas />} />
                 <Route path="/operacao/manifesto-de-provas" element={<ManifestoDeProvas />} />

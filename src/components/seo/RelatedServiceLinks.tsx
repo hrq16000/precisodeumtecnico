@@ -162,6 +162,77 @@ const RELATED_BY_SLUG: Record<string, RelatedLink[]> = {
       label: "Assistência técnica para empresas em Curitiba",
       description: "Quando o sintoma exige atendimento presencial no posto de trabalho.",
     },
+    {
+      to: "/assistencia-tecnica-curitiba",
+      label: "Assistência técnica em informática em Curitiba",
+      description: "Hub do cluster de informática: manutenção, upgrade, redes e diagnóstico.",
+    },
+    {
+      to: "/guia-tecnico-informatica",
+      label: "Guia técnico de informática",
+      description: "Conteúdo de referência sobre diagnóstico, manutenção e upgrades.",
+    },
+  ],
+  /* Hub do cluster de informática → páginas de conversão prioritárias. */
+  "assistencia-tecnica-curitiba": [
+    {
+      to: "/guia-tecnico-informatica",
+      label: "Guia técnico de informática",
+      description:
+        "Referência longa sobre diagnóstico, manutenção preventiva, upgrades e quando trocar de equipamento.",
+    },
+    {
+      to: "/conserto-de-notebook-curitiba",
+      label: "Conserto de notebook em Curitiba",
+      description: "Notebook que não liga, superaquece, não carrega ou está com tela danificada.",
+    },
+    {
+      to: "/formatacao-de-computador-curitiba",
+      label: "Formatação de computador em Curitiba",
+      description: "Reinstalação limpa do sistema com backup e drivers oficiais.",
+    },
+    {
+      to: "/upgrade-ssd-curitiba",
+      label: "Upgrade de SSD em Curitiba",
+      description: "Troca de disco mecânico por SSD com migração do sistema.",
+    },
+    {
+      to: "/upgrade-memoria-ram-curitiba",
+      label: "Upgrade de memória RAM em Curitiba",
+      description: "Ampliação de memória com conferência de compatibilidade antes da compra.",
+    },
+    {
+      to: "/remocao-de-virus-curitiba",
+      label: "Remoção de vírus em Curitiba",
+      description: "Limpeza de malware e adware sem reinstalar o sistema, quando possível.",
+    },
+  ],
+  "guia-tecnico-informatica": [
+    {
+      to: "/assistencia-tecnica-curitiba",
+      label: "Assistência técnica em informática em Curitiba",
+      description: "Página de atendimento do cluster, com escopo, cobertura e contato direto.",
+    },
+    {
+      to: "/conserto-de-notebook-curitiba",
+      label: "Conserto de notebook em Curitiba",
+      description: "Para quando o diagnóstico do guia aponta defeito de hardware no notebook.",
+    },
+    {
+      to: "/upgrade-ssd-curitiba",
+      label: "Upgrade de SSD em Curitiba",
+      description: "Execução do upgrade que mais muda a percepção de velocidade.",
+    },
+    {
+      to: "/formatacao-de-computador-curitiba",
+      label: "Formatação de computador em Curitiba",
+      description: "Quando o problema é de sistema e a reinstalação limpa é o caminho mais curto.",
+    },
+    {
+      to: "/precos",
+      label: "Preços e faixas de atendimento",
+      description: "Referências de valores antes de abrir o chamado.",
+    },
   ],
 };
 

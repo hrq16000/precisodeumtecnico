@@ -155,6 +155,13 @@
     <xhtml:link rel="canonical" href="https://precisodeumtecnico.com/como-funciona"/>
   </url>
   <url>
+    <loc>https://precisodeumtecnico.com/guia-tecnico-informatica</loc>
+    <lastmod>2026-08-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="canonical" href="https://precisodeumtecnico.com/guia-tecnico-informatica"/>
+  </url>
+  <url>
     <loc>https://precisodeumtecnico.com/busca</loc>
     <lastmod>2026-08-08</lastmod>
     <changefreq>weekly</changefreq>
@@ -433,6 +440,13 @@
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
     <xhtml:link rel="canonical" href="https://precisodeumtecnico.com/blog/computador-lento-7-causas-e-solucoes"/>
+  </url>
+  <url>
+    <loc>https://precisodeumtecnico.com/blog/notebook-nao-liga-o-que-fazer</loc>
+    <lastmod>2026-08-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="canonical" href="https://precisodeumtecnico.com/blog/notebook-nao-liga-o-que-fazer"/>
   </url>
   <url>
     <loc>https://precisodeumtecnico.com/blog/como-escolher-eletricista-confiavel</loc>

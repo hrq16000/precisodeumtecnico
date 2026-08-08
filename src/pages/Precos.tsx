@@ -19,6 +19,7 @@ import { COMMERCIAL_TERMS } from "@/data/commercialTerms";
 import { PRICING, SLA } from "@/data/pricingPolicy";
 import { TrustStrip } from "@/components/marketing/TrustStrip";
 import { PageTableOfContents } from "@/components/layout/PageTableOfContents";
+import { RelatedLinksSection } from "@/components/seo/RelatedLinksSection";
 import { buildLocalBusinessSchema } from "@/lib/schema/localBusiness";
 import { parsePriceBRL } from "@/lib/priceSpec";
 
@@ -341,6 +342,8 @@ export default function Precos() {
           </Reveal>
         </div>
       </section>
+
+      <RelatedLinksSection surface="cta_section" items={["areas", "servicos", "faq"]} />
     </Layout>
   );
 }

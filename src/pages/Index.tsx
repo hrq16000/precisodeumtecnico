@@ -14,6 +14,7 @@ import { FAQSection } from "@/components/home/FAQSection";
 import { CTASection } from "@/components/home/CTASection";
 import { QuickQuoteForm } from "@/components/home/QuickQuoteForm";
 import { QuickDiagnosisQuiz } from "@/components/QuickDiagnosisQuiz";
+import { RelatedLinksSection } from "@/components/seo/RelatedLinksSection";
 import { Reveal } from "@/components/Reveal";
 import { AuthoritySince } from "@/components/marketing/AuthoritySince";
 import { buildReviewsSchema } from "@/data/testimonials";

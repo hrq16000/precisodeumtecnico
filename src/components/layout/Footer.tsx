@@ -182,7 +182,10 @@ export function Footer() {
               <Link to="/termos-uso" className="text-background/60 hover:text-background text-sm transition-colors">
                 Termos de Uso
               </Link>
-              <Link to="/anuncie" className="text-background/60 hover:text-background text-sm transition-colors">
+              <Link to="/areas-atendidas" onClick={() => trackCtaClick({ surface: "footer", cta_id: "footer_areas_atendidas", label: "Áreas atendidas", destination: "/areas-atendidas" })} className="text-background/60 hover:text-background text-sm transition-colors">
+                Áreas atendidas
+              </Link>
+              <Link to="/anuncie" onClick={() => trackCtaClick({ surface: "footer", cta_id: "media_kit_footer", label: "Anuncie / Mídia Kit", destination: "/anuncie" })} className="text-background/60 hover:text-background text-sm transition-colors">
                 Anuncie / Mídia Kit
               </Link>
               <Link to="/politica-de-anuncios" className="text-background/60 hover:text-background text-sm transition-colors">

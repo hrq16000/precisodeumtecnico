@@ -49,11 +49,22 @@ function collectLocalNames(source: string): Set<string> {
   const declRe = /(?:^|\n)\s*(?:export\s+)?(?:const|let|var|function|class|enum)\s+([A-Za-z_$][\w$]*)/g;
   let match: RegExpExecArray | null;
   while ((match = declRe.exec(source))) names.add(match[1]);
+  // Aliases de desestruturação e props renomeadas: { icon: Icon }, { as: Tag = "div" }.
+  const aliasRe = /[\w$"']\s*:\s*([A-Z][\w$]*)\s*(?:=[^,}]*)?[,}\n]/g;
+  while ((match = aliasRe.exec(source))) names.add(match[1]);
+  // Parâmetros genéricos: <TFieldValues extends ...>.
+  const genericRe = /<\s*([A-Z][\w$]*)\s+extends\b/g;
+  while ((match = genericRe.exec(source))) names.add(match[1]);
   return names;
 }
 
 /** Componentes usados em JSX: <Foo>, <Foo.Bar>, </Foo>. */
-function collectJsxComponents(source: string): Set<string> {
+function stripComments(source: string): string {
+  return source.replace(/\/\*[\s\S]*?\*\//g, "").replace(/(^|\s)\/\/[^\n]*/g, "$1");
+}
+
+function collectJsxComponents(rawSource: string): Set<string> {
+  const source = stripComments(rawSource);
   const used = new Set<string>();
   // (^|[^\w$.)\]>]) evita casar argumentos de tipo (useState<Step>, forwardRef<HTMLDivElement>).
   const jsxRe = /(^|[^\w$.)\]>])<\s*([A-Z][\w$]*)(?:\.[\w$]+)*[\s/>]/gm;

@@ -708,6 +708,16 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
           <section className="space-y-4">
             <h2 className="text-base font-bold">Revisar e agendar</h2>
 
+            {summary.priority && (
+              <p
+                data-testid="triage-priority-badge"
+                className="inline-flex items-center gap-2 rounded-full border-2 border-destructive/40 bg-destructive/10 px-3 py-1 text-xs font-semibold text-destructive"
+              >
+                Prioridade · urgência informada em até 3 dias úteis
+              </p>
+            )}
+
+
             <dl className="space-y-1.5 rounded-lg border border-border bg-muted/30 p-3 text-sm">
               {summary.equipment && <div><dt className="inline font-medium">Equipamento: </dt><dd className="inline">{summary.equipment}</dd></div>}
               {summary.brandModel && <div><dt className="inline font-medium">Marca/modelo: </dt><dd className="inline">{summary.brandModel}</dd></div>}

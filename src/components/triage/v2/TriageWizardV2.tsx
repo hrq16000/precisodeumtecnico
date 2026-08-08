@@ -27,6 +27,7 @@ import {
   GEO_PREFILL_CONFIDENCE, GEO_CONFIDENCE_LABEL,
 } from "@/lib/geoPrefill";
 import { persistTriageEvent } from "@/lib/triageEventBuffer";
+import { readTriageDraft, saveTriageDraft, clearTriageDraft, mergeTriageDraft } from "@/lib/triage/draft";
 
 import { trackWhatsAppClick } from "@/lib/analytics";
 import { logWaEvent } from "@/lib/waAudit";
@@ -52,7 +53,9 @@ const prefersReducedMotion = () =>
   window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
 export function TriageWizardV2({ source = "triagem", onClose }: Props) {
-  const [state, rawDispatch] = useReducer(reducerV2, undefined, makeInitialStateV2);
+  const [state, rawDispatch] = useReducer(reducerV2, undefined, () =>
+    mergeTriageDraft(makeInitialStateV2(), readTriageDraft()),
+  );
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [copyFallback, setCopyFallback] = useState<string | null>(null);
@@ -157,6 +160,13 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
   useEffect(() => {
     persistTriageGeo({ city: state.contact.city, neighborhood: state.contact.neighborhood });
   }, [state.contact.city, state.contact.neighborhood]);
+
+  // ---------- rascunho do funil (sobrevive a recarregamento, TTL de 6h)
+  useEffect(() => {
+    if (completedRef.current) return;
+    saveTriageDraft(state);
+  }, [state]);
+
 
   // ---------- foco automático no primeiro campo inválido
   useEffect(() => {
@@ -306,6 +316,8 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
 
       // Analytics — qualificação curta (nome, bairro, urgência, sintoma)
       completedRef.current = true;
+      // Funil concluído: descarta o rascunho para não reabrir com dados antigos.
+      clearTriageDraft();
       const pageUrl = typeof window !== "undefined" ? window.location.href : undefined;
       const qualification = {
         lead_name: state.contact.name.trim().split(" ")[0],

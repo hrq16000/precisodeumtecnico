@@ -27,6 +27,7 @@ import { PageTableOfContents } from "@/components/layout/PageTableOfContents";
 import { RelatedGuidesCard, GUIDE_LINKS } from "@/components/seo/RelatedGuidesCard";
 
 import { RelatedServiceLinks } from "@/components/seo/RelatedServiceLinks";
+import { LocalReviewsBand } from "@/components/reviews/LocalReviewsBand";
 
 const PC_GAMER = SERVICES_CATALOG["pc-gamer"];
 import { PublicPhotoBand } from "@/components/media/PublicPhotoBand";
@@ -410,6 +411,13 @@ const ServicoDetalhe = () => {
                   </div>
                 </div>
               )}
+
+              {/* Depoimentos reais da cidade/bairro do visitante (oculto se não houver) */}
+              <LocalReviewsBand
+                serviceName={service.title}
+                source={`servico-${slug}-depoimentos-locais`}
+                className="mb-12"
+              />
 
               {/* Interlinking contextual entre serviços correlatos (anti-canibalização) */}
               {slug && <RelatedServiceLinks slug={slug} />}

@@ -136,7 +136,9 @@ const AreasAtendidas = () => {
                 ...(nationalCities.length > 0
                   ? [{ id: "cobertura-nacional", label: "Atendimento nacional" }]
                   : []),
+                { id: "cobertura-prova-social", label: "Quem já foi atendido" },
                 { id: "cobertura-faq", label: "Perguntas sobre cobertura" },
+
               ]}
             />
             <div className="grid gap-6 md:grid-cols-3 mb-12">

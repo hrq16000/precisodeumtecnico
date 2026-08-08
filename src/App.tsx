@@ -135,7 +135,8 @@ const App = () => (
                 <Route path="/status-da-ordem-de-servico" element={<StatusOrdemServico />} />
                 <Route path="/exclusao-de-dados" element={<ExclusaoDeDados />} />
 
-                <Route path="/termos-uso" element={<TermosOrcamento />} />
+                <Route path="/termos-uso" element={<TermosDeUso />} />
+                <Route path="/politica-de-anuncios" element={<PoliticaDeAnuncios />} />
                 <Route path="/servico-em/:city/:service" element={<ServicoCidade />} />
                 <Route path="/precos" element={<Precos />} />
                 <Route path="/blog" element={<Blog />} />

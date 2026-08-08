@@ -182,6 +182,9 @@ export function Footer() {
               <Link to="/termos-uso" className="text-background/60 hover:text-background text-sm transition-colors">
                 Termos de Uso
               </Link>
+              <Link to="/anuncie" className="text-background/60 hover:text-background text-sm transition-colors">
+                Anuncie / Mídia Kit
+              </Link>
               <Link to="/politica-de-anuncios" className="text-background/60 hover:text-background text-sm transition-colors">
                 Política de Anúncios
               </Link>

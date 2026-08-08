@@ -155,14 +155,14 @@ function buildIndex(): SearchEntry[] {
     for (const service of ["reparo-smart-tv", "configuracao-wifi"] as const) {
       entries.push({
         id: `bairro-${service}-${bairro.slug}`,
-        title: `${SERVICO_META[service].nome} em ${bairro.nome}, Curitiba`,
+        title: `${SERVICO_META[service].label} em ${bairro.nome}, Curitiba`,
         description: `Atendimento na rota da região ${REGIAO_LABEL[bairro.regiao]} de Curitiba.`,
         path: `/servicos/${service}/curitiba/${bairro.slug}`,
         type: "bairro",
-        service: SERVICO_META[service].nome,
+        service: SERVICO_META[service].label,
         city: "Curitiba",
         bairro: bairro.nome,
-        keywords: [bairro.nome, "curitiba", SERVICO_META[service].nome],
+        keywords: [bairro.nome, "curitiba", SERVICO_META[service].label],
       });
     }
   }
@@ -172,13 +172,13 @@ function buildIndex(): SearchEntry[] {
     for (const service of ["reparo-smart-tv", "configuracao-wifi"] as const) {
       entries.push({
         id: `cidade-${service}-${cidade.slug}`,
-        title: `${SERVICO_META[service].nome} em ${cidade.nome}`,
+        title: `${SERVICO_META[service].label} em ${cidade.nome}`,
         description: cidade.prazoDeslocamento,
         path: `/servicos/${service}/${cidade.slug}`,
         type: "cidade",
-        service: SERVICO_META[service].nome,
+        service: SERVICO_META[service].label,
         city: cidade.nome,
-        keywords: [cidade.nome, SERVICO_META[service].nome],
+        keywords: [cidade.nome, SERVICO_META[service].label],
       });
     }
   }

@@ -74,7 +74,6 @@ const serviceCategories: {
     title: "Informática e Computadores",
     icon: Monitor,
     color: "bg-blue-500/10 text-blue-600",
-    hub: "/servicos/informatica",
     services: [
       { name: "Formatação de Computadores", href: "/formatacao-de-computador-curitiba" },
       { name: "Limpeza de Computador" },
@@ -90,7 +89,6 @@ const serviceCategories: {
     title: "Notebooks",
     icon: Laptop,
     color: "bg-indigo-500/10 text-indigo-600",
-    hub: "/servicos/notebooks",
     services: [
       { name: "Conserto de Notebook", href: "/conserto-de-notebook-curitiba" },
       { name: "Troca de Tela de Notebook" },
@@ -106,7 +104,6 @@ const serviceCategories: {
     title: "CFTV e Câmeras de Segurança",
     icon: Camera,
     color: "bg-purple-500/10 text-purple-600",
-    hub: "/servicos/cftv",
     services: [
       { name: "Instalação de Câmeras" },
       { name: "Manutenção de CFTV" },
@@ -122,7 +119,6 @@ const serviceCategories: {
     title: "Elétrica",
     icon: Zap,
     color: "bg-yellow-500/10 text-yellow-600",
-    hub: "/servicos/eletrica",
     services: [
       { name: "Instalação de Tomadas" },
       { name: "Troca de Disjuntores" },
@@ -138,7 +134,6 @@ const serviceCategories: {
     title: "Redes e Wi-Fi",
     icon: Wifi,
     color: "bg-cyan-500/10 text-cyan-600",
-    hub: "/servicos/redes",
     services: [
       { name: "Instalação de Roteador" },
       { name: "Configuração de Wi-Fi", href: "/servicos/configuracao-wifi-curitiba" },
@@ -154,7 +149,6 @@ const serviceCategories: {
     title: "Ar-Condicionado",
     icon: Wind,
     color: "bg-teal-500/10 text-teal-600",
-    hub: "/servicos/ar-condicionado",
     services: [
       { name: "Instalação de Ar-Condicionado" },
       { name: "Limpeza de Ar-Condicionado" },
@@ -168,11 +162,10 @@ const serviceCategories: {
     title: "TV e Eletrônicos",
     icon: Tv,
     color: "bg-rose-500/10 text-rose-600",
-    hub: "/servicos/tvs",
     services: [
-      { name: "Conserto de TV", href: "/servicos/conserto-tv" },
+      { name: "Conserto de TV" },
       { name: "Instalação de TV na Parede" },
-      { name: "Conserto de Videogame", href: "/servicos/games" },
+      { name: "Conserto de Videogame" },
       { name: "Reparo de PlayStation" },
       { name: "Reparo de Xbox" },
       { name: "Conserto de Som" },
@@ -182,7 +175,6 @@ const serviceCategories: {
     title: "Servidores e Data Centers",
     icon: Server,
     color: "bg-slate-500/10 text-slate-600",
-    hub: "/servicos/servidores",
     services: [
       { name: "Instalação de Servidor" },
       { name: "Configuração de Servidor" },
@@ -196,7 +188,6 @@ const serviceCategories: {
     title: "Celulares e Tablets",
     icon: Smartphone,
     color: "bg-emerald-500/10 text-emerald-600",
-    hub: "/servicos/celulares",
     services: [
       { name: "Troca de Tela de Celular" },
       { name: "Troca de Bateria de Celular" },
@@ -209,7 +200,6 @@ const serviceCategories: {
     title: "Impressoras",
     icon: Printer,
     color: "bg-orange-500/10 text-orange-600",
-    hub: "/servicos/impressoras",
     services: [
       { name: "Instalação de Impressora" },
       { name: "Manutenção de Impressora" },
@@ -222,7 +212,6 @@ const serviceCategories: {
     title: "Manutenção Predial",
     icon: Building,
     color: "bg-amber-500/10 text-amber-600",
-    hub: "/servicos/manutencao-predial",
     services: [
       { name: "Manutenção Comercial" },
       { name: "Manutenção Industrial" },
@@ -235,7 +224,6 @@ const serviceCategories: {
     title: "Serviços Gerais",
     icon: Wrench,
     color: "bg-stone-500/10 text-stone-600",
-    hub: "/servicos/servicos-gerais",
     services: [
       { name: "Hidráulica Básica" },
       { name: "Montagem de Móveis" },

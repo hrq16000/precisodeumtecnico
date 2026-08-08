@@ -1,23 +1,13 @@
 {
   "publisher": "pub-3762170279587706",
-  "mode": "remote",
-  "checkedAt": "2026-08-08T00:58:48.274Z",
+  "mode": "local",
+  "checkedAt": "2026-08-08T06:24:55.636Z",
   "ok": true,
   "results": [
     {
       "check": "public/ads.txt",
       "ok": true,
       "detail": "linha DIRECT de pub-3762170279587706 presente"
-    },
-    {
-      "check": "https://precisodeumtecnico.com/ads.txt",
-      "ok": true,
-      "detail": "publicado e correto"
-    },
-    {
-      "check": "metatag google-adsense-account",
-      "ok": true,
-      "detail": "ca-pub-3762170279587706 presente no <head>"
     }
   ]
 }

@@ -41,7 +41,9 @@ export interface TriageStateV2 {
   termsAccepted: Record<string, boolean>; // { minimum, cancel, sla, remote, visit }
   termsAcceptedAt?: string;
   finalNotes?: string;
-  contact: { name: string; phone: string; email: string; neighborhood: string };
+  contact: { name: string; phone: string; email: string; neighborhood: string; city?: string };
+  /** Preferência opcional de agendamento (não bloqueia o envio). */
+  scheduling?: { preferredDate?: string; preferredSlot?: string };
   validationErrors: Record<string, string>;
 }
 
@@ -60,9 +62,43 @@ export function makeInitialStateV2(): TriageStateV2 {
     deviceDetails: {},
     contextualAnswers: {},
     termsAccepted: {},
-    contact: { name: "", phone: "", email: "", neighborhood: "" },
+    contact: { name: "", phone: "", email: "", neighborhood: "", city: "" },
+    scheduling: {},
     validationErrors: {},
   };
+}
+
+// ---------------------------------------------------------------------------
+// Prioridade de atendimento (urgência)
+// ---------------------------------------------------------------------------
+/** Urgência que aciona sinalização de prioridade para o time. */
+export const PRIORITY_URGENCY: UrgencyId = "72h";
+
+export function isPriorityUrgency(state: TriageStateV2): boolean {
+  return state.urgency === PRIORITY_URGENCY;
+}
+
+/** Faixas de horário oferecidas como preferência (não vinculantes). */
+export const SCHEDULING_SLOTS = [
+  { id: "manha", label: "Manhã (08h–12h)" },
+  { id: "tarde", label: "Tarde (13h–18h)" },
+  { id: "noite", label: "Início da noite (18h–20h)" },
+] as const;
+
+export type SchedulingSlotId = (typeof SCHEDULING_SLOTS)[number]["id"];
+
+/** Texto humano da preferência de agendamento, ou undefined se não informada. */
+export function formatSchedulingPreference(state: TriageStateV2): string | undefined {
+  const date = state.scheduling?.preferredDate?.trim();
+  const slot = state.scheduling?.preferredSlot?.trim();
+  if (!date && !slot) return undefined;
+  const slotLabel = SCHEDULING_SLOTS.find((s) => s.id === slot)?.label ?? slot;
+  let dateLabel: string | undefined;
+  if (date) {
+    const m = date.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    dateLabel = m ? `${m[3]}/${m[2]}/${m[1]}` : date;
+  }
+  return [dateLabel, slotLabel].filter(Boolean).join(" · ");
 }
 
 // ---------------------------------------------------------------------------
@@ -264,6 +300,9 @@ export interface TriageSummary {
   minimum?: string;
   sla?: string;
   notes?: string;
+  city?: string;
+  scheduling?: string;
+  priority?: boolean;
 }
 
 function labelForOption(q: Question | undefined, value: string): string {
@@ -307,6 +346,9 @@ export function buildTriageSummary(state: TriageStateV2): TriageSummary {
   }
 
   summary.notes = state.finalNotes || state.contextualAnswers.notes || undefined;
+  summary.city = state.contact.city?.trim() || undefined;
+  summary.scheduling = formatSchedulingPreference(state);
+  summary.priority = isPriorityUrgency(state);
   return summary;
 }
 
@@ -320,11 +362,15 @@ export function buildWhatsAppTriageMessage(state: TriageStateV2): string {
   const dt = `${now.toLocaleDateString("pt-BR")} ${now.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}`;
 
   const template = getMessageTemplate(state.equipment);
-  const lines: string[] = [template.intro, ""];
+  const lines: string[] = [];
+  // Sinalização de prioridade — primeira linha, para o time triar na fila.
+  if (s.priority) lines.push("[PRIORIDADE · URGENTE — atendimento em até 3 dias úteis]");
+  lines.push(template.intro, "");
   const push = (label: string, value?: string) => { if (value && value.trim()) lines.push(`${label}: ${value}`); };
 
-  // Qualificação curta (nome, bairro, urgência, sintoma) — primeiro bloco.
+  // Qualificação curta (nome, cidade, bairro, urgência, sintoma) — primeiro bloco.
   push("Nome", state.contact.name?.trim());
+  push("Cidade", s.city);
   push("Bairro", state.contact.neighborhood?.trim());
   push("Equipamento", s.equipment);
   push("Marca/modelo", s.brandModel);
@@ -338,6 +384,11 @@ export function buildWhatsAppTriageMessage(state: TriageStateV2): string {
   push("Modalidade indicada", s.route);
   push("Valor mínimo informado", s.minimum);
   push("Prazo informado", s.sla);
+  if (s.scheduling) {
+    lines.push("");
+    push("Preferência de agendamento", s.scheduling);
+    lines.push("Se este horário não servir, responda REAGENDAR que eu envio outras opções.");
+  }
   lines.push("");
   lines.push("Confirmo que li e aceitei as condições apresentadas no funil.");
   if (s.notes) push("Observação adicional", s.notes);
@@ -353,6 +404,7 @@ export function buildWhatsAppTriageMessage(state: TriageStateV2): string {
     symptomSlug: state.symptom,
     pathname: typeof window !== "undefined" ? window.location.pathname : "",
     neighborhoodFallback: state.contact.neighborhood?.trim() || undefined,
+    cityFallback: state.contact.city?.trim() || undefined,
     urgency: state.urgency,
   });
   if (ctx) lines.push(ctx);
@@ -378,13 +430,16 @@ export function buildTriageContextSuffix(opts: {
   pathname?: string;
   /** Bairro informado na qualificação, usado quando a rota não traz bairro. */
   neighborhoodFallback?: string;
+  /** Cidade informada na qualificação, usada quando a rota não traz cidade. */
+  cityFallback?: string;
   urgency?: string;
 }): string {
   const parts: string[] = [];
   if (opts.equipment) parts.push(`cat=${opts.equipment}`);
   if (opts.symptomSlug) parts.push(`sym=${opts.symptomSlug}`);
   const { city, bairro } = parseCityBairroFromPathname(opts.pathname ?? "");
-  if (city) parts.push(`cidade=${city}`);
+  const cityToken = city ?? (opts.cityFallback ? slugifyToken(opts.cityFallback) : undefined);
+  if (cityToken) parts.push(`cidade=${cityToken}`);
   const nb = bairro ?? (opts.neighborhoodFallback ? slugifyToken(opts.neighborhoodFallback) : undefined);
   if (nb) parts.push(`bairro=${nb}`);
   if (opts.urgency) parts.push(`urg=${opts.urgency}`);
@@ -429,6 +484,7 @@ export type ActionV2 =
   | { type: "TOGGLE_TERM"; key: string; value: boolean }
   | { type: "SET_CONTACT"; field: keyof TriageStateV2["contact"]; value: string }
   | { type: "SET_FINAL_NOTES"; value: string }
+  | { type: "SET_SCHEDULING"; field: "preferredDate" | "preferredSlot"; value: string }
   | { type: "GOTO"; step: StepId }
   | { type: "NEXT" }
   | { type: "BACK" }
@@ -462,6 +518,8 @@ export function reducerV2(state: TriageStateV2, action: ActionV2): TriageStateV2
       return { ...state, contact: { ...state.contact, [action.field]: action.value } };
     case "SET_FINAL_NOTES":
       return { ...state, finalNotes: action.value };
+    case "SET_SCHEDULING":
+      return { ...state, scheduling: { ...(state.scheduling ?? {}), [action.field]: action.value } };
     case "GOTO":
       return { ...state, currentStep: action.step };
     case "NEXT": {

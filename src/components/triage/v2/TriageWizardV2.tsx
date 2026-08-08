@@ -17,10 +17,15 @@ import {
   determineServiceRoute, getFirstIncompleteField, getPricingRules,
   makeInitialStateV2, reducerV2, STEP_ORDER, validateCurrentStep,
   type StepId, type TriageStateV2,
+  SCHEDULING_SLOTS,
+  formatSchedulingPreference,
 } from "@/lib/triage/engine";
 import { WHATSAPP_NUMBER } from "@/lib/whatsapp";
 import { pushLocalAnalyticsEvent } from "@/lib/localAnalytics";
-import { readGeoPrefill, GEO_PREFILL_LABEL } from "@/lib/geoPrefill";
+import {
+  readGeoPrefill, persistTriageGeo, GEO_PREFILL_LABEL,
+  GEO_PREFILL_CONFIDENCE, GEO_CONFIDENCE_LABEL,
+} from "@/lib/geoPrefill";
 import { persistTriageEvent } from "@/lib/triageEventBuffer";
 
 import { trackWhatsAppClick } from "@/lib/analytics";
@@ -123,16 +128,22 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
     }
   }, [source]);
 
-  // ---------- prefill geográfico (rota > GPS/manual > IP)
+  // ---------- prefill geográfico (rota > manual persistido > GPS > IP)
   const geoPrefill = useMemo(() => readGeoPrefill(), []);
   const geoAppliedRef = useRef(false);
   useEffect(() => {
     if (geoAppliedRef.current) return;
     const nb = geoPrefill.neighborhood?.trim();
-    if (!nb) return;
-    if (state.contact.neighborhood.trim()) return;
+    const ct = geoPrefill.city?.trim();
+    if (!nb && !ct) return;
+    if (state.contact.neighborhood.trim() && (state.contact.city ?? "").trim()) return;
     geoAppliedRef.current = true;
-    rawDispatch({ type: "SET_CONTACT", field: "neighborhood", value: nb });
+    if (nb && !state.contact.neighborhood.trim()) {
+      rawDispatch({ type: "SET_CONTACT", field: "neighborhood", value: nb });
+    }
+    if (ct && !(state.contact.city ?? "").trim()) {
+      rawDispatch({ type: "SET_CONTACT", field: "city", value: ct });
+    }
     pushLocalAnalyticsEvent({
       event: "triage_geo_prefill",
       source: `${source}:geo-${geoPrefill.source}`,
@@ -140,7 +151,12 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
       neighborhood: nb,
       page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
     });
-  }, [geoPrefill, state.contact.neighborhood, source]);
+  }, [geoPrefill, state.contact.neighborhood, state.contact.city, source]);
+
+  // ---------- persistência de cidade/bairro entre re-renders e reaberturas
+  useEffect(() => {
+    persistTriageGeo({ city: state.contact.city, neighborhood: state.contact.neighborhood });
+  }, [state.contact.city, state.contact.neighborhood]);
 
   // ---------- foco automático no primeiro campo inválido
   useEffect(() => {
@@ -233,6 +249,7 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
         email: state.contact.email.trim(),
         phone: state.contact.phone.trim(),
         neighborhood: state.contact.neighborhood.trim() || undefined,
+        city: state.contact.city?.trim() || undefined,
         category: state.equipment,
         brand: state.deviceDetails.brand || state.deviceDetails.equipment_name,
         model: state.deviceDetails.model,
@@ -293,7 +310,10 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
       const qualification = {
         lead_name: state.contact.name.trim().split(" ")[0],
         neighborhood: state.contact.neighborhood.trim(),
+        city: state.contact.city?.trim() || undefined,
         urgency: state.urgency,
+        priority: summary.priority ? "1" : "0",
+        scheduling_preference: schedulingPreference,
         symptom_slug: state.symptom,
         symptom_label: summary.symptom,
         category: state.equipment,
@@ -434,6 +454,7 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
 
   const summary = buildTriageSummary(state);
   const pricing = getPricingRules(state);
+  const schedulingPreference = formatSchedulingPreference(state);
 
   return (
     <div className="mx-auto flex h-full max-h-[100dvh] w-full max-w-[620px] flex-col overflow-hidden rounded-none bg-card sm:h-auto sm:max-h-[92dvh] sm:rounded-2xl sm:border sm:border-border sm:shadow-xl">
@@ -691,6 +712,16 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
           <section className="space-y-4">
             <h2 className="text-base font-bold">Revisar e agendar</h2>
 
+            {summary.priority && (
+              <p
+                data-testid="triage-priority-badge"
+                className="inline-flex items-center gap-2 rounded-full border-2 border-destructive/40 bg-destructive/10 px-3 py-1 text-xs font-semibold text-destructive"
+              >
+                Prioridade · urgência informada em até 3 dias úteis
+              </p>
+            )}
+
+
             <dl className="space-y-1.5 rounded-lg border border-border bg-muted/30 p-3 text-sm">
               {summary.equipment && <div><dt className="inline font-medium">Equipamento: </dt><dd className="inline">{summary.equipment}</dd></div>}
               {summary.brandModel && <div><dt className="inline font-medium">Marca/modelo: </dt><dd className="inline">{summary.brandModel}</dd></div>}
@@ -734,6 +765,12 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
                 {errors.phone && <p role="alert" className="text-xs text-destructive">{errors.phone}</p>}
               </div>
               <div className="sm:col-span-2">
+                <Label htmlFor="triage-field-city">Cidade do atendimento</Label>
+                <Input id="triage-field-city" value={state.contact.city ?? ""} maxLength={120}
+                  onChange={(e) => dispatch({ type: "SET_CONTACT", field: "city", value: e.target.value })}
+                  placeholder="Ex.: Curitiba, São José dos Pinhais, Pinhais" />
+              </div>
+              <div className="sm:col-span-2">
                 <Label htmlFor="triage-field-neighborhood">Bairro do atendimento</Label>
                 <Input id="triage-field-neighborhood" value={state.contact.neighborhood} maxLength={120}
                   onChange={(e) => dispatch({ type: "SET_CONTACT", field: "neighborhood", value: e.target.value })}
@@ -744,6 +781,15 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
                     {GEO_PREFILL_LABEL[geoPrefill.source]} — edite se precisar.
                   </p>
                 )}
+                {geoPrefill.source !== "none" && (
+                  <p
+                    data-testid="triage-geo-confidence"
+                    data-confidence={GEO_PREFILL_CONFIDENCE[geoPrefill.source]}
+                    className="mt-1 inline-flex items-center rounded-full border border-border bg-muted/40 px-2 py-0.5 text-[11px] text-muted-foreground"
+                  >
+                    {GEO_CONFIDENCE_LABEL[GEO_PREFILL_CONFIDENCE[geoPrefill.source]]}
+                  </p>
+                )}
               </div>
               <div className="sm:col-span-2">
                 <Label htmlFor="triage-field-email">E-mail</Label>
@@ -752,12 +798,62 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
                   aria-invalid={!!errors.email} />
                 {errors.email && <p role="alert" className="text-xs text-destructive">{errors.email}</p>}
               </div>
+
+              {/* Preferência de agendamento (opcional) */}
+              <div>
+                <Label htmlFor="triage-field-preferred-date">Data preferida (opcional)</Label>
+                <Input
+                  id="triage-field-preferred-date"
+                  type="date"
+                  value={state.scheduling?.preferredDate ?? ""}
+                  min={new Date().toISOString().slice(0, 10)}
+                  onChange={(e) => dispatch({ type: "SET_SCHEDULING", field: "preferredDate", value: e.target.value })}
+                />
+              </div>
+              <div>
+                <Label className="text-sm font-medium">Período preferido (opcional)</Label>
+                <div role="radiogroup" aria-label="Período preferido" className="mt-1 grid gap-2">
+                  {SCHEDULING_SLOTS.map((slot) => {
+                    const selected = state.scheduling?.preferredSlot === slot.id;
+                    return (
+                      <button
+                        key={slot.id}
+                        type="button"
+                        role="radio"
+                        aria-checked={selected}
+                        onClick={() =>
+                          dispatch({
+                            type: "SET_SCHEDULING",
+                            field: "preferredSlot",
+                            value: selected ? "" : slot.id,
+                          })
+                        }
+                        className={cn(
+                          "min-h-[44px] rounded-lg border-2 px-3 py-2 text-left text-sm transition",
+                          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                          selected ? "border-primary bg-primary/5 shadow-sm" : "border-border hover:border-primary/40",
+                        )}
+                      >
+                        {slot.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
               <div className="sm:col-span-2">
                 <Label htmlFor="triage-final-notes">Observação adicional (opcional)</Label>
                 <Textarea id="triage-final-notes" value={state.finalNotes ?? ""} maxLength={1000}
                   onChange={(e) => dispatch({ type: "SET_FINAL_NOTES", value: e.target.value })} />
               </div>
             </div>
+
+            {schedulingPreference && (
+              <p data-testid="triage-scheduling-confirm" className="rounded-lg border border-border bg-muted/30 p-3 text-xs text-muted-foreground">
+                Vamos confirmar no WhatsApp a preferência <strong className="text-foreground">{schedulingPreference}</strong>.
+                Se precisar mudar, responda <strong className="text-foreground">REAGENDAR</strong> na conversa que enviamos outras opções.
+              </p>
+            )}
 
             {submitError && <p role="alert" className="text-sm text-destructive">{submitError}</p>}
 

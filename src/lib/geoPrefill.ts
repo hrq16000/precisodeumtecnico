@@ -18,6 +18,34 @@ export type GeoPrefill = {
   source: "route" | "gps" | "manual" | "ip" | "none";
 };
 
+/** Chave onde a triagem persiste o que o próprio usuário digitou/corrigiu. */
+export const TRIAGE_GEO_KEY = "pdt_triage_geo_v1";
+
+/** Persiste cidade/bairro informados manualmente no funil (sobrevive a re-render/reabertura). */
+export function persistTriageGeo(value: { city?: string; neighborhood?: string }): void {
+  try {
+    if (typeof window === "undefined") return;
+    const city = value.city?.trim();
+    const neighborhood = value.neighborhood?.trim();
+    if (!city && !neighborhood) return;
+    window.localStorage.setItem(TRIAGE_GEO_KEY, JSON.stringify({ city, neighborhood }));
+  } catch {
+    /* noop */
+  }
+}
+
+function readPersistedTriageGeo(): { city?: string; neighborhood?: string } | null {
+  try {
+    const raw = localStorage.getItem(TRIAGE_GEO_KEY);
+    if (!raw) return null;
+    const p = JSON.parse(raw) as { city?: string; neighborhood?: string };
+    if (p?.city || p?.neighborhood) return p;
+  } catch {
+    /* noop */
+  }
+  return null;
+}
+
 function titleize(slug?: string): string | undefined {
   if (!slug) return undefined;
   return slug
@@ -38,6 +66,11 @@ export function readGeoPrefill(pathname?: string): GeoPrefill {
       neighborhood: titleize(fromRoute.bairro),
       source: "route",
     };
+  }
+
+  const persisted = readPersistedTriageGeo();
+  if (persisted) {
+    return { city: persisted.city, neighborhood: persisted.neighborhood, source: "manual" };
   }
 
   try {
@@ -70,4 +103,20 @@ export const GEO_PREFILL_LABEL: Record<GeoPrefill["source"], string> = {
   manual: "Confirmado por você",
   ip: "Detectado automaticamente pelo seu acesso",
   none: "",
+};
+
+/** Indicador de confiança exibido ao lado dos campos de cidade/bairro. */
+export const GEO_PREFILL_CONFIDENCE: Record<GeoPrefill["source"], "alta" | "media" | "baixa" | "nenhuma"> = {
+  manual: "alta",
+  gps: "alta",
+  route: "media",
+  ip: "baixa",
+  none: "nenhuma",
+};
+
+export const GEO_CONFIDENCE_LABEL: Record<"alta" | "media" | "baixa" | "nenhuma", string> = {
+  alta: "Confiança alta",
+  media: "Confiança média",
+  baixa: "Confiança baixa — confirme por favor",
+  nenhuma: "",
 };

@@ -9,14 +9,14 @@ describe("rascunho do funil de triagem", () => {
 
   it("persiste e restaura respostas do funil", () => {
     const s = makeInitialStateV2();
-    s.equipment = "notebook";
+    s.equipment = "pc_notebook";
     s.contact.city = "Curitiba";
     s.contact.neighborhood = "Portão";
     s.scheduling = { preferredDate: "2026-08-10", preferredSlot: "manha" };
     saveTriageDraft(s);
 
     const restored = readTriageDraft();
-    expect(restored?.equipment).toBe("notebook");
+    expect(restored?.equipment).toBe("pc_notebook");
     expect(restored?.contact.city).toBe("Curitiba");
     expect(restored?.scheduling?.preferredSlot).toBe("manha");
   });

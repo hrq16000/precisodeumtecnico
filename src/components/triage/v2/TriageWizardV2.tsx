@@ -310,7 +310,10 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
       const qualification = {
         lead_name: state.contact.name.trim().split(" ")[0],
         neighborhood: state.contact.neighborhood.trim(),
+        city: state.contact.city?.trim() || undefined,
         urgency: state.urgency,
+        priority: summary.priority ? "1" : "0",
+        scheduling_preference: schedulingPreference,
         symptom_slug: state.symptom,
         symptom_label: summary.symptom,
         category: state.equipment,

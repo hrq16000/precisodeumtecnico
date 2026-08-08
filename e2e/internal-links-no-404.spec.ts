@@ -30,14 +30,19 @@ const SEEDS = [
 /** Limite de destinos visitados por execução — mantém o spec sob o timeout. */
 const MAX_TARGETS = 220;
 
+/**
+ * Não são rotas do app: âncoras, externos, endpoints e arquivos estáticos
+ * (o navegador inicia download em vez de navegar — não há página para avaliar).
+ */
+const ASSET_EXT =
+  /\.(xml|txt|json|pdf|zip|csv|png|jpe?g|webp|avif|svg|gif|ico|mp4|webm|mp3|woff2?)$/i;
+
 const SKIP = (href: string) =>
   href.startsWith("//") ||
   href.startsWith("/#") ||
   href.includes("://") ||
   href.startsWith("/api/") ||
-  href.endsWith(".xml") ||
-  href.endsWith(".txt") ||
-  href.endsWith(".json");
+  ASSET_EXT.test(href.split("#")[0].split("?")[0]);
 
 function normalize(href: string): string {
   const [path] = href.split("#");

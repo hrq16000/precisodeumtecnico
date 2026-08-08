@@ -91,6 +91,8 @@ const mainUrls: Url[] = [
   { loc: `${BASE}/politica-de-pecas-do-cliente`, changefreq: "monthly", priority: 0.6, lastmod: fileDate("src/pages/PoliticaPecasCliente.tsx") },
   { loc: `${BASE}/creditos-de-imagens`, changefreq: "monthly", priority: 0.3, lastmod: fileDate("src/pages/CreditosDeImagens.tsx") },
   { loc: `${BASE}/politica-privacidade`, changefreq: "yearly", priority: 0.4, lastmod: fileDate("src/pages/PoliticaPrivacidade.tsx") },
+  { loc: `${BASE}/termos-uso`, changefreq: "yearly", priority: 0.4, lastmod: fileDate("src/pages/TermosDeUso.tsx") },
+  { loc: `${BASE}/politica-de-anuncios`, changefreq: "yearly", priority: 0.4, lastmod: fileDate("src/pages/PoliticaDeAnuncios.tsx") },
   { loc: `${BASE}/como-avaliar`, changefreq: "monthly", priority: 0.5, lastmod: fileDate("src/pages/ComoAvaliar.tsx") },
   { loc: `${BASE}/avaliacoes`, changefreq: "weekly", priority: 0.75, lastmod: fileDate("src/pages/Avaliacoes.tsx") },
   { loc: `${BASE}/status-os`, changefreq: "weekly", priority: 0.6, lastmod: fileDate("src/pages/StatusOrdemServico.tsx") },

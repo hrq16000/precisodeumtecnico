@@ -56,7 +56,8 @@
     "check:meta": "bunx tsx scripts/check-meta-uniqueness.ts",
     "report:faq-parity": "bunx tsx scripts/report-faq-parity.ts",
     "lhci:locality": "lhci autorun --config=./lighthouserc.locality.cjs",
-    "perf:regression": "bunx tsx scripts/check-perf-regression.ts"
+    "perf:regression": "bunx tsx scripts/check-perf-regression.ts",
+    "check:internal-links": "playwright test e2e/internal-links-no-404.spec.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

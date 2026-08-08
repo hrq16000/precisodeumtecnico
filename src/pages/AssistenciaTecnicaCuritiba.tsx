@@ -258,7 +258,7 @@ export default function AssistenciaTecnicaCuritiba() {
     "@type": "LocalBusiness",
     name: "Preciso de um Técnico",
     description:
-      "Assistência técnica especializada em Curitiba: reparo de consoles, placas de vídeo, computadores, notebooks e smartphones.",
+      "Assistência técnica em informática em Curitiba: manutenção de computadores e notebooks, diagnóstico, upgrade, redes e suporte residencial e empresarial.",
     url: pageUrl,
     image: ogImage,
     areaServed: [
@@ -327,14 +327,14 @@ export default function AssistenciaTecnicaCuritiba() {
   return (
     <Layout>
       <Helmet>
-        <title>Assistência Técnica de Consoles em Curitiba | PS5, Xbox e Switch</title>
+        <title>Assistência Técnica em Informática em Curitiba | Técnico</title>
         <meta
           name="description"
-          content="Reparo de consoles em Curitiba: PlayStation, Xbox, Nintendo Switch, placas de vídeo, PCs e notebooks. Orçamento rápido pelo WhatsApp, 24h."
+          content="Assistência técnica em informática em Curitiba: manutenção de computadores e notebooks, diagnóstico, upgrade, redes e atendimento residencial e empresarial."
         />
         <meta
           name="keywords"
-          content="assistência técnica curitiba, conserto ps5 curitiba, reparo xbox curitiba, conserto nintendo switch curitiba, conserto placa de vídeo curitiba, assistência consoles curitiba"
+          content="assistência técnica informática curitiba, manutenção de computadores curitiba, conserto de notebook curitiba, técnico de informática curitiba, upgrade de computador curitiba"
         />
         <meta name="robots" content="index, follow, max-image-preview:large" />
         <meta name="geo.region" content="BR-PR" />
@@ -344,23 +344,23 @@ export default function AssistenciaTecnicaCuritiba() {
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="Preciso de um Técnico" />
         <meta property="og:locale" content="pt_BR" />
-        <meta property="og:title" content="Assistência Técnica de Consoles em Curitiba" />
+        <meta property="og:title" content="Assistência Técnica em Informática em Curitiba" />
         <meta
           property="og:description"
-          content="Reparo de PS5, Xbox, Nintendo, placas de vídeo, PCs e notebooks em Curitiba. Atendimento via WhatsApp."
+          content="Manutenção de computadores e notebooks, diagnóstico, upgrade e redes em Curitiba. Atendimento via WhatsApp."
         />
         <meta property="og:url" content={pageUrl} />
         {/* og:image / twitter:image ficam a cargo da hospedagem (evita duplicidade). */}
 
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Assistência Técnica de Consoles em Curitiba" />
+        <meta name="twitter:title" content="Assistência Técnica em Informática em Curitiba" />
         <meta
           name="twitter:description"
-          content="Reparo de consoles, GPUs, PCs e notebooks em Curitiba. Atendimento via WhatsApp."
+          content="Manutenção de computadores e notebooks, diagnóstico e redes em Curitiba. Atendimento via WhatsApp."
         />
 
 
-        <script type="application/ld+json">{JSON.stringify(buildWebPageSchema({ url: pageUrl, name: "Assistência Técnica de Consoles em Curitiba | PS5, Xbox e Switch", description: "Reparo de consoles em Curitiba: PlayStation, Xbox, Nintendo Switch, placas de vídeo, PCs e notebooks. Orçamento rápido pelo WhatsApp, 24h." }))}</script>
+        <script type="application/ld+json">{JSON.stringify(buildWebPageSchema({ url: pageUrl, name: "Assistência Técnica em Informática em Curitiba | Técnico", description: "Assistência técnica em informática em Curitiba: manutenção de computadores e notebooks, diagnóstico, upgrade, redes e atendimento residencial e empresarial." }))}</script>
         <script type="application/ld+json">{JSON.stringify(localBusinessSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
@@ -398,7 +398,7 @@ export default function AssistenciaTecnicaCuritiba() {
               custom={1}
               className="mt-5 text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.05] text-foreground"
             >
-              Assistência Técnica Especializada{" "}
+              Assistência Técnica em Informática{" "}
               <span className="text-primary">em Curitiba</span>
             </motion.h1>
 
@@ -409,7 +409,7 @@ export default function AssistenciaTecnicaCuritiba() {
               custom={2}
               className="mt-5 text-lg text-muted-foreground max-w-2xl leading-relaxed"
             >
-              Reparo de <strong className="text-foreground">consoles, placas de vídeo, computadores, notebooks e smartphones</strong>.
+              Manutenção de <strong className="text-foreground">computadores e notebooks</strong>: diagnóstico, limpeza, upgrade, redes e suporte a consoles e demais eletrônicos.
               Diagnóstico rápido, peças de qualidade e serviço com garantia — atendimento direto com o técnico via WhatsApp.
             </motion.p>
 

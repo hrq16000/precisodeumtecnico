@@ -31,6 +31,10 @@ export function normalize(value: string): string {
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, " ")
+    // sinônimos/variações comuns de digitação
+    .replace(/\bwi fi\b/g, "wifi")
+    .replace(/\bpc\b/g, "computador")
+    .replace(/\bnote\b/g, "notebook")
     .trim();
 }
 

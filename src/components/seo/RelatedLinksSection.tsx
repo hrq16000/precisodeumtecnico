@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import { trackCtaClick } from "@/lib/analytics";
+import { trackCtaClick, type CtaSurface } from "@/lib/analytics";
 
 /**
  * Bloco de links internos com âncoras consistentes entre as páginas que mais
@@ -50,7 +50,7 @@ interface RelatedLinksSectionProps {
   items: RelatedLinkKey[];
   title?: string;
   /** Superfície usada no tracking GA4. */
-  surface: string;
+  surface: CtaSurface;
 }
 
 export function RelatedLinksSection({

@@ -41,7 +41,7 @@ const Index = () => {
     <Layout>
       <SEOHead
         title="Preciso de Um Técnico | Assistência Técnica Curitiba 24h"
-        description="Assistência técnica em Curitiba e região: informática, elétrica, CFTV, notebooks e ar-condicionado. WhatsApp 24h. Visita a partir de R$ 99,99."
+        description="Técnico em Curitiba e região no mesmo dia: informática, notebooks, CFTV, elétrica e ar-condicionado. Orçamento antes do reparo. Visita a partir de R$ 99,99."
         canonical="https://precisodeumtecnico.com"
         // Rodada 25.1 — Bloco 0: FAQ da home passa a ter fonte única
         // (src/data/homeFaqs.ts), consumida também pela seção visível.

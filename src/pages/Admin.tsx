@@ -470,7 +470,7 @@ export default function Admin() {
                           {m.isVideo ? (
                             <video src={m.url} controls className="w-full h-40 object-cover" />
                           ) : (
-                            <img src={m.url} alt="mídia" className="w-full h-40 object-cover" />
+                            <img src={m.url} alt="Mídia enviada pelo cliente na triagem técnica" className="w-full h-40 object-cover" />
                           )}
                         </a>
                       ))}

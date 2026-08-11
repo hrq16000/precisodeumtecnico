@@ -61,8 +61,14 @@ async function collectOverflow(page: Page, viewportWidth: number) {
         const style = getComputedStyle(el);
         if (style.display === "none" || style.visibility === "hidden" || style.opacity === "0") continue;
         if (style.position === "fixed") continue;
+        // Elementos acessíveis mas visualmente ocultos (sr-only, skip-link)
+        // usam clip/1px de propósito — não são quebra de layout.
+        if (style.clip !== "auto" || style.clipPath !== "none") continue;
 
         const rect = el.getBoundingClientRect();
+        if (rect.width <= 4 || rect.height <= 4) continue;
+        if (rect.right < 0 || rect.bottom < 0) continue;
+
         if (rect.width === 0 || rect.height === 0) continue;
 
         if (rect.right > viewportWidth + TOLERANCE && !isContainedByClippingAncestor(el)) {

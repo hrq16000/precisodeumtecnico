@@ -50,6 +50,13 @@
     <xhtml:link rel="canonical" href="https://precisodeumtecnico.com/servicos/redes-e-wifi"/>
   </url>
   <url>
+    <loc>https://precisodeumtecnico.com/checklists-de-reparo</loc>
+    <lastmod>2026-08-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="canonical" href="https://precisodeumtecnico.com/checklists-de-reparo"/>
+  </url>
+  <url>
     <loc>https://precisodeumtecnico.com/assistencia-tecnica-curitiba</loc>
     <lastmod>2026-08-11</lastmod>
     <changefreq>weekly</changefreq>

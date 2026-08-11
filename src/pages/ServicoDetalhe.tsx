@@ -219,16 +219,52 @@ const defaultServiceData = {
 };
 
 
+/**
+ * Adapta uma entrada do catálogo canônico (`src/data/services.ts`) para o
+ * formato renderizado por esta rota. O catálogo tem conteúdo próprio e único
+ * por serviço (longDescription, benefícios, processo, FAQs), então NÃO é
+ * página genérica — resolve os links de categoria do Header/Footer que antes
+ * caíam em 404 sem criar soft-404.
+ */
+type CuratedService = (typeof servicesData)[string];
+
+function fromCatalog(slug: string): CuratedService | null {
+  const entry = SERVICES_CATALOG[slug];
+  if (!entry) return null;
+  const paragraphs = entry.longDescription
+    .split(/(?<=\.)\s+(?=[A-ZÀ-Ú])/)
+    .reduce<string[]>((acc, sentence, i) => {
+      const idx = Math.floor(i / 2);
+      acc[idx] = acc[idx] ? `${acc[idx]} ${sentence}` : sentence;
+      return acc;
+    }, []);
+  return {
+    title: entry.title,
+    subtitle: entry.subtitle,
+    description: entry.description,
+    longDescription: paragraphs.length ? paragraphs : [entry.longDescription],
+    benefits: entry.benefits,
+    process: entry.process,
+    faqs: entry.faqs,
+    relatedServices: entry.relatedServices
+      .map((s) => SERVICES_CATALOG[s])
+      .filter(Boolean)
+      .slice(0, 3)
+      .map((s) => ({ name: s.title, href: `/servicos/${s.slug}` })),
+    category: entry.title,
+  };
+}
+
 const ServicoDetalhe = () => {
   const { slug } = useParams<{ slug: string }>();
-  const hasCuratedEntry = !!(slug && servicesData[slug]);
+  const curated = slug ? servicesData[slug] ?? fromCatalog(slug) : null;
 
-  // Rodada 3L — anti soft-404: slug fora do catálogo curado não pode render
-  // uma página genérica indexável (era assim que /servicos/<qualquer-coisa>
-  // "existia"). Sem entrada curada, a rota responde como não encontrada.
-  if (!hasCuratedEntry) return <NotFound />;
+  // Rodada 3L — anti soft-404: slug sem conteúdo próprio (nem curado, nem no
+  // catálogo canônico) não pode render uma página genérica indexável.
+  if (!curated) return <NotFound />;
 
-  const service = servicesData[slug!];
+  const service = curated;
+
   const displayTitle = service.title;
   const serviceStandard = getServiceStandard(slug);
 

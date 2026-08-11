@@ -237,6 +237,11 @@ jobs:
         run: bunx playwright test e2e/internal-links-no-404.spec.ts --reporter=list
       - name: Gate — UX do hub (mobile e desktop)
         run: bunx playwright test e2e/hub-ux-clickable.spec.ts --reporter=list
+      - name: Gate — alt text descritivo em todas as imagens
+        run: bunx tsx scripts/check-alt-text.ts
+      - name: Gate — integridade de layout (sem overflow/texto cortado)
+        run: bunx playwright test e2e/layout-integrity.spec.ts --reporter=list
+
       - name: RLS E2E — wa_bypass_events policy
         run: bunx playwright test e2e/wa-bypass-rls.spec.ts --reporter=list
       - name: Upload RLS failure trace

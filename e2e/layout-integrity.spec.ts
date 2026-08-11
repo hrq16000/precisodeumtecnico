@@ -69,7 +69,6 @@ async function collectOverflow(page: Page, viewportWidth: number) {
         if (rect.width <= 4 || rect.height <= 4) continue;
         if (rect.right < 0 || rect.bottom < 0) continue;
 
-        if (rect.width === 0 || rect.height === 0) continue;
 
         if (rect.right > viewportWidth + TOLERANCE && !isContainedByClippingAncestor(el)) {
           offenders.push({

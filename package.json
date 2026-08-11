@@ -59,7 +59,8 @@
     "lhci:locality": "lhci autorun --config=./lighthouserc.locality.cjs",
     "perf:regression": "bunx tsx scripts/check-perf-regression.ts",
     "check:internal-links": "playwright test e2e/internal-links-no-404.spec.ts",
-    "check:hub-ux": "playwright test e2e/hub-ux-clickable.spec.ts"
+    "check:hub-ux": "playwright test e2e/hub-ux-clickable.spec.ts",
+    "check:verticals": "bunx tsx scripts/check-refused-verticals.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

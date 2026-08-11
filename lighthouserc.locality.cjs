@@ -19,7 +19,7 @@ const ROUTES = [
   "/atendimento-nacional/sao-paulo",
   "/atendimento-nacional/rio-de-janeiro",
   "/servicos/configuracao-wifi/curitiba",
-  "/servicos/conserto-de-notebook/curitiba/batel",
+  "/servicos/reparo-smart-tv/curitiba/batel",
 ];
 
 module.exports = {

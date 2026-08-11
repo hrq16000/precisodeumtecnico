@@ -19,7 +19,7 @@ const SEEDS = [
   "/regioes/curitiba",
   "/regioes/curitiba/batel",
   "/regioes/sao-jose-dos-pinhais/centro",
-  "/servicos/conserto-de-notebook/curitiba/batel",
+  "/servicos/reparo-smart-tv/curitiba/batel",
   "/atendimento-nacional",
   "/atendimento-nacional/sao-paulo",
   "/faq",

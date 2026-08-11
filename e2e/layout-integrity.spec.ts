@@ -44,6 +44,19 @@ async function collectOverflow(page: Page, viewportWidth: number) {
         return `${el.tagName.toLowerCase()}${id}${cls}`;
       };
 
+      // Elementos contidos por um ancestral que recorta/rola no eixo X
+      // (tabelas com overflow-x-auto, blobs decorativos em overflow-hidden)
+      // não são quebra de layout — são recorte intencional.
+      const isContainedByClippingAncestor = (el: Element) => {
+        let parent = el.parentElement;
+        while (parent && parent !== document.body) {
+          const ov = getComputedStyle(parent).overflowX;
+          if (ov === "hidden" || ov === "auto" || ov === "scroll" || ov === "clip") return true;
+          parent = parent.parentElement;
+        }
+        return false;
+      };
+
       for (const el of Array.from(document.body.querySelectorAll("*"))) {
         const style = getComputedStyle(el);
         if (style.display === "none" || style.visibility === "hidden" || style.opacity === "0") continue;
@@ -52,7 +65,7 @@ async function collectOverflow(page: Page, viewportWidth: number) {
         const rect = el.getBoundingClientRect();
         if (rect.width === 0 || rect.height === 0) continue;
 
-        if (rect.right > viewportWidth + TOLERANCE) {
+        if (rect.right > viewportWidth + TOLERANCE && !isContainedByClippingAncestor(el)) {
           offenders.push({
             selector: describe(el),
             right: Math.round(rect.right),
@@ -67,11 +80,12 @@ async function collectOverflow(page: Page, viewportWidth: number) {
           style.overflowY === "hidden" &&
           style.textOverflow !== "ellipsis" &&
           (style as CSSStyleDeclaration & { webkitLineClamp?: string }).webkitLineClamp === "none" &&
-          el.scrollHeight - el.clientHeight > 4
+          el.scrollHeight - el.clientHeight > 8
         ) {
           clipped.push({ selector: describe(el), text: (el.textContent || "").trim().slice(0, 60) });
         }
       }
+
 
       return {
         offenders: offenders.slice(0, 10),

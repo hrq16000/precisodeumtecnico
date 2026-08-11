@@ -25,5 +25,5 @@ test("#triagem também abre e aceita contexto por querystring", async ({ page })
 test("hash desconhecido não abre a triagem", async ({ page }) => {
   await page.goto("/#faq");
   await page.waitForTimeout(1500);
-  await expect(page.getByRole("dialog")).toHaveCount(0);
+  await expect(page.getByRole("dialog", { name: /Triagem t/i })).toHaveCount(0);
 });

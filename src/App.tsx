@@ -170,6 +170,10 @@ const App = () => (
                 <Route path="/operacao/mensagens-prontas" element={<MensagensProntas />} />
                 <Route path="/operacao/manifesto-de-provas" element={<ManifestoDeProvas />} />
                 <Route path="/operacao/painel-google-business" element={<PainelGoogleBusiness />} />
+                <Route path="/operacao/painel-conversao" element={<PainelConversao />} />
+                <Route path="/area-de-atendimento-curitiba" element={<AreaAtendimentoCuritiba />} />
+                <Route path="/atendimento-urgente" element={<AtendimentoUrgente />} />
+                <Route path="/checklists-de-reparo" element={<ChecklistsReparo />} />
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/blog/categoria/:slug" element={<BlogCategory />} />
                 <Route path="/blog/:slug" element={<BlogPost />} />

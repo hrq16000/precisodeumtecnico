@@ -584,7 +584,4 @@ body[data-triage-open="true"] footer a[href^="tel:"] {
   ::-webkit-scrollbar-corner {
     background: hsl(var(--muted));
   }
-  @media (prefers-reduced-motion: no-preference) {
-    html { scroll-behavior: smooth; }
-  }
 }

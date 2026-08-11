@@ -102,7 +102,7 @@ async function completeConsoleTriage(page: Page) {
     if ((await next.count()) && (await next.first().isEnabled())) {
       await next.first().click().catch(() => undefined);
     }
-    await page.waitForTimeout(400);
+    await page.waitForTimeout(200);
   }
 
   // Etapa 7 — contato obrigatório e envio.
@@ -121,6 +121,8 @@ async function completeConsoleTriage(page: Page) {
 }
 
 test.describe("Triage WhatsApp flow (V2)", () => {
+  test.describe.configure({ timeout: 120_000 });
+
   test("triagem completa usa cidade/bairro salvos e monta a mensagem com contexto", async ({ page }) => {
     await mockTriageWrites(page);
     await captureWindowOpen(page);

@@ -1,0 +1,111 @@
+import { test, expect, type Page } from "@playwright/test";
+
+/**
+ * Gate de qualidade visual: detecta quebras de layout em rotas críticas.
+ *
+ * Verifica, em mobile e desktop:
+ *  - ausência de scroll horizontal na página;
+ *  - nenhum elemento visível estourando a largura do viewport;
+ *  - nenhum texto cortado (conteúdo com overflow oculto e clipping real).
+ */
+
+const ROUTES = [
+  "/",
+  "/assistencia-tecnica-curitiba",
+  "/precos",
+  "/areas-atendidas",
+  "/atendimento-urgente",
+  "/area-de-atendimento-curitiba",
+  "/checklists-de-reparo",
+  "/como-funciona",
+  "/anuncie",
+  "/faq",
+];
+
+const VIEWPORTS = [
+  { name: "mobile", width: 390, height: 844 },
+  { name: "desktop", width: 1366, height: 900 },
+];
+
+// Tolerância em px para arredondamento de layout/sub-pixel.
+const TOLERANCE = 2;
+
+async function collectOverflow(page: Page, viewportWidth: number) {
+  return page.evaluate(
+    ({ viewportWidth, TOLERANCE }) => {
+      const offenders: { selector: string; right: number; text: string }[] = [];
+      const clipped: { selector: string; text: string }[] = [];
+
+      const describe = (el: Element) => {
+        const id = el.id ? `#${el.id}` : "";
+        const cls = typeof el.className === "string" && el.className
+          ? `.${el.className.trim().split(/\s+/).slice(0, 2).join(".")}`
+          : "";
+        return `${el.tagName.toLowerCase()}${id}${cls}`;
+      };
+
+      for (const el of Array.from(document.body.querySelectorAll("*"))) {
+        const style = getComputedStyle(el);
+        if (style.display === "none" || style.visibility === "hidden" || style.opacity === "0") continue;
+        if (style.position === "fixed") continue;
+
+        const rect = el.getBoundingClientRect();
+        if (rect.width === 0 || rect.height === 0) continue;
+
+        if (rect.right > viewportWidth + TOLERANCE) {
+          offenders.push({
+            selector: describe(el),
+            right: Math.round(rect.right),
+            text: (el.textContent || "").trim().slice(0, 60),
+          });
+        }
+
+        // Texto cortado: overflow hidden sem ellipsis e conteúdo maior que a caixa.
+        const hasText = el.children.length === 0 && (el.textContent || "").trim().length > 0;
+        if (
+          hasText &&
+          style.overflowY === "hidden" &&
+          style.textOverflow !== "ellipsis" &&
+          (style as CSSStyleDeclaration & { webkitLineClamp?: string }).webkitLineClamp === "none" &&
+          el.scrollHeight - el.clientHeight > 4
+        ) {
+          clipped.push({ selector: describe(el), text: (el.textContent || "").trim().slice(0, 60) });
+        }
+      }
+
+      return {
+        offenders: offenders.slice(0, 10),
+        clipped: clipped.slice(0, 10),
+        docScrollWidth: document.documentElement.scrollWidth,
+      };
+    },
+    { viewportWidth, TOLERANCE },
+  );
+}
+
+for (const viewport of VIEWPORTS) {
+  for (const route of ROUTES) {
+    test(`layout íntegro em ${route} (${viewport.name})`, async ({ page }) => {
+      await page.setViewportSize({ width: viewport.width, height: viewport.height });
+      await page.goto(route, { waitUntil: "domcontentloaded" });
+      await page.waitForTimeout(400);
+
+      const result = await collectOverflow(page, viewport.width);
+
+      expect(
+        result.offenders,
+        `Elementos estourando a largura em ${route} (${viewport.name}): ${JSON.stringify(result.offenders)}`,
+      ).toEqual([]);
+
+      expect(
+        result.docScrollWidth,
+        `Scroll horizontal em ${route} (${viewport.name})`,
+      ).toBeLessThanOrEqual(viewport.width + TOLERANCE);
+
+      expect(
+        result.clipped,
+        `Texto cortado em ${route} (${viewport.name}): ${JSON.stringify(result.clipped)}`,
+      ).toEqual([]);
+    });
+  }
+}

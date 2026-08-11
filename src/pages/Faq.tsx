@@ -153,7 +153,7 @@ export default function Faq() {
         <nav aria-label="Páginas relacionadas" className="mt-12 max-w-3xl rounded-xl border border-border bg-card p-5">
           <p className="font-semibold text-card-foreground">Continue por aqui</p>
           <ul className="mt-3 grid gap-2 sm:grid-cols-2 text-sm">
-            <li><Link className="text-primary hover:underline" to="/precos-e-politicas">Preços e políticas</Link></li>
+            <li><Link className="text-primary hover:underline" to="/precos">Preços e políticas</Link></li>
             <li><Link className="text-primary hover:underline" to="/areas-atendidas">Áreas atendidas</Link></li>
             <li><Link className="text-primary hover:underline" to="/servicos/suporte-tecnico-empresarial">Suporte técnico empresarial</Link></li>
             <li><Link className="text-primary hover:underline" to="/seguranca-dos-dados">Segurança dos dados</Link></li>

@@ -57,25 +57,27 @@ test.describe("Triage funnel guards", () => {
     await page.evaluate(() =>
       window.dispatchEvent(new CustomEvent("triage:open", { detail: { source: "e2e" } })),
     );
-    await expect(page.getByText(/Qual é o aparelho/i)).toBeVisible();
+    await expect(page.getByRole("heading", { name: /Qual é o equipamento/i })).toBeVisible();
     await page.keyboard.press("Escape");
     await expect(page.locator('[role="dialog"]')).toHaveCount(0, { timeout: 3000 });
     await page.evaluate(() =>
       window.dispatchEvent(new CustomEvent("triage:open", { detail: { source: "e2e" } })),
     );
-    await expect(page.getByText(/Qual é o aparelho/i)).toBeVisible();
+    await expect(page.getByRole("heading", { name: /Qual é o equipamento/i })).toBeVisible();
   });
 
-  test("wizard mostra hint de campo faltante", async ({ page }) => {
+  test("wizard inicia sempre no passo de equipamento", async ({ page }) => {
     await page.goto("/?triage=1");
     await page.evaluate(() =>
       window.dispatchEvent(new CustomEvent("triage:open", { detail: { source: "e2e" } })),
     );
-    await expect(page.getByText(/Qual é o aparelho/i)).toBeVisible();
-    const hint = page.getByTestId("triage-hint");
-    await expect(hint).toBeVisible();
-    await expect(hint).toContainText(/categoria/i);
+    const heading = page.getByRole("heading", { name: /Qual é o equipamento/i });
+    await expect(heading).toBeVisible();
+    // Nenhum avanço automático sem escolha do usuário.
+    await page.waitForTimeout(800);
+    await expect(heading).toBeVisible();
   });
+
 
   test("página inicial exibe R$ 99,99 como valor mínimo", async ({ page }) => {
     await page.goto("/");

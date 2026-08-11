@@ -54,6 +54,7 @@
     "check:ads-txt:remote": "bunx tsx scripts/check-ads-txt.ts --remote",
     "check:policy-jsonld": "bunx tsx scripts/check-policy-jsonld.ts",
     "check:thin": "bunx tsx scripts/check-thin-content.ts",
+    "check:wa-number": "bunx tsx scripts/check-wa-number-exposure.ts",
     "check:meta": "bunx tsx scripts/check-meta-uniqueness.ts",
     "report:faq-parity": "bunx tsx scripts/report-faq-parity.ts",
     "lhci:locality": "lhci autorun --config=./lighthouserc.locality.cjs",

@@ -162,6 +162,7 @@ const App = () => (
                 {/* Aliases canônicos do hub comercial (mesma página, sem conteúdo duplicado) */}
                 <Route path="/patrocinadores" element={<Navigate to="/anuncie" replace />} />
                 <Route path="/publicidade" element={<Navigate to="/anuncie" replace />} />
+                <Route path="/seja-patrocinador" element={<Navigate to="/anuncie" replace />} />
                 <Route path="/areas-atendidas" element={<AreasAtendidas />} />
                 <Route path="/status-anuncios" element={<StatusAnuncios />} />
                 <Route path="/servico-em/:city/:service" element={<ServicoCidade />} />

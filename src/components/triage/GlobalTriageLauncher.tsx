@@ -147,6 +147,38 @@ export function GlobalTriageLauncher() {
   // Fecha o modal ao navegar entre rotas.
   useEffect(() => { setOpen(false); }, [location.pathname]);
 
+  // Deep-link de agendamento: qualquer URL com #agendamento / #triagem /
+  // #triage abre a triagem direto (usado nos links de agendamento do Google
+  // Business Profile e em campanhas). O hash é limpo após abrir para que o
+  // botão "voltar" não reabra o modal em loop.
+  useEffect(() => {
+    if (!enabled) return;
+    const HASHES = ["#agendamento", "#triagem", "#triage"];
+    const tryOpen = () => {
+      const hash = window.location.hash.toLowerCase();
+      if (!HASHES.includes(hash)) return;
+      const params = new URLSearchParams(window.location.search);
+      openFresh({
+        source: params.get("utm_source") ? `agendamento-${params.get("utm_source")}` : "agendamento-hash",
+        category: (params.get("categoria") as Category | null) ?? undefined,
+        city: params.get("cidade") ?? undefined,
+        neighborhood: params.get("bairro") ?? undefined,
+      });
+      window.history.replaceState(
+        null,
+        "",
+        window.location.pathname + window.location.search,
+      );
+    };
+    const id = window.setTimeout(tryOpen, 0);
+    window.addEventListener("hashchange", tryOpen);
+    return () => {
+      window.clearTimeout(id);
+      window.removeEventListener("hashchange", tryOpen);
+    };
+  }, [enabled, location.pathname, location.hash]);
+
+
   // Ao fechar o wizard, drena o buffer persistente — expõe eventos
   // acumulados (BACK / auto-advance / intercept) em
   // window.__PDT_TRIAGE_BUFFER_FLUSHED__ para diagnóstico.

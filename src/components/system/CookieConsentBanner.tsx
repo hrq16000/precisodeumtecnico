@@ -66,9 +66,12 @@ export function CookieConsentBanner() {
 
   return (
     <div data-cookie-banner-root
-      role="dialog"
+      // Banner não-modal: `region` evita colidir com o contrato de dialog
+      // único da triagem e é a semântica correta para aviso persistente.
+      role="region"
       aria-label="Consentimento de cookies"
       data-cookie-consent
+
       className="fixed bottom-0 left-0 right-0 z-[60] px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:right-auto sm:max-w-sm"
     >
       <div className="rounded-xl border border-border bg-card card-shadow p-3">

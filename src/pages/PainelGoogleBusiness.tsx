@@ -192,12 +192,46 @@ const GoogleBusinessPanel = () => {
           </div>
 
           <div className="p-6 rounded-xl border border-border bg-card mb-6">
+            <h2 className="text-xl font-semibold mb-3">Links de agendamento on-line (GBP)</h2>
+            <p className="text-sm text-muted-foreground mb-3">
+              Cole estes links no campo “Agendamentos” do perfil da empresa. Eles abrem a triagem
+              técnica direto em pop-up, já com origem rastreada — sem exigir telefone.
+            </p>
+            <ul className="space-y-2">
+              {[
+                { label: "Agendamento padrão", url: `${COMPANY.website}/?utm_source=gbp#agendamento` },
+                { label: "Agendamento — Curitiba", url: `${COMPANY.website}/assistencia-tecnica-curitiba?utm_source=gbp&cidade=Curitiba#agendamento` },
+                { label: "Agendamento — urgência", url: `${COMPANY.website}/atendimento-urgente?utm_source=gbp_urgente#agendamento` },
+              ].map((l) => (
+                <li key={l.url} className="flex flex-wrap items-center gap-2">
+                  <code className="text-xs bg-muted/60 rounded px-2 py-1 break-all">{l.url}</code>
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="outline"
+                    className="min-h-9"
+                    onClick={() => {
+                      navigator.clipboard.writeText(l.url);
+                      trackEvent("gbp_booking_link_copy", { label: l.label });
+                      toast.success("Link copiado.");
+                    }}
+                  >
+                    <Copy className="w-3.5 h-3.5 mr-2" aria-hidden="true" />
+                    Copiar
+                  </Button>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="p-6 rounded-xl border border-border bg-card mb-6">
             <h2 className="text-xl font-semibold mb-3">Descrição gerada</h2>
             <Textarea readOnly rows={7} value={description} className="font-sans text-sm" />
             <p className="text-xs text-muted-foreground mt-2">
               {description.length}/{GBP_DESCRIPTION_MAX} caracteres
             </p>
           </div>
+
 
           <div className="flex flex-wrap gap-3 mb-8">
             <Button type="button" className="min-h-11" onClick={copyAll}>

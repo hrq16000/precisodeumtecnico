@@ -60,6 +60,10 @@ const Busca = lazy(() => import("./pages/Busca"));
 const MensagensProntas = lazy(() => import("./pages/MensagensProntas"));
 const ManifestoDeProvas = lazy(() => import("./pages/ManifestoDeProvas"));
 const PainelGoogleBusiness = lazy(() => import("./pages/PainelGoogleBusiness"));
+const PainelConversao = lazy(() => import("./pages/PainelConversao"));
+const AreaAtendimentoCuritiba = lazy(() => import("./pages/AreaAtendimentoCuritiba"));
+const AtendimentoUrgente = lazy(() => import("./pages/AtendimentoUrgente"));
+const ChecklistsReparo = lazy(() => import("./pages/ChecklistsReparo"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const BlogCategory = lazy(() => import("./pages/BlogCategory"));
@@ -170,6 +174,10 @@ const App = () => (
                 <Route path="/operacao/mensagens-prontas" element={<MensagensProntas />} />
                 <Route path="/operacao/manifesto-de-provas" element={<ManifestoDeProvas />} />
                 <Route path="/operacao/painel-google-business" element={<PainelGoogleBusiness />} />
+                <Route path="/operacao/painel-conversao" element={<PainelConversao />} />
+                <Route path="/area-de-atendimento-curitiba" element={<AreaAtendimentoCuritiba />} />
+                <Route path="/atendimento-urgente" element={<AtendimentoUrgente />} />
+                <Route path="/checklists-de-reparo" element={<ChecklistsReparo />} />
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/blog/categoria/:slug" element={<BlogCategory />} />
                 <Route path="/blog/:slug" element={<BlogPost />} />

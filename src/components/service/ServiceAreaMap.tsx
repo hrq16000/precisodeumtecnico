@@ -36,7 +36,7 @@ export function ServiceAreaMap({ surface = "city_page" }: { surface?: "city_page
 
       <div className="mt-6 grid gap-6 lg:grid-cols-[1.1fr_1fr]">
         {/* Diagrama de zonas */}
-        <div className="relative">
+        <div className="relative min-w-0">
           <svg
             viewBox="0 0 100 100"
             role="img"
@@ -75,7 +75,7 @@ export function ServiceAreaMap({ surface = "city_page" }: { surface?: "city_page
         </div>
 
         {/* Painel da zona */}
-        <div className="flex flex-col">
+        <div className="flex flex-col min-w-0">
           <label htmlFor="busca-zona" className="text-sm font-medium text-foreground">
             Buscar por bairro ou cidade
           </label>

@@ -9,6 +9,13 @@ import type { Category } from "@/components/triage/triageMachine";
 import { logWaEvent } from "@/lib/waAudit";
 import { pushLocalAnalyticsEvent } from "@/lib/localAnalytics";
 import { persistTriageEvent, flushTriageEventBuffer } from "@/lib/triageEventBuffer";
+import {
+  resolveDeepLinkContext,
+  readDeepLinkContext,
+  saveDeepLinkContext,
+  applyContextToDraft,
+} from "@/lib/triage/deepLinkContext";
+
 
 
 /**
@@ -43,6 +50,7 @@ export function GlobalTriageLauncher() {
     },
     href?: string,
     kind: "whatsapp" | "tel" = "whatsapp",
+    surfaceOverride?: string,
   ) => {
     setDetail(d ?? {});
     setOpenCount((n) => n + 1); // força remount → estado zerado
@@ -51,12 +59,15 @@ export function GlobalTriageLauncher() {
     pushLocalAnalyticsEvent({
       event: "triage_open",
       source: d?.source,
-      surface: kind === "tel" ? "cta_tel" : "cta_whatsapp",
+      surface: surfaceOverride ?? (kind === "tel" ? "cta_tel" : "cta_whatsapp"),
       page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+      service: d?.category,
       city: d?.city,
       neighborhood: d?.neighborhood,
     });
   };
+
+
 
   useEffect(() => {
     if (!enabled) return;
@@ -151,32 +162,55 @@ export function GlobalTriageLauncher() {
   // #triage abre a triagem direto (usado nos links de agendamento do Google
   // Business Profile e em campanhas). O hash é limpo após abrir para que o
   // botão "voltar" não reabra o modal em loop.
+  //
+  // Rodada 4J: o contexto (equipamento/sintoma/cidade/bairro) é resolvido a
+  // partir da querystring E da rota do cluster, pré-selecionado no rascunho
+  // do wizard e persistido em sessionStorage — assim um reload restaura o
+  // MESMO contexto, sem nunca inventar cidade/bairro.
   useEffect(() => {
     if (!enabled) return;
     const HASHES = ["#agendamento", "#triagem", "#triage"];
-    const tryOpen = () => {
+    const tryOpen = (fromRestore = false) => {
       const hash = window.location.hash.toLowerCase();
-      if (!HASHES.includes(hash)) return;
+      if (!fromRestore && !HASHES.includes(hash)) return;
       const params = new URLSearchParams(window.location.search);
-      openFresh({
-        source: params.get("utm_source") ? `agendamento-${params.get("utm_source")}` : "agendamento-hash",
-        category: (params.get("categoria") as Category | null) ?? undefined,
-        city: params.get("cidade") ?? undefined,
-        neighborhood: params.get("bairro") ?? undefined,
+      const context = resolveDeepLinkContext({
+        params,
+        pathname: window.location.pathname,
+        fallback: readDeepLinkContext() ?? undefined,
       });
-      window.history.replaceState(
-        null,
-        "",
-        window.location.pathname + window.location.search,
+      saveDeepLinkContext(context);
+      applyContextToDraft(context);
+      openFresh(
+        {
+          source: context.source,
+          category: context.equipment as Category | undefined,
+          symptomSlug: context.symptom,
+          city: context.city,
+          neighborhood: context.neighborhood,
+        },
+        undefined,
+        "whatsapp",
+        "deeplink_hash",
       );
+      if (!fromRestore) {
+        window.history.replaceState(
+          null,
+          "",
+          window.location.pathname + window.location.search,
+        );
+      }
     };
-    const id = window.setTimeout(tryOpen, 0);
-    window.addEventListener("hashchange", tryOpen);
+    const onHashChange = () => tryOpen(false);
+    const id = window.setTimeout(onHashChange, 0);
+    window.addEventListener("hashchange", onHashChange);
     return () => {
       window.clearTimeout(id);
-      window.removeEventListener("hashchange", tryOpen);
+      window.removeEventListener("hashchange", onHashChange);
     };
+
   }, [enabled, location.pathname, location.hash]);
+
 
 
   // Ao fechar o wizard, drena o buffer persistente — expõe eventos

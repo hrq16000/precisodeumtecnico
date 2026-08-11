@@ -1,5 +1,11 @@
 import { test, expect, type Page } from "@playwright/test";
 
+/**
+ * Contrato do funil V2: ao concluir a triagem, o wizard abre o WhatsApp via
+ * window.open com a mensagem já montada (equipamento, problema, cidade,
+ * bairro e sufixo de tracking). Nunca inventa cidade/bairro.
+ */
+
 function decodeWaText(href: string): string {
   return decodeURIComponent(new URL(href).searchParams.get("text") || "");
 }
@@ -21,30 +27,103 @@ async function mockTriageWrites(page: Page) {
   );
 }
 
-async function completeConsoleTriage(page: Page) {
-  await page.getByRole("button", { name: /Console/i }).click();
-  await page.getByRole("button", { name: /Avançar/i }).click();
-  await page.getByLabel("Marca").fill("Sony");
-  await page.getByLabel("Modelo").fill("PS5");
-  await page.getByRole("button", { name: /Avançar/i }).click();
-  await page.getByRole("button", { name: /PS5 ejetando/i }).click();
-  await page.getByRole("button", { name: /Avançar/i }).click();
-  await page.getByLabel("Nome completo").fill("Cliente Teste");
-  await page.getByRole("textbox", { name: "WhatsApp" }).fill("41999999999");
-  await page.getByLabel("E-mail").fill("cliente@example.com");
-  await page.getByRole("button", { name: /Avançar/i }).click();
-
-  const checkboxes = page.getByRole("checkbox");
-  for (let i = 0; i < await checkboxes.count(); i += 1) {
-    await checkboxes.nth(i).check();
-  }
-  await page.getByRole("button", { name: /Enviar triagem/i }).click();
-  await expect(page.getByRole("heading", { name: /Triagem enviada/i })).toBeVisible({ timeout: 10_000 });
+/** Intercepta window.open e guarda a URL em window.__WA_OPENED__. */
+async function captureWindowOpen(page: Page) {
+  await page.addInitScript(() => {
+    const w = window as unknown as { __WA_OPENED__?: string[]; open: typeof window.open };
+    w.__WA_OPENED__ = [];
+    w.open = ((url?: string | URL) => {
+      if (url) w.__WA_OPENED__!.push(String(url));
+      return { closed: false, focus() {}, close() {} } as unknown as Window;
+    }) as typeof window.open;
+  });
 }
 
-test.describe("Triage WhatsApp flow", () => {
-  test("triagem completa usa cidade/bairro salvos e gera CTA WhatsApp com contexto", async ({ page }) => {
+async function readOpenedWaUrl(page: Page): Promise<string> {
+  await expect
+    .poll(
+      async () =>
+        page.evaluate(
+          () => ((window as unknown as { __WA_OPENED__?: string[] }).__WA_OPENED__ ?? []).length,
+        ),
+      { timeout: 15_000 },
+    )
+    .toBeGreaterThan(0);
+  const urls = await page.evaluate(
+    () => (window as unknown as { __WA_OPENED__?: string[] }).__WA_OPENED__ ?? [],
+  );
+  return urls.find((u) => u.includes("wa.me/")) ?? urls[0];
+}
+
+/** Percorre o wizard V2 (7 etapas) para o equipamento Videogame. */
+async function completeConsoleTriage(page: Page) {
+  await page.getByRole("button", { name: /^Videogame/ }).first().click();
+
+  for (let i = 0; i < 14; i += 1) {
+    if (await page.getByRole("button", { name: /Agendar agora/i }).count()) break;
+
+    const named: [RegExp, string][] = [
+      [/Qual videogame/i, "PS5"],
+      [/^Nome/i, "Cliente Teste"],
+      [/WhatsApp \(com DDD\)/i, "(41) 99999-0000"],
+      [/E-?mail/i, "cliente@example.com"],
+    ];
+    for (const [label, value] of named) {
+      const field = page.getByLabel(label);
+      if ((await field.count()) && (await field.first().isVisible())) {
+        if (!(await field.first().inputValue())) await field.first().fill(value);
+      }
+    }
+
+    const preferred = page.getByRole("radio", { name: /^Não lê disco$/ });
+    if ((await preferred.count()) && (await preferred.first().isVisible())) {
+      await preferred.first().click().catch(() => undefined);
+    }
+    const groups = page.getByRole("radiogroup");
+    const groupCount = await groups.count();
+    for (let g = 0; g < groupCount; g += 1) {
+      const group = groups.nth(g);
+      if (!(await group.isVisible())) continue;
+      const radios = group.getByRole("radio");
+      const checked = await group.locator('[aria-checked="true"],[data-state="checked"]').count();
+      if (checked === 0 && (await radios.count())) {
+        await radios.first().click().catch(() => undefined);
+      }
+    }
+
+    const checkboxes = page.getByRole("checkbox");
+    const total = await checkboxes.count();
+    for (let c = 0; c < total; c += 1) {
+      const box = checkboxes.nth(c);
+      if (await box.isVisible()) await box.check().catch(() => undefined);
+    }
+
+    const next = page.getByRole("button", { name: /Próxima etapa|Avançar|Continuar/i });
+    if ((await next.count()) && (await next.first().isEnabled())) {
+      await next.first().click().catch(() => undefined);
+    }
+    await page.waitForTimeout(400);
+  }
+
+  // Etapa 7 — contato obrigatório e envio.
+  for (const [label, value] of [
+    [/^Nome$/i, "Cliente Teste"],
+    [/WhatsApp \(com DDD\)/i, "(41) 99999-0000"],
+  ] as [RegExp, string][]) {
+    const field = page.getByLabel(label);
+    if ((await field.count()) && !(await field.first().inputValue())) {
+      await field.first().fill(value);
+    }
+  }
+  const submit = page.getByRole("button", { name: /Agendar agora/i });
+  await expect(submit).toBeEnabled({ timeout: 10_000 });
+  await submit.click();
+}
+
+test.describe("Triage WhatsApp flow (V2)", () => {
+  test("triagem completa usa cidade/bairro salvos e monta a mensagem com contexto", async ({ page }) => {
     await mockTriageWrites(page);
+    await captureWindowOpen(page);
     await page.goto("/triagem-preview");
     await page.evaluate(() => {
       window.localStorage.setItem("user_location_full_v1", JSON.stringify({
@@ -58,30 +137,19 @@ test.describe("Triage WhatsApp flow", () => {
 
     await completeConsoleTriage(page);
 
-    const cta = page.getByRole("link", { name: /Continuar atendimento técnico no WhatsApp/i });
-    await expect(cta).toBeVisible();
-    await expect(cta).toHaveAttribute("data-wa-source", "triage");
-    await expect(cta).toHaveAttribute("data-service", /assistencia-tecnica/);
-    await expect(cta).toHaveAttribute("data-city", "Curitiba");
-    await expect(cta).toHaveAttribute("data-neighborhood", "Batel");
-    await expect(cta).toHaveAttribute("aria-label", /triagem/i);
-
-    const href = await cta.getAttribute("href");
+    const href = await readOpenedWaUrl(page);
     expect(href).toContain("wa.me/");
-    const text = decodeWaText(href!);
-    expect(text).toContain("Serviço: Assistência técnica");
-    expect(text).toContain("Equipamento/Categoria: Console");
-    expect(text).toContain("Problema: PS5 ejetando o disco sozinho");
+    const text = decodeWaText(href);
+    expect(text).toContain("Equipamento: Videogame");
+    expect(text).toContain("Problema: Não lê disco");
     expect(text).toContain("Cidade: Curitiba");
     expect(text).toContain("Bairro: Batel");
-    expect(text).toContain("source=triage");
-    expect(text).toContain("service=assistencia-tecnica");
-    expect(text).toContain("utm_source=whatsapp_cta");
-    expect(text).toMatch(/page=\/[^\s]*/);
+    expect(text).toContain("cat=videogame");
   });
 
-  test("triagem sem localização não inventa Curitiba e mantém WhatsApp funcional", async ({ page }) => {
+  test("triagem sem localização não inventa Curitiba", async ({ page }) => {
     await mockTriageWrites(page);
+    await captureWindowOpen(page);
     await page.goto("/triagem-preview");
     await page.evaluate(() => {
       window.localStorage.removeItem("user_location_full_v1");
@@ -91,20 +159,16 @@ test.describe("Triage WhatsApp flow", () => {
 
     await completeConsoleTriage(page);
 
-    const cta = page.getByRole("link", { name: /Continuar atendimento técnico no WhatsApp/i });
-    const href = await cta.getAttribute("href");
-    expect(href).toContain("wa.me/");
-    const text = decodeWaText(href!);
-    expect(text).toContain("Serviço: Assistência técnica");
-    expect(text).toContain("Problema: PS5 ejetando o disco sozinho");
-    expect(text).toContain("source=triage");
-    expect(text).toContain("service=assistencia-tecnica");
-    expect(text).toContain("utm_source=whatsapp_cta");
+    const href = await readOpenedWaUrl(page);
+    const text = decodeWaText(href);
+    expect(text).toContain("Equipamento: Videogame");
+    expect(text).toContain("Problema: Não lê disco");
     expect(text).not.toContain("Cidade: Curitiba");
   });
 
   test("debug de payload não aparece no fluxo de build/produção", async ({ page }) => {
     await mockTriageWrites(page);
+    await captureWindowOpen(page);
     await page.goto("/triagem-preview");
     await completeConsoleTriage(page);
     await expect(page.getByText(/Ver payload de teste \(debug\)/i)).toHaveCount(0);

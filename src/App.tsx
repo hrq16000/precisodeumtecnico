@@ -55,6 +55,7 @@ const ServicoCidade = lazy(() => import("./pages/ServicoCidade"));
 const Precos = lazy(() => import("./pages/Precos"));
 const ComoFunciona = lazy(() => import("./pages/ComoFunciona"));
 const GuiaTecnicoInformatica = lazy(() => import("./pages/GuiaTecnicoInformatica"));
+const ComoEscolherTecnico = lazy(() => import("./pages/ComoEscolherTecnico"));
 const Busca = lazy(() => import("./pages/Busca"));
 const MensagensProntas = lazy(() => import("./pages/MensagensProntas"));
 const ManifestoDeProvas = lazy(() => import("./pages/ManifestoDeProvas"));

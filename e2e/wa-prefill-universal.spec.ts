@@ -73,10 +73,14 @@ for (const route of ROUTES) {
   test(`WhatsApp pré-preenchido com serviço e tracking em ${route}`, async ({ page }) => {
     await seedLocation(page, STORED_LOCATION);
     await page.goto(route, { waitUntil: "domcontentloaded" });
-    await page.waitForTimeout(400);
+    await expect
+      .poll(async () => (await collectWaHrefs(page)).length, {
+        message: `Nenhum CTA de WhatsApp em ${route}`,
+        timeout: 15_000,
+      })
+      .toBeGreaterThan(0);
 
     const hrefs = await collectWaHrefs(page);
-    expect(hrefs.length, `Nenhum CTA de WhatsApp em ${route}`).toBeGreaterThan(0);
 
     for (const text of waTexts(hrefs)) {
       expect(text.trim().length, `Mensagem vazia em ${route}`).toBeGreaterThan(10);
@@ -90,10 +94,14 @@ for (const route of ROUTES) {
   test(`WhatsApp com fallback de geo (sem localidade salva) em ${route}`, async ({ page }) => {
     await seedLocation(page, null);
     await page.goto(route, { waitUntil: "domcontentloaded" });
-    await page.waitForTimeout(400);
+    await expect
+      .poll(async () => (await collectWaHrefs(page)).length, {
+        message: `Nenhum CTA de WhatsApp em ${route}`,
+        timeout: 15_000,
+      })
+      .toBeGreaterThan(0);
 
     const hrefs = await collectWaHrefs(page);
-    expect(hrefs.length, `Nenhum CTA de WhatsApp em ${route}`).toBeGreaterThan(0);
 
     for (const text of waTexts(hrefs)) {
       expect(text.trim().length, `Mensagem vazia em ${route}`).toBeGreaterThan(10);

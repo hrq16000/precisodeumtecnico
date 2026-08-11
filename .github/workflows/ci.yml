@@ -241,6 +241,9 @@ jobs:
         run: bunx tsx scripts/check-alt-text.ts
       - name: Gate — integridade de layout (sem overflow/texto cortado)
         run: bunx playwright test e2e/layout-integrity.spec.ts --reporter=list
+      - name: Gate — WhatsApp pré-preenchido (serviço, tracking e fallback de geo)
+        run: bunx playwright test e2e/wa-prefill-universal.spec.ts --reporter=list
+
 
       - name: RLS E2E — wa_bypass_events policy
         run: bunx playwright test e2e/wa-bypass-rls.spec.ts --reporter=list

@@ -89,6 +89,8 @@ jobs:
           path: canonical-parity-report.json
           if-no-files-found: ignore
           retention-days: 14
+      - name: Gate — JSON-LD sem Service de vertical recusada
+        run: bunx tsx scripts/check-refused-verticals.ts
       - name: Gate — title/description únicos, no limite e com og:image
         run: bunx tsx scripts/check-meta-uniqueness.ts
         env:

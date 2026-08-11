@@ -63,7 +63,9 @@
     "check:hub-ux": "playwright test e2e/hub-ux-clickable.spec.ts",
     "check:verticals": "bunx tsx scripts/check-refused-verticals.ts",
     "check:photo-privacy": "bunx tsx scripts/check-photo-privacy.ts",
-    "photos:strip-exif": "bunx tsx scripts/strip-photo-exif.ts"
+    "photos:strip-exif": "bunx tsx scripts/strip-photo-exif.ts",
+    "check:alt-text": "bunx tsx scripts/check-alt-text.ts",
+    "check:layout": "playwright test e2e/layout-integrity.spec.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

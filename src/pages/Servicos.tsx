@@ -316,6 +316,7 @@ const Servicos = () => {
               { to: "/formatacao-de-computador-curitiba", label: "Formatação de computador em Curitiba", desc: "Reinstalação limpa com backup e drivers oficiais." },
               { to: "/upgrade-ssd-curitiba", label: "Upgrade de SSD em Curitiba", desc: "Troca do disco mecânico com migração do sistema." },
               { to: "/upgrade-memoria-ram-curitiba", label: "Upgrade de memória RAM em Curitiba", desc: "Ampliação de memória com conferência de compatibilidade." },
+              { to: "/como-escolher-tecnico-preco-prazo", label: "Como escolher o técnico pelo preço e prazo", desc: "Comparativo de escopos, prazos e sinais de alerta antes de fechar." },
             ].map((item) => (
               <Link
                 key={item.to}

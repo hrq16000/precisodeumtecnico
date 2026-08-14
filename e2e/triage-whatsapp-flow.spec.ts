@@ -7,6 +7,7 @@ import {
   mockTriageWrites,
   readOpenedWaUrl,
   submitTriage,
+  suppressLocationPrompt,
   waitForStep,
 } from "./utils/triage";
 
@@ -21,6 +22,7 @@ test.describe("Triage WhatsApp flow (V2)", () => {
   test.beforeEach(async ({ page }) => {
     await mockTriageWrites(page);
     await captureWindowOpen(page);
+    await suppressLocationPrompt(page);
   });
 
   test("triagem completa usa cidade/bairro salvos e monta a mensagem com contexto", async ({ page }) => {

@@ -136,7 +136,10 @@ test("bairro inexistente cai em página de sugestões, não em tela branca", asy
   expect(errs.filter((e) => /ChunkLoadError|Minified React/i.test(e))).toEqual([]);
 });
 
-test("cidade inexistente redireciona para /atendimento-nacional", async ({ page }) => {
+test("cidade inexistente retorna 404 (sem redirect que duplique SEO)", async ({ page }) => {
   await page.goto("/atendimento-nacional/cidade-inexistente/bairro-x", { waitUntil: "networkidle" });
-  await expect(page).toHaveURL(/\/atendimento-nacional$/);
+  // Não redireciona: mantém a URL e renderiza NotFound com noindex.
+  await expect(page).toHaveURL(/cidade-inexistente/);
+  await expect(page.getByText("404")).toBeVisible();
+  expect(await page.locator('meta[name="robots"]').first().getAttribute("content")).toMatch(/noindex/);
 });

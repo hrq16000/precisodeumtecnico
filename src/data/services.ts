@@ -553,7 +553,7 @@ export const servicesData: Record<string, ServiceData> = {
     process: [
       { step: 1, title: "Contato", description: "Descreva o problema do seu console via WhatsApp" },
       { step: 2, title: "Pré-avaliação", description: "Explicamos possíveis causas e estimativa" },
-      { step: 3, title: "Entrega/Coleta", description: "Traga o console ou solicite coleta" },
+      { step: 3, title: "Coleta", description: "Atendimento exclusivamente com coleta no seu endereço — não temos balcão" },
       { step: 4, title: "Diagnóstico Técnico", description: "Avaliação completa com fotos do problema" },
       { step: 5, title: "Orçamento", description: "Orçamento detalhado via WhatsApp" },
       { step: 6, title: "Aprovação", description: "Você aprova e iniciamos o reparo" },

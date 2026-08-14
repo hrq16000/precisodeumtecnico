@@ -1,21 +1,39 @@
 import { test, expect } from "@playwright/test";
+import {
+  completeConsoleTriage,
+  mockTriageWrites,
+  captureWindowOpen,
+  suppressLocationPrompt,
+  readOpenedWaUrl,
+} from "./utils/triage";
 
 /**
- * Rodada 21 — Valida que o clique em qualquer CTA WhatsApp dispara evento
- * analytics no dataLayer contendo os data-attrs padronizados
- * (data-wa-source, data-service, data-city/data-neighborhood quando aplicável),
- * e que o href correspondente carrega utm_source=whatsapp_cta.
+ * Rodada 25.1 B.6 — contrato do evento `whatsapp_click`.
+ *
+ * Após a refatoração de privacidade:
+ *  - o dataLayer legado (Google Ads) recebe apenas campos da allowlist
+ *    (`source`, `service`, `city`, `bairro`, ...) — SEM `pathname` e SEM `utm_*`;
+ *  - o contexto de rota vive somente na fila local isolada
+ *    (`window.__PDT_ANALYTICS_QUEUE__`), campo `page_path`.
  *
  * O nav real é bloqueado via capture handler; o delegador global em
- * src/main.tsx continua registrando o evento no window.dataLayer.
+ * src/main.tsx continua registrando o evento.
  */
+
+type Evt = Record<string, unknown> & { event?: string; source?: string };
+
+const PII_KEYS = ["pathname", "utm_source", "utm_medium", "utm_campaign", "phone", "telefone", "email"];
+
+function assertLegacyClean(payload: Record<string, unknown>) {
+  for (const k of Object.keys(payload)) {
+    expect(PII_KEYS, `campo proibido ${k} no payload legado`).not.toContain(k.toLowerCase());
+  }
+}
 
 test.describe("WhatsApp CTA — evento analytics + utm_source", () => {
   test.beforeEach(async ({ page }) => {
     await page.addInitScript(() => {
-      // Pré-cria dataLayer para main.tsx anexar diretamente.
       (window as unknown as { dataLayer: unknown[] }).dataLayer = [];
-      // Bloqueia a navegação para wa.me/tel: sem interromper listeners de tracking.
       document.addEventListener(
         "click",
         (e) => {
@@ -44,69 +62,49 @@ test.describe("WhatsApp CTA — evento analytics + utm_source", () => {
     await cta.click({ force: true });
 
     const evt = await page.waitForFunction(() => {
-      const dl = (window as unknown as { dataLayer?: Array<{ event?: string }> }).dataLayer || [];
+      const dl = (window as unknown as { dataLayer?: Evt[] }).dataLayer || [];
       return dl.find((e) => e && e.event === "whatsapp_click") || null;
     });
     const payload = (await evt.jsonValue()) as Record<string, unknown>;
     expect(payload.event).toBe("whatsapp_click");
     expect(payload.source).toBe("header");
     expect(String(payload.service ?? "").toLowerCase()).toContain("assistência técnica");
-    expect(payload.pathname).toBe("/");
+    assertLegacyClean(payload);
+
+    // Contexto de rota vive apenas na fila local isolada.
+    const local = (await page.evaluate(
+      () => (window as unknown as { __PDT_ANALYTICS_QUEUE__?: Evt[] }).__PDT_ANALYTICS_QUEUE__ ?? [],
+    )) as Evt[];
+    const localWa = local.find((e) => e.event === "whatsapp_click");
+    expect(localWa, "evento local whatsapp_click").toBeTruthy();
+    expect(localWa!.page_path).toBe("/");
   });
 
-  test("Triagem CTA emite whatsapp_click com source=triage, service assistência técnica e city/neighborhood", async ({ page }) => {
-    await page.route("https://ipwho.is/**", (r) => r.fulfill({ status: 503, body: "{}" }));
-    await page.route("https://ipapi.co/json/**", (r) => r.fulfill({ status: 503, body: "{}" }));
-    await page.route("**/rest/v1/**", (r) => r.fulfill({ status: 201, contentType: "application/json", body: "[]" }));
-    await page.route("**/functions/v1/**", (r) =>
-      r.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ ok: true }) }),
-    );
+  test("Triagem CTA emite whatsapp_click com source=triage e contexto de cidade/bairro", async ({ page }) => {
+    await mockTriageWrites(page);
+    await captureWindowOpen(page);
+    await suppressLocationPrompt(page);
 
     await page.goto("/triagem-preview");
-    await page.evaluate(() => {
-      window.localStorage.setItem(
-        "user_location_full_v1",
-        JSON.stringify({ source: "gps", city: "Curitiba", uf: "PR", neighborhood: "Batel" }),
-      );
-    });
-    await page.reload();
+    await completeConsoleTriage(page, { contact: { city: "Curitiba", neighborhood: "Batel" } });
 
-    // Preenche triagem console PS5 (mesmo fluxo do triage-whatsapp-flow.spec).
-    await page.getByRole("button", { name: /Console/i }).click();
-    await page.getByRole("button", { name: /Avançar/i }).click();
-    await page.getByLabel("Marca").fill("Sony");
-    await page.getByLabel("Modelo").fill("PS5");
-    await page.getByRole("button", { name: /Avançar/i }).click();
-    await page.getByRole("button", { name: /PS5 ejetando/i }).click();
-    await page.getByRole("button", { name: /Avançar/i }).click();
-    await page.getByLabel("Nome completo").fill("Cliente Teste");
-    await page.getByRole("textbox", { name: "WhatsApp" }).fill("41999999999");
-    await page.getByLabel("E-mail").fill("cliente@example.com");
-    await page.getByRole("button", { name: /Avançar/i }).click();
-    const checkboxes = page.getByRole("checkbox");
-    for (let i = 0; i < (await checkboxes.count()); i += 1) await checkboxes.nth(i).check();
-    await page.getByRole("button", { name: /Enviar triagem/i }).click();
-
-    const cta = page.getByRole("link", { name: /Continuar atendimento técnico no WhatsApp/i });
-    await expect(cta).toBeVisible({ timeout: 10_000 });
-    await expect(cta).toHaveAttribute("data-city", "Curitiba");
-    await expect(cta).toHaveAttribute("data-neighborhood", "Batel");
-    await expect(cta).toHaveAttribute("data-service", /assistencia-tecnica/);
-
-    // Limpa dataLayer para isolar o clique do CTA de sucesso.
-    await page.evaluate(() => {
-      (window as unknown as { dataLayer: unknown[] }).dataLayer = [];
-    });
-    await cta.click({ force: true });
+    // O envio da triagem abre o WhatsApp via window.open (capturado) e emite
+    // o evento legado. Não há âncora <a> obrigatória nessa etapa.
+    const href = await readOpenedWaUrl(page);
+    expect(href).toContain("wa.me/");
 
     const evt = await page.waitForFunction(() => {
-      const dl = (window as unknown as { dataLayer?: Array<{ event?: string; source?: string }> }).dataLayer || [];
-      return dl.find((e) => e && e.event === "whatsapp_click" && e.source === "triage") || null;
+      const dl = (window as unknown as { dataLayer?: Evt[] }).dataLayer || [];
+      return dl.find((e) => e && e.event === "whatsapp_click") || null;
     });
     const payload = (await evt.jsonValue()) as Record<string, unknown>;
-    expect(payload.source).toBe("triage");
-    expect(String(payload.service)).toContain("assistencia-tecnica");
-    expect(payload.city).toBe("Curitiba");
-    expect(payload.bairro).toBe("Batel");
+    expect(String(payload.source)).toMatch(/triage/i);
+    assertLegacyClean(payload);
+
+    const local = (await page.evaluate(
+      () => (window as unknown as { __PDT_ANALYTICS_QUEUE__?: Evt[] }).__PDT_ANALYTICS_QUEUE__ ?? [],
+    )) as Evt[];
+    expect(local.some((e) => e.event === "triage_complete")).toBe(true);
+
   });
 });

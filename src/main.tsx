@@ -1,18 +1,20 @@
+import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 import { initWebVitals } from "./lib/webVitals";
 import { trackWhatsAppClick } from "./lib/analytics";
-import { pushLocalAnalyticsEvent } from "./lib/localAnalytics";
 import { initSentry, captureHandledError } from "./lib/sentry";
 import { GlobalErrorBoundary } from "./components/system/GlobalErrorBoundary";
 
 initSentry();
 
 createRoot(document.getElementById("root")!).render(
-  <GlobalErrorBoundary>
-    <App />
-  </GlobalErrorBoundary>,
+  <>
+    <GlobalErrorBoundary>
+      <App />
+    </GlobalErrorBoundary>
+  </>,
 );
 
 if (typeof window !== "undefined") {
@@ -54,31 +56,20 @@ if (typeof window !== "undefined") {
         el.tagName.toLowerCase() === "a" &&
         (el.getAttribute("href") || "").includes("wa.me");
       try {
+        // Emite o evento legado (Google Ads) e, na mesma chamada, o evento
+        // isolado da fila local — sem PII, sem pathname externo.
         trackWhatsAppClick({
           source,
           service,
           city,
           bairro: neighborhood,
-          cta_label: el.getAttribute("aria-label") ?? undefined,
           source_component: el.tagName.toLowerCase(),
-        });
-      } catch {
-        /* legado nunca quebra fluxo */
-      }
-      try {
-        pushLocalAnalyticsEvent({
-          event: "whatsapp_click",
-          page_path: window.location.pathname,
-          source,
-          service,
-          city,
-          neighborhood,
           cta_id,
-          destination: isWhatsAnchor ? "whatsapp" : undefined,
           surface: el.dataset.waSurface,
+          destination: isWhatsAnchor ? "whatsapp" : undefined,
         });
       } catch {
-        /* fila local nunca quebra fluxo */
+        /* analytics nunca quebra fluxo */
       }
     },
     { capture: true },

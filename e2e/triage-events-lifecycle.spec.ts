@@ -1,4 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
+import { suppressLocationPrompt } from "./utils/triage";
 
 /**
  * Contratos de telemetria da triagem:
@@ -19,6 +20,7 @@ async function readQueue(page: Page): Promise<Evt[]> {
 async function stubGeoIP(page: Page) {
   await page.route("https://ipwho.is/**", (r) => r.fulfill({ status: 503, body: "{}" }));
   await page.route("https://ipapi.co/json/**", (r) => r.fulfill({ status: 503, body: "{}" }));
+  await suppressLocationPrompt(page);
 }
 
 test.describe("Triage lifecycle events", () => {

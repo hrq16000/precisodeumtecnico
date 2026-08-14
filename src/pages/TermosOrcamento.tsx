@@ -23,14 +23,29 @@ const TermosOrcamento = () => {
     }
   };
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Início", item: "https://precisodeumtecnico.com/" },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Termos de Orçamento Pré-Aprovado",
+        item: "https://precisodeumtecnico.com/termos-orcamento-pre-aprovado",
+      },
+    ],
+  };
+
   return (
     <Layout>
       <SEOHead
         title="Termos de Orçamento Pré-Aprovado – Serviços Técnicos"
         description="Conheça os termos de diagnóstico, orçamento pré-aprovado, prazos de reparo, logística de coleta e política de cancelamento dos serviços técnicos."
         canonical="https://precisodeumtecnico.com/termos-orcamento-pre-aprovado"
-        schema={schema}
+        schema={[schema, breadcrumbSchema]}
       />
+
 
       {/* Hero */}
       <section className="bg-gradient-to-br from-primary/10 via-background to-accent/5 py-16 md:py-24">

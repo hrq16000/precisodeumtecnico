@@ -10,15 +10,25 @@ export async function getJsonLdBlocks(page: Page): Promise<unknown[]> {
     (nodes) => nodes.map((n) => n.textContent ?? ""),
   );
   const out: unknown[] = [];
+  const push = (v: unknown) => {
+    if (!v || typeof v !== "object") return;
+    const graph = (v as { "@graph"?: unknown })["@graph"];
+    if (Array.isArray(graph)) {
+      for (const g of graph) push(g);
+      return;
+    }
+    out.push(v);
+  };
   for (const s of raw) {
     try {
       const parsed = JSON.parse(s);
-      if (Array.isArray(parsed)) out.push(...parsed);
-      else out.push(parsed);
+      if (Array.isArray(parsed)) parsed.forEach(push);
+      else push(parsed);
     } catch {
       // ignora blocos inválidos — outros specs cobrem a validação sintática
     }
   }
+
   return out;
 }
 

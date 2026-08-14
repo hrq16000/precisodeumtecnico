@@ -558,7 +558,7 @@ export const SOLUTION_GUIDES: SolutionGuide[] = [
     answer:
       "Som presente e tela apagada geralmente significa falha de iluminação (backlight) ou da placa que a alimenta — não do painel. Essa distinção é o que separa um reparo viável de uma troca de tela cara.",
     symptoms: ["tv sem imagem", "tela preta com som", "tv não mostra imagem"],
-    triage: { equipment: "tv", symptom: "no_image" },
+    triage: { equipment: "tv", symptom: "dark_with_sound" },
     sections: [
       {
         h2: "O teste da lanterna",
@@ -629,7 +629,7 @@ export const SOLUTION_GUIDES: SolutionGuide[] = [
     answer:
       "Listras finas verticais costumam vir do cabo flat e do driver de linha do painel; faixas largas e manchas apontam para T-CON ou dano físico. A origem define se há reparo viável.",
     symptoms: ["listra na tela", "faixa colorida", "mancha escura", "tela dividida"],
-    triage: { equipment: "tv", symptom: "no_image" },
+    triage: { equipment: "tv", symptom: "screen_lines" },
     sections: [
       {
         h2: "Leia o padrão da falha",
@@ -842,7 +842,7 @@ export const SOLUTION_GUIDES: SolutionGuide[] = [
     answer:
       "Antes de qualquer reparo, elimine cabo, fonte e sujeira no conector — os três respondem pela maioria dos casos de 'não carrega'. Só depois entram bateria e circuito de carga.",
     symptoms: ["não carrega", "carrega devagar", "só carrega em certa posição", "bateria acaba rápido"],
-    triage: { equipment: "celular_tablet", symptom: "battery_charge" },
+    triage: { equipment: "celular_tablet", symptom: "no_charge" },
     sections: [
       {
         h2: "Teste cruzado de cabo e fonte",
@@ -913,7 +913,7 @@ export const SOLUTION_GUIDES: SolutionGuide[] = [
     answer:
       "Console que desliga durante o jogo quase sempre está em proteção térmica. Ruído alto de exaustor é o aviso anterior: o sistema tenta compensar uma dissipação que já não funciona.",
     symptoms: ["console desliga", "barulho alto", "trava no jogo", "esquentando"],
-    triage: { equipment: "videogame", symptom: "hdmi" },
+    triage: { equipment: "videogame", symptom: "turns_off" },
     sections: [
       {
         h2: "Como o console se protege",

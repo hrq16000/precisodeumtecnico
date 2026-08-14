@@ -181,6 +181,10 @@ export default function ConsertoSomAudio() {
         <meta property="og:description" content={clampDescription(metaDescription)} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={PAGE_URL} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={metaTitle} />
+        <meta name="twitter:description" content={clampDescription(metaDescription)} />
+
         <script type="application/ld+json">{JSON.stringify(serviceSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>

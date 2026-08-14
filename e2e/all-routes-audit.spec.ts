@@ -44,7 +44,11 @@ const ROUTES: RouteSpec[] = [
   { path: "/termos-orcamento" },
 ];
 
-const FABRICATED = /"(aggregateRating|reviewCount|ratingValue)"/;
+/**
+ * Proibido: agregados fabricados. `ratingValue` só é aceito dentro de
+ * `reviewRating` de um Review individual real (depoimento com autor).
+ */
+const FORBIDDEN_AGG = /"(aggregateRating|reviewCount)"/;
 
 for (const r of ROUTES) {
   test(`auditoria estrutural: ${r.path}`, async ({ page }) => {

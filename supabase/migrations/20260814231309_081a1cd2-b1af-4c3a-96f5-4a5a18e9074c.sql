@@ -1,0 +1,1 @@
+DELETE FROM public.reviews WHERE name = 'Teste QA' AND status = 'pending';

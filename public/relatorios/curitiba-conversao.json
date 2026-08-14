@@ -1,0 +1,128 @@
+{
+  "generatedAt": "2026-08-14T16:30:25.349Z",
+  "source": null,
+  "totalEvents": 0,
+  "best": [],
+  "rows": [
+    {
+      "slug": "notebooks",
+      "path": "/servicos/notebooks/curitiba",
+      "views": 0,
+      "whatsapp_clicks": 0,
+      "triage_open": 0,
+      "triage_complete": 0,
+      "contacts": 0,
+      "conversion_rate": 0
+    },
+    {
+      "slug": "informatica",
+      "path": "/servicos/informatica/curitiba",
+      "views": 0,
+      "whatsapp_clicks": 0,
+      "triage_open": 0,
+      "triage_complete": 0,
+      "contacts": 0,
+      "conversion_rate": 0
+    },
+    {
+      "slug": "redes",
+      "path": "/servicos/redes/curitiba",
+      "views": 0,
+      "whatsapp_clicks": 0,
+      "triage_open": 0,
+      "triage_complete": 0,
+      "contacts": 0,
+      "conversion_rate": 0
+    },
+    {
+      "slug": "recuperacao-dados",
+      "path": "/servicos/recuperacao-dados/curitiba",
+      "views": 0,
+      "whatsapp_clicks": 0,
+      "triage_open": 0,
+      "triage_complete": 0,
+      "contacts": 0,
+      "conversion_rate": 0
+    },
+    {
+      "slug": "pc-gamer",
+      "path": "/servicos/pc-gamer/curitiba",
+      "views": 0,
+      "whatsapp_clicks": 0,
+      "triage_open": 0,
+      "triage_complete": 0,
+      "contacts": 0,
+      "conversion_rate": 0
+    },
+    {
+      "slug": "servidores",
+      "path": "/servicos/servidores/curitiba",
+      "views": 0,
+      "whatsapp_clicks": 0,
+      "triage_open": 0,
+      "triage_complete": 0,
+      "contacts": 0,
+      "conversion_rate": 0
+    },
+    {
+      "slug": "macbook",
+      "path": "/servicos/macbook/curitiba",
+      "views": 0,
+      "whatsapp_clicks": 0,
+      "triage_open": 0,
+      "triage_complete": 0,
+      "contacts": 0,
+      "conversion_rate": 0
+    },
+    {
+      "slug": "impressoras",
+      "path": "/servicos/impressoras/curitiba",
+      "views": 0,
+      "whatsapp_clicks": 0,
+      "triage_open": 0,
+      "triage_complete": 0,
+      "contacts": 0,
+      "conversion_rate": 0
+    },
+    {
+      "slug": "tvs",
+      "path": "/servicos/tvs/curitiba",
+      "views": 0,
+      "whatsapp_clicks": 0,
+      "triage_open": 0,
+      "triage_complete": 0,
+      "contacts": 0,
+      "conversion_rate": 0
+    },
+    {
+      "slug": "celulares",
+      "path": "/servicos/celulares/curitiba",
+      "views": 0,
+      "whatsapp_clicks": 0,
+      "triage_open": 0,
+      "triage_complete": 0,
+      "contacts": 0,
+      "conversion_rate": 0
+    },
+    {
+      "slug": "games",
+      "path": "/servicos/games/curitiba",
+      "views": 0,
+      "whatsapp_clicks": 0,
+      "triage_open": 0,
+      "triage_complete": 0,
+      "contacts": 0,
+      "conversion_rate": 0
+    },
+    {
+      "slug": "cftv",
+      "path": "/servicos/cftv/curitiba",
+      "views": 0,
+      "whatsapp_clicks": 0,
+      "triage_open": 0,
+      "triage_complete": 0,
+      "contacts": 0,
+      "conversion_rate": 0
+    }
+  ]
+}

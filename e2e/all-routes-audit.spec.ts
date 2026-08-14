@@ -19,6 +19,8 @@ const BASE_RE = /^https:\/\/(www\.)?precisodeumtecnico\.com/;
 interface RouteSpec {
   path: string;
   breadcrumb?: boolean;
+  /** Quando a rota é um alias, o canonical aponta para a URL preferida. */
+  canonicalPath?: string;
 }
 
 const ROUTES: RouteSpec[] = [
@@ -41,7 +43,7 @@ const ROUTES: RouteSpec[] = [
   { path: "/servico-em-nacional/brasilia/asa-sul/redes" },
   { path: "/servico-em-nacional/salvador/pituba/cftv" },
   { path: "/servico-em-nacional/campinas/cambui/recuperacao-dados" },
-  { path: "/termos-orcamento" },
+  { path: "/termos-orcamento", canonicalPath: "/termos-orcamento-pre-aprovado" },
 ];
 
 /**
@@ -69,9 +71,8 @@ for (const r of ROUTES) {
     expect(canonical, `canonical em ${r.path}`).toBeTruthy();
     expect(canonical!, `canonical absoluto em ${r.path}`).toMatch(BASE_RE);
     const canonicalPath = new URL(canonical!).pathname.replace(/\/$/, "") || "/";
-    expect(canonicalPath, `canonical auto-referente em ${r.path}`).toBe(
-      r.path.replace(/\/$/, "") || "/",
-    );
+    const expectedPath = (r.canonicalPath ?? r.path).replace(/\/$/, "") || "/";
+    expect(canonicalPath, `canonical esperado em ${r.path}`).toBe(expectedPath);
 
     // Social meta
     for (const sel of [
@@ -84,8 +85,8 @@ for (const r of ROUTES) {
       expect(c && c.trim().length > 0, `${sel} em ${r.path}`).toBeTruthy();
     }
     const ogUrl = await page.locator('meta[property="og:url"]').first().getAttribute("content");
-    expect(new URL(ogUrl!).pathname.replace(/\/$/, "") || "/", `og:url self em ${r.path}`).toBe(
-      r.path.replace(/\/$/, "") || "/",
+    expect(new URL(ogUrl!).pathname.replace(/\/$/, "") || "/", `og:url em ${r.path}`).toBe(
+      expectedPath,
     );
 
     // Structured data

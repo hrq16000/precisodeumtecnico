@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet-async";
+import { resolveOgImage } from "@/lib/seo/ogImage";
 
 /**
  * Validate and stringify a structured-data object. Catches the most common
@@ -122,8 +123,7 @@ export function SEOHead({
   title,
   description,
   canonical = "https://precisodeumtecnico.com",
-  // og:image é servido estaticamente em index.html (ver nota acima).
-  ogImage: _ogImage,
+  ogImage,
   type = "website",
   schema,
   structuredData,
@@ -144,6 +144,7 @@ export function SEOHead({
     title.includes("Preciso de Um Técnico") ? title : `${title} | Preciso de Um Técnico`;
   const fullTitle = withBrand.length <= TITLE_MAX ? withBrand : clampTitle(title);
   const metaDescription = clampDescription(description);
+  const socialImage = resolveOgImage(canonical, ogImage);
 
 
   const localBusinessSchema = {
@@ -285,14 +286,19 @@ export function SEOHead({
       <meta property="og:description" content={metaDescription} />
       <meta property="og:type" content={type} />
       <meta property="og:url" content={canonical} />
-      {/* og:image / twitter:image: fonte única estática em index.html — todo
-          compartilhamento de qualquer URL do portal exibe prévia com imagem. */}
+      {/* og:image / twitter:image por rota (fonte única — ver lib/seo/ogImage). */}
+      <meta property="og:image" content={socialImage} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:alt" content={fullTitle} />
       <meta property="og:locale" content="pt_BR" />
       <meta property="og:site_name" content="Preciso de Um Técnico" />
 
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={metaDescription} />
+      <meta name="twitter:image" content={socialImage} />
+      <meta name="twitter:image:alt" content={fullTitle} />
 
 
 

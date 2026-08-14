@@ -63,10 +63,30 @@ export function decodeWaText(href: string): string {
   return decodeURIComponent(new URL(href).searchParams.get("text") || "");
 }
 
+/** Marca o prompt de localização como já exibido (evita overlay no wizard). */
+export async function suppressLocationPrompt(page: Page) {
+  await page.addInitScript(() => {
+    try { window.sessionStorage.setItem("user_location_prompted_v2", "1"); } catch { /* noop */ }
+  });
+}
+
+/** Fecha o diálogo de localização caso ele já esteja aberto. */
+export async function dismissLocationPrompt(page: Page) {
+  const dialog = page.getByTestId("smart-location-dialog");
+  if (await dialog.count()) {
+    const later = dialog.getByRole("button", { name: "Agora não" });
+    if (await later.isVisible().catch(() => false)) {
+      await later.click();
+      await expect(dialog).toBeHidden({ timeout: 10_000 });
+    }
+  }
+}
+
 /** Aguarda o wizard estar na etapa informada (1-indexed). */
 export async function waitForStep(page: Page, step: number) {
   await expect(page.getByText(`Etapa ${step}/${TRIAGE_STEPS}`)).toBeVisible({ timeout: STEP_TIMEOUT });
 }
+
 
 /** Clica em "Continuar" (rodapé) e aguarda a próxima etapa. */
 export async function clickContinue(page: Page, nextStep: number) {

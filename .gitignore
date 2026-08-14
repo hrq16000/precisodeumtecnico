@@ -33,3 +33,7 @@ canonical-parity-report.json
 
 # Estado do monitoramento contínuo de SEO
 .seo-monitor/
+
+# Artefatos de depuração do Playwright (trace.zip, vídeo, screenshots)
+test-results/
+playwright-report/

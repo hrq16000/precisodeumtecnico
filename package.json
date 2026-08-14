@@ -70,6 +70,8 @@
     "check:legacy-price": "bunx tsx scripts/check-no-bancada-legacy.ts && bunx tsx scripts/check-price-markers.ts",
     "check:curitiba": "playwright test e2e/curitiba-service-contratacao.spec.ts",
     "report:curitiba": "bunx tsx scripts/report-curitiba-conversion.ts",
+    "report:funnel": "bunx tsx scripts/report-conversion-funnel.ts",
+    "audit:critical-routes": "playwright test e2e/critical-routes-audit.spec.ts",
     "smoke:prod": "bunx tsx scripts/smoke-prod-routes.ts"
 
   },

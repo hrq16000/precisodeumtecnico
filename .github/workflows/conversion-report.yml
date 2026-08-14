@@ -1,0 +1,48 @@
+name: Relatório semanal de conversão
+
+on:
+  schedule:
+    # Toda segunda-feira às 09:00 BRT (12:00 UTC)
+    - cron: "0 12 * * 1"
+  workflow_dispatch:
+
+jobs:
+  funnel-report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+      - name: Gerar relatório do funil (serviço + UTM/campanha)
+        env:
+          FUNNEL_EVENTS_URL: ${{ secrets.FUNNEL_EVENTS_URL }}
+          FUNNEL_EVENTS_TOKEN: ${{ secrets.FUNNEL_EVENTS_TOKEN }}
+        run: bun run report:funnel
+      - name: Relatório de conversão Curitiba
+        run: bun run report:curitiba
+      - name: Publicar resumo no job
+        run: cat public/relatorios/funil-conversao.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload relatórios
+        uses: actions/upload-artifact@v4
+        with:
+          name: funil-conversao
+          path: |
+            public/relatorios/funil-conversao.json
+            public/relatorios/funil-conversao.csv
+            public/relatorios/funil-conversao.md
+            public/relatorios/curitiba-conversao.json
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Enviar resumo por Slack (opcional)
+        if: env.SLACK_WEBHOOK_URL != ''
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          SUMMARY=$(head -c 3000 public/relatorios/funil-conversao.md)
+          curl -sS -X POST "$SLACK_WEBHOOK_URL" \
+            -H 'Content-Type: application/json' \
+            -d "$(jq -Rn --arg t "$SUMMARY" '{text: $t}')"

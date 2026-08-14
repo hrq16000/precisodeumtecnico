@@ -76,7 +76,7 @@ const CidadeNacional = () => {
     offers: {
       "@type": "Offer",
       priceCurrency: "BRL",
-      price: "99.90",
+      price: "99.99",
       availability: "https://schema.org/InStock",
       url,
     },

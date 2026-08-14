@@ -71,6 +71,16 @@ jobs:
         run: bun run e2e:install
       - name: Run E2E (a11y + flows + tracking)
         run: bun run e2e
+      - name: Upload Playwright traces/vídeos (falhas)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-failures-verify
+          path: |
+            test-results/
+            playwright-report/
+          if-no-files-found: ignore
+          retention-days: 14
       - name: Start preview server
         run: |
           bun run preview --port 4173 &
@@ -96,6 +106,10 @@ jobs:
           path: canonical-parity-report.json
           if-no-files-found: ignore
           retention-days: 14
+      - name: Auditoria — BreadcrumbList, Service/Offer, LocalBusiness e canonical/og
+        run: bun run audit:critical-routes -- --reporter=list
+        env:
+          E2E_BASE_URL: http://localhost:4173
       - name: Gate — JSON-LD sem Service de vertical recusada
         run: bunx tsx scripts/check-refused-verticals.ts
       - name: Gate — title/description únicos, no limite e com og:image
@@ -198,6 +212,20 @@ jobs:
             exit 0
           fi
           bun run check:indexnow -- --remote precisodeumtecnico.com
+      - name: Auditoria pós-publish — schemas e metatags em produção
+        run: bun run e2e:install && bun run audit:critical-routes -- --reporter=list
+        env:
+          E2E_BASE_URL: https://precisodeumtecnico.com
+      - name: Upload artefatos da auditoria pós-publish (falhas)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-failures-post-deploy
+          path: |
+            test-results/
+            playwright-report/
+          if-no-files-found: ignore
+          retention-days: 14
       - name: Canonical parity em produção (amostra)
         run: bun run e2e:install && bun run check:canonical
         env:
@@ -254,11 +282,11 @@ jobs:
 
       - name: RLS E2E — wa_bypass_events policy
         run: bunx playwright test e2e/wa-bypass-rls.spec.ts --reporter=list
-      - name: Upload RLS failure trace
+      - name: Upload Playwright traces/vídeos (falhas)
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: rls-e2e-trace
+          name: playwright-failures-security
           path: test-results/
           if-no-files-found: ignore
           retention-days: 7

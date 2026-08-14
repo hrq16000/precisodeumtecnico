@@ -93,7 +93,7 @@ var servicesData = {
       "Pe\xE7as originais e compat\xEDveis de alta qualidade",
       "Atendimento em domic\xEDlio ou empresa",
       "Garantia de at\xE9 1 ano nas pe\xE7as",
-      "Diagn\xF3stico gratuito na maioria dos casos",
+      "Diagn\xF3stico com valor fixo de R$ 99,99, deduzido se aprovar o servi\xE7o",
       "Or\xE7amento sem compromisso",
       "T\xE9cnicos certificados pelos fabricantes",
       "Backup de dados inclu\xEDdo",
@@ -143,7 +143,7 @@ var servicesData = {
       { question: "Voc\xEAs consertam notebooks de todas as marcas?", answer: "Sim! Trabalhamos com Dell, HP, Lenovo, Acer, Asus, Samsung, Positivo, Vaio, LG, Compaq, Gateway e todas as outras marcas do mercado, incluindo modelos antigos e novos." },
       { question: "Quanto tempo leva um reparo de notebook?", answer: "Depende do servi\xE7o: formata\xE7\xE3o e upgrades s\xE3o feitos em 1-2 dias. Troca de tela e teclado de 1 a 5 dias (dependendo da disponibilidade da pe\xE7a). Reparo de placa-m\xE3e pode levar de 3 a 10 dias." },
       { question: "As pe\xE7as s\xE3o originais?", answer: "Trabalhamos com pe\xE7as originais (quando dispon\xEDveis) e compat\xEDveis de alta qualidade. Sempre informamos qual tipo de pe\xE7a ser\xE1 utilizada e voc\xEA escolhe a melhor op\xE7\xE3o para seu or\xE7amento." },
-      { question: "Voc\xEAs buscam e entregam o notebook?", answer: "Sim! Oferecemos servi\xE7o de coleta e entrega em Curitiba e toda a regi\xE3o metropolitana. O valor varia conforme a dist\xE2ncia, mas em muitos casos \xE9 gratuito." },
+      { question: "Voc\xEAs buscam e entregam o notebook?", answer: "Sim! Oferecemos servi\xE7o de coleta e entrega em Curitiba e toda a regi\xE3o metropolitana. A coleta e entrega personalizada parte de R$ 299,99, conforme dist\xE2ncia, equipamento e complexidade." },
       { question: "Consertam MacBook?", answer: "Sim! Somos especializados tamb\xE9m em notebooks Apple, incluindo MacBook Air e MacBook Pro. Realizamos troca de bateria, tela, teclado, SSD, reparo de placa l\xF3gica e muito mais." },
       { question: "Meu notebook n\xE3o liga, tem conserto?", answer: "Na maioria dos casos sim! Fazemos diagn\xF3stico completo para identificar se o problema \xE9 na fonte, bateria, placa-m\xE3e ou outro componente. Muitas vezes \xE9 poss\xEDvel recuperar com troca de pe\xE7as espec\xEDficas." },
       { question: "Notebook que caiu ou molhou tem conserto?", answer: "Depende do dano. Notebooks que ca\xEDram podem ter problemas de tela, dobradi\xE7a ou placa. Notebooks molhados precisam de limpeza urgente (banho qu\xEDmico) para evitar corros\xE3o. Quanto antes trouxer, maior a chance de recupera\xE7\xE3o." }
@@ -449,7 +449,7 @@ var servicesData = {
       "Atendimento r\xE1pido (muitos servi\xE7os no mesmo dia)",
       "Pe\xE7as de qualidade com garantia",
       "T\xE9cnicos especializados em todas as marcas",
-      "Diagn\xF3stico gratuito em balc\xE3o",
+      "Diagn\xF3stico em balc\xE3o por R$ 99,99, deduzido se aprovar o servi\xE7o",
       "Garantia de 90 dias a 1 ano",
       "Backup de dados antes do reparo",
       "Or\xE7amento sem compromisso",
@@ -474,7 +474,7 @@ var servicesData = {
     ],
     process: [
       { step: 1, title: "Contato", description: "Descreva o problema do seu celular via WhatsApp" },
-      { step: 2, title: "Diagn\xF3stico Gratuito", description: "Traga para diagn\xF3stico gratuito ou solicite coleta" },
+      { step: 2, title: "Diagn\xF3stico T\xE9cnico", description: "Traga para diagn\xF3stico (R$ 99,99, deduzido se aprovar) ou solicite coleta" },
       { step: 3, title: "Or\xE7amento Detalhado", description: "Or\xE7amento com op\xE7\xF5es de pe\xE7as e valores" },
       { step: 4, title: "Aprova\xE7\xE3o", description: "Voc\xEA aprova e iniciamos o reparo" },
       { step: 5, title: "Reparo Profissional", description: "Conserto realizado com pe\xE7as de qualidade" },
@@ -482,7 +482,7 @@ var servicesData = {
       { step: 7, title: "Entrega com Garantia", description: "Celular entregue funcionando com garantia" }
     ],
     pricing: [
-      { name: "Diagn\xF3stico", price: "Gr\xE1tis", description: "Avalia\xE7\xE3o do problema em balc\xE3o" },
+      { name: "Diagn\xF3stico", price: "R$ 99,99", description: "Avalia\xE7\xE3o do problema em balc\xE3o, deduzida se aprovar o servi\xE7o" },
       { name: "Troca Tela iPhone 11", price: "A partir de R$ 280,00", description: "Display + instala\xE7\xE3o + garantia" },
       { name: "Troca Tela iPhone 12", price: "A partir de R$ 350,00", description: "Display + instala\xE7\xE3o + garantia" },
       { name: "Troca Tela iPhone 13", price: "A partir de R$ 400,00", description: "Display + instala\xE7\xE3o + garantia" },
@@ -554,7 +554,7 @@ var servicesData = {
       { step: 8, title: "Teste Extensivo", description: "Teste de 24-48h antes da entrega" }
     ],
     pricing: [
-      { name: "Diagn\xF3stico", price: "R$ 50,00", description: "Deduzido se aprovar o servi\xE7o" },
+      { name: "Diagn\xF3stico", price: "R$ 99,99", description: "Taxa oficial de diagn\xF3stico, deduzida se aprovar o servi\xE7o" },
       { name: "Limpeza + Pasta T\xE9rmica PS4", price: "A partir de R$ 150,00", description: "Limpeza completa + pasta Arctic" },
       { name: "Limpeza + Pasta T\xE9rmica PS5", price: "A partir de R$ 180,00", description: "Limpeza completa + pasta Arctic" },
       { name: "Limpeza + Pasta T\xE9rmica Xbox", price: "A partir de R$ 150,00", description: "Limpeza completa + pasta Arctic" },
@@ -959,7 +959,7 @@ var servicesData = {
       { name: "Reparo Placa-M\xE3e", price: "A partir de R$ 300,00", description: "Componentes + m\xE3o de obra" },
       { name: "Troca T-Con", price: "A partir de R$ 250,00", description: "Placa + instala\xE7\xE3o" },
       { name: "Atualiza\xE7\xE3o Smart TV", price: "A partir de R$ 80,00", description: "Firmware + apps" },
-      { name: "Coleta/Entrega", price: "A partir de R$ 50,00", description: "Conforme dist\xE2ncia" }
+      { name: "Coleta e entrega personalizada", price: "A partir de R$ 299,99", description: "Conforme dist\xE2ncia, equipamento e complexidade" }
     ],
     faqs: [
       { question: "Minha TV n\xE3o liga, tem conserto?", answer: "Na maioria dos casos sim. Pode ser problema na fonte (mais comum), placa-m\xE3e ou capacitores. Fazemos diagn\xF3stico para identificar a causa exata." },
@@ -975,14 +975,14 @@ var servicesData = {
     slug: "recuperacao-dados",
     title: "Recupera\xE7\xE3o de Dados",
     metaTitle: "Recupera\xE7\xE3o de Dados Curitiba | HD SSD Pen Drive Cart\xE3o de Mem\xF3ria 24h",
-    metaDescription: "Recupera\xE7\xE3o de dados em Curitiba. HD danificado, SSD, pen drive, cart\xE3o de mem\xF3ria. Fotos, documentos, v\xEDdeos. Diagn\xF3stico gratuito. Sigilo total.",
+    metaDescription: "Recupera\xE7\xE3o de dados em Curitiba. HD danificado, SSD, pen drive, cart\xE3o de mem\xF3ria. Fotos, documentos, v\xEDdeos. Diagn\xF3stico por R$ 99,99. Sigilo total.",
     subtitle: "Seus arquivos importantes de volta",
-    description: "Recuperamos dados de HDs, SSDs, pen drives, cart\xF5es de mem\xF3ria e celulares. Fotos, v\xEDdeos, documentos, bancos de dados. Diagn\xF3stico gratuito e sigilo total.",
+    description: "Recuperamos dados de HDs, SSDs, pen drives, cart\xF5es de mem\xF3ria e celulares. Fotos, v\xEDdeos, documentos, bancos de dados. Diagn\xF3stico por R$ 99,99 (deduzido se aprovar) e sigilo total.",
     longDescription: "Perdeu arquivos importantes? Oferecemos servi\xE7os especializados de recupera\xE7\xE3o de dados para diversos dispositivos de armazenamento: HDs externos e internos, SSDs, pen drives, cart\xF5es de mem\xF3ria (SD, microSD, CF), celulares e tablets. Recuperamos fotos, v\xEDdeos, documentos, planilhas, bancos de dados e outros arquivos perdidos por exclus\xE3o acidental, formata\xE7\xE3o, v\xEDrus, falha mec\xE2nica ou corrup\xE7\xE3o. Trabalhamos com total sigilo e discri\xE7\xE3o. Em muitos casos conseguimos recuperar at\xE9 100% dos dados.",
     image: "service-computer.jpg",
     icon: "HardDrive",
     benefits: [
-      "Diagn\xF3stico gratuito",
+      "Diagn\xF3stico por R$ 99,99, deduzido se aprovar o servi\xE7o",
       "Alta taxa de sucesso (80-95%)",
       "Sigilo total garantido",
       "S\xF3 cobra se recuperar",
@@ -1008,7 +1008,7 @@ var servicesData = {
     process: [
       { step: 1, title: "Contato", description: "Descreva o problema e tipo de m\xEDdia" },
       { step: 2, title: "Entrega", description: "Traga ou envie a m\xEDdia para an\xE1lise" },
-      { step: 3, title: "Diagn\xF3stico Gratuito", description: "Avaliamos a m\xEDdia e possibilidade de recupera\xE7\xE3o" },
+      { step: 3, title: "Diagn\xF3stico T\xE9cnico", description: "Avaliamos a m\xEDdia e a possibilidade de recupera\xE7\xE3o (R$ 99,99, deduzido se aprovar)" },
       { step: 4, title: "Or\xE7amento", description: "Or\xE7amento baseado na complexidade" },
       { step: 5, title: "Aprova\xE7\xE3o", description: "Voc\xEA aprova apenas se quiser prosseguir" },
       { step: 6, title: "Recupera\xE7\xE3o", description: "Processo de recupera\xE7\xE3o dos dados" },
@@ -1016,7 +1016,7 @@ var servicesData = {
       { step: 8, title: "Entrega", description: "Dados entregues em m\xEDdia nova" }
     ],
     pricing: [
-      { name: "Diagn\xF3stico", price: "Gr\xE1tis", description: "Avalia\xE7\xE3o da m\xEDdia" },
+      { name: "Diagn\xF3stico", price: "R$ 99,99", description: "Avalia\xE7\xE3o da m\xEDdia, deduzido se aprovar o servi\xE7o" },
       { name: "Recupera\xE7\xE3o L\xF3gica Simples", price: "A partir de R$ 200,00", description: "Arquivos deletados/formata\xE7\xE3o r\xE1pida" },
       { name: "Recupera\xE7\xE3o L\xF3gica Complexa", price: "A partir de R$ 400,00", description: "Formata\xE7\xE3o completa/corrup\xE7\xE3o" },
       { name: "Recupera\xE7\xE3o HD com Falha", price: "A partir de R$ 600,00", description: "HD com bad blocks/cliques" },
@@ -1080,7 +1080,7 @@ var servicesData = {
       { step: 8, title: "Teste 24-48h", description: "Teste extensivo antes da entrega" }
     ],
     pricing: [
-      { name: "Diagn\xF3stico", price: "A partir de R$ 150,00", description: "An\xE1lise completa com microsc\xF3pio" },
+      { name: "Diagn\xF3stico", price: "A partir de R$ 99,99", description: "An\xE1lise completa com microsc\xF3pio" },
       { name: "Reparo Placa L\xF3gica", price: "A partir de R$ 500,00", description: "Reballing/micro-soldagem" },
       { name: "Desoxida\xE7\xE3o Completa", price: "A partir de R$ 400,00", description: "Banho ultrass\xF4nico + reparo" },
       { name: "Troca de Tela Retina", price: "A partir de R$ 1.200,00", description: "Tela original/OEM + instala\xE7\xE3o" },

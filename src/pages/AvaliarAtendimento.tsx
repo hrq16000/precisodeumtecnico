@@ -90,10 +90,24 @@ export default function AvaliarAtendimento() {
     });
     setSending(false);
     if (error) {
-      setServerError("Não foi possível enviar agora. Tente novamente em instantes.");
-      trackEvent("review_submit_error", { page_path: "/avaliar" });
+      // Log técnico detalhado para depuração (sem PII do formulário).
+      console.error("[reviews] falha ao registrar avaliação", {
+        code: error.code,
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+      });
+      const isPermission =
+        error.code === "42501" || /permission denied|row-level security/i.test(error.message ?? "");
+      setServerError(
+        isPermission
+          ? "Não foi possível registrar sua avaliação por uma restrição de permissão. Já fomos notificados — tente novamente em instantes."
+          : `Não foi possível enviar agora (${error.code ?? "erro"}). Tente novamente em instantes.`,
+      );
+      trackEvent("review_submit_error", { page_path: "/avaliar", error_code: error.code ?? "unknown" });
       return;
     }
+
     trackEvent("review_submitted", {
       page_path: "/avaliar",
       rating,
@@ -126,7 +140,7 @@ export default function AvaliarAtendimento() {
           </p>
 
           {done ? (
-            <div className="p-6 rounded-2xl border border-border bg-card text-center">
+            <div role="status" aria-live="polite" className="p-6 rounded-2xl border border-success/40 bg-success/10 text-center">
               <CheckCircle2 className="w-10 h-10 text-success mx-auto mb-3" aria-hidden="true" />
               <h2 className="font-display text-2xl font-bold text-card-foreground mb-2">
                 Avaliação registrada
@@ -237,7 +251,12 @@ export default function AvaliarAtendimento() {
                 </span>
               </label>
 
-              {serverError && <p className="text-sm text-destructive">{serverError}</p>}
+              {serverError && (
+                <p role="alert" aria-live="assertive" className="text-sm text-destructive rounded-lg border border-destructive/40 bg-destructive/10 p-3">
+                  {serverError}
+                </p>
+              )}
+
 
               <button
                 type="submit"

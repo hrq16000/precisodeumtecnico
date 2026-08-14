@@ -66,7 +66,11 @@
     "photos:strip-exif": "bunx tsx scripts/strip-photo-exif.ts",
     "check:alt-text": "bunx tsx scripts/check-alt-text.ts",
     "check:layout": "playwright test e2e/layout-integrity.spec.ts",
-    "check:wa-prefill": "playwright test e2e/wa-prefill-universal.spec.ts"
+    "check:wa-prefill": "playwright test e2e/wa-prefill-universal.spec.ts",
+    "check:legacy-price": "bunx tsx scripts/check-no-bancada-legacy.ts && bunx tsx scripts/check-price-markers.ts",
+    "check:curitiba": "playwright test e2e/curitiba-service-contratacao.spec.ts",
+    "report:curitiba": "bunx tsx scripts/report-curitiba-conversion.ts",
+    "smoke:prod": "bunx tsx scripts/smoke-prod-routes.ts"
 
   },
   "dependencies": {

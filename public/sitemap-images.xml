@@ -397,6 +397,94 @@
     </image:image>
   </url>
   <url>
+    <loc>https://precisodeumtecnico.com/servicos/tvs/curitiba</loc>
+    <lastmod>2026-08-14</lastmod>
+    <image:image>
+      <image:loc>https://precisodeumtecnico.com/photos/cidade-curitiba-1600.jpg</image:loc>
+      <image:title>Curitiba, Paraná</image:title>
+      <image:caption>Vista dos edifícios de Curitiba, Paraná — foto de Wilfredor, CC0 (Wikimedia Commons)</image:caption>
+      <image:license>http://creativecommons.org/publicdomain/zero/1.0/deed.en</image:license>
+    </image:image>
+    <image:image>
+      <image:loc>https://precisodeumtecnico.com/photos/notebook-hardware-1600.jpg</image:loc>
+      <image:title>Notebook aberto para manutenção de hardware</image:title>
+      <image:caption>Interior de notebook aberto com placa-mãe e componentes à vista — foto de Rider Adil, CC BY 3.0 (Wikimedia Commons)</image:caption>
+      <image:license>https://creativecommons.org/licenses/by/3.0</image:license>
+    </image:image>
+    <image:image>
+      <image:loc>https://precisodeumtecnico.com/photos/redes-rack-800.jpg</image:loc>
+      <image:title>Rack de rede com switches e cabeamento</image:title>
+      <image:caption>Rack de rede com switches e cabeamento estruturado organizado — foto de Yann, CC BY-SA 3.0 (Wikimedia Commons)</image:caption>
+      <image:license>http://creativecommons.org/licenses/by-sa/3.0/</image:license>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://precisodeumtecnico.com/servicos/celulares/curitiba</loc>
+    <lastmod>2026-08-14</lastmod>
+    <image:image>
+      <image:loc>https://precisodeumtecnico.com/photos/cidade-curitiba-1600.jpg</image:loc>
+      <image:title>Curitiba, Paraná</image:title>
+      <image:caption>Vista dos edifícios de Curitiba, Paraná — foto de Wilfredor, CC0 (Wikimedia Commons)</image:caption>
+      <image:license>http://creativecommons.org/publicdomain/zero/1.0/deed.en</image:license>
+    </image:image>
+    <image:image>
+      <image:loc>https://precisodeumtecnico.com/photos/informatica-bancada-1600.jpg</image:loc>
+      <image:title>Reparo de computador em bancada</image:title>
+      <image:caption>Técnico realizando reparo em computador sobre bancada de serviço — foto de Vintechcomputerservices, CC BY-SA 4.0 (Wikimedia Commons)</image:caption>
+      <image:license>https://creativecommons.org/licenses/by-sa/4.0</image:license>
+    </image:image>
+    <image:image>
+      <image:loc>https://precisodeumtecnico.com/photos/notebook-hardware-1600.jpg</image:loc>
+      <image:title>Notebook aberto para manutenção de hardware</image:title>
+      <image:caption>Interior de notebook aberto com placa-mãe e componentes à vista — foto de Rider Adil, CC BY 3.0 (Wikimedia Commons)</image:caption>
+      <image:license>https://creativecommons.org/licenses/by/3.0</image:license>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://precisodeumtecnico.com/servicos/games/curitiba</loc>
+    <lastmod>2026-08-14</lastmod>
+    <image:image>
+      <image:loc>https://precisodeumtecnico.com/photos/cidade-curitiba-1600.jpg</image:loc>
+      <image:title>Curitiba, Paraná</image:title>
+      <image:caption>Vista dos edifícios de Curitiba, Paraná — foto de Wilfredor, CC0 (Wikimedia Commons)</image:caption>
+      <image:license>http://creativecommons.org/publicdomain/zero/1.0/deed.en</image:license>
+    </image:image>
+    <image:image>
+      <image:loc>https://precisodeumtecnico.com/photos/notebook-hardware-1600.jpg</image:loc>
+      <image:title>Notebook aberto para manutenção de hardware</image:title>
+      <image:caption>Interior de notebook aberto com placa-mãe e componentes à vista — foto de Rider Adil, CC BY 3.0 (Wikimedia Commons)</image:caption>
+      <image:license>https://creativecommons.org/licenses/by/3.0</image:license>
+    </image:image>
+    <image:image>
+      <image:loc>https://precisodeumtecnico.com/photos/redes-rack-800.jpg</image:loc>
+      <image:title>Rack de rede com switches e cabeamento</image:title>
+      <image:caption>Rack de rede com switches e cabeamento estruturado organizado — foto de Yann, CC BY-SA 3.0 (Wikimedia Commons)</image:caption>
+      <image:license>http://creativecommons.org/licenses/by-sa/3.0/</image:license>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://precisodeumtecnico.com/servicos/cftv/curitiba</loc>
+    <lastmod>2026-08-14</lastmod>
+    <image:image>
+      <image:loc>https://precisodeumtecnico.com/photos/cidade-curitiba-1600.jpg</image:loc>
+      <image:title>Curitiba, Paraná</image:title>
+      <image:caption>Vista dos edifícios de Curitiba, Paraná — foto de Wilfredor, CC0 (Wikimedia Commons)</image:caption>
+      <image:license>http://creativecommons.org/publicdomain/zero/1.0/deed.en</image:license>
+    </image:image>
+    <image:image>
+      <image:loc>https://precisodeumtecnico.com/photos/wifi-roteador-1600.jpg</image:loc>
+      <image:title>Roteador Wi-Fi doméstico</image:title>
+      <image:caption>Roteador Wi-Fi doméstico com antenas sobre superfície clara — foto de Hayden Schiff, CC BY 4.0 (Wikimedia Commons)</image:caption>
+      <image:license>https://creativecommons.org/licenses/by/4.0</image:license>
+    </image:image>
+    <image:image>
+      <image:loc>https://precisodeumtecnico.com/photos/cftv-camera-1600.jpg</image:loc>
+      <image:title>Câmera de CFTV instalada em fachada</image:title>
+      <image:caption>Câmera de segurança instalada na parede de um edifício — foto de Ivan Radic, CC BY 2.0 (Wikimedia Commons)</image:caption>
+      <image:license>https://creativecommons.org/licenses/by/2.0</image:license>
+    </image:image>
+  </url>
+  <url>
     <loc>https://precisodeumtecnico.com/atendimento-nacional/sao-paulo</loc>
     <lastmod>2026-08-14</lastmod>
     <image:image>

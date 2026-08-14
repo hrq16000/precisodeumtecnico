@@ -190,6 +190,9 @@ export function Footer() {
               <Link to="/blog" className="text-background/60 hover:text-background text-sm transition-colors">
                 Blog
               </Link>
+              <Link to="/garantia-e-cobertura" className="text-background/60 hover:text-background text-sm transition-colors">
+                Garantia e cobertura
+              </Link>
               <Link to="/termos-orcamento-pre-aprovado" className="text-background/60 hover:text-background text-sm transition-colors">
                 Termos de Orçamento
               </Link>

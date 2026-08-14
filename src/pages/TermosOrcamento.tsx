@@ -30,7 +30,15 @@ const TermosOrcamento = () => {
         description="Conheça os termos de diagnóstico, orçamento pré-aprovado, prazos de reparo, logística de coleta e política de cancelamento dos serviços técnicos."
         canonical="https://precisodeumtecnico.com/termos-orcamento-pre-aprovado"
         schema={schema}
+        breadcrumbs={[
+          { name: "Início", url: "https://precisodeumtecnico.com/" },
+          {
+            name: "Termos de Orçamento Pré-Aprovado",
+            url: "https://precisodeumtecnico.com/termos-orcamento-pre-aprovado",
+          },
+        ]}
       />
+
 
       {/* Hero */}
       <section className="bg-gradient-to-br from-primary/10 via-background to-accent/5 py-16 md:py-24">

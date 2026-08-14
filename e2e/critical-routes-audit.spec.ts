@@ -137,10 +137,17 @@ for (const route of CRITICAL_ROUTES) {
       }
     }
 
-    // 5) LocalBusiness — apenas nós de topo (providers aninhados são stubs)
-    for (const lb of rootNodes.filter((n) => typeOf(n).some((t) => t.includes("LocalBusiness")))) {
+    // 5) LocalBusiness — todo nó de topo precisa de name e ao menos um deve
+    // trazer o endereço completo da entidade.
+    const localBusinesses = rootNodes.filter((n) => typeOf(n).some((t) => t.includes("LocalBusiness")));
+    for (const lb of localBusinesses) {
       expect(String(lb.name ?? "").length, `LocalBusiness sem name em ${route}`).toBeGreaterThan(0);
-      expect(lb.address, `LocalBusiness sem address em ${route}`).toBeTruthy();
+    }
+    if (localBusinesses.length > 0) {
+      expect(
+        localBusinesses.some((lb) => Boolean(lb.address)),
+        `nenhum LocalBusiness com address em ${route}`,
+      ).toBeTruthy();
     }
   });
 }

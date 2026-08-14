@@ -28,7 +28,7 @@ const MODALITIES: Record<
   visita: {
     label: "Visita técnica",
     headline: "Visita técnica registrada — vamos confirmar a agenda",
-    body: `A visita/diagnóstico é de ${COMMERCIAL_TERMS.diagnosisFee.priceLabel} por bloco de até 30 minutos. Se o serviço exigir bancada, seguimos para coleta a partir de ${PRICING.pickupDelivery.priceLabel}, sempre com sua aprovação.`,
+    body: `A visita/diagnóstico é de ${COMMERCIAL_TERMS.diagnosisFee.priceLabel} por bloco de até 30 minutos. Se o serviço exigir bancada, seguimos para coleta (${PRICING.pickupDelivery.priceLabel}), sempre com sua aprovação.`,
     icon: Wrench,
     next: [
       "Confirme bairro, referência e horário no WhatsApp.",
@@ -170,7 +170,7 @@ const Obrigado = () => {
 
           <div className="flex flex-wrap gap-3">
             <Link
-              to="/status-ordem-servico"
+              to="/status-os"
               className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-3 font-semibold text-primary-foreground"
             >
               Consultar status da ordem

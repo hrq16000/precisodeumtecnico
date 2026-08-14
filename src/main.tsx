@@ -10,11 +10,11 @@ import { GlobalErrorBoundary } from "./components/system/GlobalErrorBoundary";
 initSentry();
 
 createRoot(document.getElementById("root")!).render(
-  <>
+  <StrictMode>
     <GlobalErrorBoundary>
       <App />
     </GlobalErrorBoundary>
-  </>,
+  </StrictMode>,
 );
 
 if (typeof window !== "undefined") {

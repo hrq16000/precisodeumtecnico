@@ -158,7 +158,7 @@ export default function ServicoCuritibaContratacao() {
           priceMinBRL: PRICING.technicalVisit.minPriceBRL,
           areaServed: "Curitiba, PR",
         }}
-        structuredData={[serviceSchema]}
+        structuredData={[localBusinessSchema, serviceSchema]}
         faq={local.faqs}
       />
 

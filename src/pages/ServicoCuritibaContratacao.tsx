@@ -189,6 +189,20 @@ export default function ServicoCuritibaContratacao() {
                 Iniciar triagem <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
               <Button size="lg" variant="outline" asChild className="border-background/30 bg-transparent text-background hover:bg-background/10">
+                <a
+                  href={waHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => onWaClick("hero")}
+                  data-wa-source={`servicos_${local.slug}_curitiba_hero`}
+                  data-service={local.slug}
+                  data-city="Curitiba"
+                  aria-label={`Falar no WhatsApp sobre ${local.localTitle}`}
+                >
+                  <MessageCircle className="mr-2 h-4 w-4" /> Falar no WhatsApp
+                </a>
+              </Button>
+              <Button size="lg" variant="outline" asChild className="border-background/30 bg-transparent text-background hover:bg-background/10">
                 <Link to={`/servicos/${local.slug}`}>Guia técnico completo do serviço</Link>
               </Button>
             </div>

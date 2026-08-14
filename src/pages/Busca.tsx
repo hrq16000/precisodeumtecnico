@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { RelatedLinksSection } from "@/components/seo/RelatedLinksSection";
+import { SmartSearchWidget } from "@/components/search/SmartSearchWidget";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, MessageCircle, ArrowRight } from "lucide-react";
@@ -105,6 +106,7 @@ export default function Busca() {
 
       <section className="py-10 bg-background">
         <div className="container-custom max-w-4xl">
+          <SmartSearchWidget className="mb-8" />
           <form role="search" onSubmit={(e) => e.preventDefault()} className="space-y-4">
             <label htmlFor="busca-input" className="block text-sm font-medium">
               O que você procura?

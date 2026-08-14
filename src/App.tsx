@@ -59,6 +59,8 @@ const ComoFunciona = lazy(() => import("./pages/ComoFunciona"));
 const GuiaTecnicoInformatica = lazy(() => import("./pages/GuiaTecnicoInformatica"));
 const ComoEscolherTecnico = lazy(() => import("./pages/ComoEscolherTecnico"));
 const Busca = lazy(() => import("./pages/Busca"));
+const SolucoesHub = lazy(() => import("./pages/SolucoesHub"));
+const SolucaoGuia = lazy(() => import("./pages/SolucaoGuia"));
 const MensagensProntas = lazy(() => import("./pages/MensagensProntas"));
 const ManifestoDeProvas = lazy(() => import("./pages/ManifestoDeProvas"));
 const PainelGoogleBusiness = lazy(() => import("./pages/PainelGoogleBusiness"));
@@ -181,6 +183,8 @@ const App = () => (
                 <Route path="/como-escolher-tecnico-preco-prazo" element={<ComoEscolherTecnico />} />
 
                 <Route path="/busca" element={<Busca />} />
+                <Route path="/solucoes" element={<SolucoesHub />} />
+                <Route path="/solucoes/:slug" element={<SolucaoGuia />} />
                 <Route path="/operacao/mensagens-prontas" element={<MensagensProntas />} />
                 <Route path="/operacao/manifesto-de-provas" element={<ManifestoDeProvas />} />
                 <Route path="/operacao/painel-google-business" element={<PainelGoogleBusiness />} />

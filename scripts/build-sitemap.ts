@@ -26,6 +26,7 @@ import { allBlogPosts as blogPosts, blogCategories } from "../src/data/blog";
 import { nationalCities } from "../src/data/nationalCities";
 import { nationalBairrosByCity } from "../src/data/nationalBairros";
 import { KEYWORD_SERVICE_PAGES } from "../src/data/keywordServices";
+import { SOLUTION_GUIDES } from "../src/data/solutionGuides";
 
 import { enumeratePilotCombinations, NATIONAL_MATRIX_MAX } from "../src/data/nationalServiceCoverage";
 
@@ -82,7 +83,16 @@ const cityBairros: Record<string, string[]> = {
 };
 
 // ---- Shards ----
+const solutionsMtime = fileDate("src/data/solutionGuides.ts");
+
 const mainUrls: Url[] = [
+  { loc: `${BASE}/solucoes`, changefreq: "weekly", priority: 0.8, lastmod: solutionsMtime },
+  ...SOLUTION_GUIDES.map((g) => ({
+    loc: `${BASE}/solucoes/${g.slug}`,
+    changefreq: "monthly",
+    priority: 0.7,
+    lastmod: solutionsMtime,
+  })),
   { loc: `${BASE}/`, changefreq: "daily", priority: 1.0, lastmod: indexMtime },
   { loc: `${BASE}/servicos`, changefreq: "weekly", priority: 0.9, lastmod: servicesMtime },
   { loc: `${BASE}/regioes`, changefreq: "weekly", priority: 0.9, lastmod: regionsMtime },

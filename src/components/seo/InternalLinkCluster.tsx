@@ -10,6 +10,7 @@
 import { Link } from "react-router-dom";
 import { SYMPTOMS } from "@/data/symptoms";
 import { getBairrosForCity } from "@/data/nationalBairros";
+import { SOLUTION_GUIDES, guidePath, SOLUTIONS_HUB_PATH } from "@/data/solutionGuides";
 
 const CATEGORY_TO_SERVICE: Record<string, string> = {
   tv: "tvs",
@@ -133,8 +134,26 @@ export function InternalLinkCluster({
                   Quem é o gestor técnico responsável
                 </Link>
               </li>
+              <li>
+                <Link to={SOLUTIONS_HUB_PATH} className="text-primary hover:underline">
+                  Central de soluções por equipamento
+                </Link>
+              </li>
             </ul>
           </div>
+        </div>
+
+        <div className="mt-8">
+          <h3 className="font-semibold mb-3">Guias de solução para o mesmo problema</h3>
+          <ul className="grid gap-2 text-sm sm:grid-cols-2 lg:grid-cols-3">
+            {SOLUTION_GUIDES.slice(0, 6).map((g) => (
+              <li key={g.slug}>
+                <Link to={guidePath(g.slug)} className="text-primary hover:underline">
+                  {g.h1}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>

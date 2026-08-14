@@ -16,6 +16,7 @@ import { QuickQuoteForm } from "@/components/home/QuickQuoteForm";
 import { QuickDiagnosisQuiz } from "@/components/QuickDiagnosisQuiz";
 import { RelatedLinksSection } from "@/components/seo/RelatedLinksSection";
 import { Reveal } from "@/components/Reveal";
+import { SmartSearchWidget } from "@/components/search/SmartSearchWidget";
 import { AuthoritySince } from "@/components/marketing/AuthoritySince";
 import { buildReviewsSchema } from "@/data/testimonials";
 import { homeFaqs } from "@/data/homeFaqs";
@@ -73,6 +74,11 @@ const Index = () => {
           ("como podemos atender"). A prova de autoridade do hero não é repetida
           imediatamente abaixo: a faixa AuthoritySince passa para depois dos
           serviços, sem perda de conteúdo. */}
+      <section className="py-8 bg-background">
+        <div className="container-custom max-w-4xl">
+          <SmartSearchWidget />
+        </div>
+      </section>
       <Reveal><HomeSymptomsSection /></Reveal>
       <Reveal><ServicesSection /></Reveal>
       <AuthoritySince />

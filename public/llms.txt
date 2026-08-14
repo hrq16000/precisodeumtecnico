@@ -26,10 +26,26 @@ A Preciso de Um Técnico conecta clientes a técnicos qualificados em Curitiba, 
 - [Preços](/precos): faixas de preço e regras comerciais por tipo de serviço.
 - [FAQ](/faq): dúvidas frequentes sobre prazos, garantia e cobertura.
 - [Blog](/blog): guias, dicas e conteúdo técnico.
+- [Soluções](/solucoes): central de guias de diagnóstico por equipamento e sintoma.
 - [Sobre](/sobre): quem somos e como trabalhamos.
 - [Contato](/contato): triagem e canais de atendimento.
 - [Avaliações](/avaliacoes): depoimentos reais de clientes atendidos.
 - [Status da ordem de serviço](/status-os): acompanhamento do reparo por protocolo.
+
+## Guias de solução (deep-dive)
+
+- [Notebook não liga](/solucoes/notebook-nao-liga)
+- [Computador lento](/solucoes/computador-lento)
+- [Notebook esquentando e desligando](/solucoes/notebook-esquentando)
+- [Tela azul no Windows](/solucoes/tela-azul-windows)
+- [Recuperar arquivos de HD com defeito](/solucoes/recuperar-arquivos-hd)
+- [Computador com vírus e pop-ups](/solucoes/computador-com-virus)
+- [TV liga mas sem imagem](/solucoes/tv-liga-mas-sem-imagem)
+- [TV com listras na tela](/solucoes/tv-com-listras-na-tela)
+- [Wi-Fi caindo toda hora](/solucoes/wifi-caindo-toda-hora)
+- [Internet lenta em alguns cômodos](/solucoes/internet-lenta-em-alguns-comodos)
+- [Celular não carrega](/solucoes/celular-nao-carrega)
+- [Videogame desligando sozinho](/solucoes/videogame-desligando-sozinho)
 
 ## Serviços em destaque
 

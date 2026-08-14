@@ -9,6 +9,7 @@ import { CURATED_SERVICE_SLUGS } from "@/data/curatedServiceSlugs";
 import { servicesData } from "@/data/services";
 import { BAIRROS_CURITIBA_SERVICO, SERVICO_META, REGIAO_LABEL } from "@/data/bairrosCuritibaServico";
 import { CIDADES_REGIAO } from "@/data/cidadesRegiao";
+import { SOLUTION_GUIDES, guidePath } from "@/data/solutionGuides";
 
 export type SearchEntryType = "servico" | "bairro" | "cidade" | "pagina";
 
@@ -125,6 +126,18 @@ const CURITIBA_SERVICE_PAGES: SearchEntry[] = [
 
 function buildIndex(): SearchEntry[] {
   const entries: SearchEntry[] = [...STATIC_PAGES, ...CURITIBA_SERVICE_PAGES];
+
+  // Guias editoriais de solução (/solucoes/:slug)
+  for (const guide of SOLUTION_GUIDES) {
+    entries.push({
+      id: `guia-${guide.slug}`,
+      title: guide.h1,
+      description: guide.description,
+      path: guidePath(guide.slug),
+      type: "pagina",
+      keywords: [...guide.symptoms, "solucao", "guia", "como resolver"],
+    });
+  }
 
   // Landing pages de keyword (/formatacao-de-computador-curitiba, etc.)
   for (const page of KEYWORD_SERVICE_PAGES) {

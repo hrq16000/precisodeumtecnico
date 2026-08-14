@@ -90,10 +90,24 @@ export default function AvaliarAtendimento() {
     });
     setSending(false);
     if (error) {
-      setServerError("Não foi possível enviar agora. Tente novamente em instantes.");
-      trackEvent("review_submit_error", { page_path: "/avaliar" });
+      // Log técnico detalhado para depuração (sem PII do formulário).
+      console.error("[reviews] falha ao registrar avaliação", {
+        code: error.code,
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+      });
+      const isPermission =
+        error.code === "42501" || /permission denied|row-level security/i.test(error.message ?? "");
+      setServerError(
+        isPermission
+          ? "Não foi possível registrar sua avaliação por uma restrição de permissão. Já fomos notificados — tente novamente em instantes."
+          : `Não foi possível enviar agora (${error.code ?? "erro"}). Tente novamente em instantes.`,
+      );
+      trackEvent("review_submit_error", { page_path: "/avaliar", error_code: error.code ?? "unknown" });
       return;
     }
+
     trackEvent("review_submitted", {
       page_path: "/avaliar",
       rating,

@@ -299,6 +299,128 @@ export const CURITIBA_SERVICE_LOCAL: Record<string, CuritibaServiceLocal> = {
       { question: "Suprimentos estão inclusos?", answer: "Não. Cartuchos, toners, peças e materiais não estão inclusos nos valores de visita ou coleta." },
     ],
   },
+
+  tvs: {
+    slug: "tvs",
+    localTitle: "Assistência técnica de TV em Curitiba",
+    metaTitle: "Assistência Técnica de TV em Curitiba — Visita e Bancada",
+    metaDescription:
+      "Assistência técnica de TV em Curitiba: visita no endereço, coleta e bancada, cobertura por região da cidade, condições comerciais claras e triagem online com fotos.",
+    coverage: [
+      "Atendemos TVs em toda Curitiba, com roteirização por região: Centro, Água Verde, Portão, Boqueirão, Cajuru, Bairro Alto, Santa Felicidade, CIC e o eixo Batel/Ecoville.",
+      "TV é o equipamento em que a modalidade depende fortemente do tamanho e do defeito informado na triagem: falhas de imagem, backlight e placa costumam exigir bancada, enquanto configuração, sintonia, aplicativos e conectividade são resolvidos no endereço.",
+      "Aparelhos grandes têm logística própria — o transporte é avaliado caso a caso na triagem antes de qualquer agendamento, porque o risco de dano em movimentação é maior que em equipamentos de informática.",
+    ],
+    modalities: [
+      { name: "Visita técnica", description: "Diagnóstico no endereço em Curitiba para falhas de configuração, conectividade, aplicativos e avaliação inicial de imagem." },
+      { name: "Coleta e entrega", description: "Indicada quando o reparo exige bancada e o cliente não pode transportar o aparelho." },
+      { name: "Bancada", description: "Cliente entrega e retira no nosso endereço; via mais econômica para diagnóstico." },
+    ],
+    residential:
+      "Em residências de Curitiba os pedidos mais comuns são tela sem imagem com som presente, listras verticais, aparelho que não liga e falha de conexão com a internet. A triagem com fotos e vídeo do sintoma define se o caso é reparável antes de qualquer deslocamento.",
+    business:
+      "Para hotéis, clínicas, bares e recepções em Curitiba organizamos atendimento por lote de aparelhos, com janela única de visita e relatório do que é reparável, o que exige peça e o que não compensa reparar.",
+    howToRequest: REQUEST_STEPS_BASE,
+    logistics:
+      "Peças de TV dependem de disponibilidade do fabricante e podem alterar o prazo do reparo. Aparelhos com dano físico de tela são avaliados quanto à viabilidade antes de qualquer proposta.",
+    faqs: [
+      { question: "Vocês atendem TV em domicílio em Curitiba?", answer: "Sim. Falhas de configuração, sintonia, aplicativos e conectividade são resolvidas no endereço. Reparos internos exigem bancada, e nesse caso oferecemos coleta e entrega." },
+      { question: "TV com tela quebrada tem conserto?", answer: "Depende do modelo e da disponibilidade do painel. Na maioria dos casos o valor do painel se aproxima do valor de um aparelho novo — apresentamos essa comparação antes de qualquer execução." },
+      { question: "Quanto custa o diagnóstico de TV em Curitiba?", answer: `${PRICING.technicalVisit.description}` },
+      { question: "Preciso enviar fotos antes?", answer: "Sim. Fotos e vídeo do sintoma são obrigatórios na triagem: é o que permite indicar a modalidade correta e evitar deslocamento sem necessidade." },
+    ],
+  },
+
+  celulares: {
+    slug: "celulares",
+    localTitle: "Assistência técnica de celular em Curitiba",
+    metaTitle: "Assistência Técnica de Celular em Curitiba — Bancada",
+    metaDescription:
+      "Assistência técnica de celular em Curitiba: bancada, coleta e entrega, cobertura por região, prazo informado na aprovação e triagem online com fotos obrigatórias.",
+    coverage: [
+      "Atendemos celulares de clientes de toda Curitiba. Diferente de desktop e rede, aqui praticamente todo serviço acontece em bancada: o reparo exige ferramenta de precisão, controle térmico e testes que não podem ser feitos no endereço.",
+      "Para quem está no Centro, Rebouças, Água Verde, Batel e região, a entrega direta em bancada costuma ser a via mais rápida; para bairros mais distantes, a coleta e entrega evita deslocamento.",
+      "Casos de dano por líquido têm prioridade de agenda: quanto maior o tempo entre o acidente e a intervenção, menor a chance de recuperação.",
+    ],
+    modalities: [
+      { name: "Bancada", description: "Modalidade padrão para celular em Curitiba: entrega no nosso endereço, diagnóstico registrado antes da execução." },
+      { name: "Coleta e entrega", description: "Retiramos e devolvemos no endereço do cliente, em toda Curitiba." },
+    ],
+    residential:
+      "Os pedidos mais comuns em Curitiba são tela trincada, aparelho que não carrega, bateria com autonomia curta e dano por líquido. Sempre informamos o risco à integridade dos dados antes de abrir o aparelho.",
+    business:
+      "Para empresas de Curitiba com aparelhos corporativos, tratamos lote de dispositivos com relatório individual, prazos combinados e devolução organizada por endereço.",
+    howToRequest: REQUEST_STEPS_BASE,
+    logistics:
+      "Peças de celular dependem de disponibilidade e modelo. Reparos com peça encomendada seguem prazo distinto do reparo comum e são informados na aprovação.",
+    faqs: [
+      { question: "O conserto de celular é feito no endereço?", answer: "Não. Reparo de celular exige bancada com ferramenta de precisão. Em Curitiba você pode entregar no nosso endereço ou solicitar coleta e entrega." },
+      { question: "Meus dados são preservados?", answer: "Sempre que o reparo envolve risco ao armazenamento, isso é informado antes da execução. Backup é tratado como etapa separada e aprovada pelo cliente." },
+      { question: "Quanto tempo demora?", answer: "O prazo depende da peça e do tipo de reparo; ele é informado junto com as condições comerciais, antes da aprovação." },
+      { question: "Como funciona a coleta em Curitiba?", answer: "Após a triagem online com fotos, o atendimento personalizado com coleta e entrega tem valor mínimo pré-aprovado de R$ 299,99, que pode variar conforme distância e complexidade." },
+    ],
+  },
+
+  games: {
+    slug: "games",
+    localTitle: "Assistência técnica de videogame em Curitiba",
+    metaTitle: "Assistência de Videogame em Curitiba — Bancada e Coleta",
+    metaDescription:
+      "Assistência técnica de videogame em Curitiba: bancada, coleta e entrega, cobertura por região, diagnóstico registrado e aprovação prévia antes de qualquer execução.",
+    coverage: [
+      "Atendemos consoles de clientes de toda Curitiba. Superaquecimento, desligamento durante o jogo, leitor que não reconhece mídia e conector de energia danificado são os casos mais frequentes na cidade.",
+      "Console é serviço de bancada: limpeza interna com troca de pasta térmica, revisão de ventilação e reparo de conectores exigem desmontagem completa e teste de carga por tempo prolongado.",
+      "A entrega direta em bancada é a via mais econômica; a coleta e entrega existe para quem não pode se deslocar.",
+    ],
+    modalities: [
+      { name: "Bancada", description: "Modalidade padrão para consoles em Curitiba, com teste de estabilidade sob carga." },
+      { name: "Coleta e entrega", description: "Retirada e devolução no endereço, em toda Curitiba." },
+    ],
+    residential:
+      "Em casa, o sintoma mais relatado em Curitiba é console esquentando e desligando sozinho — normalmente ligado a acúmulo de poeira, pasta térmica ressecada e ventilação obstruída, avaliados na bancada antes de qualquer proposta de peça.",
+    business:
+      "Para lan houses, bares e espaços de entretenimento em Curitiba atendemos por lote, com relatório por aparelho e rotina preventiva para reduzir parada de equipamento.",
+    howToRequest: REQUEST_STEPS_BASE,
+    logistics:
+      "Reparos que dependem de peça específica de console seguem prazo próprio, informado na aprovação. Testes de estabilidade sob carga exigem tempo mínimo de bancada.",
+    faqs: [
+      { question: "Vocês atendem console em domicílio em Curitiba?", answer: "Não. O reparo exige bancada e teste sob carga. Você pode entregar no nosso endereço ou solicitar coleta e entrega em Curitiba." },
+      { question: "Console desligando sozinho tem solução?", answer: "Na maior parte dos casos sim: revisão térmica completa, limpeza interna e verificação de alimentação. O diagnóstico confirma se há falha de placa envolvida." },
+      { question: "Quanto custa o diagnóstico?", answer: `${PRICING.benchDiagnosis.description}` },
+      { question: "Preciso enviar vídeo do problema?", answer: "Sim. Fotos e vídeo do sintoma são obrigatórios na triagem online — é o que permite priorizar corretamente o caso." },
+    ],
+  },
+
+  cftv: {
+    slug: "cftv",
+    localTitle: "Instalação e manutenção de CFTV em Curitiba",
+    metaTitle: "CFTV em Curitiba — Instalação e Manutenção Local",
+    metaDescription:
+      "Instalação e manutenção de CFTV em Curitiba: visita técnica, projeto de pontos, revisão de gravador e acesso remoto. Cobertura por região e triagem online.",
+    coverage: [
+      "Atendemos CFTV em toda Curitiba, de residências a comércios e condomínios. É um serviço essencialmente de campo: o levantamento de pontos, o cabeamento e o posicionamento das câmeras só podem ser definidos no local.",
+      "Nos bairros centrais e no eixo Batel/Ecoville o volume maior é de manutenção e ampliação de sistemas existentes; em regiões residenciais predominam instalações novas e substituição de gravador.",
+      "Revisão de acesso remoto, reconfiguração de gravador e recuperação de imagens são atendidas junto com a verificação da rede local, porque a maior parte das falhas de acesso vem da rede, não da câmera.",
+    ],
+    modalities: [
+      { name: "Visita técnica", description: "Modalidade principal em Curitiba: levantamento, instalação, manutenção e ajuste no local." },
+      { name: "Bancada", description: "Para gravador com falha de hardware, quando o equipamento pode ser retirado do local." },
+      { name: "Remoto", description: "Ajustes de acesso remoto, usuários e gravação quando o sistema está acessível." },
+    ],
+    residential:
+      "Em residências de Curitiba o pedido comum é câmera parada, gravação falhando ou aplicativo sem acesso. Verificamos alimentação, cabeamento e rede antes de propor troca de equipamento.",
+    business:
+      "Para comércios, clínicas e condomínios de Curitiba fazemos projeto de pontos, dimensionamento de gravação e revisão periódica, com documentação do sistema entregue ao responsável.",
+    howToRequest: REQUEST_STEPS_BASE,
+    logistics:
+      "Instalações dependem de levantamento no local. Câmeras, cabos, conectores e gravadores não estão inclusos nos valores de visita.",
+    faqs: [
+      { question: "Vocês fazem instalação de CFTV em Curitiba?", answer: "Sim, com visita técnica para levantamento de pontos, cabeamento e configuração. O escopo é fechado após a avaliação no local." },
+      { question: "Atendem manutenção de sistema já instalado?", answer: "Sim. Revisamos câmeras, cabeamento, gravador, gravação e acesso remoto, mesmo em sistemas instalados por terceiros." },
+      { question: "O material está incluso?", answer: "Não. Câmeras, cabos, conectores, fontes e gravadores são orçados à parte, após o levantamento no local." },
+      { question: "Configuram acesso pelo celular?", answer: "Sim. Configuração de acesso remoto, usuários e notificações faz parte do atendimento, junto com a verificação da rede local." },
+    ],
+  },
 };
 
 export const CURITIBA_SERVICE_SLUGS = Object.keys(CURITIBA_SERVICE_LOCAL);

@@ -18,7 +18,10 @@ import {
   CURITIBA_SERVICE_SLUGS,
   CURITIBA_SERVICE_LOCAL,
 } from "@/data/curitibaServiceLocal";
-import { ArrowRight, Building2, Home, MapPin, Route, Truck, CheckCircle2 } from "lucide-react";
+import { ArrowRight, Building2, Home, MapPin, Route, Truck, CheckCircle2, MessageCircle } from "lucide-react";
+import { COMPANY } from "@/data/companyInfo";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
+import { trackWhatsAppClick } from "@/lib/analytics";
 
 const BASE = "https://precisodeumtecnico.com";
 
@@ -47,29 +50,89 @@ export default function ServicoCuritibaContratacao() {
       }),
     );
 
+  const businessId = `${BASE}/#localbusiness-curitiba`;
+
+  /** LocalBusiness da operação em Curitiba — referenciado pelo Service via @id. */
+  const localBusinessSchema = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": businessId,
+    name: COMPANY.brand,
+    legalName: COMPANY.legalName,
+    url: BASE,
+    taxID: COMPANY.cnpj,
+    foundingDate: COMPANY.foundingYear,
+    email: COMPANY.email,
+    priceRange: "$$",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Curitiba",
+      addressRegion: "PR",
+      addressCountry: "BR",
+    },
+    geo: { "@type": "GeoCoordinates", latitude: "-25.4284", longitude: "-49.2733" },
+    areaServed: { "@type": "City", name: "Curitiba", addressRegion: "PR" },
+    openingHoursSpecification: [
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+        opens: "08:00",
+        closes: "22:00",
+      },
+    ],
+    sameAs: [COMPANY.facebook, COMPANY.instagram],
+  };
+
   const serviceSchema = {
     "@context": "https://schema.org",
     "@type": "Service",
+    "@id": `${url}#service`,
     name: local.localTitle,
     serviceType: global.title,
+    description: local.metaDescription,
     areaServed: { "@type": "City", name: "Curitiba", addressRegion: "PR" },
-    provider: {
-      "@type": "LocalBusiness",
-      name: "Preciso de Um Técnico",
-      areaServed: { "@type": "City", name: "Curitiba", addressRegion: "PR" },
+    provider: { "@id": businessId },
+    isRelatedTo: { "@type": "Service", name: global.title, url: globalUrl },
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: `Modalidades em Curitiba — ${local.localTitle}`,
+      itemListElement: local.modalities.map((m) => ({
+        "@type": "Offer",
+        itemOffered: { "@type": "Service", name: m.name, description: m.description },
+        priceCurrency: "BRL",
+        areaServed: { "@type": "City", name: "Curitiba", addressRegion: "PR" },
+      })),
     },
     offers: {
       "@type": "Offer",
       price: PRICING.technicalVisit.priceBRL.toFixed(2),
       priceCurrency: "BRL",
       url,
+      availability: "https://schema.org/InStock",
       availableAtOrFrom: { "@type": "Place", name: "Curitiba, PR" },
+      seller: { "@id": businessId },
     },
   };
 
   const others = CURITIBA_SERVICE_SLUGS.filter((s) => s !== local.slug).map(
     (s) => CURITIBA_SERVICE_LOCAL[s],
   );
+
+  /** CTA direto de WhatsApp — mesma mensagem em toda a rota, com contexto de cidade. */
+  const waHref = buildWhatsAppUrl({
+    service: local.localTitle,
+    city: "Curitiba",
+    sourcePage: `/servicos/${local.slug}/curitiba`,
+  });
+
+  const onWaClick = (surface: string) =>
+    trackWhatsAppClick({
+      source: `servicos_${local.slug}_curitiba`,
+      service: local.slug,
+      city: "Curitiba",
+      source_component: surface,
+      cta_label: "Falar no WhatsApp",
+    });
 
   return (
     <Layout>

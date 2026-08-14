@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
 import { SEOHead } from "@/components/seo/SEOHead";
+import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { Button } from "@/components/ui/button";
 import {
   Accordion,
@@ -118,6 +119,15 @@ export default function KeywordServicePage({ slug }: Props) {
 
       {/* HERO */}
       <section className="section-padding bg-muted/30">
+        <div className="container-custom mb-6">
+          <Breadcrumbs
+            items={[
+              { name: "Início", url: `${COMPANY.website}/` },
+              { name: "Serviços", url: `${COMPANY.website}/servicos` },
+              { name: page.keyword, url },
+            ]}
+          />
+        </div>
         <div className="container-custom grid gap-10 lg:grid-cols-2 lg:items-center">
           <div>
             <p className="text-sm font-semibold uppercase tracking-wide text-primary mb-2">

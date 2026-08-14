@@ -250,6 +250,7 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
         page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
       });
 
+      advanceTimerRef.current = null;
       rawDispatch({ type: "NEXT" });
       window.setTimeout(() => { transitioningRef.current = false; }, 400);
     }, delay);
@@ -257,9 +258,15 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
   }, [canAdvanceNow, state.currentStep, source]);
 
   // ---------- submit final
+  const submitLockRef = useRef(false);
   const handleSubmit = async () => {
+    // Trava de duplo clique: só a primeira chamada executa.
+    if (submitLockRef.current) return;
+    submitLockRef.current = true;
+    cancelPendingAutoAdvance();
     setSubmitting(true);
     setSubmitError(null);
+
     const pricing = getPricingRules(state);
     const summary = buildTriageSummary(state);
     const message = buildWhatsAppTriageMessage(state);

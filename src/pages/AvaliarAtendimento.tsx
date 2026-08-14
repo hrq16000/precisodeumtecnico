@@ -251,7 +251,12 @@ export default function AvaliarAtendimento() {
                 </span>
               </label>
 
-              {serverError && <p className="text-sm text-destructive">{serverError}</p>}
+              {serverError && (
+                <p role="alert" aria-live="assertive" className="text-sm text-destructive rounded-lg border border-destructive/40 bg-destructive/10 p-3">
+                  {serverError}
+                </p>
+              )}
+
 
               <button
                 type="submit"

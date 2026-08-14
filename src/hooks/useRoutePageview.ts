@@ -103,8 +103,11 @@ export function useRoutePageview(): void {
     lastPathRef.current = path;
 
     const ctx = resolveRouteContext(path);
-    // Aguarda microtask para capturar título atualizado por Helmet.
-    const rafId = window.requestAnimationFrame(() => {
+    // Aguarda um frame para capturar título atualizado por Helmet.
+    // StrictMode: NÃO cancelamos o rAF no cleanup — o remount sintético
+    // cancelaria o único disparo (guarda `lastPathRef` impede o segundo).
+    // O dedupe semântico da fila local absorve qualquer duplicidade.
+    window.requestAnimationFrame(() => {
       pushLocalAnalyticsEvent({
         event: "virtual_page_view",
         page_path: path,
@@ -115,6 +118,6 @@ export function useRoutePageview(): void {
         neighborhood: ctx.neighborhood,
       });
     });
-    return () => window.cancelAnimationFrame(rafId);
+
   }, [location.pathname]);
 }

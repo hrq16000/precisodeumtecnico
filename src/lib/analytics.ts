@@ -10,11 +10,55 @@ declare global {
   }
 }
 
+/**
+ * Allowlist rigorosa por evento legado (B.6).
+ * Eventos listados aqui só trafegam as chaves declaradas — qualquer campo
+ * novo (inclusive texto livre acidental) é descartado antes do dataLayer.
+ */
+const LEGACY_ALLOWLIST: Record<string, readonly string[]> = {
+  location_flow: [
+    "action", "source", "duration_ms", "from_cache", "has_city", "has_neighborhood",
+    "has_address", "has_coords", "error", "reason", "status", "fallback", "accuracy_bucket",
+  ],
+  web_vital: ["metric_name", "metric_value", "metric_id", "metric_rating", "navigation_type"],
+  terms_open: ["source"],
+  terms_accept: ["source"],
+  terms_full_page_click: ["source"],
+  whatsapp_click: [
+    "source", "service", "city", "bairro", "has_full_address",
+    "source_component", "device_category", "traffic_channel",
+  ],
+};
+
+/** Campos jamais permitidos em qualquer evento legado (PII / texto livre). */
+const FORBIDDEN_KEYS = new Set([
+  "problema", "problem", "descricao", "description", "mensagem", "message", "texto", "text",
+  "telefone", "phone", "email", "endereco", "address", "rua", "numero", "complemento", "cep",
+  "latitude", "longitude", "lat", "lng", "accuracy", "nome", "name", "cpf", "cnpj",
+  "marca", "brand", "modelo", "model", "user_agent", "referrer", "form_data",
+  "whatsapp_url", "wa_url", "lead_id", "user_id", "cta_label", "label",
+]);
+
+/** Texto livre é bloqueado por tamanho — rótulos curtos categóricos passam. */
+const MAX_STRING_LEN = 60;
+
+function filterParams(eventName: string, params: Params): Params {
+  const allow = LEGACY_ALLOWLIST[eventName];
+  const clean: Params = {};
+  for (const [k, v] of Object.entries(params)) {
+    if (v === undefined) continue;
+    if (FORBIDDEN_KEYS.has(k.toLowerCase())) continue;
+    if (allow && !allow.includes(k)) continue;
+    if (typeof v === "string" && (v.length > MAX_STRING_LEN || /\s{2,}|[\n\r]/.test(v))) continue;
+    clean[k] = v;
+  }
+  return clean;
+}
+
 export function trackEvent(eventName: string, params: Params = {}): void {
   try {
     if (typeof window === "undefined") return;
-    const clean: Params = {};
-    for (const [k, v] of Object.entries(params)) if (v !== undefined) clean[k] = v;
+    const clean = filterParams(eventName, params);
     // Ensure dataLayer exists so GTM picks events even if loaded later.
     if (!Array.isArray(window.dataLayer)) window.dataLayer = [];
     window.dataLayer.push({ event: eventName, ...clean });
@@ -25,6 +69,7 @@ export function trackEvent(eventName: string, params: Params = {}): void {
     // swallow — analytics must never break UX
   }
 }
+
 
 // --- Terms popup events (GA4 / GTM) ---
 export function trackTermsOpen(source: string) {
@@ -215,6 +260,11 @@ export function getAttributionParams(): Record<string, string> {
   }
 }
 
+/**
+ * B.6: `pathname`, `cta_label` e parâmetros UTM removidos do payload externo.
+ * O caminho da página passa a existir apenas na fila local isolada
+ * (`localAnalytics`), que nunca sai do tab sem consentimento (ver bridge).
+ */
 export function trackWhatsAppClick(opts: {
   source: string; // e.g. "hero", "quiz_result", "bairro_cta", "footer"
   service?: string;
@@ -223,7 +273,12 @@ export function trackWhatsAppClick(opts: {
   /** true se o usuário compartilhou endereço completo (rua/nº). Nunca envia o endereço em si. */
   has_full_address?: boolean;
   source_component?: string;
+  /** Aceito por compatibilidade — nunca trafegado. */
   cta_label?: string;
+  /** Somente fila local. */
+  surface?: string;
+  destination?: string;
+  cta_id?: string;
 }) {
   trackEvent("whatsapp_click", {
     source: opts.source,
@@ -232,13 +287,28 @@ export function trackWhatsAppClick(opts: {
     bairro: opts.bairro,
     has_full_address: opts.has_full_address ?? false,
     source_component: opts.source_component,
-    cta_label: opts.cta_label,
-    pathname: typeof window !== "undefined" ? window.location.pathname : undefined,
     device_category: getDeviceCategory(),
     traffic_channel: getTrafficChannel(),
-    ...getAttributionParams(),
   });
+  try {
+    void import("@/lib/localAnalytics").then(({ pushLocalAnalyticsEvent }) => {
+      pushLocalAnalyticsEvent({
+        event: "whatsapp_click",
+        page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+        source: opts.source,
+        service: opts.service,
+        city: opts.city,
+        neighborhood: opts.bairro,
+        cta_id: opts.cta_id ?? opts.source,
+        surface: opts.surface,
+        destination: opts.destination,
+      });
+    });
+  } catch {
+    /* fila local nunca quebra fluxo */
+  }
 }
+
 
 
 

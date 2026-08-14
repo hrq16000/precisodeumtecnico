@@ -103,6 +103,10 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
 
   // ---------- analytics de passo
   useEffect(() => {
+    // Libera a trava de transição assim que a etapa realmente muda: o timeout
+    // de 400ms é apenas fallback e, sob renders mais lentos (StrictMode /
+    // dispositivos fracos), poderia engolir o próximo clique do usuário.
+    transitioningRef.current = false;
     if (lastStepRef.current === state.currentStep) return;
     lastStepRef.current = state.currentStep;
     const idx = STEP_ORDER.indexOf(state.currentStep);
@@ -115,6 +119,7 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
       page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
     });
   }, [state.currentStep, source]);
+
 
   // ---------- limpeza de timers + evento de abandono no unmount
   useEffect(() => () => {

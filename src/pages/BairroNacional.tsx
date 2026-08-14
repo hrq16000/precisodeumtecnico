@@ -1,5 +1,6 @@
-import { useParams, Link, Navigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
+import NotFound from "./NotFound";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -51,7 +52,8 @@ export default function BairroNacional() {
   }>();
 
   const city = citySlug ? getNationalCityBySlug(citySlug) : null;
-  if (!city) return <Navigate to="/atendimento-nacional" replace />;
+  // Cidade inexistente → 404 real (noindex), nunca 200 com redirect.
+  if (!city) return <NotFound />;
 
   const bairro = bairroSlug ? getNationalBairro(citySlug!, bairroSlug) : null;
 
@@ -64,6 +66,7 @@ export default function BairroNacional() {
           title={`Bairro não catalogado em ${city.name}`}
           description={`Ainda não temos página dedicada para esse bairro em ${city.name}. Fale com nossa central e indicamos um técnico parceiro na região.`}
           canonical={`https://precisodeumtecnico.com/atendimento-nacional/${city.slug}`}
+          noindex
         />
         <section className="container mx-auto px-4 py-16 max-w-3xl">
           <h1 className="text-3xl font-bold mb-4">

@@ -1,4 +1,4 @@
-import { useParams, Link, Navigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { Layout } from "@/components/layout/Layout";
 import { SEOHead } from "@/components/seo/SEOHead";
@@ -16,6 +16,7 @@ import { buildCityFaqs } from "@/data/localFaq";
 import { PublicPhotoBand } from "@/components/media/PublicPhotoBand";
 import { pickLocalityPhotos } from "@/data/publicPhotos";
 import { nationalBairrosByCity } from "@/data/nationalBairros";
+import NotFound from "./NotFound";
 
 
 const services = [
@@ -33,7 +34,9 @@ const CidadeNacional = () => {
   const { slug } = useParams<{ slug: string }>();
   const city = slug ? getNationalCityBySlug(slug) : null;
 
-  if (!city) return <Navigate to="/atendimento-nacional" replace />;
+  // Cidade inexistente → 404 real (noindex), nunca 200 com redirect: evita
+  // duplicidade de conteúdo e URLs infinitas indexáveis.
+  if (!city) return <NotFound />;
 
   const url = `https://precisodeumtecnico.com/atendimento-nacional/${city.slug}`;
   const ogImage = `https://precisodeumtecnico.com/og/cidade/${city.slug}.jpg`;

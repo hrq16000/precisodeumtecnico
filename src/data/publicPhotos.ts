@@ -182,6 +182,66 @@ export const PUBLIC_PHOTOS: Record<string, PublicPhoto> = {
     author: "dnsilva1",
     source: "https://commons.wikimedia.org/wiki/File:Arauc%C3%A1ria_-_centro_-_panoramio.jpg",
   },
+  "audio-microsystem": {
+    slug: "audio-microsystem",
+    alt: "Micro system com toca-CD e rádio sobre bancada",
+    caption: "Micro system com CD e rádio — modelo típico atendido em bancada",
+    variants: [400, 800, 1200, 1600],
+    width: 1600,
+    height: 1200,
+    license: "CC BY-SA 4.0",
+    licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0",
+    author: "Imageuploader2614",
+    source: "https://commons.wikimedia.org/wiki/File:JVC_cassette-cd_boombox.jpg",
+  },
+  "audio-bancada-amplificador": {
+    slug: "audio-bancada-amplificador",
+    alt: "Bancada de reparo de amplificador de áudio com instrumentos de medição",
+    caption: "Bancada de reparo de amplificador de áudio",
+    variants: [400, 800, 1200, 1600],
+    width: 1600,
+    height: 1200,
+    license: "CC BY-SA 2.0",
+    licenseUrl: "https://creativecommons.org/licenses/by-sa/2.0",
+    author: "Bill Abbott",
+    source: "https://commons.wikimedia.org/wiki/File:A_serious_tube-amp_repair_bench_IMG_3871_(52331093974).jpg",
+  },
+  "audio-caixa-bluetooth": {
+    slug: "audio-caixa-bluetooth",
+    alt: "Caixa de som Bluetooth portátil",
+    caption: "Caixa de som Bluetooth portátil — reparo de bateria, driver e placa",
+    variants: [400, 800, 1200, 1600],
+    width: 1600,
+    height: 1084,
+    license: "CC BY 2.0",
+    licenseUrl: "https://creativecommons.org/licenses/by/2.0",
+    author: "fish161174",
+    source: "https://commons.wikimedia.org/wiki/File:UE_Boom_2.jpg",
+  },
+  "audio-fonte-chaveada": {
+    slug: "audio-fonte-chaveada",
+    alt: "Fonte chaveada externa aberta mostrando a placa eletrônica",
+    caption: "Fonte chaveada — componente mais trocado em som e scooter",
+    variants: [400, 800, 1200, 1600],
+    width: 1600,
+    height: 900,
+    license: "CC BY-SA 4.0",
+    licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0",
+    author: "Raimond Spekking",
+    source: "https://commons.wikimedia.org/wiki/File:Plug-in_switching_mode_power_adapter,_unbranded-4237.jpg",
+  },
+  "audio-carregador-scooter": {
+    slug: "audio-carregador-scooter",
+    alt: "Carregador de bateria para scooter elétrica",
+    caption: "Carregador/fonte de scooter elétrica",
+    variants: [400, 800, 1200, 1600],
+    width: 1600,
+    height: 2884,
+    license: "CC BY-SA 4.0",
+    licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0",
+    author: "Sikander Iqbal",
+    source: "https://commons.wikimedia.org/wiki/File:Electric_Wheelchair_and_Scooter_battery_charger.jpg",
+  },
 };
 
 /** Fotos temáticas de serviço (sem cidade). */
@@ -228,3 +288,15 @@ export function pickLocalityPhotos(citySlug: string, seed: string, count = 3): P
   const rest = pickServicePhotos(seed, count - (cityPhoto ? 1 : 0));
   return cityPhoto ? [cityPhoto, ...rest] : rest;
 }
+
+/** Fotos reais usadas na landing de som, rádio, caixas e fontes. */
+export const AUDIO_PHOTO_SLUGS = [
+  "audio-microsystem",
+  "audio-bancada-amplificador",
+  "audio-caixa-bluetooth",
+  "audio-fonte-chaveada",
+  "audio-carregador-scooter",
+] as const;
+
+export const audioPhotos = (): PublicPhoto[] =>
+  AUDIO_PHOTO_SLUGS.map((s) => PUBLIC_PHOTOS[s]).filter(Boolean);

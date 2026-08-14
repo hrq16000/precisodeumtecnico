@@ -77,6 +77,7 @@ const ServicoBairroNacional = lazy(() => import("./pages/ServicoBairroNacional")
 const TrocaDeTelaTVCuritiba = lazy(() => import("./pages/TrocaDeTelaTVCuritiba"));
 const ReparoSmartTVCuritiba = lazy(() => import("./pages/ReparoSmartTVCuritiba"));
 const ConfiguracaoWifiCuritiba = lazy(() => import("./pages/ConfiguracaoWifiCuritiba"));
+const ConsertoSomAudio = lazy(() => import("./pages/ConsertoSomAudio"));
 const ServicoBairroCuritiba = lazy(() => import("./pages/ServicoBairroCuritiba"));
 const ServicoCidadeRegiao = lazy(() => import("./pages/ServicoCidadeRegiao"));
 const ServicoCuritibaContratacao = lazy(() => import("./pages/ServicoCuritibaContratacao"));
@@ -118,6 +119,7 @@ const App = () => (
                 <Route path="/servicos/troca-de-tela-tv-curitiba" element={<TrocaDeTelaTVCuritiba />} />
                 <Route path="/servicos/reparo-smart-tv-curitiba" element={<ReparoSmartTVCuritiba />} />
                 <Route path="/servicos/configuracao-wifi-curitiba" element={<ConfiguracaoWifiCuritiba />} />
+                <Route path="/servicos/conserto-de-som-e-audio-curitiba" element={<ConsertoSomAudio />} />
                 <Route path="/servicos/reparo-smart-tv/curitiba/:bairro" element={<ServicoBairroCuritiba service="reparo-smart-tv" />} />
                 <Route path="/servicos/configuracao-wifi/curitiba/:bairro" element={<ServicoBairroCuritiba service="configuracao-wifi" />} />
                 {/* RMC — bairros dedicados por serviço (SJP + Pinhais) */}

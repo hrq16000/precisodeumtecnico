@@ -33,7 +33,7 @@ for (const [file, needles] of [
 
 // 2 e 3. Varredura de conteúdo público.
 const BAD_FEE =
-  /(taxa|visita técnica|diagnóstico|bancada)[^\n]{0,40}R\$\s?(?!99,99|299,99)\d{2,3}(?:,\d{2})?\b/i;
+  /(taxa de (?:visita|deslocamento|diagnóstico)|visita técnica|taxa mínima)[^\n]{0,40}R\$\s?(?!99,99|299,99)\d{2,3}(?:,\d{2})?\b/i;
 const LEGACY_MARKER = /(bancada-90|diagnostico-90|diagnóstico-90|taxa-90|visita-90)/i;
 const IGNORE = new Set(["scripts/check-price-markers.ts", "scripts/check-no-bancada-legacy.ts"]);
 

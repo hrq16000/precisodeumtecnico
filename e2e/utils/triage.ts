@@ -155,7 +155,9 @@ export async function completeConsoleTriage(
   const symptom = opts.symptom ?? "Não lê disco";
 
   // Etapa 1 — equipamento (auto-advance).
+  await dismissLocationPrompt(page);
   await waitForStep(page, 1);
+
   await page.getByRole("button", { name: /^Videogame/ }).first().click();
   await waitForStep(page, 2);
 

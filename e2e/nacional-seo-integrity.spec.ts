@@ -36,6 +36,8 @@ for (const { path, kind } of routes) {
     expect(desc!.length).toBeLessThan(200);
     expect(desc!).not.toMatch(BAD_DESCS);
 
+    // Rotas lazy: aguarda a hidratação do conteúdo antes de contar headings.
+    await page.locator("h1").first().waitFor({ state: "attached", timeout: 15_000 });
     const h1Count = await page.locator("h1").count();
     expect(h1Count, "must have exactly one <h1>").toBe(1);
 

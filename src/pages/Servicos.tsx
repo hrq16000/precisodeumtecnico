@@ -169,7 +169,7 @@ const serviceCategories: {
       { name: "Conserto de Videogame" },
       { name: "Reparo de PlayStation" },
       { name: "Reparo de Xbox" },
-      { name: "Conserto de Som" },
+      { name: "Conserto de Som", href: "/servicos/conserto-de-som-e-audio-curitiba" },
     ],
   },
   {

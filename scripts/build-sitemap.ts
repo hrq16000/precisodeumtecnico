@@ -129,6 +129,7 @@ const mainUrls: Url[] = [
   { loc: `${BASE}/gestor-responsavel`, changefreq: "yearly", priority: 0.6, lastmod: fileDate("src/pages/GestorResponsavel.tsx") },
   { loc: `${BASE}/servicos/troca-de-tela-tv-curitiba`, changefreq: "weekly", priority: 0.85, lastmod: fileDate("src/pages/TrocaDeTelaTVCuritiba.tsx") },
   { loc: `${BASE}/servicos/reparo-smart-tv-curitiba`, changefreq: "weekly", priority: 0.85, lastmod: fileDate("src/pages/ReparoSmartTVCuritiba.tsx") },
+  { loc: `${BASE}/servicos/conserto-de-som-e-audio-curitiba`, changefreq: "weekly", priority: 0.85, lastmod: fileDate("src/pages/ConsertoSomAudio.tsx") },
   { loc: `${BASE}/servicos/configuracao-wifi-curitiba`, changefreq: "weekly", priority: 0.85, lastmod: fileDate("src/pages/ConfiguracaoWifiCuritiba.tsx") },
   // Landing pages por keyword de serviço (Rodada 28.1)
   ...KEYWORD_SERVICE_PAGES.map((p) => ({

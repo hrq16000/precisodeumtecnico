@@ -23,6 +23,7 @@ const PUBLIC_ROUTES = [
   "/servicos/troca-de-tela-tv-curitiba",
   "/servicos/reparo-smart-tv-curitiba",
   "/servicos/configuracao-wifi-curitiba",
+  "/servicos/conserto-de-som-e-audio-curitiba",
   "/regioes/curitiba",
   "/servico-em/curitiba/informatica",
   "/regioes/curitiba/batel",

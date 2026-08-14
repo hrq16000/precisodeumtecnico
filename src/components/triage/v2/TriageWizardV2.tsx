@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+import { TriageDebugExport } from "@/components/triage/v2/TriageDebugExport";
 import { supabase } from "@/integrations/supabase/client";
 import {
   EQUIPMENTS, PRICING, URGENCY_OPTIONS, TERMS_VERSION,
@@ -939,6 +940,8 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
           </section>
         )}
       </div>
+
+      <TriageDebugExport />
 
       {/* FOOTER fixo */}
       <footer className="sticky bottom-0 z-10 flex items-center justify-between gap-2 border-t border-border bg-card px-4 py-3">

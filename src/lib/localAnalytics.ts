@@ -20,6 +20,7 @@ export type CanonicalEvent =
   | "triage_complete"
   | "triage_abandoned"
   | "triage_cta_intercept"
+  | "triage_popup_blocked"
   | "triage_cta_dedupe_skip"
   | "triage_back"
   | "triage_auto_advance"

@@ -15,7 +15,7 @@
  */
 
 export type BufferedTriageEvent = {
-  event: "triage_back" | "triage_auto_advance" | "triage_cta_intercept" | "triage_qualification";
+  event: "triage_back" | "triage_auto_advance" | "triage_cta_intercept" | "triage_qualification" | "triage_popup_blocked";
   ts: number;
   source?: string;
   step_id?: string;

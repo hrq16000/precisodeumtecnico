@@ -375,10 +375,35 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
       });
       void logWaEvent({ source: "triage-v2", href: null, kind: "whatsapp", category: state.equipment ?? null, bypass: true, sessionId: state.sessionId });
 
-      // Abre WhatsApp
+      // Abre WhatsApp — o mesmo deep-link é reaproveitado no fallback de
+      // popup bloqueado (mensagem idêntica, sem regenerar contexto).
       const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-      const win = typeof window !== "undefined" ? window.open(url, "_blank", "noopener,noreferrer") : null;
-      if (!win) setCopyFallback(message);
+      let win: Window | null = null;
+      try {
+        win = typeof window !== "undefined" ? window.open(url, "_blank", "noopener,noreferrer") : null;
+      } catch {
+        win = null;
+      }
+      // `win.closed === true` logo após open() indica bloqueio silencioso
+      // (Safari/iOS e extensões de bloqueio de popup).
+      const blocked = !win || win.closed;
+      if (blocked) {
+        setCopyFallback(message);
+        pushLocalAnalyticsEvent({
+          event: "triage_popup_blocked",
+          source,
+          surface: "wa_fallback",
+          page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+          service: state.equipment ?? undefined,
+        });
+        persistTriageEvent({
+          event: "triage_popup_blocked",
+          source,
+          surface: "wa_fallback",
+          page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+        });
+      }
+
     } catch (e) {
       setSubmitError((e as Error).message || "Falha ao registrar. Tente novamente.");
     } finally {
@@ -886,13 +911,14 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
             {submitError && <p role="alert" className="text-sm text-destructive">{submitError}</p>}
 
             {copyFallback && (
-              <div role="alert" className="space-y-2 rounded-lg border border-amber-500 bg-amber-50 p-3 text-sm text-amber-900">
+              <div data-testid="triage-wa-fallback" role="alert" className="space-y-2 rounded-lg border border-amber-500 bg-amber-50 p-3 text-sm text-amber-900">
                 <p>Não foi possível abrir o WhatsApp automaticamente. Copie a mensagem e envie:</p>
-                <pre className="max-h-40 overflow-auto whitespace-pre-wrap rounded bg-white p-2 text-xs">{copyFallback}</pre>
+                <pre data-testid="triage-wa-fallback-message" className="max-h-40 overflow-auto whitespace-pre-wrap rounded bg-white p-2 text-xs">{copyFallback}</pre>
                 <Button
                   type="button"
                   size="sm"
                   variant="outline"
+                  data-testid="triage-wa-fallback-copy"
                   onClick={async () => {
                     try { await navigator.clipboard.writeText(copyFallback); setCopied(true); } catch { /* noop */ }
                   }}
@@ -900,12 +926,14 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
                   <Copy className="mr-2 h-4 w-4" /> {copied ? "Copiado!" : "Copiar mensagem"}
                 </Button>
                 <a
+                  data-testid="triage-wa-fallback-link"
                   href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(copyFallback)}`}
                   target="_blank" rel="noopener noreferrer"
                   className="ml-2 text-sm font-semibold text-primary underline"
                 >
                   Abrir WhatsApp
                 </a>
+
               </div>
             )}
           </section>

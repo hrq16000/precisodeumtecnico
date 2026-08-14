@@ -79,6 +79,7 @@ const ReparoSmartTVCuritiba = lazy(() => import("./pages/ReparoSmartTVCuritiba")
 const ConfiguracaoWifiCuritiba = lazy(() => import("./pages/ConfiguracaoWifiCuritiba"));
 const ServicoBairroCuritiba = lazy(() => import("./pages/ServicoBairroCuritiba"));
 const ServicoCidadeRegiao = lazy(() => import("./pages/ServicoCidadeRegiao"));
+const ServicoCuritibaContratacao = lazy(() => import("./pages/ServicoCuritibaContratacao"));
 const ServicoBairroCidadeRegiao = lazy(() => import("./pages/ServicoBairroCidadeRegiao"));
 
 const TriagemPreview = lazy(() => import("./pages/TriagemPreview"));
@@ -133,6 +134,7 @@ const App = () => (
                 <Route path="/servicos/conserto-tv" element={<Navigate to="/servicos/tvs" replace />} />
                 <Route path="/servicos/conserto-de-tv" element={<Navigate to="/servicos/tvs" replace />} />
                 <Route path="/servicos/conserto-de-televisao" element={<Navigate to="/servicos/tvs" replace />} />
+                <Route path="/servicos/:servico/curitiba" element={<ServicoCuritibaContratacao />} />
                 <Route path="/servicos/:slug" element={<ServicoDetalhe />} />
 
                 <Route path="/regioes" element={<Regioes />} />

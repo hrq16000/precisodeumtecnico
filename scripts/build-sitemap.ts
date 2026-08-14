@@ -13,6 +13,7 @@
 import { writeFileSync, statSync, existsSync, readdirSync, unlinkSync } from "node:fs";
 import { servicesData } from "../src/data/services";
 import { CURATED_SERVICE_SLUGS } from "../src/data/curatedServiceSlugs";
+import { CURITIBA_SERVICE_SLUGS } from "../src/data/curitibaServiceLocal";
 import {
   citiesData,
   curitibaBairros,
@@ -170,6 +171,11 @@ for (const [cidadeSlug, bairros] of Object.entries(BAIRROS_BY_CIDADE)) {
 // Apenas slugs com conteúdo curado existem em /servicos/:slug (os demais são NotFound).
 for (const slug of CURATED_SERVICE_SLUGS)
   mainUrls.push({ loc: `${BASE}/servicos/${slug}`, changefreq: "weekly", priority: 0.85, lastmod: servicesMtime });
+
+// Lote de contratação local: /servicos/:servico/curitiba (informática core).
+const curitibaLocalMtime = fileDate("src/data/curitibaServiceLocal.ts");
+for (const slug of CURITIBA_SERVICE_SLUGS)
+  mainUrls.push({ loc: `${BASE}/servicos/${slug}/curitiba`, changefreq: "weekly", priority: 0.85, lastmod: curitibaLocalMtime });
 
 for (const cat of blogCategories)
   mainUrls.push({ loc: `${BASE}/blog/categoria/${cat.slug}`, changefreq: "weekly", priority: 0.7, lastmod: blogMtime });

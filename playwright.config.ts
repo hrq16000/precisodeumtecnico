@@ -10,10 +10,16 @@ export default defineConfig({
   fullyParallel: true,
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? [["github"], ["list"]] : "list",
+  outputDir: "./test-results",
   use: {
     baseURL: process.env.E2E_BASE_URL ?? "http://localhost:5173",
-    trace: "on-first-retry",
+    // Depuração: em qualquer falha guardamos trace.zip + vídeo + screenshot
+    // em ./test-results/<teste>/ — reduz flakiness cega no CI.
+    trace: "retain-on-failure",
+    video: "retain-on-failure",
+    screenshot: "only-on-failure",
   },
+
   projects: [
     { name: "chromium", use: { ...devices["Desktop Chrome"] } },
   ],

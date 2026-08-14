@@ -191,3 +191,32 @@ export async function completeConsoleTriage(
   await fillContactStep(page, contact);
   if (opts.submit !== false) await submitTriage(page);
 }
+
+/**
+ * Simula popup bloqueado pelo navegador: window.open passa a retornar null
+ * mas ainda registra a URL solicitada, permitindo comparar o deep-link do
+ * fallback com o que teria sido aberto.
+ */
+export async function blockPopups(page: Page) {
+  await page.addInitScript(() => {
+    const w = window as unknown as { __WA_OPENED__?: string[]; open: typeof window.open };
+    w.__WA_OPENED__ = [];
+    w.open = ((url?: string | URL) => {
+      if (url) w.__WA_OPENED__!.push(String(url));
+      return null;
+    }) as typeof window.open;
+  });
+}
+
+/** Emula rede lenta (perfil ~Slow 3G) via CDP no Chromium. */
+export async function emulateSlowNetwork(page: Page) {
+  const client = await page.context().newCDPSession(page);
+  await client.send("Network.enable");
+  await client.send("Network.emulateNetworkConditions", {
+    offline: false,
+    latency: 400,
+    downloadThroughput: (400 * 1024) / 8,
+    uploadThroughput: (400 * 1024) / 8,
+  });
+  return client;
+}

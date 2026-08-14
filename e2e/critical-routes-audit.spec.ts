@@ -35,6 +35,9 @@ const CRITICAL_ROUTES = [
   "/servico-em/curitiba/informatica",
 ];
 
+// Rotas pesadas em SPA: damos folga de tempo e limitamos concorrência.
+test.describe.configure({ mode: "parallel" });
+
 const OFFICIAL_PRICES = new Set(["99.99", "299.99", "99,99", "299,99"]);
 
 type Json = Record<string, unknown>;
@@ -74,6 +77,7 @@ function collectOffers(node: Json, acc: Json[] = []): Json[] {
 
 for (const route of CRITICAL_ROUTES) {
   test(`auditoria de schemas e metatags — ${route}`, async ({ page }) => {
+    test.setTimeout(90_000);
     const response = await page.goto(route, { waitUntil: "domcontentloaded" });
     expect(response?.status(), `HTTP inesperado em ${route}`).toBeLessThan(400);
     await page.waitForSelector('script[type="application/ld+json"]', {

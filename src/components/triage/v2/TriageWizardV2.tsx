@@ -427,7 +427,9 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
       setSubmitError((e as Error).message || "Falha ao registrar. Tente novamente.");
     } finally {
       setSubmitting(false);
+      submitLockRef.current = false;
     }
+
   };
 
   // ---------- render por etapa

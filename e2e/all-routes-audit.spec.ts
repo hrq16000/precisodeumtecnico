@@ -100,6 +100,9 @@ for (const r of ROUTES) {
 
     // Sem ratings fabricados em nenhum bloco
     const raw = JSON.stringify(blocks);
-    expect(FABRICATED.test(raw), `rating fabricado em ${r.path}`).toBe(false);
+    expect(FORBIDDEN_AGG.test(raw), `agregado fabricado em ${r.path}`).toBe(false);
+    // ratingValue solto (fora de reviewRating) também é proibido
+    const strayRating = raw.replace(/"reviewRating":\{[^}]*\}/g, "");
+    expect(/"ratingValue"/.test(strayRating), `ratingValue solto em ${r.path}`).toBe(false);
   });
 }

@@ -140,7 +140,7 @@ export default function AvaliarAtendimento() {
           </p>
 
           {done ? (
-            <div className="p-6 rounded-2xl border border-border bg-card text-center">
+            <div role="status" aria-live="polite" className="p-6 rounded-2xl border border-success/40 bg-success/10 text-center">
               <CheckCircle2 className="w-10 h-10 text-success mx-auto mb-3" aria-hidden="true" />
               <h2 className="font-display text-2xl font-bold text-card-foreground mb-2">
                 Avaliação registrada

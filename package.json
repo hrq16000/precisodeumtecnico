@@ -72,8 +72,9 @@
     "report:curitiba": "bunx tsx scripts/report-curitiba-conversion.ts",
     "report:funnel": "bunx tsx scripts/report-conversion-funnel.ts",
     "audit:critical-routes": "playwright test e2e/critical-routes-audit.spec.ts --workers=3",
-    "smoke:prod": "bunx tsx scripts/smoke-prod-routes.ts"
-
+    "smoke:prod": "bunx tsx scripts/smoke-prod-routes.ts",
+    "audit:all-routes": "playwright test e2e/all-routes-audit.spec.ts --workers=4",
+    "check:wa-popup": "playwright test e2e/wa-popup-blocked-copy.spec.ts --workers=4"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

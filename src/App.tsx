@@ -41,6 +41,7 @@ const Anuncie = lazy(() => import("./pages/Anuncie"));
 const AreasAtendidas = lazy(() => import("./pages/AreasAtendidas"));
 const StatusAnuncios = lazy(() => import("./pages/StatusAnuncios"));
 const PoliticaPecasCliente = lazy(() => import("./pages/PoliticaPecasCliente"));
+const GarantiaCobertura = lazy(() => import("./pages/GarantiaCobertura"));
 const CreditosDeImagens = lazy(() => import("./pages/CreditosDeImagens"));
 const PoliticaPrivacidade = lazy(() => import("./pages/PoliticaPrivacidade"));
 const ComoAvaliar = lazy(() => import("./pages/ComoAvaliar"));
@@ -150,6 +151,7 @@ const App = () => (
                 <Route path="/termos-orcamento-pre-aprovado" element={<TermosOrcamento />} />
                 <Route path="/termos-orcamento" element={<TermosOrcamento />} />
                 <Route path="/politica-de-pecas-do-cliente" element={<PoliticaPecasCliente />} />
+                <Route path="/garantia-e-cobertura" element={<GarantiaCobertura />} />
                 <Route path="/creditos-de-imagens" element={<CreditosDeImagens />} />
                 <Route path="/politica-privacidade" element={<PoliticaPrivacidade />} />
                 <Route path="/politica-de-privacidade" element={<PoliticaPrivacidade />} />

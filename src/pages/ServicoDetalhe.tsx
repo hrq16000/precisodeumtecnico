@@ -13,6 +13,8 @@ import NotFound from "@/pages/NotFound";
 import { servicesData as SERVICES_CATALOG } from "@/data/services";
 import { PcAssemblyPolicySections } from "@/components/marketing/PcAssemblyPolicySections";
 import { ServiceStandardBand } from "@/components/service/ServiceStandardBand";
+import { CollectionOnlyBand } from "@/components/service/CollectionOnlyBand";
+import { isCollectionOnlyService } from "@/data/collectionOnlyServices";
 import { getServiceStandard } from "@/data/serviceStandards";
 import { PcQuoteWizard } from "@/components/marketing/PcQuoteWizard";
 import { WorkstationRequirements } from "@/components/marketing/WorkstationRequirements";
@@ -352,6 +354,8 @@ const ServicoDetalhe = () => {
           </div>
         </div>
       </section>
+
+      {isCollectionOnlyService(slug) && <CollectionOnlyBand />}
 
       {/* Content */}
       <section className="section-padding bg-background">

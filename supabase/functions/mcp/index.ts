@@ -546,7 +546,7 @@ var servicesData = {
     process: [
       { step: 1, title: "Contato", description: "Descreva o problema do seu console via WhatsApp" },
       { step: 2, title: "Pr\xE9-avalia\xE7\xE3o", description: "Explicamos poss\xEDveis causas e estimativa" },
-      { step: 3, title: "Entrega/Coleta", description: "Traga o console ou solicite coleta" },
+      { step: 3, title: "Coleta", description: "Atendimento exclusivamente com coleta no seu endere\xE7o \u2014 n\xE3o temos balc\xE3o" },
       { step: 4, title: "Diagn\xF3stico T\xE9cnico", description: "Avalia\xE7\xE3o completa com fotos do problema" },
       { step: 5, title: "Or\xE7amento", description: "Or\xE7amento detalhado via WhatsApp" },
       { step: 6, title: "Aprova\xE7\xE3o", description: "Voc\xEA aprova e iniciamos o reparo" },

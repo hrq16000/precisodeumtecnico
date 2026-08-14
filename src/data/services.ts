@@ -100,7 +100,7 @@ export const servicesData: Record<string, ServiceData> = {
       "Peças originais e compatíveis de alta qualidade",
       "Atendimento em domicílio ou empresa",
       "Garantia de até 1 ano nas peças",
-      "Diagnóstico gratuito na maioria dos casos",
+      "Diagnóstico com valor fixo de R$ 99,99, deduzido se aprovar o serviço",
       "Orçamento sem compromisso",
       "Técnicos certificados pelos fabricantes",
       "Backup de dados incluído",
@@ -150,7 +150,7 @@ export const servicesData: Record<string, ServiceData> = {
       { question: "Vocês consertam notebooks de todas as marcas?", answer: "Sim! Trabalhamos com Dell, HP, Lenovo, Acer, Asus, Samsung, Positivo, Vaio, LG, Compaq, Gateway e todas as outras marcas do mercado, incluindo modelos antigos e novos." },
       { question: "Quanto tempo leva um reparo de notebook?", answer: "Depende do serviço: formatação e upgrades são feitos em 1-2 dias. Troca de tela e teclado de 1 a 5 dias (dependendo da disponibilidade da peça). Reparo de placa-mãe pode levar de 3 a 10 dias." },
       { question: "As peças são originais?", answer: "Trabalhamos com peças originais (quando disponíveis) e compatíveis de alta qualidade. Sempre informamos qual tipo de peça será utilizada e você escolhe a melhor opção para seu orçamento." },
-      { question: "Vocês buscam e entregam o notebook?", answer: "Sim! Oferecemos serviço de coleta e entrega em Curitiba e toda a região metropolitana. O valor varia conforme a distância, mas em muitos casos é gratuito." },
+      { question: "Vocês buscam e entregam o notebook?", answer: "Sim! Oferecemos serviço de coleta e entrega em Curitiba e toda a região metropolitana. A coleta e entrega personalizada parte de R$ 299,99, conforme distância, equipamento e complexidade." },
       { question: "Consertam MacBook?", answer: "Sim! Somos especializados também em notebooks Apple, incluindo MacBook Air e MacBook Pro. Realizamos troca de bateria, tela, teclado, SSD, reparo de placa lógica e muito mais." },
       { question: "Meu notebook não liga, tem conserto?", answer: "Na maioria dos casos sim! Fazemos diagnóstico completo para identificar se o problema é na fonte, bateria, placa-mãe ou outro componente. Muitas vezes é possível recuperar com troca de peças específicas." },
       { question: "Notebook que caiu ou molhou tem conserto?", answer: "Depende do dano. Notebooks que caíram podem ter problemas de tela, dobradiça ou placa. Notebooks molhados precisam de limpeza urgente (banho químico) para evitar corrosão. Quanto antes trouxer, maior a chance de recuperação." }
@@ -456,7 +456,7 @@ export const servicesData: Record<string, ServiceData> = {
       "Atendimento rápido (muitos serviços no mesmo dia)",
       "Peças de qualidade com garantia",
       "Técnicos especializados em todas as marcas",
-      "Diagnóstico gratuito em balcão",
+      "Diagnóstico em balcão por R$ 99,99, deduzido se aprovar o serviço",
       "Garantia de 90 dias a 1 ano",
       "Backup de dados antes do reparo",
       "Orçamento sem compromisso",
@@ -481,7 +481,7 @@ export const servicesData: Record<string, ServiceData> = {
     ],
     process: [
       { step: 1, title: "Contato", description: "Descreva o problema do seu celular via WhatsApp" },
-      { step: 2, title: "Diagnóstico Gratuito", description: "Traga para diagnóstico gratuito ou solicite coleta" },
+      { step: 2, title: "Diagnóstico Técnico", description: "Traga para diagnóstico (R$ 99,99, deduzido se aprovar) ou solicite coleta" },
       { step: 3, title: "Orçamento Detalhado", description: "Orçamento com opções de peças e valores" },
       { step: 4, title: "Aprovação", description: "Você aprova e iniciamos o reparo" },
       { step: 5, title: "Reparo Profissional", description: "Conserto realizado com peças de qualidade" },
@@ -489,7 +489,7 @@ export const servicesData: Record<string, ServiceData> = {
       { step: 7, title: "Entrega com Garantia", description: "Celular entregue funcionando com garantia" }
     ],
     pricing: [
-      { name: "Diagnóstico", price: "Grátis", description: "Avaliação do problema em balcão" },
+      { name: "Diagnóstico", price: "R$ 99,99", description: "Avaliação do problema em balcão, deduzida se aprovar o serviço" },
       { name: "Troca Tela iPhone 11", price: "A partir de R$ 280,00", description: "Display + instalação + garantia" },
       { name: "Troca Tela iPhone 12", price: "A partir de R$ 350,00", description: "Display + instalação + garantia" },
       { name: "Troca Tela iPhone 13", price: "A partir de R$ 400,00", description: "Display + instalação + garantia" },
@@ -561,7 +561,7 @@ export const servicesData: Record<string, ServiceData> = {
       { step: 8, title: "Teste Extensivo", description: "Teste de 24-48h antes da entrega" }
     ],
     pricing: [
-      { name: "Diagnóstico", price: "R$ 50,00", description: "Deduzido se aprovar o serviço" },
+      { name: "Diagnóstico", price: "R$ 99,99", description: "Taxa oficial de diagnóstico, deduzida se aprovar o serviço" },
       { name: "Limpeza + Pasta Térmica PS4", price: "A partir de R$ 150,00", description: "Limpeza completa + pasta Arctic" },
       { name: "Limpeza + Pasta Térmica PS5", price: "A partir de R$ 180,00", description: "Limpeza completa + pasta Arctic" },
       { name: "Limpeza + Pasta Térmica Xbox", price: "A partir de R$ 150,00", description: "Limpeza completa + pasta Arctic" },
@@ -967,7 +967,7 @@ export const servicesData: Record<string, ServiceData> = {
       { name: "Reparo Placa-Mãe", price: "A partir de R$ 300,00", description: "Componentes + mão de obra" },
       { name: "Troca T-Con", price: "A partir de R$ 250,00", description: "Placa + instalação" },
       { name: "Atualização Smart TV", price: "A partir de R$ 80,00", description: "Firmware + apps" },
-      { name: "Coleta/Entrega", price: "A partir de R$ 50,00", description: "Conforme distância" }
+      { name: "Coleta e entrega personalizada", price: "A partir de R$ 299,99", description: "Conforme distância, equipamento e complexidade" }
     ],
     faqs: [
       { question: "Minha TV não liga, tem conserto?", answer: "Na maioria dos casos sim. Pode ser problema na fonte (mais comum), placa-mãe ou capacitores. Fazemos diagnóstico para identificar a causa exata." },
@@ -983,14 +983,14 @@ export const servicesData: Record<string, ServiceData> = {
     slug: "recuperacao-dados",
     title: "Recuperação de Dados",
     metaTitle: "Recuperação de Dados Curitiba | HD SSD Pen Drive Cartão de Memória 24h",
-    metaDescription: "Recuperação de dados em Curitiba. HD danificado, SSD, pen drive, cartão de memória. Fotos, documentos, vídeos. Diagnóstico gratuito. Sigilo total.",
+    metaDescription: "Recuperação de dados em Curitiba. HD danificado, SSD, pen drive, cartão de memória. Fotos, documentos, vídeos. Diagnóstico por R$ 99,99. Sigilo total.",
     subtitle: "Seus arquivos importantes de volta",
-    description: "Recuperamos dados de HDs, SSDs, pen drives, cartões de memória e celulares. Fotos, vídeos, documentos, bancos de dados. Diagnóstico gratuito e sigilo total.",
+    description: "Recuperamos dados de HDs, SSDs, pen drives, cartões de memória e celulares. Fotos, vídeos, documentos, bancos de dados. Diagnóstico por R$ 99,99 (deduzido se aprovar) e sigilo total.",
     longDescription: "Perdeu arquivos importantes? Oferecemos serviços especializados de recuperação de dados para diversos dispositivos de armazenamento: HDs externos e internos, SSDs, pen drives, cartões de memória (SD, microSD, CF), celulares e tablets. Recuperamos fotos, vídeos, documentos, planilhas, bancos de dados e outros arquivos perdidos por exclusão acidental, formatação, vírus, falha mecânica ou corrupção. Trabalhamos com total sigilo e discrição. Em muitos casos conseguimos recuperar até 100% dos dados.",
     image: "service-computer.jpg",
     icon: "HardDrive",
     benefits: [
-      "Diagnóstico gratuito",
+      "Diagnóstico por R$ 99,99, deduzido se aprovar o serviço",
       "Alta taxa de sucesso (80-95%)",
       "Sigilo total garantido",
       "Só cobra se recuperar",
@@ -1016,7 +1016,7 @@ export const servicesData: Record<string, ServiceData> = {
     process: [
       { step: 1, title: "Contato", description: "Descreva o problema e tipo de mídia" },
       { step: 2, title: "Entrega", description: "Traga ou envie a mídia para análise" },
-      { step: 3, title: "Diagnóstico Gratuito", description: "Avaliamos a mídia e possibilidade de recuperação" },
+      { step: 3, title: "Diagnóstico Técnico", description: "Avaliamos a mídia e a possibilidade de recuperação (R$ 99,99, deduzido se aprovar)" },
       { step: 4, title: "Orçamento", description: "Orçamento baseado na complexidade" },
       { step: 5, title: "Aprovação", description: "Você aprova apenas se quiser prosseguir" },
       { step: 6, title: "Recuperação", description: "Processo de recuperação dos dados" },
@@ -1024,7 +1024,7 @@ export const servicesData: Record<string, ServiceData> = {
       { step: 8, title: "Entrega", description: "Dados entregues em mídia nova" }
     ],
     pricing: [
-      { name: "Diagnóstico", price: "Grátis", description: "Avaliação da mídia" },
+      { name: "Diagnóstico", price: "R$ 99,99", description: "Avaliação da mídia, deduzido se aprovar o serviço" },
       { name: "Recuperação Lógica Simples", price: "A partir de R$ 200,00", description: "Arquivos deletados/formatação rápida" },
       { name: "Recuperação Lógica Complexa", price: "A partir de R$ 400,00", description: "Formatação completa/corrupção" },
       { name: "Recuperação HD com Falha", price: "A partir de R$ 600,00", description: "HD com bad blocks/cliques" },
@@ -1088,7 +1088,7 @@ export const servicesData: Record<string, ServiceData> = {
       { step: 8, title: "Teste 24-48h", description: "Teste extensivo antes da entrega" }
     ],
     pricing: [
-      { name: "Diagnóstico", price: "A partir de R$ 150,00", description: "Análise completa com microscópio" },
+      { name: "Diagnóstico", price: "A partir de R$ 99,99", description: "Análise completa com microscópio" },
       { name: "Reparo Placa Lógica", price: "A partir de R$ 500,00", description: "Reballing/micro-soldagem" },
       { name: "Desoxidação Completa", price: "A partir de R$ 400,00", description: "Banho ultrassônico + reparo" },
       { name: "Troca de Tela Retina", price: "A partir de R$ 1.200,00", description: "Tela original/OEM + instalação" },

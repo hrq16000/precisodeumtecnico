@@ -273,7 +273,7 @@ const RegiaoDetalhe = () => {
               Serviços Técnicos em {neighborhood ? neighborhoodName : cityName}
             </h2>
             <p className="text-muted-foreground">
-              Técnicos especializados prontos para atender você. Diagnóstico gratuito e orçamento sem compromisso via WhatsApp.
+              Técnicos especializados prontos para atender você. Diagnóstico por R$ 99,99 (deduzido se aprovar) e orçamento sem compromisso via WhatsApp.
             </p>
           </div>
 

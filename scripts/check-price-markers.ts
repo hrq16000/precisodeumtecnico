@@ -35,7 +35,12 @@ for (const [file, needles] of [
 const BAD_FEE =
   /(taxa de (?:visita|deslocamento|diagnóstico)|visita técnica|taxa mínima)[^\n]{0,40}R\$\s?(?!99,99|299,99)\d{2,3}(?:,\d{2})?\b/i;
 const LEGACY_MARKER = /(bancada-90|diagnostico-90|diagnóstico-90|taxa-90|visita-90)/i;
+// 4. Diagnóstico nunca é gratuito nem tem valor diferente da taxa oficial.
+const FREE_DIAGNOSIS = /diagn[oó]stico\s+(gratuito|grátis|gratuita|sem custo|free)/i;
+const DIAGNOSIS_PRICE_CAPTURE = /"Diagn[oó]stico[^"]*",\s*price:\s*"([^"]+)"/i;
+const DIAGNOSIS_PRICE_OK = /^(?:A partir de\s*)?R\$\s?99,99$|^Sob consulta$/i;
 const IGNORE = new Set(["scripts/check-price-markers.ts", "scripts/check-no-bancada-legacy.ts"]);
+
 
 function walk(dir: string) {
   for (const name of readdirSync(dir)) {
@@ -54,8 +59,14 @@ function inspect(file: string) {
       if (LEGACY_MARKER.test(line)) problems.push(`${file}:${i + 1} marcador legado — ${line.trim().slice(0, 140)}`);
       if (BAD_FEE.test(line) && !/faixa|a partir de|entre|orçament|peça|componente/i.test(line))
         problems.push(`${file}:${i + 1} taxa divergente da oficial — ${line.trim().slice(0, 140)}`);
+      if (FREE_DIAGNOSIS.test(line) && !/nunca|não é|nao e|cobra|golpe|"Diagnóstico grátis"/i.test(line))
+        problems.push(`${file}:${i + 1} promessa de diagnóstico gratuito — ${line.trim().slice(0, 140)}`);
+      const dp = DIAGNOSIS_PRICE_CAPTURE.exec(line);
+      if (dp && !DIAGNOSIS_PRICE_OK.test(dp[1].trim()))
+        problems.push(`${file}:${i + 1} preço de diagnóstico ≠ R$ 99,99 — ${line.trim().slice(0, 140)}`);
     });
 }
+
 
 for (const root of ["src", "e2e"]) {
   try {

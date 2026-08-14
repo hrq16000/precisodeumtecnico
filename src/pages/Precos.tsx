@@ -57,7 +57,7 @@ const priceTable: Row[] = [
   { service: "Troca de tela de celular", example: "Peça compatível com garantia conforme o serviço", price: "Sob consulta" },
   { service: "Troca de bateria de notebook", example: "Bateria nova + instalação", price: "R$ 280 a R$ 600" },
   { service: "Instalação de impressora em rede", example: "Multifuncional Wi-Fi configurada", price: "R$ 100 a R$ 180" },
-  { service: "Recuperação de dados (HD/SSD)", example: "Diagnóstico gratuito; serviço sob orçamento", price: "Sob consulta" },
+  { service: "Recuperação de dados (HD/SSD)", example: "Diagnóstico R$ 99,99 (deduzido se aprovar); serviço sob orçamento", price: "Sob consulta" },
 ];
 
 const faqs = [

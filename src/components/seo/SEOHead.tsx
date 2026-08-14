@@ -27,12 +27,13 @@ function safeStringify(schema: unknown, idx: number): string | null {
 }
 
 /**
- * Imagem social: a tag og:image/twitter:image é ESTÁTICA em index.html (fonte
- * única), porque crawlers de prévia (WhatsApp, LinkedIn, Slack, Facebook) não
- * executam JS e só leem o HTML servido. Emitir aqui criaria tag duplicada —
- * o gate scripts/check-seo-dedup.ts falha o build nesse caso.
+ * Imagem social: fonte ÚNICA por rota, resolvida em src/lib/seo/ogImage.ts a
+ * partir do canonical (cidade → arte da cidade, cluster temático → arte do
+ * cluster, senão default). index.html NÃO emite og:image/twitter:image — o
+ * gate scripts/check-seo-dedup.ts falha o build se as duas fontes coexistirem.
  */
-export const DEFAULT_OG_IMAGE = "https://precisodeumtecnico.com/og/default.jpg";
+export { DEFAULT_OG_IMAGE } from "@/lib/seo/ogImage";
+
 
 function absoluteUrl(u: string): string {
   if (/^https?:\/\//i.test(u)) return u;

@@ -69,6 +69,7 @@ const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const BlogCategory = lazy(() => import("./pages/BlogCategory"));
 const Diagnostics = lazy(() => import("./pages/Diagnostics"));
+const ChecklistPublicacao = lazy(() => import("./pages/ChecklistPublicacao"));
 const AssistenciaTecnicaCuritiba = lazy(() => import("./pages/AssistenciaTecnicaCuritiba"));
 const AssistenciaTecnica = lazy(() => import("./pages/AssistenciaTecnica"));
 const AtendimentoNacional = lazy(() => import("./pages/AtendimentoNacional"));
@@ -190,6 +191,7 @@ const App = () => (
                 <Route path="/blog/:slug" element={<BlogPost />} />
                 <Route path="/diagnostics" element={<Diagnostics />} />
                 <Route path="/diagnostico" element={<Diagnostics />} />
+                <Route path="/checklist-publicacao" element={<ChecklistPublicacao />} />
                 <Route path="/assistencia-tecnica-curitiba" element={<AssistenciaTecnicaCuritiba />} />
                 <Route path="/assistencia-tecnica" element={<AssistenciaTecnica />} />
                 <Route path="/atendimento-nacional" element={<AtendimentoNacional />} />

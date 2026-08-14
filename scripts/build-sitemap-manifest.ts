@@ -50,11 +50,28 @@ for (const e of entries) console.log(`  • ${e.file}  ${e.bytes}B  ${e.sha256.s
 // ---------------------------------------------------------------------------
 const INDEX = join(DIST, "sitemap.xml");
 const expectedShards: string[] = [];
+/** lastmod declarado no sitemap-index, por arquivo. */
+const indexLastmod: Record<string, string | null> = {};
 if (existsSync(INDEX)) {
   const idx = readFileSync(INDEX, "utf8");
-  for (const m of idx.matchAll(/<loc>([^<]+)<\/loc>/g)) {
-    const fname = m[1].trim().split("/").pop();
-    if (fname) expectedShards.push(fname);
+  for (const block of idx.matchAll(/<sitemap>([\s\S]*?)<\/sitemap>/g)) {
+    const loc = block[1].match(/<loc>([^<]+)<\/loc>/)?.[1]?.trim();
+    const lm = block[1].match(/<lastmod>([^<]+)<\/lastmod>/)?.[1]?.trim() ?? null;
+    const fname = loc?.split("/").pop();
+    if (fname) {
+      expectedShards.push(fname);
+      indexLastmod[fname] = lm;
+    }
+  }
+  if (!expectedShards.length) {
+    // index sem wrapper <sitemap> (formato legado) — cai no parse simples
+    for (const m of idx.matchAll(/<loc>([^<]+)<\/loc>/g)) {
+      const fname = m[1].trim().split("/").pop();
+      if (fname) {
+        expectedShards.push(fname);
+        indexLastmod[fname] = null;
+      }
+    }
   }
 }
 
@@ -63,6 +80,28 @@ const expectedSet = new Set(expectedShards);
 const missing = expectedShards.filter((f) => !foundSet.has(f));
 const extra = files.filter((f) => f !== "sitemap.xml" && !expectedSet.has(f));
 
+// Entradas por shard: tamanho, hash, nº de URLs e lastmod (index x conteúdo).
+const byFile = new Map(entries.map((e) => [e.file, e]));
+const shards = files.map((file) => {
+  const xml = readFileSync(join(DIST, file), "utf8");
+  const urlCount = [...xml.matchAll(/<url>/g)].length;
+  const nestedCount = [...xml.matchAll(/<sitemap>/g)].length;
+  const lastmods = [...xml.matchAll(/<lastmod>([^<]+)<\/lastmod>/g)].map((m) => m[1].trim()).sort();
+  const meta = byFile.get(file)!;
+  return {
+    file,
+    bytes: meta.bytes,
+    sha256: meta.sha256,
+    isIndex: nestedCount > 0,
+    urlCount,
+    nestedSitemapCount: nestedCount,
+    lastmodInIndex: indexLastmod[file] ?? null,
+    lastmodMin: lastmods[0] ?? null,
+    lastmodMax: lastmods[lastmods.length - 1] ?? null,
+    inIndex: file === "sitemap.xml" ? true : expectedSet.has(file),
+  };
+});
+
 const diagnostics = {
   generatedAt: manifest.generatedAt,
   indexPresent: existsSync(INDEX),
@@ -70,6 +109,9 @@ const diagnostics = {
   foundCount: files.length,
   missingCount: missing.length,
   extraCount: extra.length,
+  totalUrls: shards.filter((s) => !s.isIndex).reduce((n, s) => n + s.urlCount, 0),
+  totalBytes: shards.reduce((n, s) => n + s.bytes, 0),
+  shards,
   expected: expectedShards,
   found: files,
   missing,

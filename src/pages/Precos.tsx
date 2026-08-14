@@ -70,7 +70,7 @@ const faqs = [
 
 export default function Precos() {
   const url = "https://precisodeumtecnico.com/precos";
-  const ogImage = "https://precisodeumtecnico.com/og/precos.jpg";
+  const ogImage = "https://precisodeumtecnico.com/og/guias-precos.jpg";
 
   const breadcrumb = {
     "@context": "https://schema.org",

@@ -88,8 +88,8 @@ for (const slug of SLUGS) {
     for (const q of questions) expect(body).toContain(q.slice(0, 30));
 
     // CTA WhatsApp com contexto completo
-    const wa = page.locator('a[href*="wa.me"]').first();
-    await expect(wa).toHaveCount(1);
+    const wa = page.locator(`a[href*="wa.me"][data-wa-source^="servicos_${slug}_curitiba"]`).first();
+    await expect(wa).toBeVisible();
     const href = (await wa.getAttribute("href"))!;
     const text = decodeURIComponent(href.split("?text=")[1]);
     expect(text).toMatch(/service=/);

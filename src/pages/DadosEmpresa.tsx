@@ -1,23 +1,19 @@
-import { Helmet } from "react-helmet-async";
 import { Layout } from "@/components/layout/Layout";
-import { COMPANY } from "@/data/companyInfo";
-import { COMMERCIAL } from "@/data/pricingPolicy";
+import { Helmet } from "react-helmet-async";
+import { COMPANY } from "@/data/company";
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  name: COMPANY.legalName,
-  url: COMPANY.website,
-  foundingDate: COMPANY.foundingYear,
-  taxID: COMPANY.cnpj,
-  areaServed: COMPANY.areaServed,
-  sameAs: [COMPANY.facebook, COMPANY.instagram],
+  "@type": "AboutPage",
+  "url": "https://precisodeumtecnico.com/dados-da-empresa",
+  "name": "Dados da Empresa — Preciso de um Técnico",
+  "description": `CNPJ ${COMPANY.cnpj} · ${COMPANY.experiencePhrase}`,
 };
 
 const breadcrumbLd = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
-  itemListElement: [
+  "itemListElement": [
     { "@type": "ListItem", position: 1, name: "Início", item: "https://precisodeumtecnico.com/" },
     { "@type": "ListItem", position: 2, name: "Dados da Empresa", item: "https://precisodeumtecnico.com/dados-da-empresa" },
   ],
@@ -77,7 +73,7 @@ export default function DadosEmpresa() {
         </dl>
 
         <aside className="mt-10 max-w-2xl rounded-xl border border-border bg-muted/40 p-5 text-sm text-muted-foreground">
-          <p>{COMMERCIAL.partnersDisclaimer}</p>
+          <p>Preciso de Um Técnico opera com rede de prestadores certificados e parceiros licenciados em todo Brasil. Cada técnico é responsável pelos seus atendimentos. Todos os serviços guardam direitos autorais e podem ser auditados por órgãos competentes. Saiba mais em Termos de Contrato.</p>
         </aside>
       </section>
     </Layout>

@@ -82,6 +82,8 @@ const GarantiaCobertura = () => {
               target="_blank"
               rel="noopener noreferrer"
               data-wa-source="garantia-hero"
+              data-service="acionamento de garantia"
+              aria-label="Acionar garantia pela triagem no WhatsApp"
               className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
             >
               <MessageCircle className="h-4 w-4" aria-hidden="true" />
@@ -163,6 +165,8 @@ const GarantiaCobertura = () => {
               target="_blank"
               rel="noopener noreferrer"
               data-wa-source="garantia-final"
+              data-service="acionamento de garantia"
+              aria-label="Abrir triagem de garantia no WhatsApp"
               className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
             >
               <MessageCircle className="h-4 w-4" aria-hidden="true" />

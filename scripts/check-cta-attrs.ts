@@ -28,6 +28,19 @@ function stripComments(src: string): string {
     .replace(/^\s*\/\/.*$/gm, "");
 }
 
+/**
+ * Arrow functions dentro de atributos (onClick={() => ...}) contêm `>` e
+ * truncariam a leitura da tag. Trocamos por um sentinela antes do parse.
+ */
+const ARROW = "\u0001";
+function maskArrows(src: string): string {
+  return src.replace(/=>/g, ARROW);
+}
+function unmaskArrows(src: string): string {
+  return src.split(ARROW).join("=>");
+}
+
+
 /** Origens registradas em src/lib/waSources.ts (fonte única). */
 function loadRegisteredSources(): Set<string> {
   const src = readFileSync("src/lib/waSources.ts", "utf8");

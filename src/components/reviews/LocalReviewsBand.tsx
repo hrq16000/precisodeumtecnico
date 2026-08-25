@@ -141,6 +141,9 @@ export function LocalReviewsBand({
         <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:items-center">
           <Button asChild size="lg" className="min-h-[48px]">
             <a
+              data-wa-source={source}
+              data-service={serviceName}
+              aria-label={`Falar no WhatsApp sobre ${serviceName}`}
               href={waUrl}
               target="_blank"
               rel="noopener noreferrer"

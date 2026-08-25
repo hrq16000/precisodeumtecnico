@@ -337,6 +337,9 @@ export function TermsDialog({
                   Abrir página completa
                 </a>
                 <a
+                  data-wa-source="terms"
+                  data-service="condições e termos do orçamento"
+                  aria-label="Falar no WhatsApp sobre os termos do orçamento"
                   href={buildWhatsAppUrl({ service: "assistência técnica" })}
                   target="_blank"
                   rel="noopener noreferrer"

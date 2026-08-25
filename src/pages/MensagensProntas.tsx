@@ -78,6 +78,9 @@ const MensagensProntas = () => {
                       className="min-h-11"
                     >
                       <a
+                        data-wa-source="mensagens-prontas"
+                        data-service="mensagem pronta de atendimento"
+                        aria-label="Enviar esta mensagem pronta no WhatsApp"
                         href={buildWhatsAppUrlFromText(
                           `${s.message} [service=${s.id} · source=wa_script · utm_source=whatsapp_cta]`,
                         )}

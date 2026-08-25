@@ -131,7 +131,11 @@ const AtendimentoUrgente = () => {
                 trackWhatsAppClick({ source: "urgencia", service: "urgente", city: "Curitiba" })
               }
             >
-              <a href={buildWhatsAppUrlFromText(waText)} target="_blank" rel="noopener noreferrer">
+              <a
+                data-wa-source="atendimento-urgente"
+                data-service="atendimento técnico urgente"
+                aria-label="Falar no WhatsApp sobre atendimento urgente"
+                href={buildWhatsAppUrlFromText(waText)} target="_blank" rel="noopener noreferrer">
                 <MessageCircle className="w-4 h-4 mr-2" aria-hidden />
                 Falar no WhatsApp
               </a>

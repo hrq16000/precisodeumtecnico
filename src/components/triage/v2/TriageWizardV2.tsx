@@ -952,6 +952,9 @@ export function TriageWizardV2({ source = "triagem", onClose }: Props) {
                   <Copy className="mr-2 h-4 w-4" /> {copied ? "Copiado!" : "Copiar mensagem"}
                 </Button>
                 <a
+                  data-wa-source="triage-wa-fallback"
+                  data-service="assistência técnica"
+                  aria-label="Abrir conversa no WhatsApp com o resumo da triagem"
                   data-testid="triage-wa-fallback-link"
                   href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(copyFallback)}`}
                   target="_blank" rel="noopener noreferrer"

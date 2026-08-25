@@ -285,7 +285,11 @@ const Servicos = () => {
               Técnicos especializados, garantia em todos os serviços e atendimento 24 horas.
             </p>
             <Button variant="whatsapp" size="lg" asChild>
-              <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+              <a
+                data-wa-source="servicos"
+                data-service="assistência técnica"
+                aria-label="Falar no WhatsApp sobre os serviços"
+                href={whatsappLink} target="_blank" rel="noopener noreferrer">
                 <MessageCircle className="w-5 h-5" />
                 Solicitar Orçamento
               </a>

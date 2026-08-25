@@ -328,7 +328,7 @@ export default function AssistenciaTecnica() {
                     onClick={waClick("service_card", s.title)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    data-wa-source="brasil_lp_service_card"
+                    data-wa-source="brasil-lp-service-card"
                     data-service={s.title}
                     aria-label={`Solicitar orçamento de ${s.title} pelo WhatsApp`}
                     className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline"

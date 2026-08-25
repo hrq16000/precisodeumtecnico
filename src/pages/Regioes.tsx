@@ -96,7 +96,11 @@ const Regioes = () => {
 
             {/* CTA */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+              <a
+                data-wa-source="regioes"
+                data-service="assistência técnica na sua região"
+                aria-label="Falar no WhatsApp sobre atendimento na sua região"
+                href={whatsappLink} target="_blank" rel="noopener noreferrer">
                 <Button size="lg" className="w-full sm:w-auto text-lg px-8 py-6 bg-success hover:bg-success/90 cta-glow gap-3">
                   <MessageCircle className="w-6 h-6" />
                   Chamar Técnico Agora
@@ -321,7 +325,11 @@ const Regioes = () => {
               na sua região!
             </p>
             
-            <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+            <a
+              data-wa-source="regioes"
+              data-service="assistência técnica na sua região"
+              aria-label="Falar no WhatsApp sobre atendimento na sua região"
+              href={whatsappLink} target="_blank" rel="noopener noreferrer">
               <Button size="lg" className="gap-2 bg-success hover:bg-success/90 text-success-foreground">
                 <MessageCircle className="w-5 h-5" />
                 Verificar Disponibilidade

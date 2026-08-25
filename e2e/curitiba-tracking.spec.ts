@@ -58,14 +58,14 @@ test.describe("Curitiba LP — tracking por superfície", () => {
     expectUtm(ev!);
   });
 
-  test("card de serviço emite source=curitiba_lp_service_card com service preservado", async ({ page }) => {
+  test("card de serviço emite source=curitiba-lp-service-card com service preservado", async ({ page }) => {
     await seedDataLayer(page);
     await page.goto(CURITIBA_URL);
     await page.waitForLoadState("networkidle");
 
-    await clickAnchor(page, 'a[data-wa-source="curitiba_lp_service_card"]');
-    const ev = (await whatsappEvents(page)).find((e) => e.source === "curitiba_lp_service_card");
-    expect(ev, "evento com source=curitiba_lp_service_card").toBeTruthy();
+    await clickAnchor(page, 'a[data-wa-source="curitiba-lp-service-card"]');
+    const ev = (await whatsappEvents(page)).find((e) => e.source === "curitiba-lp-service-card");
+    expect(ev, "evento com source=curitiba-lp-service-card").toBeTruthy();
     expectUtm(ev!);
     // service card carrega city Curitiba (data-city ou payload)
     if (typeof ev!.city === "string") expect(ev!.city).toMatch(/curitiba/i);

@@ -14,6 +14,7 @@
     "og:preview": "bun scripts/build-og-preview.ts",
     "og:validate": "bun scripts/check-og-validators.ts",
     "validate:sitemap": "bun scripts/validate-sitemap.ts",
+    "check:cta-attrs": "bunx tsx scripts/check-cta-attrs.ts",
     "check:og": "bun scripts/check-og-images.ts",
     "validate:jsonld": "bun scripts/validate-jsonld.ts",
     "test": "vitest run",

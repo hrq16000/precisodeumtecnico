@@ -341,8 +341,16 @@ export default function Admin() {
                           </TableCell>
                           <TableCell>
                             <div className="flex flex-col gap-1">
-                              <a href={`mailto:${lead.email}`} className="flex items-center gap-1 text-sm hover:text-primary"><Mail className="h-3 w-3" />{lead.email}</a>
-                              <a href={`https://wa.me/55${lead.phone.replace(/\D/g, "")}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-sm hover:text-primary"><Phone className="h-3 w-3" />{lead.phone}</a>
+                              <a
+                                data-wa-source="admin-lead"
+                                data-service="contato com lead"
+                                aria-label="Abrir conversa no WhatsApp com o lead"
+                                href={`mailto:${lead.email}`} className="flex items-center gap-1 text-sm hover:text-primary"><Mail className="h-3 w-3" />{lead.email}</a>
+                              <a
+                                data-wa-source="admin-lead"
+                                data-service="contato com lead"
+                                aria-label="Abrir conversa no WhatsApp com o lead"
+                                href={`https://wa.me/55${lead.phone.replace(/\D/g, "")}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-sm hover:text-primary"><Phone className="h-3 w-3" />{lead.phone}</a>
                             </div>
                           </TableCell>
                           <TableCell onClick={() => openLead(lead)}>

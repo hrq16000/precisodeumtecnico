@@ -245,7 +245,11 @@ export default function Busca() {
                 });
               }}
             >
-              <a href={buildWhatsAppUrlFromText(waMessage)} target="_blank" rel="noopener noreferrer">
+              <a
+                data-wa-source="busca"
+                data-service="assistência técnica"
+                aria-label="Falar no WhatsApp sobre o que você procurou"
+                href={buildWhatsAppUrlFromText(waMessage)} target="_blank" rel="noopener noreferrer">
                 <MessageCircle className="w-4 h-4" /> Falar no WhatsApp com esses filtros
               </a>
             </Button>

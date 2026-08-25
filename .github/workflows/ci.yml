@@ -33,6 +33,8 @@ jobs:
         run: bun run check:og
       - name: Validate JSON-LD structured data
         run: bun run validate:jsonld
+      - name: Gate — CTAs de WhatsApp com data-wa-source/data-service/aria-label
+        run: bun run check:cta-attrs
       - name: Gate — claims comerciais comprovados
         run: bun run check:claims
       - name: Gate — preço legado (bancada R$ 90) e marcadores proibidos

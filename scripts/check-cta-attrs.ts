@@ -68,7 +68,9 @@ function inspect(file: string) {
     const chunk = m[0];
     const declaresSource = /data-wa-source/.test(chunk);
     const isWaLink = looksLikeWhatsAppAnchor(chunk);
-    if (!declaresSource && !isWaLink) continue;
+    // Só âncoras reais são obrigadas: wrappers (<Button asChild>) delegam ao <a> interno.
+    const isAnchor = /^<a\b/.test(chunk);
+    if (!declaresSource && !(isWaLink && isAnchor)) continue;
     // Componentes wrapper (ex.: <WhatsAppCTA source=... service=...>) já garantem os atributos.
     if (!declaresSource && /^<(WhatsAppCTA|WhatsAppFloat)\b/.test(chunk)) continue;
 

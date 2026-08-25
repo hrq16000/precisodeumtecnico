@@ -60,7 +60,7 @@ function looksLikeWhatsAppAnchor(chunk: string): boolean {
 }
 
 function inspect(file: string) {
-  const src = stripComments(readFileSync(file, "utf8"));
+  const src = maskArrows(stripComments(readFileSync(file, "utf8")));
   // Qualquer tag JSX que declare data-wa-source OU que aponte para o WhatsApp.
   const re = /<[A-Za-z][A-Za-z0-9]*\b[^<>]*?>/gs;
   let m: RegExpExecArray | null;
@@ -101,7 +101,7 @@ function inspect(file: string) {
       problems.push({
         file,
         line,
-        snippet: chunk.replace(/\s+/g, " ").slice(0, 160),
+        snippet: unmaskArrows(chunk).replace(/\s+/g, " ").slice(0, 160),
         missing,
       });
     }

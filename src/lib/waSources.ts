@@ -54,6 +54,16 @@ export const WA_SOURCES = [
   "landing-brasil",
   "curitiba-lp-service-card",
   "brasil-lp-service-card",
+  // Páginas de descoberta e utilitários
+  "busca",
+  "regioes",
+  "servicos",
+  "mensagens-prontas",
+  "atendimento-urgente",
+  "quiz-result",
+  "reviews-band",
+  "triage-wa-fallback",
+  "admin-lead",
   // Ordem de serviço
   "status-os-share",
   "status-os-fallback",

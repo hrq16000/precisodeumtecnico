@@ -52,10 +52,10 @@ const REGISTERED = loadRegisteredSources();
 
 /** Heurística: a tag aponta para o WhatsApp? */
 function looksLikeWhatsAppAnchor(chunk: string): boolean {
+  const href = chunk.match(/href\s*=\s*\{?([^\s]*)/)?.[1] ?? "";
   return (
-    /wa\.me/.test(chunk) ||
-    /href=\{[^}]*(?:wa|whats)/i.test(chunk) ||
-    /buildWhatsApp|buildTriageWhatsApp/.test(chunk)
+    /wa\.me|buildWhatsApp|buildTriageWhatsApp|whatsappLink|waUrl|waHref|waLink/i.test(href) ||
+    /trackWhatsAppClick\s*\(/.test(chunk)
   );
 }
 

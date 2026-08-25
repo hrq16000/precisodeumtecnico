@@ -571,7 +571,7 @@ export default function AssistenciaTecnicaCuritiba() {
                     onClick={waClick("service_card", s.title)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    data-wa-source="curitiba_lp_service_card"
+                    data-wa-source="curitiba-lp-service-card"
                     data-service={s.title}
                     data-city="Curitiba"
                     aria-label={`Solicitar orçamento de ${s.title} pelo WhatsApp`}

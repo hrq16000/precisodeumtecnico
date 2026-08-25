@@ -15,7 +15,7 @@ test.describe("/precos — estimativa rápida em 3 perguntas", () => {
     await expect(result).toBeVisible();
     await expect(result.locator("[data-estimate-price]")).toHaveText("R$ 99,99");
 
-    const wa = result.locator("a[data-wa-source='pricing_quick_estimate']");
+    const wa = result.locator("a[data-wa-source='pricing-quick-estimate']");
     const href = await wa.getAttribute("href");
     expect(href).toContain("wa.me/");
     expect(decodeURIComponent(href ?? "")).toContain("Diagnóstico em bancada");

@@ -151,10 +151,10 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
         service: "montagem-de-pc",
         city: city.trim() || undefined,
         neighborhood: neighborhood.trim() || undefined,
-        source: "pc_quote_wizard",
+        source: "pc-quote-wizard",
       }),
       "",
-      "Origem: source=pc_quote_wizard",
+      "Origem: source=pc-quote-wizard",
       "service=montagem-de-pc",
       "utm_source=whatsapp_cta",
       `page=${page}`,
@@ -178,7 +178,7 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
     setOrderProtocol(protocol);
     const url = buildWhatsAppUrlFromText(buildMessage(protocol));
     trackWhatsAppClick({
-      source: "pc_quote_wizard",
+      source: "pc-quote-wizard",
       service: "montagem-de-pc",
       city: city.trim() || undefined,
       bairro: neighborhood.trim() || undefined,
@@ -529,7 +529,7 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
             type="button"
             onClick={submit}
             aria-label="Enviar orçamento de montagem de PC pelo WhatsApp"
-            data-wa-source="pc_quote_wizard"
+            data-wa-source="pc-quote-wizard"
             data-service="montagem-de-pc"
             className={`inline-flex items-center justify-center gap-2 px-5 py-3 min-h-[48px] rounded-lg bg-success text-success-foreground font-semibold ${
               canSubmit ? "" : "opacity-60"
@@ -605,10 +605,10 @@ export const PcQuoteWizard = ({ sourcePage }: { sourcePage?: string }) => {
                 service: "montagem-de-pc",
                 city: city.trim() || undefined,
                 neighborhood: neighborhood.trim() || undefined,
-                source: "pc_quote_wizard",
+                source: "pc-quote-wizard",
               })}
               onClick={() =>
-                trackEvent("review_link_click", { page_path: page, source: "pc_quote_wizard" })
+                trackEvent("review_link_click", { page_path: page, source: "pc-quote-wizard" })
               }
               className="inline-flex items-center justify-center gap-2 px-4 py-3 min-h-[48px] rounded-lg bg-primary text-primary-foreground font-semibold"
             >

@@ -206,12 +206,12 @@ export function QuickEstimate() {
                   href={buildWhatsAppUrlFromText(waText)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  data-wa-source="pricing_quick_estimate"
+                  data-wa-source="pricing-quick-estimate"
                   data-service="estimativa rápida de preços"
                   aria-label="Enviar minha estimativa pelo WhatsApp"
                   onClick={() => {
                     trackWhatsAppClick({
-                      source: "pricing_quick_estimate",
+                      source: "pricing-quick-estimate",
                       service: "estimativa-rapida",
                       source_component: "QuickEstimate",
                       cta_label: "Enviar estimativa no WhatsApp",

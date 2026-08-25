@@ -28,19 +28,56 @@ function stripComments(src: string): string {
     .replace(/^\s*\/\/.*$/gm, "");
 }
 
+/** Origens registradas em src/lib/waSources.ts (fonte única). */
+function loadRegisteredSources(): Set<string> {
+  const src = readFileSync("src/lib/waSources.ts", "utf8");
+  const block = src.slice(src.indexOf("WA_SOURCES = ["), src.indexOf("] as const"));
+  return new Set([...block.matchAll(/"([a-z0-9-]+)"/g)].map((m) => m[1]));
+}
+
+const REGISTERED = loadRegisteredSources();
+
+/** Heurística: a tag aponta para o WhatsApp? */
+function looksLikeWhatsAppAnchor(chunk: string): boolean {
+  return (
+    /wa\.me/.test(chunk) ||
+    /href=\{[^}]*(?:wa|whats)/i.test(chunk) ||
+    /buildWhatsApp|buildTriageWhatsApp/.test(chunk)
+  );
+}
+
 function inspect(file: string) {
   const src = stripComments(readFileSync(file, "utf8"));
-  // Só JSX real: tag começa com `<` seguido de letra e contém data-wa-source.
-  const re = /<[A-Za-z][A-Za-z0-9]*\b[^<>]*?data-wa-source[^<>]*?>/gs;
+  // Qualquer tag JSX que declare data-wa-source OU que aponte para o WhatsApp.
+  const re = /<[A-Za-z][A-Za-z0-9]*\b[^<>]*?>/gs;
   let m: RegExpExecArray | null;
   while ((m = re.exec(src))) {
     const chunk = m[0];
+    const declaresSource = /data-wa-source/.test(chunk);
+    const isWaLink = looksLikeWhatsAppAnchor(chunk);
+    if (!declaresSource && !isWaLink) continue;
+    // Componentes wrapper (ex.: <WhatsAppCTA source=... service=...>) já garantem os atributos.
+    if (!declaresSource && /^<(WhatsAppCTA|WhatsAppFloat)\b/.test(chunk)) continue;
+
     const missing: string[] = [];
     // Aceita atributo direto (attr=) ou spread com chave literal ('attr':).
     const hasService = /data-service\s*=/.test(chunk) || /['"]data-service['"]\s*:/.test(chunk);
     const hasAria = /aria-label\s*=/.test(chunk) || /['"]aria-label['"]\s*:/.test(chunk);
+    if (!declaresSource) missing.push("data-wa-source");
     if (!hasService) missing.push("data-service");
     if (!hasAria) missing.push("aria-label");
+
+    // Origem precisa estar registrada e em kebab-case.
+    const literal = chunk.match(/data-wa-source\s*=\s*"([^"]+)"/);
+    if (literal) {
+      const value = literal[1];
+      if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(value)) {
+        missing.push(`data-wa-source="${value}" fora do padrão kebab-case`);
+      } else if (!REGISTERED.has(value)) {
+        missing.push(`data-wa-source="${value}" não registrado em src/lib/waSources.ts`);
+      }
+    }
+
     // TS17001: atributo JSX duplicado na mesma tag.
     for (const attr of ["aria-label", "data-service", "data-wa-source", "href", "onClick", "className"]) {
       const dup = chunk.match(new RegExp(`(?<![\\w-])${attr}\\s*=`, "g"));
@@ -61,11 +98,15 @@ function inspect(file: string) {
 walk(ROOT);
 
 if (problems.length) {
-  console.error(`[cta-attrs] FALHOU — ${problems.length} CTA(s) WhatsApp sem atributos obrigatórios:`);
+  console.error(`[cta-attrs] FALHOU — ${problems.length} CTA(s) WhatsApp com problema:`);
   for (const p of problems) {
     console.error(`  ✗ ${p.file}:${p.line}  faltando: ${p.missing.join(", ")}`);
     console.error(`    ${p.snippet}`);
   }
+  console.error("  → Use <WhatsAppCTA> (src/components/cta/WhatsAppCTA.tsx) para herdar os atributos automaticamente.");
   process.exit(1);
 }
-console.log("[cta-attrs] OK — todos os CTAs data-wa-source têm data-service + aria-label.");
+console.log(
+  `[cta-attrs] OK — todos os links de WhatsApp têm data-wa-source (${REGISTERED.size} origens registradas), data-service e aria-label.`,
+);
+
